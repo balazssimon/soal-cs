@@ -1,6 +1,15 @@
 ﻿namespace MetaDslx.Soal;
-generator WsdlGenerator for Namespace;
+generator WsdlGenerator for object;
 
-template Generate()
-wsdl:[Instances.FullName]
+using generator XsdGenerator;
+
+properties Properties
+	bool IncludeXsd = false;
+end properties
+
+template Generate(Namespace ns)
+wsdl:[ns.FullName]
+[if (Properties.IncludeXsd)]
+[XsdGenerator.Generate(ns)]
+[end if]
 end template

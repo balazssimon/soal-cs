@@ -1,6 +1,6 @@
 ﻿namespace MetaDslx.Soal;
-generator XsdGenerator for Namespace;
+generator XsdGenerator for object;
 
-template Generate()
-xsd:[Instances.FullName]
+template Generate(Namespace ns)
+xsd:[ns.FullName]
 end template

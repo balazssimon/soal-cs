@@ -24,6 +24,9 @@ namespace MetaDslx.Soal
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Void);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.DateTime);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.TimeSpan);
+
+            this.SeparateXsdWsdl = false;
+            this.SingleFileWsdl = false;
         }
 
         protected override void DoCompile()
@@ -35,11 +38,25 @@ namespace MetaDslx.Soal
             }
         }
 
+        public bool SeparateXsdWsdl { get; set; }
+        public bool SingleFileWsdl { get; set; }
+
         private void Generate()
         {
+            if (this.SingleFileWsdl)
+            {
+                this.SeparateXsdWsdl = false;
+            }
             string xsdDirectory = Path.Combine(this.OutputDirectory, "xsd");
-            Directory.CreateDirectory(xsdDirectory);
             string wsdlDirectory = Path.Combine(this.OutputDirectory, "wsdl");
+            if (this.SeparateXsdWsdl)
+            {
+                Directory.CreateDirectory(xsdDirectory);
+            }
+            else
+            {
+                xsdDirectory = wsdlDirectory;
+            }
             Directory.CreateDirectory(wsdlDirectory);
 
             var namespaces = this.Data.GetSymbols().OfType<Namespace>().ToList();
@@ -47,17 +64,21 @@ namespace MetaDslx.Soal
             {
                 if (ns.Uri != null)
                 {
-                    string xsdFileName = Path.Combine(xsdDirectory, ns.FullName + ".xsd");
-                    using (StreamWriter writer = new StreamWriter(xsdFileName))
+                    if (!this.SingleFileWsdl)
                     {
-                        XsdGenerator xsdGen = new XsdGenerator(ns);
-                        writer.WriteLine(xsdGen.Generate());
+                        string xsdFileName = Path.Combine(xsdDirectory, ns.FullName + ".xsd");
+                        using (StreamWriter writer = new StreamWriter(xsdFileName))
+                        {
+                            XsdGenerator xsdGen = new XsdGenerator(ns);
+                            writer.WriteLine(xsdGen.Generate(ns));
+                        }
                     }
                     string wsdlFileName = Path.Combine(wsdlDirectory, ns.FullName + ".wsdl");
                     using (StreamWriter writer = new StreamWriter(wsdlFileName))
                     {
                         WsdlGenerator wsdlGen = new WsdlGenerator(ns);
-                        writer.WriteLine(wsdlGen.Generate());
+                        wsdlGen.Properties.IncludeXsd = this.SingleFileWsdl;
+                        writer.WriteLine(wsdlGen.Generate(ns));
                     }
                 }
             }
