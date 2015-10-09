@@ -1,0 +1,6 @@
+﻿namespace MetaDslx.Soal;
+generator WsdlGenerator for Namespace;
+
+template Generate()
+wsdl:[Instances.FullName]
+end template

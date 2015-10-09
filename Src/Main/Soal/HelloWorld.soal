@@ -1,0 +1,19 @@
+﻿namespace HelloNs = "http://www.hello.org/HelloNs"
+{
+	interface IHello
+	{
+		string SayHello(string name);
+	}
+
+	binding HttpSoap11
+	{
+		transport HTTP;
+		encoding SOAP;
+	}
+
+	endpoint HelloService : IHello
+	{
+		binding HttpSoap11;
+		address "http://www.tempuri.org";
+	}
+}
