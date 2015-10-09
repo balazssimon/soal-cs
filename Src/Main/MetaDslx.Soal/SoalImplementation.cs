@@ -30,6 +30,53 @@ namespace MetaDslx.Soal
 
     internal static class SoalExtensions
     {
+        public static List<Namespace> GetImportedNamespaces(this Namespace ns)
+        {
+            List<Namespace> result = new List<Namespace>();
+            foreach (var decl in ns.Declarations)
+            {
+                StructuredType stype = decl as StructuredType;
+                if (stype != null)
+                {
+                    foreach (var prop in stype.Properties)
+                    {
+                        Namespace extns = prop.Type.GetNamespace(ns);
+                        if (!result.Contains(extns))
+                        {
+                            result.Add(extns);
+                        }
+                    }
+                }
+                Interface intf = decl as Interface;
+                if (intf != null)
+                {
+                    foreach (var op in intf.Operations)
+                    {
+                        if (op.ReturnType is ArrayType)
+                        {
+                            Namespace extns = op.ReturnType.GetNamespace(ns);
+                            if (!result.Contains(extns))
+                            {
+                                result.Add(extns);
+                            }
+                        }
+                        foreach (var param in op.Parameters)
+                        {
+                            Namespace extns = param.Type.GetNamespace(ns);
+                            if (!result.Contains(extns))
+                            {
+                                result.Add(extns);
+                            }
+                        }
+                    }
+                }
+            }
+            result.Remove(SoalCompiler.XsdNamespace);
+            result.Remove(ns);
+            result.Remove(null);
+            return result;
+        }
+
         public static List<ArrayType> GetArrayTypes(this Namespace ns)
         {
             HashSet<string> arrayNames = new HashSet<string>();

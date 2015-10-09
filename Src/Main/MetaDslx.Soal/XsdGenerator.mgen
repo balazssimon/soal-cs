@@ -1,13 +1,27 @@
 ﻿namespace MetaDslx.Soal;
 generator XsdGenerator for object;
 
+properties Properties
+	bool ImportXsd = true;
+	string XsdImportPrefix = "";
+end properties
+
 template Generate(Namespace ns)
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema targetNamespace="[ns.Uri]"
 		xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		xmlns:tns="[ns.Uri]"
 		xmlns:[ns.Prefix]="[ns.Uri]"
+	[if (Properties.ImportXsd)]
+		[loop(ins:ns.GetImportedNamespaces())]
+		xmlns:[ins.Prefix]="[ins.Uri]"
+		[end loop]
+	[end if]
 		elementFormDefault="qualified">
+	[if (Properties.ImportXsd)]
+		[loop(ins:ns.GetImportedNamespaces())]
+	<xs:import namespace="[ins.Uri]" schemaLocation="[Properties.XsdImportPrefix][ins.FullName].xsd"/>
+		[end loop]
+	[end if]
 	[loop(arr:ns.GetArrayTypes())]
 ^
 	<xs:element name="[arr.GetXsdName()]" type="[ns.Prefix]:[arr.GetXsdName()]"/>
@@ -51,7 +65,7 @@ template Generate(Namespace ns)
 	</xs:complexType>
 		[if (!op.IsOneway)]
 ^
-	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
+	<xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
 	<xs:complexType name="[op.Name]Response">
 		<xs:sequence>
 			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]"/>

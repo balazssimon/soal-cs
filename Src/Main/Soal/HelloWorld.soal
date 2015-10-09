@@ -23,6 +23,7 @@
 	interface IHello
 	{
 		string SayHello(string name);
+		string SayHello2(OtherNs.Complex cplx1, Complex cplx2);
 	}
 
 	binding HttpSoap11
@@ -35,5 +36,28 @@
 	{
 		binding HttpSoap11;
 		address "http://www.tempuri.org";
+	}
+}
+
+
+namespace OtherNs = oth:"http://www.hello.org/OtherNs"
+{
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	struct More
+	{
+		int[] Integers;
+		Complex[] Complexes;
+		string Name;
+	}
+
+	interface IHello
+	{
+		string SayHello(string name);
+		string SayHello2(HelloNs.Complex cplx1, Complex cplx2);
 	}
 }
