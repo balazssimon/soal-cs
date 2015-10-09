@@ -150,6 +150,10 @@ namespace MetaDslx.Soal
                 ModelProperty.Register("Uri", typeof(string), typeof(global::MetaDslx.Soal.Namespace), typeof(global::MetaDslx.Soal.SoalDescriptor.Namespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Namespace_UriProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
             
+            public static readonly ModelProperty PrefixProperty =
+                ModelProperty.Register("Prefix", typeof(string), typeof(global::MetaDslx.Soal.Namespace), typeof(global::MetaDslx.Soal.SoalDescriptor.Namespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Namespace_PrefixProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
+            
             [ReadonlyAttribute]
             public static readonly ModelProperty FullNameProperty =
                 ModelProperty.Register("FullName", typeof(string), typeof(global::MetaDslx.Soal.Namespace), typeof(global::MetaDslx.Soal.SoalDescriptor.Namespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Namespace_FullNameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -1168,6 +1172,7 @@ namespace MetaDslx.Soal
 		
 		
 		
+		
 		public static readonly global::MetaDslx.Core.MetaClass Declaration;
 		
 		public static readonly global::MetaDslx.Core.MetaClass ArrayType;
@@ -1284,6 +1289,7 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty NamedElement_NameProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty TypedElement_TypeProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Namespace_UriProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty Namespace_PrefixProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Namespace_FullNameProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Namespace_DeclarationsProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Declaration_NamespaceProperty;
@@ -1378,6 +1384,7 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaAnnotation tmp17 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				Namespace = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				Namespace_UriProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				Namespace_PrefixProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Namespace_FullNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Namespace_DeclarationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				global::MetaDslx.Core.MetaAnnotation tmp18 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
@@ -2100,6 +2107,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp20, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Namespace_UriProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Namespace_PrefixProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Namespace_FullNameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Namespace_DeclarationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
@@ -2125,6 +2133,20 @@ namespace MetaDslx.Soal
 				((ModelObject)Namespace_UriProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace_UriProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)Namespace_UriProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
+				
+				
+				
+				((ModelObject)Namespace_PrefixProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Namespace_PrefixProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Prefix", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_PrefixProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Namespace_PrefixProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_PrefixProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)Namespace_PrefixProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_PrefixProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Namespace_PrefixProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3906,6 +3928,7 @@ namespace MetaDslx.Soal
     public interface Namespace : global::MetaDslx.Soal.Declaration
     {
         string Uri { get; set; }
+        string Prefix { get; set; }
         string FullName { get; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration> Declarations { get; }
     
@@ -3967,6 +3990,17 @@ namespace MetaDslx.Soal
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Namespace.UriProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.Namespace.Prefix
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty, value); }
         }
         
         string global::MetaDslx.Soal.Namespace.FullName

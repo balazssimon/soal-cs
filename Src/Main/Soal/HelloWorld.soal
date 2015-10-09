@@ -1,5 +1,25 @@
-﻿namespace HelloNs = "http://www.hello.org/HelloNs"
+﻿namespace HelloNs = hw:"http://www.hello.org/HelloNs"
 {
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	struct More
+	{
+		int[] Integers;
+		Complex[] Complexes;
+		string Name;
+	}
+
+	enum SeatStatus
+	{
+		Free,
+		Locked,
+		Reserved
+	}
+
 	interface IHello
 	{
 		string SayHello(string name);

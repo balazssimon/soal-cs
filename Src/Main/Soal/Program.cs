@@ -81,6 +81,10 @@ namespace Soal
                     compiler.SeparateXsdWsdl = separateXsdWsdl;
                     compiler.SingleFileWsdl = singleFileWsdl;
                     compiler.Compile();
+                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                    {
+                        Console.WriteLine(msg);
+                    }
                 }
             }
             catch(System.Exception ex)

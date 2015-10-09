@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\2inaxylt.5zb\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\bm20tddg.f5g\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -66,6 +66,24 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitDeclaration([NotNull] SoalParser.DeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.enumDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumLiterals([NotNull] SoalParser.EnumLiteralsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.enumLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumLiteral([NotNull] SoalParser.EnumLiteralContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.structDeclaration"/>.
 	/// </summary>

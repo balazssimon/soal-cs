@@ -14,11 +14,21 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
                                                                       
-namespaceDeclaration: KNamespace qualifiedName TAssign                       stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: KNamespace qualifiedName TAssign (                         identifier TColon)                       stringLiteral TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
+// Enums
+
+              
+enumDeclaration : KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
+
+enumLiterals : enumLiteral (TComma enumLiteral)*;
+
+                       
+                     
+enumLiteral : identifier;
 
 // Structs and exceptions
 

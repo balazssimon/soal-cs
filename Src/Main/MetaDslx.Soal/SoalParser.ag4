@@ -14,11 +14,21 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration: KNamespace qualifiedName TAssign $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon) $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
+// Enums
+
+$TypeDef(Enum)
+enumDeclaration : KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
+
+enumLiterals : enumLiteral (TComma enumLiteral)*;
+
+$Property(EnumLiterals)
+$NameDef(EnumLiteral)
+enumLiteral : identifier;
 
 // Structs and exceptions
 

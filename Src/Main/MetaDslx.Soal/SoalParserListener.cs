@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\2inaxylt.5zb\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\bm20tddg.f5g\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -89,6 +89,36 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDeclaration([NotNull] SoalParser.DeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumLiterals([NotNull] SoalParser.EnumLiteralsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumLiterals([NotNull] SoalParser.EnumLiteralsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumLiteral([NotNull] SoalParser.EnumLiteralContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumLiteral([NotNull] SoalParser.EnumLiteralContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.structDeclaration"/>.
 	/// </summary>

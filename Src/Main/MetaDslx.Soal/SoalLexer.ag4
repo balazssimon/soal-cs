@@ -2,6 +2,7 @@
 
 $Syntax(kind=SyntaxKind.Keyword, first=KNamespace, last=KVoid)
 KNamespace : 'namespace';
+KEnum : 'enum';
 KException : 'exception';
 KStruct : 'struct';
 KInterface : 'interface';

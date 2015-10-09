@@ -36,6 +36,7 @@
 	class Namespace : Declaration
 	{
 		string Uri;
+		string Prefix;
 		derived string FullName;
 		[ScopeEntry]
 		containment list<Declaration> Declarations;

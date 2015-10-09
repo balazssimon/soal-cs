@@ -1,7 +1,8 @@
-lexer grammar SoalLexer;
+﻿lexer grammar SoalLexer;
 
                                                               
 KNamespace : 'namespace';
+KEnum : 'enum';
 KException : 'exception';
 KStruct : 'struct';
 KInterface : 'interface';
@@ -221,4 +222,3 @@ mode SINGLEQUOTE_VERBATIM_STRING;
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
                                
 SingleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
-

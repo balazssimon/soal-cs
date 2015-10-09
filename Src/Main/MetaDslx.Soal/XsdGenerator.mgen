@@ -2,5 +2,62 @@
 generator XsdGenerator for object;
 
 template Generate(Namespace ns)
-xsd:[ns.FullName]
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="[ns.Uri]"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:tns="[ns.Uri]"
+		xmlns:[ns.Prefix]="[ns.Uri]"
+		elementFormDefault="qualified">
+	[loop(arr:ns.GetArrayTypes())]
+^
+	<xs:element name="[arr.GetXsdName()]" type="[ns.Prefix]:[arr.GetXsdName()]"/>
+	<xs:complexType name="[arr.GetXsdName()]">
+		<xs:sequence>
+			<xs:element name="[arr.InnerType.GetXsdName()]" type="[arr.InnerType.GetNamespace(ns).Prefix]:[arr.InnerType.GetXsdName()]"/>
+		</xs:sequence>
+	</xs:complexType>
+	[end loop]
+	[loop(ns.Declarations->etype:typeof(Enum))]
+^
+	<xs:element name="[etype.GetXsdName()]" type="[ns.Prefix]:[etype.GetXsdName()]"/>
+	<xs:simpleType name="[etype.GetXsdName()]">
+		<xs:restriction base="xs:string">
+			[loop(etype->elit:EnumLiterals)]
+			<xs:enumeration value="[elit.Name]"/>
+			[end loop]
+		</xs:restriction>
+	</xs:simpleType>
+	[end loop]
+	[loop(ns.Declarations->stype:typeof(StructuredType))]
+^
+	<xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
+	<xs:complexType name="[stype.GetXsdName()]">
+		<xs:sequence>
+			[loop(stype->prop:Properties)]
+			<xs:element name="[prop.Name]" type="[prop.Type.GetNamespace(ns).Prefix]:[prop.Type.GetXsdName()]"/>
+			[end loop]
+		</xs:sequence>
+	</xs:complexType>
+	[end loop]
+	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
+^
+	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
+	<xs:complexType name="[op.Name]">
+		<xs:sequence>
+			[loop(op->param:Parameters)]
+			<xs:element name="[param.Name]" type="[param.Type.GetNamespace(ns).Prefix]:[param.Type.GetXsdName()]"/>
+			[end loop]
+		</xs:sequence>
+	</xs:complexType>
+		[if (!op.IsOneway)]
+^
+	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
+	<xs:complexType name="[op.Name]Response">
+		<xs:sequence>
+			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]"/>
+		</xs:sequence>
+	</xs:complexType>
+		[end if]
+	[end loop]
+</xs:schema>
 end template

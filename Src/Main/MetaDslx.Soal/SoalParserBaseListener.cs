@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\2inaxylt.5zb\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\bm20tddg.f5g\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -105,6 +105,42 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDeclaration([NotNull] SoalParser.DeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnumLiterals([NotNull] SoalParser.EnumLiteralsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnumLiterals([NotNull] SoalParser.EnumLiteralsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumLiteral"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnumLiteral([NotNull] SoalParser.EnumLiteralContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumLiteral"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnumLiteral([NotNull] SoalParser.EnumLiteralContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.structDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
