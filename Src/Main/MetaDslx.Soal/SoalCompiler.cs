@@ -53,6 +53,7 @@ namespace MetaDslx.Soal
         private void PrepareGeneration()
         {
             HashSet<string> prefixes = new HashSet<string>();
+            prefixes.Add("xs");
             int prefixCounter = 0;
             var namespaces = this.Data.GetSymbols().OfType<Namespace>().ToList();
             foreach (var ns in namespaces)
