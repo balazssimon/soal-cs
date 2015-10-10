@@ -24,6 +24,8 @@
 	{
 		string SayHello(string name);
 		string SayHello2(OtherNs.Complex! cplx1, Complex cplx2);
+		byte[] Abc(int[]! i1, int[] i2);
+		void Abc2(byte[]! i1, byte[] i2);
 	}
 
 	binding HttpSoap11

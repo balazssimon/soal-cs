@@ -112,17 +112,24 @@ namespace MetaDslx.Soal
             if (type is ArrayType)
             {
                 ArrayType atype = (ArrayType)type;
-                if (!arrayNames.Contains(atype.GetXsdName()))
+                string aname = atype.GetXsdName();
+                if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
                 {
+                    arrayNames.Add(aname);
                     arrayTypes.Add(atype);
                 }
             }
             else if (type is NonNullableType)
             {
                 ArrayType atype = ((NonNullableType)type).InnerType as ArrayType;
-                if (atype != null && !arrayNames.Contains(atype.GetXsdName()))
+                if (atype != null)
                 {
-                    arrayTypes.Add(atype);
+                    string aname = atype.GetXsdName();
+                    if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
+                    {
+                        arrayNames.Add(aname);
+                        arrayTypes.Add(atype);
+                    }
                 }
             }
         }
@@ -132,7 +139,11 @@ namespace MetaDslx.Soal
             if (type is PrimitiveType) return SoalCompiler.XsdNamespace;
             if (type is NullableType) return GetNamespace(((NullableType)type).InnerType, currentNamespace);
             if (type is NonNullableType) return GetNamespace(((NonNullableType)type).InnerType, currentNamespace);
-            if (type is ArrayType) return currentNamespace;
+            if (type is ArrayType)
+            {
+                if (((ArrayType)type).InnerType == SoalInstance.Byte) return SoalCompiler.XsdNamespace;
+                else return currentNamespace;
+            }
             if (type is Enum)
             {
                 Enum etype = (Enum)type;
@@ -148,10 +159,41 @@ namespace MetaDslx.Soal
 
         public static string GetXsdName(this SoalType type)
         {
-            if (type is PrimitiveType) return ((PrimitiveType)type).Name;
+            if (type is PrimitiveType)
+            {
+                string name = ((PrimitiveType)type).Name;
+                switch (name)
+                {
+                    case "int":
+                    case "long":
+                    case "float":
+                    case "double":
+                    case "string":
+                    case "byte":
+                        return name;
+                    case "object":
+                        return "anyType";
+                    case "bool":
+                        return "boolean";
+                    case "Date":
+                        return "date";
+                    case "Time":
+                        return "time";
+                    case "DateTime":
+                        return "dateTime";
+                    case "TimeSpan":
+                        return "duration";
+                    default:
+                        break;
+                }
+            }
             if (type is NullableType) return GetXsdName(((NullableType)type).InnerType);
             if (type is NonNullableType) return GetXsdName(((NonNullableType)type).InnerType);
-            if (type is ArrayType) return "Arrayof"+GetXsdName(((ArrayType)type).InnerType);
+            if (type is ArrayType)
+            {
+                if (((ArrayType)type).InnerType == SoalInstance.Byte) return "base64Binary";
+                else return "Arrayof" + GetXsdName(((ArrayType)type).InnerType);
+            }
             if (type is Enum)
             {
                 Enum etype = (Enum)type;

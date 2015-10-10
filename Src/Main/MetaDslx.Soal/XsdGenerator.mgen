@@ -67,9 +67,13 @@ template Generate(Namespace ns)
 ^
 	<xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
 	<xs:complexType name="[op.Name]Response">
+			[if (op.ReturnType == SoalInstance.Void)]
+		<xs:sequence/>
+			[else]
 		<xs:sequence>
 			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]" nillable="[op.ReturnType.IsNullableXsd()]"/>
 		</xs:sequence>
+			[end if]
 	</xs:complexType>
 		[end if]
 	[end loop]

@@ -247,6 +247,8 @@ primitiveType
 	| KDouble 
 	| KByte 
 	| KBool
+	| KDate
+	| KTime
 	| KDateTime
 	| KTimeSpan
 	;

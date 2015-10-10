@@ -24,6 +24,8 @@ namespace MetaDslx.Soal
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Byte);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Bool);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Void);
+            this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Date);
+            this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Time);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.DateTime);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.TimeSpan);
 

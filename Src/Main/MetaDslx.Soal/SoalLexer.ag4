@@ -34,6 +34,8 @@ KNull : 'null';
 KTrue : 'true';
 KFalse : 'false';
 
+KDate : 'Date';
+KTime : 'Time';
 KDateTime : 'DateTime';
 KTimeSpan : 'TimeSpan';
 KObject : 'object';

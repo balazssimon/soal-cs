@@ -11,6 +11,8 @@
 	const PrimitiveType Byte = new PrimitiveType() { Name = "byte" };
 	const PrimitiveType Bool = new PrimitiveType() { Name = "bool" };
 	const PrimitiveType Void = new PrimitiveType() { Name = "void" };
+	const PrimitiveType Date = new PrimitiveType() { Name = "Date" };
+	const PrimitiveType Time = new PrimitiveType() { Name = "Time" };
 	const PrimitiveType DateTime = new PrimitiveType() { Name = "DateTime" };
 	const PrimitiveType TimeSpan = new PrimitiveType() { Name = "TimeSpan" };
 
