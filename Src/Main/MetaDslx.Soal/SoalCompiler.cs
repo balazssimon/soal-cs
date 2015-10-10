@@ -59,7 +59,16 @@ namespace MetaDslx.Soal
             prefixes.Add("wsdl");
             prefixes.Add("soap");
             prefixes.Add("soap12");
+            prefixes.Add("wsp");
+            prefixes.Add("wsu");
+            prefixes.Add("wsoma");
+            prefixes.Add("wsam");
             prefixes.Add("wsaw");
+            prefixes.Add("wsrmp");
+            prefixes.Add("wsat");
+            prefixes.Add("sp");
+            prefixes.Add("wst");
+            prefixes.Add("wsx");
             int prefixCounter = 0;
             var namespaces = this.Data.GetSymbols().OfType<Namespace>().ToList();
             foreach (var ns in namespaces)
@@ -100,7 +109,7 @@ namespace MetaDslx.Soal
                         StructuredType stype = decl as StructuredType;
                         if (stype != null)
                         {
-                            string key = stype.Name;
+                            string key = stype.GetXsdName();
                             List<ModelObject> symbols = null;
                             if (!typeNames.TryGetValue(key, out symbols))
                             {
@@ -112,7 +121,7 @@ namespace MetaDslx.Soal
                         Enum etype = decl as Enum;
                         if (etype != null)
                         {
-                            string key = etype.Name;
+                            string key = etype.GetXsdName();
                             List<ModelObject> symbols = null;
                             if (!typeNames.TryGetValue(key, out symbols))
                             {

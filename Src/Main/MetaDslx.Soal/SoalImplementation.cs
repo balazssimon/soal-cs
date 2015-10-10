@@ -200,7 +200,7 @@ namespace MetaDslx.Soal
             if (type is ArrayType)
             {
                 if (((ArrayType)type).InnerType == SoalInstance.Byte) return "base64Binary";
-                else return "Arrayof" + GetXsdName(((ArrayType)type).InnerType);
+                else return (GetXsdName(((ArrayType)type).InnerType)+"List").ToPascalCase();
             }
             if (type is Enum)
             {
@@ -213,6 +213,18 @@ namespace MetaDslx.Soal
                 return stype.Name;
             }
             return null;
+        }
+
+        public static string ToPascalCase(this string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier)) return identifier;
+            return identifier.Substring(0, 1).ToUpper() + identifier.Substring(1);
+        }
+
+        public static string ToCamelCase(this string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier)) return identifier;
+            return identifier.Substring(0, 1).ToLower() + identifier.Substring(1);
         }
 
         public static bool HasXsdNamespace(this SoalType type)
@@ -283,6 +295,45 @@ namespace MetaDslx.Soal
                 }
             }
             return result;
+        }
+
+        public static string GetSoapPrefix(this Binding binding)
+        {
+            foreach (var enc in binding.Encodings)
+            {
+                SoapEncodingBindingElement soap = enc as SoapEncodingBindingElement;
+                if (soap != null)
+                {
+                    if (soap.Version == SoapVersion.Soap12) return "soap12";
+                    else return "soap";
+                }
+            }
+            return null;
+        }
+
+        public static bool HasPolicy(this Binding binding)
+        {
+            HttpTransportBindingElement http = binding.Transport as HttpTransportBindingElement;
+            if (http != null && http.Ssl) return true;
+            foreach (var enc in binding.Encodings)
+            {
+                SoapEncodingBindingElement soap = enc as SoapEncodingBindingElement;
+                if (soap != null && soap.Mtom) return true;
+            }
+            foreach (var prot in binding.Protocols)
+            {
+                if (prot is WsAddressingBindingElement) return true;
+            }
+            return false;
+        }
+
+        public static bool HasOperationPolicy(this Binding binding)
+        {
+            foreach (var prot in binding.Protocols)
+            {
+                //if (prot is WsSecurityBindingElement) return true;
+            }
+            return false;
         }
     }
 }

@@ -172,29 +172,55 @@ bindingDeclaration : KBinding identifier TOpenBrace bindingLayers? TCloseBrace;
 
 bindingLayers : transportLayer encodingLayer+ protocolLayer*;
 
-// TODO: dynamic property definition
-layerProperty 
-	: identifier TAssign literal;
 
                     
-       
-transportLayer : KTransport transportLayerKind TSemicolon;
+transportLayer 
+	: httpTransportLayer 
+	| restTransportLayer 
+	| webSocketTransportLayer
+	;
 
-transportLayerKind :
-	                                                                
-	                                                                
-	                                                                          
-	identifier;
+                                     
+httpTransportLayer : KTransport IHTTP (TSemicolon | TOpenBrace httpTransportLayerProperties* TCloseBrace);
+                                     
+restTransportLayer : KTransport IREST (TSemicolon | TOpenBrace TCloseBrace);
+                                          
+webSocketTransportLayer : KTransport IWebSocket (TSemicolon | TOpenBrace TCloseBrace);
+
+httpTransportLayerProperties
+	: httpSslProperty
+	| httpClientAuthenticationProperty
+	;
+
+              
+httpSslProperty : ISSL TAssign        booleanLiteral TSemicolon;
+                               
+httpClientAuthenticationProperty : IClientAuthentication TAssign        booleanLiteral TSemicolon;
 
                     
-       
-encodingLayer : KEncoding encodingLayerKind TSemicolon;
+encodingLayer 
+	: soapEncodingLayer
+	| xmlEncodingLayer
+	| jsonEncodingLayer
+	;
 
-encodingLayerKind : 
-	                                                               
-	                                                             
-	                                                               
-	identifier;
+                                    
+soapEncodingLayer : KEncoding ISOAP (TSemicolon | TOpenBrace soapEncodingProperties* TCloseBrace);
+                                   
+xmlEncodingLayer : KEncoding IXML (TSemicolon | TOpenBrace TCloseBrace);
+                                    
+jsonEncodingLayer : KEncoding IJSON (TSemicolon | TOpenBrace TCloseBrace);
+
+soapEncodingProperties
+	: soapVersionProperty
+	| soapMtomProperty
+	;
+
+                  
+soapVersionProperty : IVersion TAssign                         identifier TSemicolon;
+
+               
+soapMtomProperty : IMTOM TAssign        booleanLiteral TSemicolon;
 
                     
        
@@ -320,5 +346,13 @@ contextualKeywords
 	| IDateTime
 	| ITimeSpan
 	| IVersion
-	| IMtom
+	| IMTOM
+	| ISSL
+	| IHTTP
+	| IREST
+	| IWebSocket
+	| ISOAP
+	| IXML
+	| IJSON
+	| IClientAuthentication
 	;

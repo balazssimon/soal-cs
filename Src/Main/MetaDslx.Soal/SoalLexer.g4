@@ -96,7 +96,15 @@ ITime : 'Time';
 IDateTime : 'DateTime';
 ITimeSpan : 'TimeSpan';
 IVersion : 'Version';
-IMtom : 'Mtom';
+IMTOM : 'MTOM';
+ISSL : 'SSL';
+IHTTP : 'HTTP';
+IREST : 'REST';
+IWebSocket : 'WebSocket';
+ISOAP : 'SOAP';
+IXML : 'XML';
+IJSON : 'JSON';
+IClientAuthentication : 'ClientAuthentication';
 
                                    
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;

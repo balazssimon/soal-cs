@@ -1005,6 +1005,14 @@ namespace MetaDslx.Soal
                 get { return global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement; }
             }
         
+            
+            public static readonly ModelProperty SslProperty =
+                ModelProperty.Register("Ssl", typeof(bool), typeof(global::MetaDslx.Soal.HttpTransportBindingElement), typeof(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement_SslProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
+            
+            public static readonly ModelProperty ClientAuthenticationProperty =
+                ModelProperty.Register("ClientAuthentication", typeof(bool), typeof(global::MetaDslx.Soal.HttpTransportBindingElement), typeof(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement_ClientAuthenticationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
         }
         
         public static class RestTransportBindingElement
@@ -1290,6 +1298,8 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaClass EncodingBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass ProtocolBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass HttpTransportBindingElement;
+		
+		
 		public static readonly global::MetaDslx.Core.MetaClass RestTransportBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass WebSocketTransportBindingElement;
 		public static readonly global::MetaDslx.Core.MetaEnum SoapVersion;
@@ -1355,6 +1365,8 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Endpoint_InterfaceProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Endpoint_BindingProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Endpoint_AddressProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty HttpTransportBindingElement_SslProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty HttpTransportBindingElement_ClientAuthenticationProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_VersionProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_MtomProperty;
 	
@@ -1533,6 +1545,8 @@ namespace MetaDslx.Soal
 				EncodingBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				ProtocolBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				HttpTransportBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
+				HttpTransportBindingElement_SslProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				HttpTransportBindingElement_ClientAuthenticationProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				RestTransportBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				WebSocketTransportBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				SoapVersion = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaEnum();
@@ -3568,7 +3582,8 @@ namespace MetaDslx.Soal
 				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => HttpTransportBindingElement_SslProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => HttpTransportBindingElement_ClientAuthenticationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "HttpTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3578,6 +3593,34 @@ namespace MetaDslx.Soal
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
+				
+				
+				
+				((ModelObject)HttpTransportBindingElement_SslProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)HttpTransportBindingElement_SslProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Ssl", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_SslProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)HttpTransportBindingElement_SslProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => HttpTransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_SslProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)HttpTransportBindingElement_SslProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_SslProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)HttpTransportBindingElement_SslProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
+				
+				
+				
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ClientAuthentication", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => HttpTransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)HttpTransportBindingElement_ClientAuthenticationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
@@ -6331,6 +6374,8 @@ namespace MetaDslx.Soal
     
     public interface HttpTransportBindingElement : global::MetaDslx.Soal.TransportBindingElement
     {
+        bool Ssl { get; set; }
+        bool ClientAuthentication { get; set; }
     
     }
     
@@ -6366,6 +6411,28 @@ namespace MetaDslx.Soal
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        bool global::MetaDslx.Soal.HttpTransportBindingElement.Ssl
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty, value); }
+        }
+        
+        bool global::MetaDslx.Soal.HttpTransportBindingElement.ClientAuthentication
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, value); }
         }
     }
     

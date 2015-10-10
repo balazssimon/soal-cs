@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\rbolpk4g.t2s\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\jhz3vnoa.xty\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -307,23 +307,47 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBindingLayers([NotNull] SoalParser.BindingLayersContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.layerProperty"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLayerProperty([NotNull] SoalParser.LayerPropertyContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.transportLayer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTransportLayer([NotNull] SoalParser.TransportLayerContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.transportLayerKind"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.httpTransportLayer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTransportLayerKind([NotNull] SoalParser.TransportLayerKindContext context);
+	Result VisitHttpTransportLayer([NotNull] SoalParser.HttpTransportLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.restTransportLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRestTransportLayer([NotNull] SoalParser.RestTransportLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.webSocketTransportLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWebSocketTransportLayer([NotNull] SoalParser.WebSocketTransportLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.httpTransportLayerProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHttpTransportLayerProperties([NotNull] SoalParser.HttpTransportLayerPropertiesContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.httpSslProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHttpSslProperty([NotNull] SoalParser.HttpSslPropertyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.httpClientAuthenticationProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHttpClientAuthenticationProperty([NotNull] SoalParser.HttpClientAuthenticationPropertyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.encodingLayer"/>.
 	/// </summary>
@@ -331,11 +355,41 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEncodingLayer([NotNull] SoalParser.EncodingLayerContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.encodingLayerKind"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.soapEncodingLayer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitEncodingLayerKind([NotNull] SoalParser.EncodingLayerKindContext context);
+	Result VisitSoapEncodingLayer([NotNull] SoalParser.SoapEncodingLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.xmlEncodingLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitXmlEncodingLayer([NotNull] SoalParser.XmlEncodingLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.jsonEncodingLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitJsonEncodingLayer([NotNull] SoalParser.JsonEncodingLayerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.soapEncodingProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSoapEncodingProperties([NotNull] SoalParser.SoapEncodingPropertiesContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.soapVersionProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSoapVersionProperty([NotNull] SoalParser.SoapVersionPropertyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.soapMtomProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSoapMtomProperty([NotNull] SoalParser.SoapMtomPropertyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.protocolLayer"/>.
 	/// </summary>

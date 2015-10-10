@@ -271,6 +271,8 @@
 
 	class HttpTransportBindingElement : TransportBindingElement
 	{
+		bool Ssl;
+		bool ClientAuthentication;
 	}
 
 	class RestTransportBindingElement : TransportBindingElement
