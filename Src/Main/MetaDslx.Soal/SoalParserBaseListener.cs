@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\4ewwy2ra.p3j\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\rbolpk4g.t2s\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -586,6 +586,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBindingLayers([NotNull] SoalParser.BindingLayersContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.layerProperty"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLayerProperty([NotNull] SoalParser.LayerPropertyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.layerProperty"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLayerProperty([NotNull] SoalParser.LayerPropertyContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.transportLayer"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -957,6 +969,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStringLiteral([NotNull] SoalParser.StringLiteralContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.contextualKeywords"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.contextualKeywords"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

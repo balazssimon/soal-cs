@@ -456,7 +456,7 @@ namespace MetaDslx.Soal
         
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), "Interface")]
             public static readonly ModelProperty OperationsProperty =
                 ModelProperty.Register("Operations", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>), typeof(global::MetaDslx.Soal.Interface), typeof(global::MetaDslx.Soal.SoalDescriptor.Interface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Interface_OperationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
@@ -502,8 +502,8 @@ namespace MetaDslx.Soal
         
             
             [OppositeAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Interface), "Operations")]
-            public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Soal.Interface), typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Operation_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            public static readonly ModelProperty InterfaceProperty =
+                ModelProperty.Register("Interface", typeof(global::MetaDslx.Soal.Interface), typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Operation_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
             
             public static readonly ModelProperty IsOnewayProperty =
@@ -1064,8 +1064,8 @@ namespace MetaDslx.Soal
                 ModelProperty.Register("Version", typeof(global::MetaDslx.Soal.SoapVersion), typeof(global::MetaDslx.Soal.SoapEncodingBindingElement), typeof(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_VersionProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
             
-            public static readonly ModelProperty MtomEnabledProperty =
-                ModelProperty.Register("MtomEnabled", typeof(bool), typeof(global::MetaDslx.Soal.SoapEncodingBindingElement), typeof(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_MtomEnabledProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            public static readonly ModelProperty MtomProperty =
+                ModelProperty.Register("Mtom", typeof(bool), typeof(global::MetaDslx.Soal.SoapEncodingBindingElement), typeof(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_MtomProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
         }
         
@@ -1323,7 +1323,7 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Entity_BaseTypeProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Interface_OperationsProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Database_EntitiesProperty;
-		public static readonly global::MetaDslx.Core.MetaProperty Operation_ParentProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty Operation_InterfaceProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_IsOnewayProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_ReturnTypeProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_ParametersProperty;
@@ -1356,7 +1356,7 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Endpoint_BindingProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Endpoint_AddressProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_VersionProperty;
-		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_MtomEnabledProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_MtomProperty;
 	
 	    static SoalInstance()
 	    {
@@ -1460,7 +1460,7 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaAnnotation tmp41 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				global::MetaDslx.Core.MetaCollectionType tmp42 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
 				Operation = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
-				Operation_ParentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				Operation_InterfaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation_IsOnewayProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation_ReturnTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation_ParametersProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
@@ -1540,7 +1540,7 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaEnumLiteral tmp65 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaEnumLiteral();
 				SoapEncodingBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				SoapEncodingBindingElement_VersionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
-				SoapEncodingBindingElement_MtomEnabledProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				SoapEncodingBindingElement_MtomProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				XmlEncodingBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				JsonEncodingBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				WsProtocolBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
@@ -2719,7 +2719,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp38, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Operation_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Operation_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2777,7 +2777,7 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp42).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Entity, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_IsOnewayProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ReturnTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ParametersProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2792,19 +2792,19 @@ namespace MetaDslx.Soal
 				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Interface_OperationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Interface_OperationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
 				
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parent", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3625,7 +3625,7 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => SoapEncodingBindingElement_VersionProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => SoapEncodingBindingElement_MtomEnabledProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => SoapEncodingBindingElement_MtomProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoapEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3655,14 +3655,14 @@ namespace MetaDslx.Soal
 				
 				
 				
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "MtomEnabled", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Mtom", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
@@ -4797,7 +4797,7 @@ namespace MetaDslx.Soal
     
     public interface Operation : global::MetaDslx.Soal.NamedElement
     {
-        global::MetaDslx.Soal.Interface Parent { get; set; }
+        global::MetaDslx.Soal.Interface Interface { get; set; }
         bool IsOneway { get; set; }
         global::MetaDslx.Soal.SoalType ReturnType { get; set; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Parameter> Parameters { get; }
@@ -4841,15 +4841,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
-        global::MetaDslx.Soal.Interface global::MetaDslx.Soal.Operation.Parent
+        global::MetaDslx.Soal.Interface global::MetaDslx.Soal.Operation.Interface
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty); 
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Operation.InterfaceProperty); 
                 if (result != null) return (global::MetaDslx.Soal.Interface)result;
                 else return default(global::MetaDslx.Soal.Interface);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Operation.InterfaceProperty, value); }
         }
         
         bool global::MetaDslx.Soal.Operation.IsOneway
@@ -6455,7 +6455,7 @@ namespace MetaDslx.Soal
     public interface SoapEncodingBindingElement : global::MetaDslx.Soal.EncodingBindingElement
     {
         global::MetaDslx.Soal.SoapVersion Version { get; set; }
-        bool MtomEnabled { get; set; }
+        bool Mtom { get; set; }
     
     }
     
@@ -6504,15 +6504,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.VersionProperty, value); }
         }
         
-        bool global::MetaDslx.Soal.SoapEncodingBindingElement.MtomEnabled
+        bool global::MetaDslx.Soal.SoapEncodingBindingElement.Mtom
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty); 
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty); 
                 if (result != null) return (bool)result;
                 else return default(bool);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty, value); }
         }
     }
     

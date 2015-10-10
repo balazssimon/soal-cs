@@ -4,12 +4,124 @@ generator WsdlGenerator for object;
 using generator XsdGenerator;
 
 properties Properties
-	bool IncludeXsd = false;
+	bool SingleFileWsdl = false;
+	bool SeparateXsdWsdl = false;
 end properties
 
 template Generate(Namespace ns)
-wsdl:[ns.FullName]
-[if (Properties.IncludeXsd)]
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="[ns.Uri]"  
+	xmlns:[ns.Prefix]="[ns.Uri]"
+	[loop(ins:ns.GetImportedNamespaces())]
+	xmlns:[ins.Prefix]="[ins.Uri]"
+	[end loop]
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+>
+	[GenerateWsdlTypesPart(ns)]
+	[GenerateWsdlAbstractPart(ns)]
+	[GenerateWsdlBindingPart(ns)]
+	[GenerateWsdlEndpointPart(ns)]
+</wsdl:definitions>
+end template
+
+template GenerateWsdlTypesPart(Namespace ns)
+<wsdl:types>
+[if (Properties.SingleFileWsdl)]
 [XsdGenerator.Generate(ns)]
+[else]
+	<xs:schema>
+		[if (Properties.SeparateXsdWsdl)]
+		<xs:import namespace="[ns.Uri]" schemaLocation="../xsd/[ns.FullName].xsd"/>
+			[loop(ins:ns.GetImportedNamespaces())]
+		<xs:import namespace="[ins.Uri]" schemaLocation="../xsd/[ins.FullName].xsd"/>
+			[end loop]
+		[else]
+		<xs:import namespace="[ns.Uri]" schemaLocation="[ns.FullName].xsd"/>
+			[loop(ins:ns.GetImportedNamespaces())]
+		<xs:import namespace="[ins.Uri]" schemaLocation="[ins.FullName].xsd"/>
+			[end loop]
+		[end if]
+	</xs:schema>
 [end if]
+</wsdl:types>
+end template
+
+template GenerateWsdlAbstractPart(Namespace ns)
+[loop(ns.Declarations->intf:typeof(Interface))]
+[GenerateMessages(intf)]
+[end loop]
+[GenerateFaultMessages(ns)]
+[loop(ns.Declarations->intf:typeof(Interface))]
+[GeneratePortType(intf)]
+[end loop]
+end template
+
+template GenerateWsdlAbstractPart(Interface intf)
+[GenerateMessages(intf)]
+[GenerateFaultMessages(intf)]
+[GeneratePortType(intf)]
+end template
+
+template GenerateMessages(Interface intf)
+[loop(intf.Operations->op:typeof(Operation))]
+^
+<wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
+	<wsdl:part name="parameters" element="[intf.Namespace.Prefix]:[op.Name]"/>
+</wsdl:message>
+[if(!op.IsOneway)]
+^
+<wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
+	<wsdl:part name="parameters" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
+</wsdl:message>
+[end if]
+[end loop]
+end template
+
+template GenerateFaultMessages(Namespace ns)
+[loop(ex:ns.GetInterfaceExceptions())]
+^
+<wsdl:message name="[ex.Name]_FaultMessage">
+	<wsdl:part name="fault" element="[ex.Namespace.Prefix]:[ex.Name]"/>
+</wsdl:message>
+[end loop]
+end template
+
+template GenerateFaultMessages(Interface intf)
+[loop(ex:intf.GetInterfaceExceptions())]
+^
+<wsdl:message name="[ex.Name]_FaultMessage">
+	<wsdl:part name="fault" element="[ex.Namespace.Prefix]:[ex.Name]"/>
+</wsdl:message>
+[end loop]
+end template
+
+template GeneratePortType(Interface intf)
+^
+<wsdl:portType name="[intf.Name]">
+	[GenerateOperations(intf)]
+</wsdl:portType>
+end template
+
+template GenerateOperations(Interface intf)
+[loop(intf.Operations->op:typeof(Operation))]
+<wsdl:operation name="[op.Name]">
+	<wsdl:input wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name]" message="[op.Interface.Namespace.Prefix]:[op.Interface.Name]_[op.Name]_InputMessage"/>
+[if(!op.IsOneway)]
+	<wsdl:output wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name + "Response"]" message="[op.Interface.Namespace.Prefix]:[op.Interface.Name]_[op.Name]_OutputMessage"/>
+[end if]
+	[loop(ex:op.Exceptions)]
+	<wsdl:fault wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name + "Fault/" + ex.Name]" message="[op.Interface.Namespace.Prefix]:[ex.Name]_FaultMessage" name="[ex.Name]"/>
+	[end loop]
+</wsdl:operation>
+[end loop]
+end template
+
+template GenerateWsdlBindingPart(Namespace ns)
+end template
+
+template GenerateWsdlEndpointPart(Namespace ns)
 end template

@@ -172,6 +172,10 @@ bindingDeclaration : KBinding identifier TOpenBrace bindingLayers? TCloseBrace;
 
 bindingLayers : transportLayer encodingLayer+ protocolLayer*;
 
+// TODO: dynamic property definition
+layerProperty 
+	: identifier TAssign literal;
+
                     
        
 transportLayer : KTransport transportLayerKind TSemicolon;
@@ -247,10 +251,10 @@ primitiveType
 	| KDouble 
 	| KByte 
 	| KBool
-	| KDate
-	| KTime
-	| KDateTime
-	| KTimeSpan
+	| IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
 	;
      
 voidType 
@@ -280,7 +284,8 @@ arrayType :                      simpleType TOpenBracket TCloseBracket;
            
 identifier 
 	: IdentifierNormal 
-	| IdentifierVerbatim;
+	| IdentifierVerbatim
+	| contextualKeywords;
 
 // Literals
 literal 
@@ -308,3 +313,12 @@ stringLiteral
 	: RegularStringLiteral 
 	| SingleQuoteVerbatimStringLiteral 
 	| DoubleQuoteVerbatimStringLiteral;
+
+contextualKeywords
+	: IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
+	| IVersion
+	| IMtom
+	;

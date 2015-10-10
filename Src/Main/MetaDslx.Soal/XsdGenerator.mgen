@@ -3,7 +3,6 @@ generator XsdGenerator for object;
 
 properties Properties
 	bool ImportXsd = true;
-	string XsdImportPrefix = "";
 end properties
 
 template Generate(Namespace ns)
@@ -19,7 +18,7 @@ template Generate(Namespace ns)
 		elementFormDefault="qualified">
 	[if (Properties.ImportXsd)]
 		[loop(ins:ns.GetImportedNamespaces())]
-	<xs:import namespace="[ins.Uri]" schemaLocation="[Properties.XsdImportPrefix][ins.FullName].xsd"/>
+	<xs:import namespace="[ins.Uri]" schemaLocation="[ins.FullName].xsd"/>
 		[end loop]
 	[end if]
 	[loop(arr:ns.GetArrayTypes())]

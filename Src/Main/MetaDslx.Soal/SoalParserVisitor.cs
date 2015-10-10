@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\4ewwy2ra.p3j\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\rbolpk4g.t2s\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -307,6 +307,12 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBindingLayers([NotNull] SoalParser.BindingLayersContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.layerProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLayerProperty([NotNull] SoalParser.LayerPropertyContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.transportLayer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -492,5 +498,11 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStringLiteral([NotNull] SoalParser.StringLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.contextualKeywords"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context);
 }
 } // namespace MetaDslx.Soal

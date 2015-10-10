@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\4ewwy2ra.p3j\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\rbolpk4g.t2s\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -490,6 +490,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBindingLayers([NotNull] SoalParser.BindingLayersContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.layerProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLayerProperty([NotNull] SoalParser.LayerPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.layerProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLayerProperty([NotNull] SoalParser.LayerPropertyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.transportLayer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -799,5 +809,15 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStringLiteral([NotNull] SoalParser.StringLiteralContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.contextualKeywords"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.contextualKeywords"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context);
 }
 } // namespace MetaDslx.Soal

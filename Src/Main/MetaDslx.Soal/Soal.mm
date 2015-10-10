@@ -142,14 +142,14 @@
 
 	class Operation : NamedElement
 	{
-		Interface Parent;
+		Interface Interface;
 		bool IsOneway;
 		SoalType ReturnType;
 		containment list<Parameter> Parameters;
 		list<Exception> Exceptions;
 	}
 
-	association Interface.Operations with Operation.Parent;
+	association Interface.Operations with Operation.Interface;
 
 	class Parameter : NamedElement, TypedElement
 	{
@@ -291,7 +291,7 @@
 	class SoapEncodingBindingElement : EncodingBindingElement
 	{
 		SoapVersion Version;
-		bool MtomEnabled;
+		bool Mtom;
 	}
 
 	class XmlEncodingBindingElement : EncodingBindingElement

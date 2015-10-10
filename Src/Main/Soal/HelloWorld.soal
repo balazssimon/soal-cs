@@ -1,9 +1,16 @@
 ﻿namespace HelloNs = hw:"http://www.hello.org/HelloNs"
 {
+	exception MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
 	struct Complex
 	{
 		double Re;
 		double Im;
+		Time Time;
 	}
 
 	struct More
@@ -26,6 +33,8 @@
 		string SayHello2(OtherNs.Complex! cplx1, Complex cplx2);
 		byte[] Abc(int[]! i1, int[] i2);
 		void Abc2(byte[]! i1, byte[] i2);
+		double Divide(double left, double right) throws MathFault;
+		Complex! DivideComplex(Complex! left, Complex! right) throws MathFault;
 	}
 
 	binding HttpSoap11
@@ -61,5 +70,8 @@ namespace OtherNs = oth:"http://www.hello.org/OtherNs"
 	{
 		string SayHello(string name);
 		string SayHello2(HelloNs.Complex cplx1, Complex cplx2);
+		double Divide(double left, double right) throws HelloNs.MathFault;
+		Complex! DivideComplex(Complex! left, Complex! right) throws HelloNs.MathFault;
 	}
+
 }

@@ -34,10 +34,6 @@ KNull : 'null';
 KTrue : 'true';
 KFalse : 'false';
 
-KDate : 'Date';
-KTime : 'Time';
-KDateTime : 'DateTime';
-KTimeSpan : 'TimeSpan';
 KObject : 'object';
 KString : 'string';
 KInt : 'int';
@@ -95,7 +91,12 @@ TAmpersandAssign : '&=';
 THatAssign : '^=';
 TBarAssign : '|=';
 
-
+IDate : 'Date';
+ITime : 'Time';
+IDateTime : 'DateTime';
+ITimeSpan : 'TimeSpan';
+IVersion : 'Version';
+IMtom : 'Mtom';
 
 $Syntax(kind=SyntaxKind.Identifier)
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;

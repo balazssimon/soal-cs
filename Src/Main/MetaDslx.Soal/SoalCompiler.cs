@@ -56,6 +56,10 @@ namespace MetaDslx.Soal
         {
             HashSet<string> prefixes = new HashSet<string>();
             prefixes.Add("xs");
+            prefixes.Add("wsdl");
+            prefixes.Add("soap");
+            prefixes.Add("soap12");
+            prefixes.Add("wsaw");
             int prefixCounter = 0;
             var namespaces = this.Data.GetSymbols().OfType<Namespace>().ToList();
             foreach (var ns in namespaces)
@@ -207,7 +211,8 @@ namespace MetaDslx.Soal
                     using (StreamWriter writer = new StreamWriter(wsdlFileName))
                     {
                         WsdlGenerator wsdlGen = new WsdlGenerator(ns);
-                        wsdlGen.Properties.IncludeXsd = this.SingleFileWsdl;
+                        wsdlGen.Properties.SingleFileWsdl = this.SingleFileWsdl;
+                        wsdlGen.Properties.SeparateXsdWsdl = this.SeparateXsdWsdl;
                         writer.WriteLine(wsdlGen.Generate(ns));
                     }
                 }

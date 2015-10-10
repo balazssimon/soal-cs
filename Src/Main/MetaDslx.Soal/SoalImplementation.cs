@@ -30,6 +30,14 @@ namespace MetaDslx.Soal
 
     internal static class SoalExtensions
     {
+        public static string UriWithSlash(this Namespace ns)
+        {
+            string uri = ns.Uri;
+            if (uri == null) return uri;
+            if (!uri.EndsWith("/")) return uri + "/";
+            else return uri;
+        }
+
         public static List<Namespace> GetImportedNamespaces(this Namespace ns)
         {
             List<Namespace> result = new List<Namespace>();
@@ -240,6 +248,41 @@ namespace MetaDslx.Soal
         public static string IsNullableXsd(this SoalType type)
         {
             return type.IsNullable().ToString().ToLower();
+        }
+
+        public static List<Exception> GetInterfaceExceptions(this Interface intf)
+        {
+            List<Exception> result = new List<Exception>();
+            foreach (var op in intf.Operations)
+            {
+                foreach (var ex in op.Exceptions)
+                {
+                    if (!result.Contains(ex))
+                    {
+                        result.Add(ex);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static List<Exception> GetInterfaceExceptions(this Namespace ns)
+        {
+            List<Exception> result = new List<Exception>();
+            foreach (var intf in ns.Declarations.OfType<Interface>())
+            {
+                foreach (var op in intf.Operations)
+                {
+                    foreach (var ex in op.Exceptions)
+                    {
+                        if (!result.Contains(ex))
+                        {
+                            result.Add(ex);
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 }

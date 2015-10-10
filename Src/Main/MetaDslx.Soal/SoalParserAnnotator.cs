@@ -1030,6 +1030,12 @@ namespace MetaDslx.Soal
             return base.VisitBindingLayers(context);
         }
         
+        public override object VisitLayerProperty(SoalParser.LayerPropertyContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitLayerProperty(context);
+        }
+        
         public override object VisitTransportLayer(SoalParser.TransportLayerContext context)
         {
             List<object> treeAnnotList = null;
@@ -1600,6 +1606,12 @@ namespace MetaDslx.Soal
             this.HandleSymbolType(context);
             return base.VisitStringLiteral(context);
         }
+        
+        public override object VisitContextualKeywords(SoalParser.ContextualKeywordsContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitContextualKeywords(context);
+        }
     }
     
     public class SoalParserPropertyEvaluator : MetaCompilerPropertyEvaluator, ISoalParserVisitor<object>
@@ -1839,6 +1851,11 @@ namespace MetaDslx.Soal
             return this.VisitChildren(context);
         }
         
+        public virtual object VisitLayerProperty(SoalParser.LayerPropertyContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
         public virtual object VisitTransportLayer(SoalParser.TransportLayerContext context)
         {
             return this.VisitChildren(context);
@@ -1990,6 +2007,11 @@ namespace MetaDslx.Soal
         }
         
         public virtual object VisitStringLiteral(SoalParser.StringLiteralContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitContextualKeywords(SoalParser.ContextualKeywordsContext context)
         {
             return this.VisitChildren(context);
         }
