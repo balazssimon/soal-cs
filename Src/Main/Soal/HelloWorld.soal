@@ -9,8 +9,8 @@
 	struct More
 	{
 		int[] Integers;
-		Complex[] Complexes;
-		string Name;
+		Complex[]! Complexes;
+		string! Name;
 	}
 
 	enum SeatStatus
@@ -23,7 +23,7 @@
 	interface IHello
 	{
 		string SayHello(string name);
-		string SayHello2(OtherNs.Complex cplx1, Complex cplx2);
+		string SayHello2(OtherNs.Complex! cplx1, Complex cplx2);
 	}
 
 	binding HttpSoap11

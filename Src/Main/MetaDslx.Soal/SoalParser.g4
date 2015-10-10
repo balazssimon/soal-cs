@@ -224,11 +224,15 @@ returnType : typeReference | voidType;
         
 typeReference 
 	: arrayType
+	| nonNullableArrayType
 	| simpleType
 	;
 
         
-simpleType : primitiveType | objectType | nullableType | qualifiedName;
+simpleType : primitiveType | nullableType | nonNullableType | referenceType;
+
+        
+referenceType : objectType | qualifiedName;
 
      
 objectType 
@@ -243,6 +247,8 @@ primitiveType
 	| KDouble 
 	| KByte 
 	| KBool
+	| KDateTime
+	| KTimeSpan
 	;
      
 voidType 
@@ -256,6 +262,12 @@ onewayType
 
                       
 nullableType :                      primitiveType TQuestion;
+
+                         
+nonNullableType :                      referenceType TExclamation;
+
+                         
+nonNullableArrayType :                      arrayType TExclamation;
 
                    
 arrayType :                      simpleType TOpenBracket TCloseBracket;

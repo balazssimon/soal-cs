@@ -2,8 +2,8 @@
 {
 	metamodel Soal(Uri="http://MetaDslx.Soal/1.0");
 
-	const PrimitiveType Object = new PrimitiveType() { Name = "object" };
-	const PrimitiveType String = new PrimitiveType() { Name = "string" };
+	const PrimitiveType Object = new PrimitiveType() { Name = "object", Nullable = true };
+	const PrimitiveType String = new PrimitiveType() { Name = "string", Nullable = true };
 	const PrimitiveType Int = new PrimitiveType() { Name = "int" };
 	const PrimitiveType Long = new PrimitiveType() { Name = "long" };
 	const PrimitiveType Float = new PrimitiveType() { Name = "float" };
@@ -51,28 +51,27 @@
 
 	class ArrayType : SoalType
 	{
-		ArrayType()
-		{
-			Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		}
-
 		SoalType InnerType;
-		derived Namespace Namespace;
 	}
 
 	class NullableType : SoalType
 	{
-		NullableType()
-		{
-			Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		}
-
 		SoalType InnerType;
-		derived Namespace Namespace;
+	}
+
+	class NonNullableType : SoalType
+	{
+		SoalType InnerType;
 	}
 
 	class PrimitiveType : SoalType, NamedElement
 	{
+		PrimitiveType()
+		{
+			Nullable = false;
+		}
+
+		bool Nullable;
 	}
 
 	[Scope]

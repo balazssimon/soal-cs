@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\bm20tddg.f5g\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\nqay1l5m.idk\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -630,6 +630,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSimpleType([NotNull] SoalParser.SimpleTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.referenceType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterReferenceType([NotNull] SoalParser.ReferenceTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.referenceType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitReferenceType([NotNull] SoalParser.ReferenceTypeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.objectType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -679,6 +689,26 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitNullableType([NotNull] SoalParser.NullableTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.nonNullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNonNullableType([NotNull] SoalParser.NonNullableTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.nonNullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNonNullableType([NotNull] SoalParser.NonNullableTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.nonNullableArrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNonNullableArrayType([NotNull] SoalParser.NonNullableArrayTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.nonNullableArrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNonNullableArrayType([NotNull] SoalParser.NonNullableArrayTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.arrayType"/>.
 	/// </summary>

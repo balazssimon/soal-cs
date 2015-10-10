@@ -162,29 +162,12 @@ namespace MetaDslx.Soal
 
         private void CheckXsdNamespace(SoalType type, ModelObject symbol)
         {
-            if (!HasXsdNamespace(type))
+            if (!type.HasXsdNamespace())
             {
                 this.Diagnostics.AddError("The type of this element has no XSD namespace.", this.FileName, symbol);
             }
         }
 
-        private bool HasXsdNamespace(SoalType type)
-        {
-            if (type is PrimitiveType) return true;
-            if (type is NullableType) return this.HasXsdNamespace(((NullableType)type).InnerType);
-            if (type is ArrayType) return this.HasXsdNamespace(((ArrayType)type).InnerType);
-            if (type is Enum)
-            {
-                Enum etype = (Enum)type;
-                return etype.Namespace != null && etype.Namespace.Uri != null;
-            }
-            if (type is StructuredType)
-            {
-                StructuredType stype = (StructuredType)type;
-                return stype.Namespace != null && stype.Namespace.Uri != null;
-            }
-            return false;
-        }
 
         private void Generate()
         {

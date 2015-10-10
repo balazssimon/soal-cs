@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\bm20tddg.f5g\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\nqay1l5m.idk\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -391,6 +391,12 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSimpleType([NotNull] SoalParser.SimpleTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.referenceType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReferenceType([NotNull] SoalParser.ReferenceTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.objectType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -420,6 +426,18 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNullableType([NotNull] SoalParser.NullableTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.nonNullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNonNullableType([NotNull] SoalParser.NonNullableTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.nonNullableArrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNonNullableArrayType([NotNull] SoalParser.NonNullableArrayTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.arrayType"/>.
 	/// </summary>

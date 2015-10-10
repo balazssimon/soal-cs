@@ -27,7 +27,7 @@ template Generate(Namespace ns)
 	<xs:element name="[arr.GetXsdName()]" type="[ns.Prefix]:[arr.GetXsdName()]"/>
 	<xs:complexType name="[arr.GetXsdName()]">
 		<xs:sequence>
-			<xs:element name="[arr.InnerType.GetXsdName()]" type="[arr.InnerType.GetNamespace(ns).Prefix]:[arr.InnerType.GetXsdName()]"/>
+			<xs:element name="[arr.InnerType.GetXsdName()]" type="[arr.InnerType.GetNamespace(ns).Prefix]:[arr.InnerType.GetXsdName()]" nillable="[arr.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	[end loop]
@@ -48,7 +48,7 @@ template Generate(Namespace ns)
 	<xs:complexType name="[stype.GetXsdName()]">
 		<xs:sequence>
 			[loop(stype->prop:Properties)]
-			<xs:element name="[prop.Name]" type="[prop.Type.GetNamespace(ns).Prefix]:[prop.Type.GetXsdName()]"/>
+			<xs:element name="[prop.Name]" type="[prop.Type.GetNamespace(ns).Prefix]:[prop.Type.GetXsdName()]" nillable="[prop.Type.IsNullableXsd()]"/>
 			[end loop]
 		</xs:sequence>
 	</xs:complexType>
@@ -59,7 +59,7 @@ template Generate(Namespace ns)
 	<xs:complexType name="[op.Name]">
 		<xs:sequence>
 			[loop(op->param:Parameters)]
-			<xs:element name="[param.Name]" type="[param.Type.GetNamespace(ns).Prefix]:[param.Type.GetXsdName()]"/>
+			<xs:element name="[param.Name]" type="[param.Type.GetNamespace(ns).Prefix]:[param.Type.GetXsdName()]" nillable="[param.Type.IsNullableXsd()]"/>
 			[end loop]
 		</xs:sequence>
 	</xs:complexType>
@@ -68,7 +68,7 @@ template Generate(Namespace ns)
 	<xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
 	<xs:complexType name="[op.Name]Response">
 		<xs:sequence>
-			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]"/>
+			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]" nillable="[op.ReturnType.IsNullableXsd()]"/>
 		</xs:sequence>
 	</xs:complexType>
 		[end if]

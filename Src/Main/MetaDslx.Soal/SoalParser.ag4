@@ -224,11 +224,15 @@ returnType : typeReference | voidType;
 $TypeUse
 typeReference 
 	: arrayType
+	| nonNullableArrayType
 	| simpleType
 	;
 
 $TypeUse
-simpleType : primitiveType | objectType | nullableType | qualifiedName;
+simpleType : primitiveType | nullableType | nonNullableType | referenceType;
+
+$TypeUse
+referenceType : objectType | qualifiedName;
 
 $Name
 objectType 
@@ -243,6 +247,8 @@ primitiveType
 	| KDouble 
 	| KByte 
 	| KBool
+	| KDateTime
+	| KTimeSpan
 	;
 $Name
 voidType 
@@ -256,6 +262,12 @@ onewayType
 
 $TypeCtr(NullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
+
+$TypeCtr(NonNullableType)
+nonNullableType : $Property(InnerType) referenceType TExclamation;
+
+$TypeCtr(NonNullableType)
+nonNullableArrayType : $Property(InnerType) arrayType TExclamation;
 
 $TypeCtr(ArrayType)
 arrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
