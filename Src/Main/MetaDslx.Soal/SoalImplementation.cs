@@ -30,6 +30,11 @@ namespace MetaDslx.Soal
 
     internal static class SoalExtensions
     {
+        public static string FullName(this Declaration ne)
+        {
+            return ne.Namespace.FullName + "." + ne.Name;
+        }
+
         public static string UriWithSlash(this Namespace ns)
         {
             string uri = ns.Uri;
@@ -79,7 +84,7 @@ namespace MetaDslx.Soal
                     }
                 }
             }
-            result.Remove(SoalCompiler.XsdNamespace);
+            result.Remove(SoalGenerator.XsdNamespace);
             result.Remove(ns);
             result.Remove(null);
             return result;
@@ -144,12 +149,12 @@ namespace MetaDslx.Soal
 
         public static Namespace GetNamespace(this SoalType type, Namespace currentNamespace)
         {
-            if (type is PrimitiveType) return SoalCompiler.XsdNamespace;
+            if (type is PrimitiveType) return SoalGenerator.XsdNamespace;
             if (type is NullableType) return GetNamespace(((NullableType)type).InnerType, currentNamespace);
             if (type is NonNullableType) return GetNamespace(((NonNullableType)type).InnerType, currentNamespace);
             if (type is ArrayType)
             {
-                if (((ArrayType)type).InnerType == SoalInstance.Byte) return SoalCompiler.XsdNamespace;
+                if (((ArrayType)type).InnerType == SoalInstance.Byte) return SoalGenerator.XsdNamespace;
                 else return currentNamespace;
             }
             if (type is Enum)

@@ -214,6 +214,7 @@ jsonEncodingLayer : KEncoding IJSON (TSemicolon | TOpenBrace TCloseBrace);
 soapEncodingProperties
 	: soapVersionProperty
 	| soapMtomProperty
+	| soapStyleProperty
 	;
 
                   
@@ -221,6 +222,9 @@ soapVersionProperty : IVersion TAssign                         identifier TSemic
 
                
 soapMtomProperty : IMTOM TAssign        booleanLiteral TSemicolon;
+
+                
+soapStyleProperty : IStyle TAssign                               identifier TSemicolon;
 
                     
        
@@ -346,6 +350,7 @@ contextualKeywords
 	| IDateTime
 	| ITimeSpan
 	| IVersion
+	| IStyle
 	| IMTOM
 	| ISSL
 	| IHTTP

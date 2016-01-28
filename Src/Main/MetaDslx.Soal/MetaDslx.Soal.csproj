@@ -50,6 +50,7 @@
       <DependentUpon>Soal.mm</DependentUpon>
     </Compile>
     <Compile Include="SoalCompiler.cs" />
+    <Compile Include="SoalGenerator.cs" />
     <Compile Include="SoalImplementation.cs" />
     <Compile Include="SoalLexer.cs">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
@@ -75,16 +76,23 @@
     <Compile Include="SoalParserVisitor.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="SoalPrinter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoalPrinter.mgen</DependentUpon>
+    </Compile>
     <Compile Include="WsdlGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WsdlGenerator.mgen</DependentUpon>
     </Compile>
+    <Compile Include="WsdlReader.cs" />
     <Compile Include="XsdGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>XsdGenerator.mgen</DependentUpon>
     </Compile>
+    <Compile Include="XsdReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Soal.mm">
@@ -116,6 +124,10 @@
     </None>
     <None Include="SoalParser.tokens">
       <DependentUpon>SoalParser.ag4</DependentUpon>
+    </None>
+    <None Include="SoalPrinter.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>SoalPrinter.cs</LastGenOutput>
     </None>
     <None Include="WsdlGenerator.mgen">
       <Generator>MetaGenerator</Generator>

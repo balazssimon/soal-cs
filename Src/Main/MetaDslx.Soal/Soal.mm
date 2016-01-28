@@ -289,9 +289,18 @@
 		Soap11,
 		Soap12
 	}
+	
+	enum SoapEncodingStyle
+	{
+		DocumentWrapped,
+		DocumentLiteral,
+		RpcLiteral,
+		RpcEncoded
+	}
 
 	class SoapEncodingBindingElement : EncodingBindingElement
 	{
+		SoapEncodingStyle Style;
 		SoapVersion Version;
 		bool Mtom;
 	}

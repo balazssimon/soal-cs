@@ -35,6 +35,7 @@
 		void Abc2(byte[] i1, byte[] i2);
 		double Divide(double left, double right) throws MathFault;
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
+		oneway DivideO(double left, double right) throws MathFault;
 	}
 
 	binding HttpSoap11

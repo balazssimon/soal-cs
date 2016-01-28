@@ -77,13 +77,23 @@ namespace Soal
                 using (StreamReader reader = new StreamReader(fileName))
                 {
                     string source = reader.ReadToEnd();
-                    SoalCompiler compiler = new SoalCompiler(source, outputDirectory, Path.GetFileName(fileName));
-                    compiler.SeparateXsdWsdl = separateXsdWsdl;
-                    compiler.SingleFileWsdl = singleFileWsdl;
+                    SoalCompiler compiler = new SoalCompiler(source, Path.GetFileName(fileName));
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages(true))
                     {
                         Console.WriteLine(msg);
+                    }
+                    if (!compiler.Diagnostics.HasErrors())
+                    {
+                        SoalGenerator generator = new SoalGenerator(compiler.Model, outputDirectory, compiler.Diagnostics, compiler.FileName);
+                        generator.SeparateXsdWsdl = separateXsdWsdl;
+                        generator.SingleFileWsdl = singleFileWsdl;
+                        generator.Generate();
+                        SoalPrinter printer = new SoalPrinter(compiler.Model.Instances);
+                        using (StreamWriter writer = new StreamWriter(fileName+"0"))
+                        {
+                            writer.WriteLine(printer.Generate());
+                        }
                     }
                 }
             }

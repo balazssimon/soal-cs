@@ -214,6 +214,7 @@ jsonEncodingLayer : KEncoding IJSON (TSemicolon | TOpenBrace TCloseBrace);
 soapEncodingProperties
 	: soapVersionProperty
 	| soapMtomProperty
+	| soapStyleProperty
 	;
 
 $Property(Version)
@@ -221,6 +222,9 @@ soapVersionProperty : IVersion TAssign $EnumValue(SoapVersion) identifier TSemic
 
 $Property(Mtom)
 soapMtomProperty : IMTOM TAssign $Value booleanLiteral TSemicolon;
+
+$Property(Style)
+soapStyleProperty : IStyle TAssign $EnumValue(SoapEncodingStyle) identifier TSemicolon;
 
 $Property(Protocols)
 $Symbol
@@ -346,6 +350,7 @@ contextualKeywords
 	| IDateTime
 	| ITimeSpan
 	| IVersion
+	| IStyle
 	| IMTOM
 	| ISSL
 	| IHTTP

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\jhz3vnoa.xty\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\o2yznt3k.5v4\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -629,6 +629,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSoapMtomProperty([NotNull] SoalParser.SoapMtomPropertyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.soapStyleProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSoapStyleProperty([NotNull] SoalParser.SoapStylePropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.soapStyleProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSoapStyleProperty([NotNull] SoalParser.SoapStylePropertyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.protocolLayer"/>.
 	/// </summary>

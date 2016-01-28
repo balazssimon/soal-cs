@@ -96,6 +96,7 @@ ITime : 'Time';
 IDateTime : 'DateTime';
 ITimeSpan : 'TimeSpan';
 IVersion : 'Version';
+IStyle : 'Style';
 IMTOM : 'MTOM';
 ISSL : 'SSL';
 IHTTP : 'HTTP';
