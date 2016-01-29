@@ -62,19 +62,6 @@ namespace SoalImport
                 Model model = new Model();
                 using (ModelContextScope scope = new ModelContextScope(model))
                 {
-                    string ext = Path.GetExtension(inputFileName);
-                    if (ext == ".wsdl")
-                    {
-                        WsdlReader.Read(inputFileName);
-                    }
-                    else if (ext == ".xsd")
-                    {
-                        XsdReader.Read(inputFileName);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unknown filetype: "+ext);
-                    }
                     SoalPrinter printer = new SoalPrinter(model.Instances);
                     using (StreamWriter writer = new StreamWriter(outputFileName))
                     {
