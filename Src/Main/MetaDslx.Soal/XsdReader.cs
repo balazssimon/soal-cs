@@ -474,6 +474,12 @@ namespace MetaDslx.Soal
                     nullable.InnerType = type;
                     type = nullable;
                 }
+                else if (!nillable && (type == SoalInstance.Object || type == SoalInstance.String))
+                {
+                    NonNullableType nonNull = SoalFactory.Instance.CreateNonNullableType();
+                    nonNull.InnerType = type;
+                    type = nonNull;
+                }
             }
             else
             {
