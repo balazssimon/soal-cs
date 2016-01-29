@@ -62,6 +62,11 @@ namespace SoalImport
                 Model model = new Model();
                 using (ModelContextScope scope = new ModelContextScope(model))
                 {
+                    SoalImporter.Import(inputFileName);
+                    foreach (var msg in ModelCompilerContext.Current.Diagnostics.GetMessages(true))
+                    {
+                        Console.WriteLine(msg);
+                    }
                     SoalPrinter printer = new SoalPrinter(model.Instances);
                     using (StreamWriter writer = new StreamWriter(outputFileName))
                     {

@@ -8,7 +8,11 @@ template Generate()
 end template
 
 template GenerateNamespace(Namespace ns)
-namespace [ns.FullName] = [ns.Prefix]:[ns.Uri]
+[if (ns.Prefix != null)]
+namespace [ns.FullName] = [ns.Prefix]:"[ns.Uri]"
+[else]
+namespace [ns.FullName] = "[ns.Uri]"
+[end if]
 {
 	[loop(ns->Declarations->enm:typeof(Enum))]
 	[GenerateEnum(ns, enm)]

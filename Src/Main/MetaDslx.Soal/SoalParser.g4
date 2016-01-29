@@ -14,7 +14,7 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
                                                                       
-namespaceDeclaration: KNamespace qualifiedName TAssign (                         identifier TColon)                       stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
 
                        
 declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
