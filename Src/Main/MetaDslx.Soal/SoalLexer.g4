@@ -8,6 +8,7 @@ KStruct : 'struct';
 KInterface : 'interface';
 KThrows : 'throws';
 KOneway : 'oneway';
+KReturn : 'return';
 KBinding : 'binding';
 KTransport : 'transport';
 KEncoding : 'encoding';

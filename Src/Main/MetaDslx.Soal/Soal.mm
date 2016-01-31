@@ -17,6 +17,18 @@
 	const PrimitiveType TimeSpan = new PrimitiveType() { Name = "TimeSpan" };
 
 	
+	abstract class AnnotatedElement
+	{
+		containment list<Annotation> Annotations;
+	}
+
+	class Annotation : NamedElement
+	{
+		AnnotatedElement AnnotatedElement;
+	}
+
+	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;
+	
 	abstract class NamedElement
 	{
 		[Name]
@@ -44,7 +56,7 @@
 		containment list<Declaration> Declarations;
 	}
 
-	abstract class Declaration : NamedElement
+	abstract class Declaration : NamedElement, AnnotatedElement
 	{
 		Namespace Namespace;
 	}
@@ -83,7 +95,7 @@
 		containment list<EnumLiteral> EnumLiterals;
 	}
 
-	class EnumLiteral : NamedElement, TypedElement
+	class EnumLiteral : NamedElement, TypedElement, AnnotatedElement
 	{
 		EnumLiteral()
 		{
@@ -102,7 +114,7 @@
 		containment list<Property> Properties;
 	}
 
-	class Property : NamedElement, TypedElement
+	class Property : NamedElement, TypedElement, AnnotatedElement
 	{
 		StructuredType Parent;
 	}
@@ -140,18 +152,19 @@
 		list<Entity> Entities;
 	}
 
-	class Operation : NamedElement
+	class Operation : NamedElement, AnnotatedElement
 	{
 		Interface Interface;
 		bool IsOneway;
 		SoalType ReturnType;
 		containment list<Parameter> Parameters;
 		list<Exception> Exceptions;
+		containment list<Annotation> ReturnAnnotations;
 	}
 
 	association Interface.Operations with Operation.Interface;
 
-	class Parameter : NamedElement, TypedElement
+	class Parameter : NamedElement, TypedElement, AnnotatedElement
 	{
 		Operation Operation;
 	}
@@ -187,13 +200,13 @@
 
 	class Wire
 	{
-		InterfaceReference Source;
-		InterfaceReference Target;
+		Port Source;
+		Port Target;
 	}
 
-	class InterfaceReference
+	class Port
 	{
-		InterfaceReference()
+		Port()
 		{
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
 		}
@@ -205,11 +218,11 @@
 		Binding Binding;
 	}
 
-	class Service : InterfaceReference
+	class Service : Port
 	{
 	}
 
-	class Reference : InterfaceReference
+	class Reference : Port
 	{
 	}
 

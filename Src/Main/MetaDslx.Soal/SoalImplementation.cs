@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal
 {
+    public class SoalAnnotations
+    {
+        public const string All = "All";
+        public const string Choice = "Choice";
+        public const string Message = "Message";
+        public const string NoWrap = "NoWrap";
+    }
+
     internal class SoalImplementation : SoalImplementationBase
     {
         public override string Namespace_FullName(Namespace @this)
@@ -15,9 +23,9 @@ namespace MetaDslx.Soal
             else return @this.Namespace.FullName + "." + @this.Name;
         }
 
-        public override string InterfaceReference_Name(InterfaceReference @this)
+        public override string Port_Name(Port @this)
         {
-            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.InterfaceReference.InterfaceProperty))
+            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.Port.InterfaceProperty))
             {
                 return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
             }
@@ -30,9 +38,29 @@ namespace MetaDslx.Soal
 
     internal static class SoalExtensions
     {
-        public static string FullName(this Declaration ne)
+        public static string FullName(this Declaration declaration)
         {
-            return ne.Namespace.FullName + "." + ne.Name;
+            return declaration.Namespace.FullName + "." + declaration.Name;
+        }
+
+        public static bool HasAnnotation(this AnnotatedElement annotatedElement, string annotation)
+        {
+            if (annotatedElement == null) return false;
+            foreach (var annot in annotatedElement.Annotations)
+            {
+                if (annot.Name == annotation) return true;
+            }
+            return false;
+        }
+
+        public static bool ContainsAnnotation(this IList<Annotation> annotations, string annotation)
+        {
+            if (annotations == null) return false;
+            foreach (var annot in annotations)
+            {
+                if (annot.Name == annotation) return true;
+            }
+            return false;
         }
 
         public static string UriWithSlash(this Namespace ns)
@@ -101,7 +129,7 @@ namespace MetaDslx.Soal
                 {
                     foreach (var prop in stype.Properties)
                     {
-                        CheckArrayType(prop.Type, arrayNames, result);
+                        CheckArrayType(prop.Type, prop.Annotations, arrayNames, result);
                     }
                 }
                 Interface intf = decl as Interface;
@@ -109,10 +137,10 @@ namespace MetaDslx.Soal
                 {
                     foreach (var op in intf.Operations)
                     {
-                        CheckArrayType(op.ReturnType, arrayNames, result);
+                        CheckArrayType(op.ReturnType, op.Annotations, arrayNames, result);
                         foreach (var param in op.Parameters)
                         {
-                            CheckArrayType(param.Type, arrayNames, result);
+                            CheckArrayType(param.Type, param.Annotations, arrayNames, result);
                         }
                     }
                 }
@@ -120,8 +148,9 @@ namespace MetaDslx.Soal
             return result;
         }
 
-        private static void CheckArrayType(SoalType type, HashSet<string> arrayNames, List<ArrayType> arrayTypes)
+        private static void CheckArrayType(SoalType type, IList<Annotation> annotations, HashSet<string> arrayNames, List<ArrayType> arrayTypes)
         {
+            if (annotations.Any(a => a.Name == SoalAnnotations.NoWrap)) return;
             if (type is ArrayType)
             {
                 ArrayType atype = (ArrayType)type;
@@ -253,9 +282,9 @@ namespace MetaDslx.Soal
 
         public static bool IsNullable(this SoalType type)
         {
-            if (type is PrimitiveType) return ((PrimitiveType)type).Nullable;
-            if (type is NullableType) return true;
             if (type is NonNullableType) return false;
+            if (type is NullableType) return true;
+            if (type is PrimitiveType) return ((PrimitiveType)type).Nullable;
             if (type is ArrayType) return true;
             if (type is Enum) return false;
             if (type is StructuredType) return true;

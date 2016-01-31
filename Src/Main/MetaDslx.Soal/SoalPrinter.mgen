@@ -54,7 +54,26 @@ function string GetAncestor(StructuredType st)
 	return "";
 end function
 
+template GenerateAnnotations(AnnotatedElement ae)
+[loop(ae->annot:Annotations)]
+["["][annot.Name]["]"]
+[end loop]
+end template
+
+template GenerateAnnotationsSingleLine(AnnotatedElement ae)
+[loop(ae->annot:Annotations)]
+["["][annot.Name]["]"]\
+[end loop]
+end template
+
+template GenerateReturnAnnotations(IList<Annotation> al)
+[loop(annot:al)]
+["[return: "][annot.Name]["]"]
+[end loop]
+end template
+
 template GenerateEnum(Namespace currentNs, Enum enm)
+[GenerateAnnotations(enm)]
 enum [enm.Name]
 {\
 	[GenerateEnumLiterals(currentNs, enm)]
@@ -64,11 +83,13 @@ end template
 template GenerateEnumLiterals(Namespace currentNs, Enum enm)
 	[loop(lit:enm.EnumLiterals; string delim = ""; delim = ", ")]
 [delim]
+[GenerateAnnotations(lit)]\
 [lit.Name]\
 	[end loop]
 end template
 
 template GenerateStructuredType(Namespace currentNs, StructuredType st)
+[GenerateAnnotations(st)]
 [if (st is Struct)]
 struct \
 [else if (st is Exception)]
@@ -85,6 +106,7 @@ entity \
 end template
 
 template GenerateProperty(Namespace currentNs, Property prop)
+[GenerateAnnotations(prop)]\
 [GenerateType(currentNs, prop.Type)] [prop.Name];
 end template
 
@@ -128,15 +150,18 @@ end template
 
 template GenerateParameters(Namespace currentNs, Operation op)
 [loop(op->p:Parameters; string delim = ""; delim = ", ")]
-[delim][GenerateType(currentNs, p.Type)] [p.Name]
+[delim][GenerateAnnotationsSingleLine(p)][GenerateType(currentNs, p.Type)] [p.Name]
 [end loop]
 end template
 
 template GenerateOperation(Namespace currentNs, Operation op)
+[GenerateAnnotations(op)]\
+[GenerateReturnAnnotations(op.ReturnAnnotations)]\
 [GenerateReturnType(currentNs, op)] [op.Name]([GenerateParameters(currentNs, op)])[GenerateThrows(currentNs, op)];
 end template
 
 template GenerateInterface(Namespace currentNs, Interface intf)
+[GenerateAnnotations(intf)]
 interface [intf.Name]
 {
 	[loop(intf->op:Operations)]

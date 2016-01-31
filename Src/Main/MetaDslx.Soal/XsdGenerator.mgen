@@ -42,23 +42,26 @@ template Generate(Namespace ns)
 	</xs:simpleType>
 	[end loop]
 	[loop(ns.Declarations->stype:typeof(StructuredType))]
+		[if (!stype.HasAnnotation(SoalAnnotations.Message))]
 ^
 	<xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
 	<xs:complexType name="[stype.GetXsdName()]">
-		<xs:sequence>
+		<xs:[GetStructKind(stype)]>
 			[loop(stype->prop:Properties)]
-			<xs:element name="[prop.Name]" type="[prop.Type.GetNamespace(ns).Prefix]:[prop.Type.GetXsdName()]" nillable="[prop.Type.IsNullableXsd()]"/>
+			[GenerateElement(ns, prop.Name, prop.Type, prop.Annotations)]
 			[end loop]
-		</xs:sequence>
+		</xs:[GetStructKind(stype)]>
 	</xs:complexType>
+		[end if]
 	[end loop]
 	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
+		[if (!intf.HasAnnotation(SoalAnnotations.Message))]
 ^
 	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
 	<xs:complexType name="[op.Name]">
 		<xs:sequence>
 			[loop(op->param:Parameters)]
-			<xs:element name="[param.Name]" type="[param.Type.GetNamespace(ns).Prefix]:[param.Type.GetXsdName()]" nillable="[param.Type.IsNullableXsd()]"/>
+			[GenerateElement(ns, param.Name, param.Type, param.Annotations)]
 			[end loop]
 		</xs:sequence>
 	</xs:complexType>
@@ -70,11 +73,34 @@ template Generate(Namespace ns)
 		<xs:sequence/>
 			[else]
 		<xs:sequence>
-			<xs:element name="[op.Name]Result" type="[op.ReturnType.GetNamespace(ns).Prefix]:[op.ReturnType.GetXsdName()]" nillable="[op.ReturnType.IsNullableXsd()]"/>
+			[GenerateElement(ns, op.Name+"Result", op.ReturnType, op.ReturnAnnotations)]
 		</xs:sequence>
 			[end if]
 	</xs:complexType>
 		[end if]
+		[end if]
 	[end loop]
 </xs:schema>
 end template
+
+template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots)
+	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap))]
+		[if (t is ArrayType)]
+<xs:element name="[name]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]" nillable="[((ArrayType)t).InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+		[else]
+<xs:element name="[name]" type="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]" nillable="[((ArrayType)((NonNullableType)t).InnerType).InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+		[end if]
+	[else]
+<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"/>
+	[end if]
+end template
+
+function string GetStructKind(StructuredType st)
+	if (st.HasAnnotation(SoalAnnotations.Choice))
+		return "choice";
+	else if (st.HasAnnotation(SoalAnnotations.All))
+		return "all";
+	else
+		return "sequence";
+	end if
+end function

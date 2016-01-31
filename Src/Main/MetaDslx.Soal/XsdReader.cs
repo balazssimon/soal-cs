@@ -37,7 +37,20 @@ namespace MetaDslx.Soal
             {
                 if (elem.Name.Namespace == xsd)
                 {
-                    if (elem.Name.LocalName == "element")
+                    if (elem.Name.LocalName == "import")
+                    {
+                        XAttribute locAttribute = elem.Attribute("schemaLocation");
+                        if (locAttribute != null)
+                        {
+                            string location = locAttribute.Value;
+                            this.Importer.ImportRelativeFile(this.Uri, location);
+                        }
+                        else
+                        {
+                            this.Importer.Diagnostics.AddError("Attribute 'schemaLocation' is missing from import.", this.Uri, this.GetTextSpan(elem));
+                        }
+                    }
+                    else if (elem.Name.LocalName == "element")
                     {
                         //this.ImportPhase1Element(elem);
                     }
@@ -242,6 +255,45 @@ namespace MetaDslx.Soal
                 if (sequenceElem != null)
                 {
                     complexElem = sequenceElem;
+                    List<XElement> children = sequenceElem.Elements(xsd + "element").ToList();
+                    if (children.Count == 1)
+                    {
+                        XElement child = children[0];
+                        XAttribute nillableAttr = child.Attribute("nillable");
+                        XAttribute minOccursAttr = child.Attribute("minOccurs");
+                        XAttribute maxOccursAttr = child.Attribute("maxOccurs");
+                        bool nillable = false;
+                        int minOccurs = 1;
+                        int maxOccurs = 1;
+                        if (nillableAttr != null)
+                        {
+                            nillable = nillableAttr.Value == "1" || nillableAttr.Value.ToLower() == "true";
+                        }
+                        if (minOccursAttr != null)
+                        {
+                            if (!int.TryParse(minOccursAttr.Value, out minOccurs))
+                            {
+                                minOccurs = 1;
+                            }
+                        }
+                        if (maxOccursAttr != null)
+                        {
+                            if (maxOccursAttr.Value.ToLower() == "unbounded")
+                            {
+                                maxOccurs = -1;
+                            }
+                            else if (!int.TryParse(maxOccursAttr.Value, out maxOccurs))
+                            {
+                                maxOccurs = 1;
+                            }
+                        }
+                        if (maxOccurs < 0 || maxOccurs > 1)
+                        {
+                            ArrayType array = SoalFactory.Instance.CreateArrayType();
+                            this.Importer.RegisterReplacementType(st, array);
+                            ModelContext.Current.RemoveInstance((ModelObject)st);
+                        }
+                    }
                 }
                 else if (choiceElem != null)
                 {
@@ -342,24 +394,29 @@ namespace MetaDslx.Soal
             else if (choiceElem != null)
             {
                 complexElem = choiceElem;
-                this.Importer.Diagnostics.AddWarning("The 'choice' type is not yet supported by SOAL. It will be parsed as 'sequence'.", this.Uri, this.GetTextSpan(choiceElem));
+                Annotation choiceAnnot = SoalFactory.Instance.CreateAnnotation();
+                choiceAnnot.Name = SoalAnnotations.Choice;
+                st.Annotations.Add(choiceAnnot);
             }
             else if (allElem != null)
             {
                 complexElem = allElem;
-                this.Importer.Diagnostics.AddWarning("The 'all' type is not yet supported by SOAL. It will be parsed as 'sequence'.", this.Uri, this.GetTextSpan(allElem));
+                Annotation allAnnot = SoalFactory.Instance.CreateAnnotation();
+                allAnnot.Name = SoalAnnotations.All;
+                st.Annotations.Add(allAnnot);
             }
             else
             {
                 return null;
             }
+            SoalType rt = this.Importer.GetReplacementType(st);
             foreach (var child in complexElem.Elements())
             {
                 if (child.Name.Namespace == xsd)
                 {
                     if (child.Name.LocalName == "element")
                     {
-                        Property prop = this.ImportPhase3Element(st, child);
+                        Property prop = this.ImportPhase3Element(st, rt, child);
                         st.Properties.Add(prop);
                     }
                 }
@@ -367,8 +424,9 @@ namespace MetaDslx.Soal
             return st;
         }
 
-        private Property ImportPhase3Element(Struct st, XElement elem)
+        private Property ImportPhase3Element(Struct st, SoalType rt, XElement elem)
         {
+            // TODO: replacement type
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
             string name = null;
@@ -458,14 +516,6 @@ namespace MetaDslx.Soal
                     maxOccurs = 1;
                 }
             }
-            Property prop = SoalFactory.Instance.CreateProperty();
-            prop.Name = name;
-            if (maxOccurs < 0 || maxOccurs > 1)
-            {
-                ArrayType array = SoalFactory.Instance.CreateArrayType();
-                array.InnerType = type;
-                type = array;
-            }
             if (type is PrimitiveType)
             {
                 if (nillable && type != SoalInstance.Object && type != SoalInstance.String)
@@ -490,7 +540,34 @@ namespace MetaDslx.Soal
                     type = nonNull;
                 }
             }
-            prop.Type = type;
+            Property prop = SoalFactory.Instance.CreateProperty();
+            prop.Name = name;
+            if (rt != null)
+            {
+                if (rt is ArrayType)
+                {
+                    ((ArrayType)rt).InnerType = type;
+                }
+                else
+                {
+                    this.Importer.Diagnostics.AddError("Invalid replacement type: '" + rt + "'", this.Uri, this.GetTextSpan(elem));
+                    return null;
+                }
+                prop.Type = rt;
+            }
+            else
+            {
+                if (maxOccurs < 0 || maxOccurs > 1)
+                {
+                    ArrayType array = SoalFactory.Instance.CreateArrayType();
+                    array.InnerType = type;
+                    type = array;
+                    Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                    noWrap.Name = SoalAnnotations.NoWrap;
+                    prop.Annotations.Add(noWrap);
+                }
+                prop.Type = type;
+            }
             prop.Parent = st;
             return prop;
         }

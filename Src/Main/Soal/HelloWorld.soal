@@ -1,24 +1,30 @@
 ﻿namespace HelloNs = hw:"http://www.hello.org/HelloNs"
 {
+
+	[All]
+	struct More
+	{
+		[NoWrap]
+		int?[]! Integers;
+		Complex![]! Complexes;
+		string! Name;
+	}
+	
 	exception MathFault
 	{
 		int ErrorCode;
 		string ErrorMessage;
 	}
 
+	[Choice]
 	struct Complex
 	{
+		CalcNs.Complex cc;
 		double Re;
 		double Im;
 		Time Time;
 	}
 
-	struct More
-	{
-		int[] Integers;
-		Complex[]! Complexes;
-		string! Name;
-	}
 
 	enum SeatStatus
 	{
@@ -27,12 +33,14 @@
 		Reserved
 	}
 
+	[NoWrap]
 	interface IHello
 	{
 		string SayHello(string name);
 		string SayHello2(Complex cplx1, Complex cplx2);
 		byte[] Abc(int[] i1, int[] i2);
-		void Abc2(byte[] i1, byte[] i2);
+		[return: NoWrap]
+		int[] Abc2([NoWrap] byte[] i1, byte[] i2);
 		double Divide(double left, double right) throws MathFault;
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right) throws MathFault;
@@ -52,3 +60,14 @@
 	}
 }
 
+namespace CalcNs = c:"http://www.hello.org/CalcNs"
+{
+	[Choice]
+	struct Complex
+	{
+		HelloNs.Complex hc;
+		double Im;
+		Time Time;
+	}
+
+}

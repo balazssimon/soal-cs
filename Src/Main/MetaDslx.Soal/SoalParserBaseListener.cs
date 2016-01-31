@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\5hz0oiph.fc4\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\bhviweuo.wtv\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -81,6 +81,78 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationList([NotNull] SoalParser.AnnotationListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationList([NotNull] SoalParser.AnnotationListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.operationAnnotationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperationAnnotationList([NotNull] SoalParser.OperationAnnotationListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.operationAnnotationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperationAnnotationList([NotNull] SoalParser.OperationAnnotationListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.operationAnnotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperationAnnotation([NotNull] SoalParser.OperationAnnotationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.operationAnnotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperationAnnotation([NotNull] SoalParser.OperationAnnotationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotation([NotNull] SoalParser.AnnotationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotation([NotNull] SoalParser.AnnotationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.returnAnnotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturnAnnotation([NotNull] SoalParser.ReturnAnnotationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.returnAnnotation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturnAnnotation([NotNull] SoalParser.ReturnAnnotationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationBody([NotNull] SoalParser.AnnotationBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationBody([NotNull] SoalParser.AnnotationBodyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -886,6 +958,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSimpleType([NotNull] SoalParser.SimpleTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.nulledType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNulledType([NotNull] SoalParser.NulledTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.nulledType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNulledType([NotNull] SoalParser.NulledTypeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.referenceType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -910,17 +994,17 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitObjectType([NotNull] SoalParser.ObjectTypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.primitiveType"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.valueType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPrimitiveType([NotNull] SoalParser.PrimitiveTypeContext context) { }
+	public virtual void EnterValueType([NotNull] SoalParser.ValueTypeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.primitiveType"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.valueType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPrimitiveType([NotNull] SoalParser.PrimitiveTypeContext context) { }
+	public virtual void ExitValueType([NotNull] SoalParser.ValueTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.voidType"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -993,6 +1077,30 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArrayType([NotNull] SoalParser.ArrayTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.simpleArrayType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSimpleArrayType([NotNull] SoalParser.SimpleArrayTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.simpleArrayType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSimpleArrayType([NotNull] SoalParser.SimpleArrayTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.nulledArrayType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNulledArrayType([NotNull] SoalParser.NulledArrayTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.nulledArrayType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNulledArrayType([NotNull] SoalParser.NulledArrayTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// <para>The default implementation does nothing.</para>

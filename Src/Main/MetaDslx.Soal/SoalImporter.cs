@@ -19,6 +19,8 @@ namespace MetaDslx.Soal
         private Dictionary<XObject, ModelObject> objectsByElement = new Dictionary<XObject, ModelObject>();
         private Dictionary<XName, ModelObject> objectsByName = new Dictionary<XName, ModelObject>();
         private Dictionary<ModelObject, XObject> elementsByObject = new Dictionary<ModelObject, XObject>();
+        private Dictionary<SoalType, SoalType> replacementTypes = new Dictionary<SoalType, SoalType>();
+        private HashSet<SoalType> typesToRemove = new HashSet<SoalType>();
 
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
 
@@ -47,6 +49,25 @@ namespace MetaDslx.Soal
             {
                 reader.Value.ImportPhase3();
             }
+            foreach (var type in importer.typesToRemove)
+            {
+                Declaration decl = type as Declaration;
+                if (decl != null)
+                {
+                    decl.Namespace = null;
+                }
+            }
+            foreach (var fileUri in importer.readers.Keys)
+            {
+                if (!importer.Diagnostics.GetMessages(true).Any(m => m.FileName == fileUri && m.Severity == Severity.Error))
+                {
+                    importer.Diagnostics.AddInfo("File successfully imported.", fileUri, new TextSpan());
+                }
+                else
+                {
+                    importer.Diagnostics.AddError("Could not import file.", fileUri, new TextSpan());
+                }
+            }
         }
 
         internal static TextSpan GetTextSpan(XObject xobj)
@@ -55,15 +76,79 @@ namespace MetaDslx.Soal
             return new TextSpan(info.LineNumber, info.LinePosition, info.LineNumber, info.LinePosition);
         }
 
-        internal void ImportFile(string uri)
+        internal void ImportFile(string fileUri)
         {
-            XDocument doc = XDocument.Load(uri, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
-            this.ImportXml(doc, uri);
+            try
+            {
+                XDocument doc;
+                Uri uri;
+                string absoluteUri;
+                if (Uri.TryCreate(fileUri, UriKind.Absolute, out uri))
+                {
+                    absoluteUri = uri.AbsoluteUri;
+                }
+                else
+                {
+                    string fullPath = Path.GetFullPath(fileUri);
+                    if (Uri.TryCreate(fullPath, UriKind.Absolute, out uri))
+                    {
+                        absoluteUri = uri.AbsoluteUri;
+                    }
+                    else
+                    {
+                        absoluteUri = fullPath;
+                    }
+                }
+                doc = XDocument.Load(absoluteUri, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+                this.ImportXml(doc, absoluteUri);
+            }
+            catch(System.Exception ex)
+            {
+                this.Diagnostics.AddError("Could not import file: "+ex.Message, fileUri, new TextSpan());
+            }
         }
 
         internal void ImportRelativeFile(string currentUri, string relativeUri)
         {
-            this.ImportFile(relativeUri);
+            Uri uri;
+            if (Uri.TryCreate(relativeUri, UriKind.Absolute, out uri))
+            {
+                this.ImportFile(uri.AbsoluteUri);
+                return;
+            }
+            else
+            {
+                string baseUriStr = currentUri.Substring(0, currentUri.LastIndexOf('/') + 1);
+                Uri baseUri;
+                if (Uri.TryCreate(baseUriStr, UriKind.Absolute, out baseUri))
+                {
+                    if (Uri.TryCreate(baseUri, relativeUri, out uri))
+                    {
+                        this.ImportFile(uri.AbsoluteUri);
+                        return;
+                    }
+                    else
+                    {
+                        this.Diagnostics.AddError("Invalid relative URI in import '" + relativeUri + "'.", currentUri, new TextSpan());
+                        return;
+                    }
+                }
+                else
+                {
+                    if (Path.IsPathRooted(relativeUri))
+                    {
+                        this.ImportFile(relativeUri);
+                        return;
+                    }
+                    else
+                    {
+                        string absoluteUri = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(currentUri), relativeUri));
+                        this.ImportFile(absoluteUri);
+                        return;
+                    }
+                }
+            }
+            //this.Diagnostics.AddError("Invalid import URI '" + relativeUri + "'.", currentUri, new TextSpan());
         }
 
         internal Namespace CreateNamespace(XmlReader reader, string uri, string prefix, string qualifiedName)
@@ -117,6 +202,19 @@ namespace MetaDslx.Soal
         {
             Namespace result = null;
             this.namespaces.TryGetValue(uri, out result);
+            return result;
+        }
+
+        internal void RegisterReplacementType(SoalType from, SoalType to)
+        {
+            this.replacementTypes.Add(from, to);
+            this.typesToRemove.Add(from);
+        }
+
+        internal SoalType GetReplacementType(SoalType original)
+        {
+            SoalType result = null;
+            this.replacementTypes.TryGetValue(original, out result);
             return result;
         }
 
@@ -186,7 +284,14 @@ namespace MetaDslx.Soal
             if (ns != null)
             {
                 IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)ns }, ResolveKind.NameOrType, name, new ResolutionInfo(), ResolveFlags.Children);
-                return results.FirstOrDefault();
+                ModelObject result = results.FirstOrDefault();
+                SoalType type = result as SoalType;
+                SoalType replacementType;
+                if (type != null && this.replacementTypes.TryGetValue(type, out replacementType))
+                {
+                    return (ModelObject)replacementType;
+                }
+                return result;
             }
             return null;
         }
@@ -209,6 +314,7 @@ namespace MetaDslx.Soal
             else
             {
                 this.Diagnostics.AddError("Unknown file format.", uri, new TextSpan());
+                return;
             }
         }
     }

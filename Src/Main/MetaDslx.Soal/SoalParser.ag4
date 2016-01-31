@@ -13,8 +13,27 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
+annotationList : annotation+;
+
+operationAnnotationList : operationAnnotation+;
+
+operationAnnotation
+	: annotation
+	| returnAnnotation
+	;
+
+$Property(Annotations)
+$Symbol(Annotation)
+annotation : TOpenBracket annotationBody TCloseBracket;
+
+$Property(ReturnAnnotations)
+$Symbol(Annotation)
+returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
+
+annotationBody : $Property(Name) $Value identifier;
+
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration: KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
 declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
@@ -22,34 +41,34 @@ declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entit
 // Enums
 
 $TypeDef(Enum)
-enumDeclaration : KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
 
 enumLiterals : enumLiteral (TComma enumLiteral)*;
 
 $Property(EnumLiterals)
 $NameDef(EnumLiteral)
-enumLiteral : identifier;
+enumLiteral : annotationList? identifier;
 
 // Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Exception)
-exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : annotationList? KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Entity)
-entityDeclaration : KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+entityDeclaration : annotationList? KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
-propertyDeclaration : $Property(Type) typeReference identifier TSemicolon;
+propertyDeclaration : annotationList? $Property(Type) $TypeUse typeReference identifier TSemicolon;
 
 
 // Database
 
 $TypeDef(Database)
-databaseDeclaration : KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
+databaseDeclaration : annotationList? KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
 $Property(Entities)
 entityReference : KEntity $TypeUse(Entity) qualifiedName TSemicolon;
@@ -58,17 +77,17 @@ entityReference : KEntity $TypeUse(Entity) qualifiedName TSemicolon;
 // Interface
 
 $TypeDef(Interface)
-interfaceDeclaration : KInterface identifier TOpenBrace operationDeclaration* TCloseBrace;
+interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operationDeclaration* TCloseBrace;
 
 $Property(Operations)
 $NameDef(Operation)
-operationDeclaration : (returnType|onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Exception) qualifiedNameList)? TSemicolon;
+operationDeclaration : operationAnnotationList? ($Property(ReturnType) $TypeUse returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Exception) qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 
 $Property(Parameters)
 $NameDef(Parameter)
-parameter : $Property(Type) typeReference identifier;
+parameter : annotationList? $Property(Type) $TypeUse typeReference identifier;
 
 
 // Component
@@ -102,7 +121,7 @@ componentServiceOrReferenceElement
 
 $Property(Properties)
 $NameDef(Property)
-componentProperty : typeReference identifier TSemicolon;
+componentProperty : $TypeUse typeReference identifier TSemicolon;
 
 $Property(Implementation)
 $NameDef(Implementation)
@@ -133,8 +152,8 @@ $Property(Wires)
 $Symbol(Wire)
 compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireSource : $Property(Source) $NameUse(InterfaceReference) qualifiedName;
-wireTarget : $Property(Target) $NameUse(InterfaceReference) qualifiedName;
+wireSource : $Property(Source) $NameUse(Port) qualifiedName;
+wireTarget : $Property(Target) $NameUse(Port) qualifiedName;
 
 $NameDef(Deployment)
 deploymentDeclaration : KDeployment identifier TOpenBrace deploymentElements? TCloseBrace;
@@ -251,21 +270,24 @@ endpointAddressProperty : KAddress $Property(Address) $Value stringLiteral TSemi
 
 // Types
 
-$Property(ReturnType)
-$TypeUse
-returnType : typeReference | voidType;
-
-$TypeUse
-typeReference 
+returnType 
 	: arrayType
-	| nonNullableArrayType
 	| simpleType
+	| nonNullableArrayType
+	| voidType
 	;
 
-$TypeUse
-simpleType : primitiveType | nullableType | nonNullableType | referenceType;
+typeReference 
+	: nonNullableArrayType
+	| arrayType
+	| simpleType
+	| nulledType
+	;
 
-$TypeUse
+simpleType : valueType | objectType | qualifiedName;
+
+nulledType : nullableType | nonNullableType;
+
 referenceType : objectType | qualifiedName;
 
 $Name
@@ -274,7 +296,7 @@ objectType
 	| KString
 	;
 $Name
-primitiveType 
+valueType 
 	: KInt 
 	| KLong 
 	| KFloat 
@@ -297,17 +319,24 @@ onewayType
 	;
 
 $TypeCtr(NullableType)
-nullableType : $Property(InnerType) primitiveType TQuestion;
+nullableType : $Property(InnerType) $TypeUse valueType TQuestion;
 
 $TypeCtr(NonNullableType)
-nonNullableType : $Property(InnerType) referenceType TExclamation;
+nonNullableType : $Property(InnerType) $TypeUse referenceType TExclamation;
 
 $TypeCtr(NonNullableType)
-nonNullableArrayType : $Property(InnerType) arrayType TExclamation;
+nonNullableArrayType : $Property(InnerType) $TypeUse arrayType TExclamation;
+
+arrayType
+	: simpleArrayType
+	| nulledArrayType
+	;
 
 $TypeCtr(ArrayType)
-arrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
+simpleArrayType : $Property(InnerType) $TypeUse simpleType TOpenBracket TCloseBracket;
 
+$TypeCtr(ArrayType)
+nulledArrayType : $Property(InnerType) $TypeUse nulledType TOpenBracket TCloseBracket;
 
 // Identifiers
 $Name

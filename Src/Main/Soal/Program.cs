@@ -79,10 +79,6 @@ namespace Soal
                     string source = reader.ReadToEnd();
                     SoalCompiler compiler = new SoalCompiler(source, Path.GetFileName(fileName));
                     compiler.Compile();
-                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
-                    {
-                        Console.WriteLine(msg);
-                    }
                     if (!compiler.Diagnostics.HasErrors())
                     {
                         SoalGenerator generator = new SoalGenerator(compiler.Model, outputDirectory, compiler.Diagnostics, compiler.FileName);
@@ -94,6 +90,10 @@ namespace Soal
                         {
                             writer.WriteLine(printer.Generate());
                         }
+                    }
+                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                    {
+                        Console.WriteLine(msg);
                     }
                 }
             }

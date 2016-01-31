@@ -43,23 +43,6 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XmlReader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Soal.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Soal.mm</DependentUpon>
-    </Compile>
-    <Compile Include="SoalCompiler.cs" />
-    <Compile Include="SoalGenerator.cs" />
-    <Compile Include="SoalImplementation.cs" />
-    <Compile Include="SoalImporter.cs" />
-    <Compile Include="SoalLexer.cs">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalLexerAnnotator.cs">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
     <Compile Include="SoalParser.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </Compile>
@@ -77,6 +60,23 @@
     </Compile>
     <Compile Include="SoalParserVisitor.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="XmlReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Soal.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Soal.mm</DependentUpon>
+    </Compile>
+    <Compile Include="SoalCompiler.cs" />
+    <Compile Include="SoalGenerator.cs" />
+    <Compile Include="SoalImplementation.cs" />
+    <Compile Include="SoalImporter.cs" />
+    <Compile Include="SoalLexer.cs">
+      <DependentUpon>SoalLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="SoalLexerAnnotator.cs">
+      <DependentUpon>SoalLexer.ag4</DependentUpon>
     </Compile>
     <Compile Include="SoalPrinter.cs">
       <AutoGen>True</AutoGen>
