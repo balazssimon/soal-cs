@@ -8,6 +8,7 @@ template Generate()
 end template
 
 template GenerateNamespace(Namespace ns)
+[if (ns.Declarations.Count > 0)]
 [if (ns.Prefix != null)]
 namespace [ns.FullName] = [ns.Prefix]:"[ns.Uri]"
 [else]
@@ -35,6 +36,8 @@ namespace [ns.FullName] = "[ns.Uri]"
 ^
 	[end loop]
 }
+^
+[end if]
 end template
 
 function string GetAncestor(StructuredType st)

@@ -50,7 +50,7 @@
 	{
 		transport HTTP;
 		encoding SOAP;
-		//protocol WsAddressing;
+		protocol WsAddressing;
 	}
 
 	endpoint HelloService : IHello

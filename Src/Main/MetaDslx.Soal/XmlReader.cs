@@ -12,14 +12,14 @@ namespace MetaDslx.Soal
     internal abstract class XmlReader
     {
         public string Uri { get; private set; }
-        public XDocument Document { get; private set; }
+        public XElement Root { get; private set; }
         public SoalImporter Importer { get; private set; }
         public Namespace Namespace { get; protected set; }
 
-        public XmlReader(SoalImporter importer, XDocument document, string uri)
+        public XmlReader(SoalImporter importer, XElement root, string uri)
         {
             this.Importer = importer;
-            this.Document = document;
+            this.Root = root;
             this.Uri = uri;
         }
 
@@ -28,8 +28,58 @@ namespace MetaDslx.Soal
             return SoalImporter.GetTextSpan(xobj);
         }
 
-        public abstract void ImportPhase1();
-        public abstract void ImportPhase2();
-        public abstract void ImportPhase3();
+        public XName GetXName(XElement elem, string reference)
+        {
+            string[] parts = reference.Split(':');
+            if (parts.Length == 2)
+            {
+                XNamespace ns = elem.GetNamespaceOfPrefix(parts[0]);
+                return ns + parts[1];
+            }
+            else if (parts.Length == 1)
+            {
+                XNamespace ns = elem.GetDefaultNamespace();
+                return ns + parts[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // XSD types:
+        public virtual void ImportPhase1()
+        {
+        }
+
+        // XSD elements:
+        public virtual void ImportPhase2()
+        {
+        }
+
+        // XSD type structure:
+        public virtual void ImportPhase3()
+        {
+        }
+
+        // WSDL messages and policies:
+        public virtual void ImportPhase4()
+        {
+        }
+
+        // WSDL portTypes:
+        public virtual void ImportPhase5()
+        {
+        }
+
+        // WSDL bindings:
+        public virtual void ImportPhase6()
+        {
+        }
+
+        // WSDL services:
+        public virtual void ImportPhase7()
+        {
+        }
     }
 }
