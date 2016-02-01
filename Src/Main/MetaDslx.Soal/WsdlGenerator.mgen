@@ -180,22 +180,22 @@ template GenerateWsdlBinding(Endpoint endp)
 	[end if]
 	[if(soapPrefix != null)]
 		[if(endp.Binding.Transport is HttpTransportBindingElement)]
-	<[soapPrefix]:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<[soapPrefix]:binding style="[endp.Binding.GetWsdlSoapDocRpcStyle()]" transport="http://schemas.xmlsoap.org/soap/http"/>
 		[else]
-	<[soapPrefix]:binding style="document"/>
+	<[soapPrefix]:binding style="[endp.Binding.GetWsdlSoapDocRpcStyle()]"/>
 		[end if]
 	[end if]
 	[loop(op:endp.Interface.Operations)]
 	<wsdl:operation name="[op.Name]">
 		[if(soapPrefix != null)]
-		<[soapPrefix]:operation style="document" soapAction="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name]"/>
+		<[soapPrefix]:operation style="[endp.Binding.GetWsdlSoapDocRpcStyle()]" soapAction="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name]"/>
 		[end if]
 		<wsdl:input>
 		[if(endp.Binding.HasOperationPolicy())]
 			<wsp:PolicyReference URI="#[endp.Binding.Name]_Input_Policy"/>
 		[end if]
 		[if(soapPrefix != null)]
-			<[soapPrefix]:body use="literal"/>
+			<[soapPrefix]:body use="[endp.Binding.GetWsdlSoapEncLitStyle()]"/>
 		[end if]
 		</wsdl:input>
 		[if(!op.IsOneway)]
@@ -204,13 +204,13 @@ template GenerateWsdlBinding(Endpoint endp)
 			<wsp:PolicyReference URI="#[endp.Binding.Name]_Output_Policy"/>
 			[end if]
 			[if(soapPrefix != null)]
-			<[soapPrefix]:body use="literal"/>
+			<[soapPrefix]:body use="[endp.Binding.GetWsdlSoapEncLitStyle()]"/>
 			[end if]
 		</wsdl:output>
 			[loop(ex:op.Exceptions)]
 		<wsdl:fault name="[ex.Name]">
 			[if(soapPrefix != null)]
-			<[soapPrefix]:fault name="[ex.Name]" use="literal"/>
+			<[soapPrefix]:fault name="[ex.Name]" use="[endp.Binding.GetWsdlSoapEncLitStyle()]"/>
 			[end if]
 		</wsdl:fault>
 			[end loop]

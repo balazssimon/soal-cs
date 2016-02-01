@@ -59,6 +59,17 @@ namespace MetaDslx.Soal
         protected override void DoCompile()
         {
             base.DoCompile();
+            this.Validate();
+        }
+
+        private void Validate()
+        {
+            this.ValidateAnnotations();
+            this.ValidateEndpoints();
+        }
+
+        private void ValidateAnnotations()
+        {
             foreach (var ae in this.Model.CachedInstances.OfType<AnnotatedElement>())
             {
                 foreach (var annot in ae.Annotations)
@@ -96,6 +107,59 @@ namespace MetaDslx.Soal
                         else
                         {
                             this.Diagnostics.AddError("Invalid annotation '" + annot.Name + "' on '" + ae + "'. This element cannot have annotations.", this.FileName, (ModelObject)ae);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ValidateEndpoints()
+        {
+            foreach (var endp in this.Model.CachedInstances.OfType<Endpoint>())
+            {
+                if (endp.Interface != null && endp.Binding != null)
+                {
+                    bool rpc = endp.Interface.HasAnnotation(SoalAnnotations.Rpc);
+                    bool noWrap = endp.Interface.HasAnnotation(SoalAnnotations.NoWrap);
+                    SoapEncodingBindingElement enc = endp.Binding.Encodings.OfType<SoapEncodingBindingElement>().FirstOrDefault();
+                    if (enc != null)
+                    {
+                        switch (enc.Style)
+                        {
+                            case SoapEncodingStyle.DocumentWrapped:
+                                if (rpc)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has an '"+SoalAnnotations.Rpc+ "' annotation, but the SOAP binding style for the endpoint is '"+SoapEncodingStyle.DocumentWrapped+ "'. Consider using the '" + SoapEncodingStyle.RpcLiteral + "' style instead, or remove the '" + SoalAnnotations.Rpc + "' annotation from the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                if (noWrap)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has a '" + SoalAnnotations.NoWrap + "' annotation, but the SOAP binding style for the endpoint is '" + SoapEncodingStyle.DocumentWrapped + "'. Consider using the '" + SoapEncodingStyle.DocumentLiteral + "' style instead, or remove the '" + SoalAnnotations.NoWrap + "' annotation from the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                break;
+                            case SoapEncodingStyle.DocumentLiteral:
+                                if (rpc)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has an '" + SoalAnnotations.Rpc + "' annotation, but the SOAP binding style for the endpoint is '" + SoapEncodingStyle.DocumentLiteral + "'. Consider using the '" + SoapEncodingStyle.RpcLiteral + "' style instead, or remove the '" + SoalAnnotations.Rpc + "' annotation from the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                if (!noWrap)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has no '" + SoalAnnotations.NoWrap + "' annotation, but the SOAP binding style for the endpoint is '" + SoapEncodingStyle.DocumentLiteral + "'. Consider using the '" + SoapEncodingStyle.DocumentWrapped + "' style instead, or add the '" + SoalAnnotations.NoWrap + "' annotation to the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                break;
+                            case SoapEncodingStyle.RpcLiteral:
+                                if (!rpc)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has no '" + SoalAnnotations.Rpc + "' annotation, but the SOAP binding style for the endpoint is '" + SoapEncodingStyle.RpcLiteral + "'. Consider using the '" + SoapEncodingStyle.DocumentWrapped + "' style instead, or add the '" + SoalAnnotations.Rpc + "' annotation to the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                break;
+                            case SoapEncodingStyle.RpcEncoded:
+                                if (!rpc)
+                                {
+                                    this.Diagnostics.AddError("The interface of the endpoint has no '" + SoalAnnotations.Rpc + "' annotation, but the SOAP binding style for the endpoint is '" + SoapEncodingStyle.RpcEncoded + "'. Consider using the '" + SoapEncodingStyle.DocumentWrapped + "' style instead, or add the '" + SoalAnnotations.Rpc + "' annotation to the interface.", this.FileName, (ModelObject)endp);
+                                }
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }

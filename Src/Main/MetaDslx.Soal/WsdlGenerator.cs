@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_WsdlGenerator_1330765910;
-    namespace __Hidden_WsdlGenerator_1330765910
+    using __Hidden_WsdlGenerator_503503386;
+    namespace __Hidden_WsdlGenerator_503503386
     {
         internal static class __Extensions
         {
@@ -1955,7 +1955,7 @@ namespace MetaDslx.Soal //1:1
                 if (endp.Binding.Transport is HttpTransportBindingElement) //182:4
                 {
                     string __tmp13Prefix = "	<"; //183:1
-                    string __tmp14Suffix = ":binding style=\"document\" transport=\"http://schemas.xmlsoap.org/soap/http\"/>"; //183:15
+                    string __tmp14Suffix = "\" transport=\"http://schemas.xmlsoap.org/soap/http\"/>"; //183:70
                     StringBuilder __tmp15 = new StringBuilder();
                     __tmp15.Append(soapPrefix);
                     using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
@@ -1971,32 +1971,68 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp13Prefix);
                             __out.Append(__tmp15Line);
+                        }
+                    }
+                    string __tmp16Line = ":binding style=\""; //183:15
+                    __out.Append(__tmp16Line);
+                    StringBuilder __tmp17 = new StringBuilder();
+                    __tmp17.Append(endp.Binding.GetWsdlSoapDocRpcStyle());
+                    using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                    {
+                        bool __tmp17_first = true;
+                        while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                        {
+                            __tmp17_first = false;
+                            string __tmp17Line = __tmp17Reader.ReadLine();
+                            if (__tmp17Line == null)
+                            {
+                                __tmp17Line = "";
+                            }
+                            __out.Append(__tmp17Line);
                             __out.Append(__tmp14Suffix);
-                            __out.AppendLine(); //183:91
+                            __out.AppendLine(); //183:122
                         }
                     }
                 }
                 else //184:4
                 {
-                    string __tmp16Prefix = "	<"; //185:1
-                    string __tmp17Suffix = ":binding style=\"document\"/>"; //185:15
-                    StringBuilder __tmp18 = new StringBuilder();
-                    __tmp18.Append(soapPrefix);
-                    using(StreamReader __tmp18Reader = new StreamReader(this.__ToStream(__tmp18.ToString())))
+                    string __tmp18Prefix = "	<"; //185:1
+                    string __tmp19Suffix = "\"/>"; //185:70
+                    StringBuilder __tmp20 = new StringBuilder();
+                    __tmp20.Append(soapPrefix);
+                    using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
                     {
-                        bool __tmp18_first = true;
-                        while(__tmp18_first || !__tmp18Reader.EndOfStream)
+                        bool __tmp20_first = true;
+                        while(__tmp20_first || !__tmp20Reader.EndOfStream)
                         {
-                            __tmp18_first = false;
-                            string __tmp18Line = __tmp18Reader.ReadLine();
-                            if (__tmp18Line == null)
+                            __tmp20_first = false;
+                            string __tmp20Line = __tmp20Reader.ReadLine();
+                            if (__tmp20Line == null)
                             {
-                                __tmp18Line = "";
+                                __tmp20Line = "";
                             }
-                            __out.Append(__tmp16Prefix);
-                            __out.Append(__tmp18Line);
-                            __out.Append(__tmp17Suffix);
-                            __out.AppendLine(); //185:42
+                            __out.Append(__tmp18Prefix);
+                            __out.Append(__tmp20Line);
+                        }
+                    }
+                    string __tmp21Line = ":binding style=\""; //185:15
+                    __out.Append(__tmp21Line);
+                    StringBuilder __tmp22 = new StringBuilder();
+                    __tmp22.Append(endp.Binding.GetWsdlSoapDocRpcStyle());
+                    using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                    {
+                        bool __tmp22_first = true;
+                        while(__tmp22_first || !__tmp22Reader.EndOfStream)
+                        {
+                            __tmp22_first = false;
+                            string __tmp22Line = __tmp22Reader.ReadLine();
+                            if (__tmp22Line == null)
+                            {
+                                __tmp22Line = "";
+                            }
+                            __out.Append(__tmp22Line);
+                            __out.Append(__tmp19Suffix);
+                            __out.AppendLine(); //185:73
                         }
                     }
                 }
@@ -2006,105 +2042,74 @@ namespace MetaDslx.Soal //1:1
                 select new { op = op}
                 ).ToList(); //188:3
             int __loop14_iteration = 0;
-            foreach (var __tmp19 in __loop14_results)
+            foreach (var __tmp23 in __loop14_results)
             {
                 ++__loop14_iteration;
-                var op = __tmp19.op;
-                string __tmp20Prefix = "	<wsdl:operation name=\""; //189:1
-                string __tmp21Suffix = "\">"; //189:33
-                StringBuilder __tmp22 = new StringBuilder();
-                __tmp22.Append(op.Name);
-                using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                var op = __tmp23.op;
+                string __tmp24Prefix = "	<wsdl:operation name=\""; //189:1
+                string __tmp25Suffix = "\">"; //189:33
+                StringBuilder __tmp26 = new StringBuilder();
+                __tmp26.Append(op.Name);
+                using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
                 {
-                    bool __tmp22_first = true;
-                    while(__tmp22_first || !__tmp22Reader.EndOfStream)
+                    bool __tmp26_first = true;
+                    while(__tmp26_first || !__tmp26Reader.EndOfStream)
                     {
-                        __tmp22_first = false;
-                        string __tmp22Line = __tmp22Reader.ReadLine();
-                        if (__tmp22Line == null)
+                        __tmp26_first = false;
+                        string __tmp26Line = __tmp26Reader.ReadLine();
+                        if (__tmp26Line == null)
                         {
-                            __tmp22Line = "";
+                            __tmp26Line = "";
                         }
-                        __out.Append(__tmp20Prefix);
-                        __out.Append(__tmp22Line);
-                        __out.Append(__tmp21Suffix);
+                        __out.Append(__tmp24Prefix);
+                        __out.Append(__tmp26Line);
+                        __out.Append(__tmp25Suffix);
                         __out.AppendLine(); //189:35
                     }
                 }
                 if (soapPrefix != null) //190:4
                 {
-                    string __tmp23Prefix = "		<"; //191:1
-                    string __tmp24Suffix = "\"/>"; //191:131
-                    StringBuilder __tmp25 = new StringBuilder();
-                    __tmp25.Append(soapPrefix);
-                    using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
+                    string __tmp27Prefix = "		<"; //191:1
+                    string __tmp28Suffix = "\"/>"; //191:162
+                    StringBuilder __tmp29 = new StringBuilder();
+                    __tmp29.Append(soapPrefix);
+                    using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                     {
-                        bool __tmp25_first = true;
-                        while(__tmp25_first || !__tmp25Reader.EndOfStream)
+                        bool __tmp29_first = true;
+                        while(__tmp29_first || !__tmp29Reader.EndOfStream)
                         {
-                            __tmp25_first = false;
-                            string __tmp25Line = __tmp25Reader.ReadLine();
-                            if (__tmp25Line == null)
+                            __tmp29_first = false;
+                            string __tmp29Line = __tmp29Reader.ReadLine();
+                            if (__tmp29Line == null)
                             {
-                                __tmp25Line = "";
+                                __tmp29Line = "";
                             }
-                            __out.Append(__tmp23Prefix);
-                            __out.Append(__tmp25Line);
+                            __out.Append(__tmp27Prefix);
+                            __out.Append(__tmp29Line);
                         }
                     }
-                    string __tmp26Line = ":operation style=\"document\" soapAction=\""; //191:16
-                    __out.Append(__tmp26Line);
-                    StringBuilder __tmp27 = new StringBuilder();
-                    __tmp27.Append(op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name);
-                    using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
+                    string __tmp30Line = ":operation style=\""; //191:16
+                    __out.Append(__tmp30Line);
+                    StringBuilder __tmp31 = new StringBuilder();
+                    __tmp31.Append(endp.Binding.GetWsdlSoapDocRpcStyle());
+                    using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
                     {
-                        bool __tmp27_first = true;
-                        while(__tmp27_first || !__tmp27Reader.EndOfStream)
+                        bool __tmp31_first = true;
+                        while(__tmp31_first || !__tmp31Reader.EndOfStream)
                         {
-                            __tmp27_first = false;
-                            string __tmp27Line = __tmp27Reader.ReadLine();
-                            if (__tmp27Line == null)
+                            __tmp31_first = false;
+                            string __tmp31Line = __tmp31Reader.ReadLine();
+                            if (__tmp31Line == null)
                             {
-                                __tmp27Line = "";
+                                __tmp31Line = "";
                             }
-                            __out.Append(__tmp27Line);
-                            __out.Append(__tmp24Suffix);
-                            __out.AppendLine(); //191:134
+                            __out.Append(__tmp31Line);
                         }
                     }
-                }
-                __out.Append("		<wsdl:input>"); //193:1
-                __out.AppendLine(); //193:15
-                if (endp.Binding.HasOperationPolicy()) //194:4
-                {
-                    string __tmp28Prefix = "			<wsp:PolicyReference URI=\"#"; //195:1
-                    string __tmp29Suffix = "_Input_Policy\"/>"; //195:50
-                    StringBuilder __tmp30 = new StringBuilder();
-                    __tmp30.Append(endp.Binding.Name);
-                    using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
-                    {
-                        bool __tmp30_first = true;
-                        while(__tmp30_first || !__tmp30Reader.EndOfStream)
-                        {
-                            __tmp30_first = false;
-                            string __tmp30Line = __tmp30Reader.ReadLine();
-                            if (__tmp30Line == null)
-                            {
-                                __tmp30Line = "";
-                            }
-                            __out.Append(__tmp28Prefix);
-                            __out.Append(__tmp30Line);
-                            __out.Append(__tmp29Suffix);
-                            __out.AppendLine(); //195:66
-                        }
-                    }
-                }
-                if (soapPrefix != null) //197:4
-                {
-                    string __tmp31Prefix = "			<"; //198:1
-                    string __tmp32Suffix = ":body use=\"literal\"/>"; //198:17
+                    string __tmp32Line = "\" soapAction=\""; //191:73
+                    __out.Append(__tmp32Line);
                     StringBuilder __tmp33 = new StringBuilder();
-                    __tmp33.Append(soapPrefix);
+                    __tmp33.Append(op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name);
                     using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
                     {
                         bool __tmp33_first = true;
@@ -2116,10 +2121,77 @@ namespace MetaDslx.Soal //1:1
                             {
                                 __tmp33Line = "";
                             }
-                            __out.Append(__tmp31Prefix);
                             __out.Append(__tmp33Line);
-                            __out.Append(__tmp32Suffix);
-                            __out.AppendLine(); //198:38
+                            __out.Append(__tmp28Suffix);
+                            __out.AppendLine(); //191:165
+                        }
+                    }
+                }
+                __out.Append("		<wsdl:input>"); //193:1
+                __out.AppendLine(); //193:15
+                if (endp.Binding.HasOperationPolicy()) //194:4
+                {
+                    string __tmp34Prefix = "			<wsp:PolicyReference URI=\"#"; //195:1
+                    string __tmp35Suffix = "_Input_Policy\"/>"; //195:50
+                    StringBuilder __tmp36 = new StringBuilder();
+                    __tmp36.Append(endp.Binding.Name);
+                    using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
+                    {
+                        bool __tmp36_first = true;
+                        while(__tmp36_first || !__tmp36Reader.EndOfStream)
+                        {
+                            __tmp36_first = false;
+                            string __tmp36Line = __tmp36Reader.ReadLine();
+                            if (__tmp36Line == null)
+                            {
+                                __tmp36Line = "";
+                            }
+                            __out.Append(__tmp34Prefix);
+                            __out.Append(__tmp36Line);
+                            __out.Append(__tmp35Suffix);
+                            __out.AppendLine(); //195:66
+                        }
+                    }
+                }
+                if (soapPrefix != null) //197:4
+                {
+                    string __tmp37Prefix = "			<"; //198:1
+                    string __tmp38Suffix = "\"/>"; //198:67
+                    StringBuilder __tmp39 = new StringBuilder();
+                    __tmp39.Append(soapPrefix);
+                    using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                    {
+                        bool __tmp39_first = true;
+                        while(__tmp39_first || !__tmp39Reader.EndOfStream)
+                        {
+                            __tmp39_first = false;
+                            string __tmp39Line = __tmp39Reader.ReadLine();
+                            if (__tmp39Line == null)
+                            {
+                                __tmp39Line = "";
+                            }
+                            __out.Append(__tmp37Prefix);
+                            __out.Append(__tmp39Line);
+                        }
+                    }
+                    string __tmp40Line = ":body use=\""; //198:17
+                    __out.Append(__tmp40Line);
+                    StringBuilder __tmp41 = new StringBuilder();
+                    __tmp41.Append(endp.Binding.GetWsdlSoapEncLitStyle());
+                    using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
+                    {
+                        bool __tmp41_first = true;
+                        while(__tmp41_first || !__tmp41Reader.EndOfStream)
+                        {
+                            __tmp41_first = false;
+                            string __tmp41Line = __tmp41Reader.ReadLine();
+                            if (__tmp41Line == null)
+                            {
+                                __tmp41Line = "";
+                            }
+                            __out.Append(__tmp41Line);
+                            __out.Append(__tmp38Suffix);
+                            __out.AppendLine(); //198:70
                         }
                     }
                 }
@@ -2131,49 +2203,67 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(); //202:16
                     if (endp.Binding.HasOperationPolicy()) //203:5
                     {
-                        string __tmp34Prefix = "			<wsp:PolicyReference URI=\"#"; //204:1
-                        string __tmp35Suffix = "_Output_Policy\"/>"; //204:50
-                        StringBuilder __tmp36 = new StringBuilder();
-                        __tmp36.Append(endp.Binding.Name);
-                        using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
+                        string __tmp42Prefix = "			<wsp:PolicyReference URI=\"#"; //204:1
+                        string __tmp43Suffix = "_Output_Policy\"/>"; //204:50
+                        StringBuilder __tmp44 = new StringBuilder();
+                        __tmp44.Append(endp.Binding.Name);
+                        using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                         {
-                            bool __tmp36_first = true;
-                            while(__tmp36_first || !__tmp36Reader.EndOfStream)
+                            bool __tmp44_first = true;
+                            while(__tmp44_first || !__tmp44Reader.EndOfStream)
                             {
-                                __tmp36_first = false;
-                                string __tmp36Line = __tmp36Reader.ReadLine();
-                                if (__tmp36Line == null)
+                                __tmp44_first = false;
+                                string __tmp44Line = __tmp44Reader.ReadLine();
+                                if (__tmp44Line == null)
                                 {
-                                    __tmp36Line = "";
+                                    __tmp44Line = "";
                                 }
-                                __out.Append(__tmp34Prefix);
-                                __out.Append(__tmp36Line);
-                                __out.Append(__tmp35Suffix);
+                                __out.Append(__tmp42Prefix);
+                                __out.Append(__tmp44Line);
+                                __out.Append(__tmp43Suffix);
                                 __out.AppendLine(); //204:67
                             }
                         }
                     }
                     if (soapPrefix != null) //206:5
                     {
-                        string __tmp37Prefix = "			<"; //207:1
-                        string __tmp38Suffix = ":body use=\"literal\"/>"; //207:17
-                        StringBuilder __tmp39 = new StringBuilder();
-                        __tmp39.Append(soapPrefix);
-                        using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                        string __tmp45Prefix = "			<"; //207:1
+                        string __tmp46Suffix = "\"/>"; //207:67
+                        StringBuilder __tmp47 = new StringBuilder();
+                        __tmp47.Append(soapPrefix);
+                        using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
                         {
-                            bool __tmp39_first = true;
-                            while(__tmp39_first || !__tmp39Reader.EndOfStream)
+                            bool __tmp47_first = true;
+                            while(__tmp47_first || !__tmp47Reader.EndOfStream)
                             {
-                                __tmp39_first = false;
-                                string __tmp39Line = __tmp39Reader.ReadLine();
-                                if (__tmp39Line == null)
+                                __tmp47_first = false;
+                                string __tmp47Line = __tmp47Reader.ReadLine();
+                                if (__tmp47Line == null)
                                 {
-                                    __tmp39Line = "";
+                                    __tmp47Line = "";
                                 }
-                                __out.Append(__tmp37Prefix);
-                                __out.Append(__tmp39Line);
-                                __out.Append(__tmp38Suffix);
-                                __out.AppendLine(); //207:38
+                                __out.Append(__tmp45Prefix);
+                                __out.Append(__tmp47Line);
+                            }
+                        }
+                        string __tmp48Line = ":body use=\""; //207:17
+                        __out.Append(__tmp48Line);
+                        StringBuilder __tmp49 = new StringBuilder();
+                        __tmp49.Append(endp.Binding.GetWsdlSoapEncLitStyle());
+                        using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
+                        {
+                            bool __tmp49_first = true;
+                            while(__tmp49_first || !__tmp49Reader.EndOfStream)
+                            {
+                                __tmp49_first = false;
+                                string __tmp49Line = __tmp49Reader.ReadLine();
+                                if (__tmp49Line == null)
+                                {
+                                    __tmp49Line = "";
+                                }
+                                __out.Append(__tmp49Line);
+                                __out.Append(__tmp46Suffix);
+                                __out.AppendLine(); //207:70
                             }
                         }
                     }
@@ -2184,70 +2274,88 @@ namespace MetaDslx.Soal //1:1
                         select new { ex = ex}
                         ).ToList(); //210:5
                     int __loop15_iteration = 0;
-                    foreach (var __tmp40 in __loop15_results)
+                    foreach (var __tmp50 in __loop15_results)
                     {
                         ++__loop15_iteration;
-                        var ex = __tmp40.ex;
-                        string __tmp41Prefix = "		<wsdl:fault name=\""; //211:1
-                        string __tmp42Suffix = "\">"; //211:30
-                        StringBuilder __tmp43 = new StringBuilder();
-                        __tmp43.Append(ex.Name);
-                        using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
+                        var ex = __tmp50.ex;
+                        string __tmp51Prefix = "		<wsdl:fault name=\""; //211:1
+                        string __tmp52Suffix = "\">"; //211:30
+                        StringBuilder __tmp53 = new StringBuilder();
+                        __tmp53.Append(ex.Name);
+                        using(StreamReader __tmp53Reader = new StreamReader(this.__ToStream(__tmp53.ToString())))
                         {
-                            bool __tmp43_first = true;
-                            while(__tmp43_first || !__tmp43Reader.EndOfStream)
+                            bool __tmp53_first = true;
+                            while(__tmp53_first || !__tmp53Reader.EndOfStream)
                             {
-                                __tmp43_first = false;
-                                string __tmp43Line = __tmp43Reader.ReadLine();
-                                if (__tmp43Line == null)
+                                __tmp53_first = false;
+                                string __tmp53Line = __tmp53Reader.ReadLine();
+                                if (__tmp53Line == null)
                                 {
-                                    __tmp43Line = "";
+                                    __tmp53Line = "";
                                 }
-                                __out.Append(__tmp41Prefix);
-                                __out.Append(__tmp43Line);
-                                __out.Append(__tmp42Suffix);
+                                __out.Append(__tmp51Prefix);
+                                __out.Append(__tmp53Line);
+                                __out.Append(__tmp52Suffix);
                                 __out.AppendLine(); //211:32
                             }
                         }
                         if (soapPrefix != null) //212:5
                         {
-                            string __tmp44Prefix = "			<"; //213:1
-                            string __tmp45Suffix = "\" use=\"literal\"/>"; //213:39
-                            StringBuilder __tmp46 = new StringBuilder();
-                            __tmp46.Append(soapPrefix);
-                            using(StreamReader __tmp46Reader = new StreamReader(this.__ToStream(__tmp46.ToString())))
+                            string __tmp54Prefix = "			<"; //213:1
+                            string __tmp55Suffix = "\"/>"; //213:85
+                            StringBuilder __tmp56 = new StringBuilder();
+                            __tmp56.Append(soapPrefix);
+                            using(StreamReader __tmp56Reader = new StreamReader(this.__ToStream(__tmp56.ToString())))
                             {
-                                bool __tmp46_first = true;
-                                while(__tmp46_first || !__tmp46Reader.EndOfStream)
+                                bool __tmp56_first = true;
+                                while(__tmp56_first || !__tmp56Reader.EndOfStream)
                                 {
-                                    __tmp46_first = false;
-                                    string __tmp46Line = __tmp46Reader.ReadLine();
-                                    if (__tmp46Line == null)
+                                    __tmp56_first = false;
+                                    string __tmp56Line = __tmp56Reader.ReadLine();
+                                    if (__tmp56Line == null)
                                     {
-                                        __tmp46Line = "";
+                                        __tmp56Line = "";
                                     }
-                                    __out.Append(__tmp44Prefix);
-                                    __out.Append(__tmp46Line);
+                                    __out.Append(__tmp54Prefix);
+                                    __out.Append(__tmp56Line);
                                 }
                             }
-                            string __tmp47Line = ":fault name=\""; //213:17
-                            __out.Append(__tmp47Line);
-                            StringBuilder __tmp48 = new StringBuilder();
-                            __tmp48.Append(ex.Name);
-                            using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                            string __tmp57Line = ":fault name=\""; //213:17
+                            __out.Append(__tmp57Line);
+                            StringBuilder __tmp58 = new StringBuilder();
+                            __tmp58.Append(ex.Name);
+                            using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
                             {
-                                bool __tmp48_first = true;
-                                while(__tmp48_first || !__tmp48Reader.EndOfStream)
+                                bool __tmp58_first = true;
+                                while(__tmp58_first || !__tmp58Reader.EndOfStream)
                                 {
-                                    __tmp48_first = false;
-                                    string __tmp48Line = __tmp48Reader.ReadLine();
-                                    if (__tmp48Line == null)
+                                    __tmp58_first = false;
+                                    string __tmp58Line = __tmp58Reader.ReadLine();
+                                    if (__tmp58Line == null)
                                     {
-                                        __tmp48Line = "";
+                                        __tmp58Line = "";
                                     }
-                                    __out.Append(__tmp48Line);
-                                    __out.Append(__tmp45Suffix);
-                                    __out.AppendLine(); //213:56
+                                    __out.Append(__tmp58Line);
+                                }
+                            }
+                            string __tmp59Line = "\" use=\""; //213:39
+                            __out.Append(__tmp59Line);
+                            StringBuilder __tmp60 = new StringBuilder();
+                            __tmp60.Append(endp.Binding.GetWsdlSoapEncLitStyle());
+                            using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
+                            {
+                                bool __tmp60_first = true;
+                                while(__tmp60_first || !__tmp60Reader.EndOfStream)
+                                {
+                                    __tmp60_first = false;
+                                    string __tmp60Line = __tmp60Reader.ReadLine();
+                                    if (__tmp60Line == null)
+                                    {
+                                        __tmp60Line = "";
+                                    }
+                                    __out.Append(__tmp60Line);
+                                    __out.Append(__tmp55Suffix);
+                                    __out.AppendLine(); //213:88
                                 }
                             }
                         }

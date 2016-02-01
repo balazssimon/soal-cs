@@ -234,7 +234,7 @@ namespace MetaDslx.Soal
             if (type is ArrayType)
             {
                 if (((ArrayType)type).InnerType == SoalInstance.Byte) return "base64Binary";
-                else return (GetXsdName(((ArrayType)type).InnerType)+"List").ToPascalCase();
+                else return (GetXsdName(((ArrayType)type).InnerType) + "List").ToPascalCase();
             }
             if (type is Enum)
             {
@@ -368,6 +368,32 @@ namespace MetaDslx.Soal
                 //if (prot is WsSecurityBindingElement) return true;
             }
             return false;
+        }
+
+        public static string GetWsdlSoapDocRpcStyle(this Binding binding)
+        {
+            if (binding != null)
+            {
+                SoapEncodingBindingElement enc = binding.Encodings.OfType<SoapEncodingBindingElement>().FirstOrDefault();
+                if (enc != null)
+                {
+                    if (enc.Style == SoapEncodingStyle.RpcEncoded || enc.Style == SoapEncodingStyle.RpcLiteral) return "rpc";
+                }
+            }
+            return "document";
+        }
+
+        public static string GetWsdlSoapEncLitStyle(this Binding binding)
+        {
+            if (binding != null)
+            {
+                SoapEncodingBindingElement enc = binding.Encodings.OfType<SoapEncodingBindingElement>().FirstOrDefault();
+                if (enc != null)
+                {
+                    if (enc.Style == SoapEncodingStyle.RpcEncoded) return "encoded";
+                }
+            }
+            return "literal";
         }
     }
 }

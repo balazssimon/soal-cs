@@ -46,11 +46,11 @@
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right) throws MathFault;
 	}
-
+	
 	binding HttpSoap11
 	{
 		transport HTTP;
-		encoding SOAP;
+		encoding SOAP;// { Style = RpcEncoded; }
 		protocol WsAddressing;
 	}
 
