@@ -53,14 +53,15 @@ template Generate(Namespace ns)
 	</xs:complexType>
 	[end loop]
 	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
+		[if (!intf.HasAnnotation(SoalAnnotations.Rpc))]
 		[if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
 			[loop(op->param:Parameters)]
-			[GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param.Annotations)]
+	[GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param.Annotations)]
 			[end loop]
 			[if (op.ReturnType != SoalInstance.Void)]
-			[GenerateElement(ns, op.Name+"Response", op.ReturnType, op.ReturnAnnotations)]
+	[GenerateElement(ns, op.Name+"Response", op.ReturnType, op.ReturnAnnotations)]
 			[end if]
-		[else if (!intf.HasAnnotation(SoalAnnotations.Rpc))]
+		[else]
 ^
 	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
 	<xs:complexType name="[op.Name]">
@@ -82,6 +83,7 @@ template Generate(Namespace ns)
 		</xs:sequence>
 			[end if]
 	</xs:complexType>
+		[end if]
 		[end if]
 		[end if]
 	[end loop]

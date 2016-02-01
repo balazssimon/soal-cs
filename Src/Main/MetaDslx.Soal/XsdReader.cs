@@ -276,7 +276,6 @@ namespace MetaDslx.Soal
                         {
                             ArrayType array = SoalFactory.Instance.CreateArrayType();
                             this.Importer.RegisterReplacementType(st, array);
-                            ModelContext.Current.RemoveInstance((ModelObject)st);
                         }
                     }
                 }
@@ -343,11 +342,49 @@ namespace MetaDslx.Soal
                     this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.ResolveXsdType(typeRef.NamespaceName, typeRef.LocalName) as SoalType;
+                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
+                if (result == null)
+                {
+                    result = this.Importer.ResolveXsdPrimitiveType(typeRef.NamespaceName, typeRef.LocalName);
+                }
                 if (result == null)
                 {
                     this.Importer.Diagnostics.AddError("Could not resolve type '" + typeAttr.Value + "'.", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
+                }
+                XAttribute nillableAttr = elem.Attribute("nillable");
+                XAttribute minOccursAttr = elem.Attribute("minOccurs");
+                XAttribute maxOccursAttr = elem.Attribute("maxOccurs");
+                bool nillable = false;
+                int minOccurs = 1;
+                int maxOccurs = 1;
+                if (nillableAttr != null)
+                {
+                    nillable = nillableAttr.Value == "1" || nillableAttr.Value.ToLower() == "true";
+                }
+                if (minOccursAttr != null)
+                {
+                    if (!int.TryParse(minOccursAttr.Value, out minOccurs))
+                    {
+                        minOccurs = 1;
+                    }
+                }
+                if (maxOccursAttr != null)
+                {
+                    if (maxOccursAttr.Value.ToLower() == "unbounded")
+                    {
+                        maxOccurs = -1;
+                    }
+                    else if (!int.TryParse(maxOccursAttr.Value, out maxOccurs))
+                    {
+                        maxOccurs = 1;
+                    }
+                }
+                if (maxOccurs < 0 || maxOccurs > 1)
+                {
+                    ArrayType array = SoalFactory.Instance.CreateArrayType();
+                    array.InnerType = result;
+                    result = array;
                 }
             }
             if (result != null)
@@ -520,6 +557,9 @@ namespace MetaDslx.Soal
                     return null;
                 }
                 prop.Type = rt;
+                Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                noWrap.Name = SoalAnnotations.NoWrap;
+                prop.Annotations.Add(noWrap);
             }
             else
             {

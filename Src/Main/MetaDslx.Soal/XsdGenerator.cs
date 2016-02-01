@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_XsdGenerator_1627589427;
-    namespace __Hidden_XsdGenerator_1627589427
+    using __Hidden_XsdGenerator_339989009;
+    namespace __Hidden_XsdGenerator_339989009
     {
         internal static class __Extensions
         {
@@ -723,319 +723,322 @@ namespace MetaDslx.Soal //1:1
                 var __loop8_var1 = __tmp77.__loop8_var1;
                 var intf = __tmp77.intf;
                 var op = __tmp77.op;
-                if (intf.HasAnnotation(SoalAnnotations.NoWrap)) //56:4
+                if (!intf.HasAnnotation(SoalAnnotations.Rpc)) //56:4
                 {
-                    var __loop9_results = 
-                        (from __loop9_var1 in __Enumerate((op).GetEnumerator()) //57:10
-                        from param in __Enumerate((__loop9_var1.Parameters).GetEnumerator()) //57:14
-                        select new { __loop9_var1 = __loop9_var1, param = param}
-                        ).ToList(); //57:5
-                    int __loop9_iteration = 0;
-                    foreach (var __tmp78 in __loop9_results)
+                    if (intf.HasAnnotation(SoalAnnotations.NoWrap)) //57:4
                     {
-                        ++__loop9_iteration;
-                        var __loop9_var1 = __tmp78.__loop9_var1;
-                        var param = __tmp78.param;
-                        string __tmp79Prefix = "			"; //58:1
-                        string __tmp80Suffix = string.Empty; 
-                        StringBuilder __tmp81 = new StringBuilder();
-                        __tmp81.Append(GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param.Annotations));
-                        using(StreamReader __tmp81Reader = new StreamReader(this.__ToStream(__tmp81.ToString())))
+                        var __loop9_results = 
+                            (from __loop9_var1 in __Enumerate((op).GetEnumerator()) //58:10
+                            from param in __Enumerate((__loop9_var1.Parameters).GetEnumerator()) //58:14
+                            select new { __loop9_var1 = __loop9_var1, param = param}
+                            ).ToList(); //58:5
+                        int __loop9_iteration = 0;
+                        foreach (var __tmp78 in __loop9_results)
                         {
-                            bool __tmp81_first = true;
-                            while(__tmp81_first || !__tmp81Reader.EndOfStream)
+                            ++__loop9_iteration;
+                            var __loop9_var1 = __tmp78.__loop9_var1;
+                            var param = __tmp78.param;
+                            string __tmp79Prefix = "	"; //59:1
+                            string __tmp80Suffix = string.Empty; 
+                            StringBuilder __tmp81 = new StringBuilder();
+                            __tmp81.Append(GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param.Annotations));
+                            using(StreamReader __tmp81Reader = new StreamReader(this.__ToStream(__tmp81.ToString())))
                             {
-                                __tmp81_first = false;
-                                string __tmp81Line = __tmp81Reader.ReadLine();
-                                if (__tmp81Line == null)
+                                bool __tmp81_first = true;
+                                while(__tmp81_first || !__tmp81Reader.EndOfStream)
                                 {
-                                    __tmp81Line = "";
-                                }
-                                __out.Append(__tmp79Prefix);
-                                __out.Append(__tmp81Line);
-                                __out.Append(__tmp80Suffix);
-                                __out.AppendLine(); //58:93
-                            }
-                        }
-                    }
-                    if (op.ReturnType != SoalInstance.Void) //60:5
-                    {
-                        string __tmp82Prefix = "			"; //61:1
-                        string __tmp83Suffix = string.Empty; 
-                        StringBuilder __tmp84 = new StringBuilder();
-                        __tmp84.Append(GenerateElement(ns, op.Name + "Response", op.ReturnType, op.ReturnAnnotations));
-                        using(StreamReader __tmp84Reader = new StreamReader(this.__ToStream(__tmp84.ToString())))
-                        {
-                            bool __tmp84_first = true;
-                            while(__tmp84_first || !__tmp84Reader.EndOfStream)
-                            {
-                                __tmp84_first = false;
-                                string __tmp84Line = __tmp84Reader.ReadLine();
-                                if (__tmp84Line == null)
-                                {
-                                    __tmp84Line = "";
-                                }
-                                __out.Append(__tmp82Prefix);
-                                __out.Append(__tmp84Line);
-                                __out.Append(__tmp83Suffix);
-                                __out.AppendLine(); //61:82
-                            }
-                        }
-                    }
-                }
-                else if (!intf.HasAnnotation(SoalAnnotations.Rpc)) //63:4
-                {
-                    __out.AppendLine(); //64:1
-                    string __tmp85Prefix = "	<xs:element name=\""; //65:1
-                    string __tmp86Suffix = "\"/>"; //65:58
-                    StringBuilder __tmp87 = new StringBuilder();
-                    __tmp87.Append(op.Name);
-                    using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
-                    {
-                        bool __tmp87_first = true;
-                        while(__tmp87_first || !__tmp87Reader.EndOfStream)
-                        {
-                            __tmp87_first = false;
-                            string __tmp87Line = __tmp87Reader.ReadLine();
-                            if (__tmp87Line == null)
-                            {
-                                __tmp87Line = "";
-                            }
-                            __out.Append(__tmp85Prefix);
-                            __out.Append(__tmp87Line);
-                        }
-                    }
-                    string __tmp88Line = "\" type=\""; //65:29
-                    __out.Append(__tmp88Line);
-                    StringBuilder __tmp89 = new StringBuilder();
-                    __tmp89.Append(ns.Prefix);
-                    using(StreamReader __tmp89Reader = new StreamReader(this.__ToStream(__tmp89.ToString())))
-                    {
-                        bool __tmp89_first = true;
-                        while(__tmp89_first || !__tmp89Reader.EndOfStream)
-                        {
-                            __tmp89_first = false;
-                            string __tmp89Line = __tmp89Reader.ReadLine();
-                            if (__tmp89Line == null)
-                            {
-                                __tmp89Line = "";
-                            }
-                            __out.Append(__tmp89Line);
-                        }
-                    }
-                    string __tmp90Line = ":"; //65:48
-                    __out.Append(__tmp90Line);
-                    StringBuilder __tmp91 = new StringBuilder();
-                    __tmp91.Append(op.Name);
-                    using(StreamReader __tmp91Reader = new StreamReader(this.__ToStream(__tmp91.ToString())))
-                    {
-                        bool __tmp91_first = true;
-                        while(__tmp91_first || !__tmp91Reader.EndOfStream)
-                        {
-                            __tmp91_first = false;
-                            string __tmp91Line = __tmp91Reader.ReadLine();
-                            if (__tmp91Line == null)
-                            {
-                                __tmp91Line = "";
-                            }
-                            __out.Append(__tmp91Line);
-                            __out.Append(__tmp86Suffix);
-                            __out.AppendLine(); //65:61
-                        }
-                    }
-                    string __tmp92Prefix = "	<xs:complexType name=\""; //66:1
-                    string __tmp93Suffix = "\">"; //66:33
-                    StringBuilder __tmp94 = new StringBuilder();
-                    __tmp94.Append(op.Name);
-                    using(StreamReader __tmp94Reader = new StreamReader(this.__ToStream(__tmp94.ToString())))
-                    {
-                        bool __tmp94_first = true;
-                        while(__tmp94_first || !__tmp94Reader.EndOfStream)
-                        {
-                            __tmp94_first = false;
-                            string __tmp94Line = __tmp94Reader.ReadLine();
-                            if (__tmp94Line == null)
-                            {
-                                __tmp94Line = "";
-                            }
-                            __out.Append(__tmp92Prefix);
-                            __out.Append(__tmp94Line);
-                            __out.Append(__tmp93Suffix);
-                            __out.AppendLine(); //66:35
-                        }
-                    }
-                    __out.Append("		<xs:sequence>"); //67:1
-                    __out.AppendLine(); //67:16
-                    var __loop10_results = 
-                        (from __loop10_var1 in __Enumerate((op).GetEnumerator()) //68:10
-                        from param in __Enumerate((__loop10_var1.Parameters).GetEnumerator()) //68:14
-                        select new { __loop10_var1 = __loop10_var1, param = param}
-                        ).ToList(); //68:5
-                    int __loop10_iteration = 0;
-                    foreach (var __tmp95 in __loop10_results)
-                    {
-                        ++__loop10_iteration;
-                        var __loop10_var1 = __tmp95.__loop10_var1;
-                        var param = __tmp95.param;
-                        string __tmp96Prefix = "			"; //69:1
-                        string __tmp97Suffix = string.Empty; 
-                        StringBuilder __tmp98 = new StringBuilder();
-                        __tmp98.Append(GenerateElement(ns, param.Name, param.Type, param.Annotations));
-                        using(StreamReader __tmp98Reader = new StreamReader(this.__ToStream(__tmp98.ToString())))
-                        {
-                            bool __tmp98_first = true;
-                            while(__tmp98_first || !__tmp98Reader.EndOfStream)
-                            {
-                                __tmp98_first = false;
-                                string __tmp98Line = __tmp98Reader.ReadLine();
-                                if (__tmp98Line == null)
-                                {
-                                    __tmp98Line = "";
-                                }
-                                __out.Append(__tmp96Prefix);
-                                __out.Append(__tmp98Line);
-                                __out.Append(__tmp97Suffix);
-                                __out.AppendLine(); //69:68
-                            }
-                        }
-                    }
-                    __out.Append("		</xs:sequence>"); //71:1
-                    __out.AppendLine(); //71:17
-                    __out.Append("	</xs:complexType>"); //72:1
-                    __out.AppendLine(); //72:19
-                    if (!op.IsOneway) //73:4
-                    {
-                        __out.AppendLine(); //74:1
-                        string __tmp99Prefix = "	<xs:element name=\""; //75:1
-                        string __tmp100Suffix = "Response\"/>"; //75:66
-                        StringBuilder __tmp101 = new StringBuilder();
-                        __tmp101.Append(op.Name);
-                        using(StreamReader __tmp101Reader = new StreamReader(this.__ToStream(__tmp101.ToString())))
-                        {
-                            bool __tmp101_first = true;
-                            while(__tmp101_first || !__tmp101Reader.EndOfStream)
-                            {
-                                __tmp101_first = false;
-                                string __tmp101Line = __tmp101Reader.ReadLine();
-                                if (__tmp101Line == null)
-                                {
-                                    __tmp101Line = "";
-                                }
-                                __out.Append(__tmp99Prefix);
-                                __out.Append(__tmp101Line);
-                            }
-                        }
-                        string __tmp102Line = "Response\" type=\""; //75:29
-                        __out.Append(__tmp102Line);
-                        StringBuilder __tmp103 = new StringBuilder();
-                        __tmp103.Append(ns.Prefix);
-                        using(StreamReader __tmp103Reader = new StreamReader(this.__ToStream(__tmp103.ToString())))
-                        {
-                            bool __tmp103_first = true;
-                            while(__tmp103_first || !__tmp103Reader.EndOfStream)
-                            {
-                                __tmp103_first = false;
-                                string __tmp103Line = __tmp103Reader.ReadLine();
-                                if (__tmp103Line == null)
-                                {
-                                    __tmp103Line = "";
-                                }
-                                __out.Append(__tmp103Line);
-                            }
-                        }
-                        string __tmp104Line = ":"; //75:56
-                        __out.Append(__tmp104Line);
-                        StringBuilder __tmp105 = new StringBuilder();
-                        __tmp105.Append(op.Name);
-                        using(StreamReader __tmp105Reader = new StreamReader(this.__ToStream(__tmp105.ToString())))
-                        {
-                            bool __tmp105_first = true;
-                            while(__tmp105_first || !__tmp105Reader.EndOfStream)
-                            {
-                                __tmp105_first = false;
-                                string __tmp105Line = __tmp105Reader.ReadLine();
-                                if (__tmp105Line == null)
-                                {
-                                    __tmp105Line = "";
-                                }
-                                __out.Append(__tmp105Line);
-                                __out.Append(__tmp100Suffix);
-                                __out.AppendLine(); //75:77
-                            }
-                        }
-                        string __tmp106Prefix = "	<xs:complexType name=\""; //76:1
-                        string __tmp107Suffix = "Response\">"; //76:33
-                        StringBuilder __tmp108 = new StringBuilder();
-                        __tmp108.Append(op.Name);
-                        using(StreamReader __tmp108Reader = new StreamReader(this.__ToStream(__tmp108.ToString())))
-                        {
-                            bool __tmp108_first = true;
-                            while(__tmp108_first || !__tmp108Reader.EndOfStream)
-                            {
-                                __tmp108_first = false;
-                                string __tmp108Line = __tmp108Reader.ReadLine();
-                                if (__tmp108Line == null)
-                                {
-                                    __tmp108Line = "";
-                                }
-                                __out.Append(__tmp106Prefix);
-                                __out.Append(__tmp108Line);
-                                __out.Append(__tmp107Suffix);
-                                __out.AppendLine(); //76:43
-                            }
-                        }
-                        if (op.ReturnType == SoalInstance.Void) //77:5
-                        {
-                            __out.Append("		<xs:sequence/>"); //78:1
-                            __out.AppendLine(); //78:17
-                        }
-                        else //79:5
-                        {
-                            __out.Append("		<xs:sequence>"); //80:1
-                            __out.AppendLine(); //80:16
-                            string __tmp109Prefix = "			"; //81:1
-                            string __tmp110Suffix = string.Empty; 
-                            StringBuilder __tmp111 = new StringBuilder();
-                            __tmp111.Append(GenerateElement(ns, op.Name + "Result", op.ReturnType, op.ReturnAnnotations));
-                            using(StreamReader __tmp111Reader = new StreamReader(this.__ToStream(__tmp111.ToString())))
-                            {
-                                bool __tmp111_first = true;
-                                while(__tmp111_first || !__tmp111Reader.EndOfStream)
-                                {
-                                    __tmp111_first = false;
-                                    string __tmp111Line = __tmp111Reader.ReadLine();
-                                    if (__tmp111Line == null)
+                                    __tmp81_first = false;
+                                    string __tmp81Line = __tmp81Reader.ReadLine();
+                                    if (__tmp81Line == null)
                                     {
-                                        __tmp111Line = "";
+                                        __tmp81Line = "";
                                     }
-                                    __out.Append(__tmp109Prefix);
-                                    __out.Append(__tmp111Line);
-                                    __out.Append(__tmp110Suffix);
-                                    __out.AppendLine(); //81:80
+                                    __out.Append(__tmp79Prefix);
+                                    __out.Append(__tmp81Line);
+                                    __out.Append(__tmp80Suffix);
+                                    __out.AppendLine(); //59:91
                                 }
                             }
-                            __out.Append("		</xs:sequence>"); //82:1
-                            __out.AppendLine(); //82:17
                         }
-                        __out.Append("	</xs:complexType>"); //84:1
-                        __out.AppendLine(); //84:19
+                        if (op.ReturnType != SoalInstance.Void) //61:5
+                        {
+                            string __tmp82Prefix = "	"; //62:1
+                            string __tmp83Suffix = string.Empty; 
+                            StringBuilder __tmp84 = new StringBuilder();
+                            __tmp84.Append(GenerateElement(ns, op.Name + "Response", op.ReturnType, op.ReturnAnnotations));
+                            using(StreamReader __tmp84Reader = new StreamReader(this.__ToStream(__tmp84.ToString())))
+                            {
+                                bool __tmp84_first = true;
+                                while(__tmp84_first || !__tmp84Reader.EndOfStream)
+                                {
+                                    __tmp84_first = false;
+                                    string __tmp84Line = __tmp84Reader.ReadLine();
+                                    if (__tmp84Line == null)
+                                    {
+                                        __tmp84Line = "";
+                                    }
+                                    __out.Append(__tmp82Prefix);
+                                    __out.Append(__tmp84Line);
+                                    __out.Append(__tmp83Suffix);
+                                    __out.AppendLine(); //62:80
+                                }
+                            }
+                        }
+                    }
+                    else //64:4
+                    {
+                        __out.AppendLine(); //65:1
+                        string __tmp85Prefix = "	<xs:element name=\""; //66:1
+                        string __tmp86Suffix = "\"/>"; //66:58
+                        StringBuilder __tmp87 = new StringBuilder();
+                        __tmp87.Append(op.Name);
+                        using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
+                        {
+                            bool __tmp87_first = true;
+                            while(__tmp87_first || !__tmp87Reader.EndOfStream)
+                            {
+                                __tmp87_first = false;
+                                string __tmp87Line = __tmp87Reader.ReadLine();
+                                if (__tmp87Line == null)
+                                {
+                                    __tmp87Line = "";
+                                }
+                                __out.Append(__tmp85Prefix);
+                                __out.Append(__tmp87Line);
+                            }
+                        }
+                        string __tmp88Line = "\" type=\""; //66:29
+                        __out.Append(__tmp88Line);
+                        StringBuilder __tmp89 = new StringBuilder();
+                        __tmp89.Append(ns.Prefix);
+                        using(StreamReader __tmp89Reader = new StreamReader(this.__ToStream(__tmp89.ToString())))
+                        {
+                            bool __tmp89_first = true;
+                            while(__tmp89_first || !__tmp89Reader.EndOfStream)
+                            {
+                                __tmp89_first = false;
+                                string __tmp89Line = __tmp89Reader.ReadLine();
+                                if (__tmp89Line == null)
+                                {
+                                    __tmp89Line = "";
+                                }
+                                __out.Append(__tmp89Line);
+                            }
+                        }
+                        string __tmp90Line = ":"; //66:48
+                        __out.Append(__tmp90Line);
+                        StringBuilder __tmp91 = new StringBuilder();
+                        __tmp91.Append(op.Name);
+                        using(StreamReader __tmp91Reader = new StreamReader(this.__ToStream(__tmp91.ToString())))
+                        {
+                            bool __tmp91_first = true;
+                            while(__tmp91_first || !__tmp91Reader.EndOfStream)
+                            {
+                                __tmp91_first = false;
+                                string __tmp91Line = __tmp91Reader.ReadLine();
+                                if (__tmp91Line == null)
+                                {
+                                    __tmp91Line = "";
+                                }
+                                __out.Append(__tmp91Line);
+                                __out.Append(__tmp86Suffix);
+                                __out.AppendLine(); //66:61
+                            }
+                        }
+                        string __tmp92Prefix = "	<xs:complexType name=\""; //67:1
+                        string __tmp93Suffix = "\">"; //67:33
+                        StringBuilder __tmp94 = new StringBuilder();
+                        __tmp94.Append(op.Name);
+                        using(StreamReader __tmp94Reader = new StreamReader(this.__ToStream(__tmp94.ToString())))
+                        {
+                            bool __tmp94_first = true;
+                            while(__tmp94_first || !__tmp94Reader.EndOfStream)
+                            {
+                                __tmp94_first = false;
+                                string __tmp94Line = __tmp94Reader.ReadLine();
+                                if (__tmp94Line == null)
+                                {
+                                    __tmp94Line = "";
+                                }
+                                __out.Append(__tmp92Prefix);
+                                __out.Append(__tmp94Line);
+                                __out.Append(__tmp93Suffix);
+                                __out.AppendLine(); //67:35
+                            }
+                        }
+                        __out.Append("		<xs:sequence>"); //68:1
+                        __out.AppendLine(); //68:16
+                        var __loop10_results = 
+                            (from __loop10_var1 in __Enumerate((op).GetEnumerator()) //69:10
+                            from param in __Enumerate((__loop10_var1.Parameters).GetEnumerator()) //69:14
+                            select new { __loop10_var1 = __loop10_var1, param = param}
+                            ).ToList(); //69:5
+                        int __loop10_iteration = 0;
+                        foreach (var __tmp95 in __loop10_results)
+                        {
+                            ++__loop10_iteration;
+                            var __loop10_var1 = __tmp95.__loop10_var1;
+                            var param = __tmp95.param;
+                            string __tmp96Prefix = "			"; //70:1
+                            string __tmp97Suffix = string.Empty; 
+                            StringBuilder __tmp98 = new StringBuilder();
+                            __tmp98.Append(GenerateElement(ns, param.Name, param.Type, param.Annotations));
+                            using(StreamReader __tmp98Reader = new StreamReader(this.__ToStream(__tmp98.ToString())))
+                            {
+                                bool __tmp98_first = true;
+                                while(__tmp98_first || !__tmp98Reader.EndOfStream)
+                                {
+                                    __tmp98_first = false;
+                                    string __tmp98Line = __tmp98Reader.ReadLine();
+                                    if (__tmp98Line == null)
+                                    {
+                                        __tmp98Line = "";
+                                    }
+                                    __out.Append(__tmp96Prefix);
+                                    __out.Append(__tmp98Line);
+                                    __out.Append(__tmp97Suffix);
+                                    __out.AppendLine(); //70:68
+                                }
+                            }
+                        }
+                        __out.Append("		</xs:sequence>"); //72:1
+                        __out.AppendLine(); //72:17
+                        __out.Append("	</xs:complexType>"); //73:1
+                        __out.AppendLine(); //73:19
+                        if (!op.IsOneway) //74:4
+                        {
+                            __out.AppendLine(); //75:1
+                            string __tmp99Prefix = "	<xs:element name=\""; //76:1
+                            string __tmp100Suffix = "Response\"/>"; //76:66
+                            StringBuilder __tmp101 = new StringBuilder();
+                            __tmp101.Append(op.Name);
+                            using(StreamReader __tmp101Reader = new StreamReader(this.__ToStream(__tmp101.ToString())))
+                            {
+                                bool __tmp101_first = true;
+                                while(__tmp101_first || !__tmp101Reader.EndOfStream)
+                                {
+                                    __tmp101_first = false;
+                                    string __tmp101Line = __tmp101Reader.ReadLine();
+                                    if (__tmp101Line == null)
+                                    {
+                                        __tmp101Line = "";
+                                    }
+                                    __out.Append(__tmp99Prefix);
+                                    __out.Append(__tmp101Line);
+                                }
+                            }
+                            string __tmp102Line = "Response\" type=\""; //76:29
+                            __out.Append(__tmp102Line);
+                            StringBuilder __tmp103 = new StringBuilder();
+                            __tmp103.Append(ns.Prefix);
+                            using(StreamReader __tmp103Reader = new StreamReader(this.__ToStream(__tmp103.ToString())))
+                            {
+                                bool __tmp103_first = true;
+                                while(__tmp103_first || !__tmp103Reader.EndOfStream)
+                                {
+                                    __tmp103_first = false;
+                                    string __tmp103Line = __tmp103Reader.ReadLine();
+                                    if (__tmp103Line == null)
+                                    {
+                                        __tmp103Line = "";
+                                    }
+                                    __out.Append(__tmp103Line);
+                                }
+                            }
+                            string __tmp104Line = ":"; //76:56
+                            __out.Append(__tmp104Line);
+                            StringBuilder __tmp105 = new StringBuilder();
+                            __tmp105.Append(op.Name);
+                            using(StreamReader __tmp105Reader = new StreamReader(this.__ToStream(__tmp105.ToString())))
+                            {
+                                bool __tmp105_first = true;
+                                while(__tmp105_first || !__tmp105Reader.EndOfStream)
+                                {
+                                    __tmp105_first = false;
+                                    string __tmp105Line = __tmp105Reader.ReadLine();
+                                    if (__tmp105Line == null)
+                                    {
+                                        __tmp105Line = "";
+                                    }
+                                    __out.Append(__tmp105Line);
+                                    __out.Append(__tmp100Suffix);
+                                    __out.AppendLine(); //76:77
+                                }
+                            }
+                            string __tmp106Prefix = "	<xs:complexType name=\""; //77:1
+                            string __tmp107Suffix = "Response\">"; //77:33
+                            StringBuilder __tmp108 = new StringBuilder();
+                            __tmp108.Append(op.Name);
+                            using(StreamReader __tmp108Reader = new StreamReader(this.__ToStream(__tmp108.ToString())))
+                            {
+                                bool __tmp108_first = true;
+                                while(__tmp108_first || !__tmp108Reader.EndOfStream)
+                                {
+                                    __tmp108_first = false;
+                                    string __tmp108Line = __tmp108Reader.ReadLine();
+                                    if (__tmp108Line == null)
+                                    {
+                                        __tmp108Line = "";
+                                    }
+                                    __out.Append(__tmp106Prefix);
+                                    __out.Append(__tmp108Line);
+                                    __out.Append(__tmp107Suffix);
+                                    __out.AppendLine(); //77:43
+                                }
+                            }
+                            if (op.ReturnType == SoalInstance.Void) //78:5
+                            {
+                                __out.Append("		<xs:sequence/>"); //79:1
+                                __out.AppendLine(); //79:17
+                            }
+                            else //80:5
+                            {
+                                __out.Append("		<xs:sequence>"); //81:1
+                                __out.AppendLine(); //81:16
+                                string __tmp109Prefix = "			"; //82:1
+                                string __tmp110Suffix = string.Empty; 
+                                StringBuilder __tmp111 = new StringBuilder();
+                                __tmp111.Append(GenerateElement(ns, op.Name + "Result", op.ReturnType, op.ReturnAnnotations));
+                                using(StreamReader __tmp111Reader = new StreamReader(this.__ToStream(__tmp111.ToString())))
+                                {
+                                    bool __tmp111_first = true;
+                                    while(__tmp111_first || !__tmp111Reader.EndOfStream)
+                                    {
+                                        __tmp111_first = false;
+                                        string __tmp111Line = __tmp111Reader.ReadLine();
+                                        if (__tmp111Line == null)
+                                        {
+                                            __tmp111Line = "";
+                                        }
+                                        __out.Append(__tmp109Prefix);
+                                        __out.Append(__tmp111Line);
+                                        __out.Append(__tmp110Suffix);
+                                        __out.AppendLine(); //82:80
+                                    }
+                                }
+                                __out.Append("		</xs:sequence>"); //83:1
+                                __out.AppendLine(); //83:17
+                            }
+                            __out.Append("	</xs:complexType>"); //85:1
+                            __out.AppendLine(); //85:19
+                        }
                     }
                 }
             }
-            __out.Append("</xs:schema>"); //88:1
-            __out.AppendLine(); //88:13
+            __out.Append("</xs:schema>"); //90:1
+            __out.AppendLine(); //90:13
             return __out.ToString();
         }
 
-        public string GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots) //91:1
+        public string GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots) //93:1
         {
             StringBuilder __out = new StringBuilder();
-            if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap)) //92:3
+            if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap)) //94:3
             {
-                if (t is ArrayType) //93:4
+                if (t is ArrayType) //95:4
                 {
-                    string __tmp1Prefix = "<xs:element name=\""; //94:1
-                    string __tmp2Suffix = "\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>"; //94:177
+                    string __tmp1Prefix = "<xs:element name=\""; //96:1
+                    string __tmp2Suffix = "\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>"; //96:177
                     StringBuilder __tmp3 = new StringBuilder();
                     __tmp3.Append(name);
                     using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -1053,7 +1056,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp3Line);
                         }
                     }
-                    string __tmp4Line = "\" type=\""; //94:25
+                    string __tmp4Line = "\" type=\""; //96:25
                     __out.Append(__tmp4Line);
                     StringBuilder __tmp5 = new StringBuilder();
                     __tmp5.Append(((ArrayType)t).InnerType.GetNamespace(ns).Prefix);
@@ -1071,7 +1074,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp5Line);
                         }
                     }
-                    string __tmp6Line = ":"; //94:83
+                    string __tmp6Line = ":"; //96:83
                     __out.Append(__tmp6Line);
                     StringBuilder __tmp7 = new StringBuilder();
                     __tmp7.Append(((ArrayType)t).InnerType.GetXsdName());
@@ -1089,7 +1092,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp7Line);
                         }
                     }
-                    string __tmp8Line = "\" nillable=\""; //94:123
+                    string __tmp8Line = "\" nillable=\""; //96:123
                     __out.Append(__tmp8Line);
                     StringBuilder __tmp9 = new StringBuilder();
                     __tmp9.Append(((ArrayType)t).InnerType.IsNullableXsd());
@@ -1106,14 +1109,14 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp9Line);
                             __out.Append(__tmp2Suffix);
-                            __out.AppendLine(); //94:216
+                            __out.AppendLine(); //96:216
                         }
                     }
                 }
-                else //95:4
+                else //97:4
                 {
-                    string __tmp10Prefix = "<xs:element name=\""; //96:1
-                    string __tmp11Suffix = "\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>"; //96:264
+                    string __tmp10Prefix = "<xs:element name=\""; //98:1
+                    string __tmp11Suffix = "\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>"; //98:264
                     StringBuilder __tmp12 = new StringBuilder();
                     __tmp12.Append(name);
                     using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -1131,7 +1134,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp12Line);
                         }
                     }
-                    string __tmp13Line = "\" type=\""; //96:25
+                    string __tmp13Line = "\" type=\""; //98:25
                     __out.Append(__tmp13Line);
                     StringBuilder __tmp14 = new StringBuilder();
                     __tmp14.Append(((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix);
@@ -1149,7 +1152,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp14Line);
                         }
                     }
-                    string __tmp15Line = ":"; //96:112
+                    string __tmp15Line = ":"; //98:112
                     __out.Append(__tmp15Line);
                     StringBuilder __tmp16 = new StringBuilder();
                     __tmp16.Append(((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName());
@@ -1167,7 +1170,7 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp16Line);
                         }
                     }
-                    string __tmp17Line = "\" nillable=\""; //96:181
+                    string __tmp17Line = "\" nillable=\""; //98:181
                     __out.Append(__tmp17Line);
                     StringBuilder __tmp18 = new StringBuilder();
                     __tmp18.Append(((ArrayType)((NonNullableType)t).InnerType).InnerType.IsNullableXsd());
@@ -1184,15 +1187,15 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp18Line);
                             __out.Append(__tmp11Suffix);
-                            __out.AppendLine(); //96:303
+                            __out.AppendLine(); //98:303
                         }
                     }
                 }
             }
-            else //98:3
+            else //100:3
             {
-                string __tmp19Prefix = "<xs:element name=\""; //99:1
-                string __tmp20Suffix = "\"/>"; //99:108
+                string __tmp19Prefix = "<xs:element name=\""; //101:1
+                string __tmp20Suffix = "\"/>"; //101:108
                 StringBuilder __tmp21 = new StringBuilder();
                 __tmp21.Append(name);
                 using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
@@ -1210,7 +1213,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp21Line);
                     }
                 }
-                string __tmp22Line = "\" type=\""; //99:25
+                string __tmp22Line = "\" type=\""; //101:25
                 __out.Append(__tmp22Line);
                 StringBuilder __tmp23 = new StringBuilder();
                 __tmp23.Append(t.GetNamespace(ns).Prefix);
@@ -1228,7 +1231,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp23Line);
                     }
                 }
-                string __tmp24Line = ":"; //99:60
+                string __tmp24Line = ":"; //101:60
                 __out.Append(__tmp24Line);
                 StringBuilder __tmp25 = new StringBuilder();
                 __tmp25.Append(t.GetXsdName());
@@ -1246,7 +1249,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp25Line);
                     }
                 }
-                string __tmp26Line = "\" nillable=\""; //99:77
+                string __tmp26Line = "\" nillable=\""; //101:77
                 __out.Append(__tmp26Line);
                 StringBuilder __tmp27 = new StringBuilder();
                 __tmp27.Append(t.IsNullableXsd());
@@ -1263,26 +1266,26 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp27Line);
                         __out.Append(__tmp20Suffix);
-                        __out.AppendLine(); //99:111
+                        __out.AppendLine(); //101:111
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GetStructKind(StructuredType st) //103:1
+        public string GetStructKind(StructuredType st) //105:1
         {
-            if (st.HasAnnotation(SoalAnnotations.Choice)) //104:2
+            if (st.HasAnnotation(SoalAnnotations.Choice)) //106:2
             {
-                return "choice"; //105:3
+                return "choice"; //107:3
             }
-            else if (st.HasAnnotation(SoalAnnotations.All)) //106:2
+            else if (st.HasAnnotation(SoalAnnotations.All)) //108:2
             {
-                return "all"; //107:3
+                return "all"; //109:3
             }
-            else //108:2
+            else //110:2
             {
-                return "sequence"; //109:3
+                return "sequence"; //111:3
             }
         }
 

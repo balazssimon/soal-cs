@@ -81,22 +81,7 @@ end template
 
 template GenerateMessages(Interface intf)
 [loop(intf.Operations->op:typeof(Operation))]
-	[if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
-^
-<wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
-		[loop(op->param:Parameters)]
-	<wsdl:part name="[param.Name]" element="[intf.Namespace.Prefix]:[op.Name][param.Name.ToPascalCase()]"/>
-		[end loop]
-</wsdl:message>
-		[if(!op.IsOneway)]
-^
-<wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
-			[if (op.ReturnType != SoalInstance.Void)]
-	<wsdl:part name="result" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
-			[end if]
-</wsdl:message>
-		[end if]
-	[else if (intf.HasAnnotation(SoalAnnotations.Rpc))]
+	[if (intf.HasAnnotation(SoalAnnotations.Rpc))]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
 		[loop(op->param:Parameters)]
@@ -108,6 +93,21 @@ template GenerateMessages(Interface intf)
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
 			[if (op.ReturnType != SoalInstance.Void)]
 	<wsdl:part name="result" type="[op.ReturnType.GetNamespace(intf.Namespace).Prefix]:[op.ReturnType.GetXsdName()]"/>
+			[end if]
+</wsdl:message>
+		[end if]
+	[else if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
+^
+<wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
+		[loop(op->param:Parameters)]
+	<wsdl:part name="[param.Name]" element="[intf.Namespace.Prefix]:[op.Name][param.Name.ToPascalCase()]"/>
+		[end loop]
+</wsdl:message>
+		[if(!op.IsOneway)]
+^
+<wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
+			[if (op.ReturnType != SoalInstance.Void)]
+	<wsdl:part name="result" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
 			[end if]
 </wsdl:message>
 		[end if]

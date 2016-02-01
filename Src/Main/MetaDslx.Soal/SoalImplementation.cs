@@ -40,6 +40,8 @@ namespace MetaDslx.Soal
     {
         public static string FullName(this Declaration declaration)
         {
+            if (declaration == null) return string.Empty;
+            if (declaration.Namespace == null) return declaration.Name;
             return declaration.Namespace.FullName + "." + declaration.Name;
         }
 
