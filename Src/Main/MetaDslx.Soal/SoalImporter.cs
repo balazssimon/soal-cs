@@ -18,6 +18,7 @@ namespace MetaDslx.Soal
         private SoalImporter importer;
         private Dictionary<XObject, TObject> objectsByElement = new Dictionary<XObject, TObject>();
         private Dictionary<XName, TObject> objectsByName = new Dictionary<XName, TObject>();
+        private Dictionary<XName, TXObject> elementsByName = new Dictionary<XName, TXObject>();
         private Dictionary<TObject, TXObject> elementsByObject = new Dictionary<TObject, TXObject>();
 
         public ObjectStorage(string name, SoalImporter importer)
@@ -26,7 +27,7 @@ namespace MetaDslx.Soal
             this.importer = importer;
         }
 
-        internal object Register(XmlReader reader, XName xname, TXObject xobj, TObject obj)
+        internal TObject Register(XmlReader reader, XName xname, TXObject xobj, TObject obj)
         {
             TObject oldObject = null;
             if (this.objectsByName.TryGetValue(xname, out oldObject))
@@ -41,14 +42,20 @@ namespace MetaDslx.Soal
                 this.importer.Diagnostics.AddError("The " + this.name + " '" + xname + "' has already an object assigned to it.", reader.Uri, SoalImporter.GetTextSpan(xobj));
                 return null;
             }
-            /*TXObject oldXObject = null;
+            TXObject oldXObject = null;
+            if (this.elementsByName.TryGetValue(xname, out oldXObject))
+            {
+                this.importer.Diagnostics.AddError("The " + this.name + " '" + xname + "' is already registered to '" + oldXObject.BaseUri + "' at '" + SoalImporter.GetTextSpan(oldXObject) + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
+                return null;
+            }
             if (this.elementsByObject.TryGetValue(obj, out oldXObject))
             {
-                this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " '" + xname + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
-                return null;
-            }*/
+                //this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " '" + xname + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
+                //return null;
+            }
             this.objectsByName.Add(xname, obj);
             this.objectsByElement.Add(xobj, obj);
+            this.elementsByName.Add(xname, xobj);
             if (!this.elementsByObject.ContainsKey(obj))
             {
                 this.elementsByObject.Add(obj, xobj);
@@ -75,17 +82,9 @@ namespace MetaDslx.Soal
         internal TXObject GetX(XName xname)
         {
             if (xname == null) return null;
-            TObject obj = null;
-            if (xname != null)
-            {
-                this.objectsByName.TryGetValue(xname, out obj);
-            }
-            TXObject xobj = null;
-            if (obj != null)
-            {
-                this.elementsByObject.TryGetValue(obj, out xobj);
-            }
-            return xobj;
+            TXObject result = null;
+            this.elementsByName.TryGetValue(xname, out result);
+            return result;
         }
 
     }
@@ -104,6 +103,7 @@ namespace MetaDslx.Soal
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
         internal ObjectStorage<SoalType, XElement> XsdTypes { get; private set; }
         internal ObjectStorage<SoalType, XElement> XsdElements { get; private set; }
+        internal ObjectStorage<SoalType, XElement> XsdAttributes { get; private set; }
         internal ObjectStorage<WsdlMessage, XElement> WsdlMessages { get; private set; }
 
         private SoalImporter(ModelCompilerDiagnostics diagnostics)
@@ -114,6 +114,7 @@ namespace MetaDslx.Soal
             this.byteArray.InnerType = SoalInstance.Byte;
             this.XsdTypes = new ObjectStorage<SoalType, XElement>("type", this);
             this.XsdElements = new ObjectStorage<SoalType, XElement>("element", this);
+            this.XsdAttributes = new ObjectStorage<SoalType, XElement>("attribute", this);
             this.WsdlMessages = new ObjectStorage<WsdlMessage, XElement>("message", this);
         }
 
@@ -126,12 +127,19 @@ namespace MetaDslx.Soal
             }
             SoalImporter importer = new SoalImporter(diagnostics);
             importer.ImportFile(uri);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase2(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase3(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase4(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase5(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase6(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             ImportPhase7(importer);
+            if (importer.Diagnostics.HasErrors()) return;
             foreach (var type in importer.typesToRemove)
             {
                 Declaration decl = type as Declaration;
@@ -216,6 +224,17 @@ namespace MetaDslx.Soal
                 foreach (var r in reader.Value)
                 {
                     r.ImportPhase7();
+                }
+            }
+        }
+
+        private static void ImportPhase8(SoalImporter importer)
+        {
+            foreach (var reader in importer.readers)
+            {
+                foreach (var r in reader.Value)
+                {
+                    r.ImportPhase8();
                 }
             }
         }
@@ -378,13 +397,6 @@ namespace MetaDslx.Soal
             this.typesToRemove.Add(type);
         }
 
-        internal SoalType GetReplacementType(SoalType original)
-        {
-            SoalType result = null;
-            this.replacementTypes.TryGetValue(original, out result);
-            return result;
-        }
-
         internal SoalType GetExceptionType(SoalType original)
         {
             SoalType result = null;
@@ -399,18 +411,52 @@ namespace MetaDslx.Soal
                 switch (name)
                 {
                     case "any": return SoalInstance.Object;
+                    case "anySimpleType": return SoalInstance.Object;
                     case "string": return SoalInstance.String;
+                    case "anyURI": return SoalInstance.String;
+                    case "QName": return SoalInstance.String;
+                    case "NOTATION": return SoalInstance.String;
+                    case "normalizedString": return SoalInstance.String;
+                    case "token": return SoalInstance.String;
+                    case "language": return SoalInstance.String;
+                    case "Name": return SoalInstance.String;
+                    case "NCName": return SoalInstance.String;
+                    case "NMTOKEN": return SoalInstance.String;
+                    case "NMTOKENS": return SoalInstance.String;
+                    case "ID": return SoalInstance.String;
+                    case "IDREF": return SoalInstance.String;
+                    case "IDREFS": return SoalInstance.String;
+                    case "ENTITY": return SoalInstance.String;
+                    case "ENTITIES": return SoalInstance.String;
+                    case "integer": return SoalInstance.Int;
+                    case "nonPositiveInteger": return SoalInstance.Int;
+                    case "negativeInteger": return SoalInstance.Int;
                     case "int": return SoalInstance.Int;
+                    case "short": return SoalInstance.Int;
+                    case "nonNegativeInteger": return SoalInstance.Int;
+                    case "positiveInteger": return SoalInstance.Int;
+                    case "unsignedInt": return SoalInstance.Int;
+                    case "unsignedShort": return SoalInstance.Int;
                     case "long": return SoalInstance.Long;
+                    case "unsignedLong": return SoalInstance.Int;
                     case "float": return SoalInstance.Float;
                     case "double": return SoalInstance.Double;
+                    case "decimal": return SoalInstance.Double;
                     case "byte": return SoalInstance.Byte;
+                    case "unsignedByte": return SoalInstance.Byte;
                     case "base64Binary": return this.byteArray;
+                    case "hexBinary": return this.byteArray;
                     case "bool": return SoalInstance.Bool;
+                    case "boolean": return SoalInstance.Bool;
                     case "time": return SoalInstance.Time;
                     case "date": return SoalInstance.Date;
                     case "dateTime": return SoalInstance.DateTime;
                     case "duration": return SoalInstance.TimeSpan;
+                    case "gDay": return SoalInstance.Date;
+                    case "gMonth": return SoalInstance.Date;
+                    case "gMonthDay": return SoalInstance.Date;
+                    case "gYear": return SoalInstance.Date;
+                    case "gYearMonth": return SoalInstance.Date;
                     default:
                         break;
                 }
@@ -420,16 +466,18 @@ namespace MetaDslx.Soal
 
         internal SoalType ResolveXsdType(string uri, string name)
         {
+            SoalType result = null;
             if (uri == XsdReader.XsdNamespace)
             {
-                return this.ResolveXsdPrimitiveType(uri, name);
+                result = this.ResolveXsdPrimitiveType(uri, name);
+                if (result != null) return result;
             }
             Namespace ns = this.GetNamespace(uri);
             if (ns != null)
             {
                 IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)ns }, ResolveKind.NameOrType, name, new ResolutionInfo(), ResolveFlags.Children);
-                ModelObject result = results.FirstOrDefault();
-                SoalType type = result as SoalType;
+                ModelObject mo = results.FirstOrDefault();
+                SoalType type = mo as SoalType;
                 return this.ResolveXsdReplacementType(type);
             }
             return null;
@@ -437,12 +485,15 @@ namespace MetaDslx.Soal
 
         internal SoalType ResolveXsdReplacementType(SoalType type)
         {
-            SoalType replacementType;
-            if (type != null && this.replacementTypes.TryGetValue(type, out replacementType))
+            while (true)
             {
-                return replacementType;
+                SoalType replacementType = null;
+                if (type != null && this.replacementTypes.TryGetValue(type, out replacementType))
+                {
+                    type = replacementType;
+                }
+                if (replacementType == null) return type;
             }
-            return type;
         }
 
         private void RegisterReader(string uri, XmlReader reader)

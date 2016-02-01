@@ -2669,7 +2669,7 @@ namespace MetaDslx.Soal
 				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => PrimitiveType_NullableProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
@@ -4666,7 +4666,7 @@ namespace MetaDslx.Soal
     }
     
     
-    public interface PrimitiveType : global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement
+    public interface PrimitiveType : global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration
     {
         bool Nullable { get; set; }
     
@@ -4692,6 +4692,7 @@ namespace MetaDslx.Soal
         public PrimitiveTypeImpl() 
         {
             this.MLazySet(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty, new Lazy<object>(() => false, LazyThreadSafetyMode.ExecutionAndPublication));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<Annotation>(this, global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.PrimitiveType(this);
             this.MMakeDefault();
         }
@@ -4707,6 +4708,17 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty, value); }
         }
         
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
         string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
@@ -4716,6 +4728,16 @@ namespace MetaDslx.Soal
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Annotation> global::MetaDslx.Soal.AnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Annotation>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Annotation>);
+            }
         }
     }
     
@@ -8111,13 +8133,13 @@ namespace MetaDslx.Soal
     
         /// <summary>
     	/// Implements the constructor: PrimitiveType()
-    	/// Direct superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement
+    	/// Direct superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.AnnotatedElement
         /// </summary>
         public virtual void PrimitiveType(PrimitiveType @this)
         {
             this.SoalType(@this);
-            this.NamedElement(@this);
+            this.Declaration(@this);
         }
     
         /// <summary>

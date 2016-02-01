@@ -52,33 +52,38 @@ namespace MetaDslx.Soal
         {
         }
 
-        // XSD elements:
+        // XSD simple type restriction base:
         public virtual void ImportPhase2()
         {
         }
 
-        // XSD type structure:
+        // XSD elements:
         public virtual void ImportPhase3()
         {
         }
 
-        // WSDL messages and policies:
+        // XSD type structure:
         public virtual void ImportPhase4()
         {
         }
 
-        // WSDL portTypes:
+        // WSDL messages and policies:
         public virtual void ImportPhase5()
         {
         }
 
-        // WSDL bindings:
+        // WSDL portTypes:
         public virtual void ImportPhase6()
         {
         }
 
-        // WSDL services:
+        // WSDL bindings:
         public virtual void ImportPhase7()
+        {
+        }
+
+        // WSDL services:
+        public virtual void ImportPhase8()
         {
         }
     }

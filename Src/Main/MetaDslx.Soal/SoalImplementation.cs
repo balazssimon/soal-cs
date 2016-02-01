@@ -13,6 +13,9 @@ namespace MetaDslx.Soal
         public const string Choice = "Choice";
         public const string Rpc = "Rpc";
         public const string NoWrap = "NoWrap";
+        public const string Optional = "Optional";
+        public const string Attribute = "Attribute";
+        public const string Required = "Required";
     }
 
     internal class SoalImplementation : SoalImplementationBase

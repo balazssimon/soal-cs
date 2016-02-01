@@ -91,6 +91,17 @@ template Generate(Namespace ns)
 end template
 
 template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots)
+[if (annots.ContainsAnnotation(SoalAnnotations.Attribute))]
+	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap))]
+		[if (t is ArrayType)]
+<xs:attribute name="[name]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]"[GetAttributeRequired(annots)]/>
+		[else]
+<xs:attribute name="[name]" type="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]"[GetAttributeRequired(annots)]/>
+		[end if]
+	[else]
+<xs:attribute name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]"[GetAttributeRequired(annots)]/>
+	[end if]
+[else]
 	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap))]
 		[if (t is ArrayType)]
 <xs:element name="[name]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]" nillable="[((ArrayType)t).InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
@@ -100,6 +111,7 @@ template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation
 	[else]
 <xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"/>
 	[end if]
+[end if]
 end template
 
 function string GetStructKind(StructuredType st)
@@ -109,5 +121,13 @@ function string GetStructKind(StructuredType st)
 		return "all";
 	else
 		return "sequence";
+	end if
+end function
+
+function string GetAttributeRequired(IList<Annotation> annots)
+	if (annots.ContainsAnnotation(SoalAnnotations.Attribute)) 
+		return " use=\"required\"";
+	else
+		return "";
 	end if
 end function

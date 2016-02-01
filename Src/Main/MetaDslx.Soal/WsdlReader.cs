@@ -89,7 +89,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase4()
+        public override void ImportPhase5()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -181,7 +181,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase5()
+        public override void ImportPhase6()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -624,7 +624,7 @@ namespace MetaDslx.Soal
             return ex;
         }
 
-        public override void ImportPhase6()
+        public override void ImportPhase7()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -637,7 +637,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase7()
+        public override void ImportPhase8()
         {
             foreach (var elem in this.Root.Elements())
             {

@@ -84,7 +84,7 @@
 		SoalType InnerType;
 	}
 
-	class PrimitiveType : SoalType, NamedElement
+	class PrimitiveType : SoalType, Declaration
 	{
 		PrimitiveType()
 		{
