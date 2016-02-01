@@ -25,9 +25,15 @@
 	class Annotation : NamedElement
 	{
 		AnnotatedElement AnnotatedElement;
+		containment list<AnnotationProperty> Properties;
 	}
 
 	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;
+
+	class AnnotationProperty : NamedElement
+	{
+		string Value;
+	}
 	
 	abstract class NamedElement
 	{

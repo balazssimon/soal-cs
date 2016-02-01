@@ -30,7 +30,15 @@ annotation : TOpenBracket annotationBody TCloseBracket;
                    
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
-annotationBody :                        identifier;
+annotationBody :                        identifier annotationProperties?;
+
+annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+
+annotationPropertyList : annotationProperty (TComma annotationProperty)*;
+
+                     
+                           
+annotationProperty :                        identifier TAssign                         constantValue;
 
                                                                       
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
@@ -43,7 +51,7 @@ declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entit
               
 enumDeclaration : annotationList? KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
 
-enumLiterals : enumLiteral (TComma enumLiteral)*;
+enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
                        
                      
@@ -337,6 +345,12 @@ simpleArrayType :                               simpleType TOpenBracket TCloseBr
 
                    
 nulledArrayType :                               nulledType TOpenBracket TCloseBracket;
+
+
+constantValue
+	: literal
+	| identifier
+	;
 
 // Identifiers
      

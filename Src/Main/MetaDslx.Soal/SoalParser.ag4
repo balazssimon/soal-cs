@@ -30,7 +30,15 @@ $Property(ReturnAnnotations)
 $Symbol(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
-annotationBody : $Property(Name) $Value identifier;
+annotationBody : $Property(Name) $Value identifier annotationProperties?;
+
+annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+
+annotationPropertyList : annotationProperty (TComma annotationProperty)*;
+
+$Property(Properties)
+$Symbol(AnnotationProperty)
+annotationProperty : $Property(Name) $Value identifier TAssign $Property(Value) $Value constantValue;
 
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
@@ -43,7 +51,7 @@ declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entit
 $TypeDef(Enum)
 enumDeclaration : annotationList? KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
 
-enumLiterals : enumLiteral (TComma enumLiteral)*;
+enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
 $Property(EnumLiterals)
 $NameDef(EnumLiteral)
@@ -337,6 +345,12 @@ simpleArrayType : $Property(InnerType) $TypeUse simpleType TOpenBracket TCloseBr
 
 $TypeCtr(ArrayType)
 nulledArrayType : $Property(InnerType) $TypeUse nulledType TOpenBracket TCloseBracket;
+
+
+constantValue
+	: literal
+	| identifier
+	;
 
 // Identifiers
 $Name

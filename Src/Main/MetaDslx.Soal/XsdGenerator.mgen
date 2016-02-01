@@ -42,7 +42,6 @@ template Generate(Namespace ns)
 	</xs:simpleType>
 	[end loop]
 	[loop(ns.Declarations->stype:typeof(StructuredType))]
-		[if (!stype.HasAnnotation(SoalAnnotations.Message))]
 ^
 	<xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
 	<xs:complexType name="[stype.GetXsdName()]">
@@ -52,10 +51,16 @@ template Generate(Namespace ns)
 			[end loop]
 		</xs:[GetStructKind(stype)]>
 	</xs:complexType>
-		[end if]
 	[end loop]
 	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
-		[if (!intf.HasAnnotation(SoalAnnotations.Message))]
+		[if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
+			[loop(op->param:Parameters)]
+			[GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param.Annotations)]
+			[end loop]
+			[if (op.ReturnType != SoalInstance.Void)]
+			[GenerateElement(ns, op.Name+"Response", op.ReturnType, op.ReturnAnnotations)]
+			[end if]
+		[else if (!intf.HasAnnotation(SoalAnnotations.Rpc))]
 ^
 	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
 	<xs:complexType name="[op.Name]">

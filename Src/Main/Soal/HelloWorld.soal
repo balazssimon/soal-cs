@@ -33,7 +33,8 @@
 		Reserved
 	}
 
-	[NoWrap]
+	//[NoWrap]
+	//[Rpc]
 	interface IHello
 	{
 		string SayHello(string name);

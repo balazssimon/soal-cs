@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\bhviweuo.wtv\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\tddcgvvq.hqi\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -129,6 +129,36 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotationBody([NotNull] SoalParser.AnnotationBodyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationProperties([NotNull] SoalParser.AnnotationPropertiesContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationProperties([NotNull] SoalParser.AnnotationPropertiesContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationPropertyList([NotNull] SoalParser.AnnotationPropertyListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationPropertyList([NotNull] SoalParser.AnnotationPropertyListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationProperty([NotNull] SoalParser.AnnotationPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationProperty([NotNull] SoalParser.AnnotationPropertyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
 	/// </summary>
@@ -919,6 +949,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitNulledArrayType([NotNull] SoalParser.NulledArrayTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.constantValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConstantValue([NotNull] SoalParser.ConstantValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.constantValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConstantValue([NotNull] SoalParser.ConstantValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// </summary>

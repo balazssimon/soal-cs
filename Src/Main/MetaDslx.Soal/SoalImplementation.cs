@@ -11,7 +11,7 @@ namespace MetaDslx.Soal
     {
         public const string All = "All";
         public const string Choice = "Choice";
-        public const string Message = "Message";
+        public const string Rpc = "Rpc";
         public const string NoWrap = "NoWrap";
     }
 

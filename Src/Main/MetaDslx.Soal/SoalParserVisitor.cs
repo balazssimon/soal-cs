@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\bhviweuo.wtv\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\tddcgvvq.hqi\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -90,6 +90,24 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAnnotationBody([NotNull] SoalParser.AnnotationBodyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.annotationProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationProperties([NotNull] SoalParser.AnnotationPropertiesContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.annotationPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationPropertyList([NotNull] SoalParser.AnnotationPropertyListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.annotationProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationProperty([NotNull] SoalParser.AnnotationPropertyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
 	/// </summary>
@@ -564,6 +582,12 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNulledArrayType([NotNull] SoalParser.NulledArrayTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.constantValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConstantValue([NotNull] SoalParser.ConstantValueContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// </summary>
