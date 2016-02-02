@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_SoalPrinter_477422994;
-    namespace __Hidden_SoalPrinter_477422994
+    using __Hidden_SoalPrinter_1371787368;
+    namespace __Hidden_SoalPrinter_1371787368
     {
         internal static class __Extensions
         {
@@ -966,59 +966,62 @@ namespace MetaDslx.Soal //1:1
         public string GenerateRef(Namespace currentNs, Declaration decl) //118:1
         {
             StringBuilder __out = new StringBuilder();
-            if (decl.Namespace != currentNs) //119:2
+            if (decl != null) //119:2
             {
-                string __tmp1Prefix = string.Empty;
-                string __tmp2Suffix = string.Empty;
-                StringBuilder __tmp3 = new StringBuilder();
-                __tmp3.Append(decl.FullName());
-                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                if (decl.Namespace != currentNs) //120:2
                 {
-                    bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    string __tmp1Prefix = string.Empty;
+                    string __tmp2Suffix = string.Empty;
+                    StringBuilder __tmp3 = new StringBuilder();
+                    __tmp3.Append(decl.FullName());
+                    using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                     {
-                        __tmp3_first = false;
-                        string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
+                        bool __tmp3_first = true;
+                        while(__tmp3_first || !__tmp3Reader.EndOfStream)
                         {
-                            __tmp3Line = "";
+                            __tmp3_first = false;
+                            string __tmp3Line = __tmp3Reader.ReadLine();
+                            if (__tmp3Line == null)
+                            {
+                                __tmp3Line = "";
+                            }
+                            __out.Append(__tmp1Prefix);
+                            __out.Append(__tmp3Line);
+                            __out.Append(__tmp2Suffix);
                         }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
-                        __out.Append(__tmp2Suffix);
                     }
                 }
-            }
-            else //121:2
-            {
-                string __tmp4Prefix = string.Empty;
-                string __tmp5Suffix = string.Empty;
-                StringBuilder __tmp6 = new StringBuilder();
-                __tmp6.Append(decl.Name);
-                using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+                else //122:2
                 {
-                    bool __tmp6_first = true;
-                    while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                    string __tmp4Prefix = string.Empty;
+                    string __tmp5Suffix = string.Empty;
+                    StringBuilder __tmp6 = new StringBuilder();
+                    __tmp6.Append(decl.Name);
+                    using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
                     {
-                        __tmp6_first = false;
-                        string __tmp6Line = __tmp6Reader.ReadLine();
-                        if (__tmp6Line == null)
+                        bool __tmp6_first = true;
+                        while(__tmp6_first || !__tmp6Reader.EndOfStream)
                         {
-                            __tmp6Line = "";
+                            __tmp6_first = false;
+                            string __tmp6Line = __tmp6Reader.ReadLine();
+                            if (__tmp6Line == null)
+                            {
+                                __tmp6Line = "";
+                            }
+                            __out.Append(__tmp4Prefix);
+                            __out.Append(__tmp6Line);
+                            __out.Append(__tmp5Suffix);
                         }
-                        __out.Append(__tmp4Prefix);
-                        __out.Append(__tmp6Line);
-                        __out.Append(__tmp5Suffix);
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateType(Namespace currentNs, SoalType t) //126:1
+        public string GenerateType(Namespace currentNs, SoalType t) //128:1
         {
             StringBuilder __out = new StringBuilder();
-            if (t is PrimitiveType) //127:2
+            if (t is PrimitiveType) //129:2
             {
                 string __tmp1Prefix = string.Empty;
                 string __tmp2Suffix = string.Empty;
@@ -1041,10 +1044,10 @@ namespace MetaDslx.Soal //1:1
                     }
                 }
             }
-            else if (t is NullableType) //129:2
+            else if (t is NullableType) //131:2
             {
                 string __tmp4Prefix = string.Empty; 
-                string __tmp5Suffix = "?"; //130:55
+                string __tmp5Suffix = "?"; //132:55
                 StringBuilder __tmp6 = new StringBuilder();
                 __tmp6.Append(GenerateType(currentNs, ((NullableType)t).InnerType));
                 using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -1064,10 +1067,10 @@ namespace MetaDslx.Soal //1:1
                     }
                 }
             }
-            else if (t is NonNullableType) //131:2
+            else if (t is NonNullableType) //133:2
             {
                 string __tmp7Prefix = string.Empty; 
-                string __tmp8Suffix = "!"; //132:58
+                string __tmp8Suffix = "!"; //134:58
                 StringBuilder __tmp9 = new StringBuilder();
                 __tmp9.Append(GenerateType(currentNs, ((NonNullableType)t).InnerType));
                 using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
@@ -1087,7 +1090,7 @@ namespace MetaDslx.Soal //1:1
                     }
                 }
             }
-            else if (t is ArrayType) //133:2
+            else if (t is ArrayType) //135:2
             {
                 string __tmp10Prefix = string.Empty; 
                 string __tmp11Suffix = string.Empty; 
@@ -1126,7 +1129,7 @@ namespace MetaDslx.Soal //1:1
                     }
                 }
             }
-            else if (t is Declaration) //135:2
+            else if (t is Declaration) //137:2
             {
                 string __tmp14Prefix = string.Empty;
                 string __tmp15Suffix = string.Empty;
@@ -1146,11 +1149,11 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp14Prefix);
                         __out.Append(__tmp16Line);
                         __out.Append(__tmp15Suffix);
-                        __out.AppendLine(); //136:41
+                        __out.AppendLine(); //138:41
                     }
                 }
             }
-            else //137:2
+            else //139:2
             {
                 string __tmp17Prefix = string.Empty;
                 string __tmp18Suffix = string.Empty;
@@ -1176,14 +1179,14 @@ namespace MetaDslx.Soal //1:1
             return __out.ToString();
         }
 
-        public string GenerateReturnType(Namespace currentNs, Operation op) //142:1
+        public string GenerateReturnType(Namespace currentNs, Operation op) //144:1
         {
             StringBuilder __out = new StringBuilder();
-            if (op.IsOneway) //143:2
+            if (op.IsOneway) //145:2
             {
-                __out.Append("oneway"); //144:1
+                __out.Append("oneway"); //146:1
             }
-            else //145:2
+            else //147:2
             {
                 string __tmp1Prefix = string.Empty;
                 string __tmp2Suffix = string.Empty;
@@ -1209,22 +1212,22 @@ namespace MetaDslx.Soal //1:1
             return __out.ToString();
         }
 
-        public string GenerateThrows(Namespace currentNs, Operation op) //150:1
+        public string GenerateThrows(Namespace currentNs, Operation op) //152:1
         {
             StringBuilder __out = new StringBuilder();
             var __loop12_results = 
-                (from __loop12_var1 in __Enumerate((op).GetEnumerator()) //151:7
-                from ex in __Enumerate((__loop12_var1.Exceptions).GetEnumerator()) //151:11
+                (from __loop12_var1 in __Enumerate((op).GetEnumerator()) //153:7
+                from ex in __Enumerate((__loop12_var1.Exceptions).GetEnumerator()) //153:11
                 select new { __loop12_var1 = __loop12_var1, ex = ex}
-                ).ToList(); //151:2
+                ).ToList(); //153:2
             int __loop12_iteration = 0;
-            string delim = " throws "; //151:26
+            string delim = " throws "; //153:26
             foreach (var __tmp1 in __loop12_results)
             {
                 ++__loop12_iteration;
-                if (__loop12_iteration >= 2) //151:53
+                if (__loop12_iteration >= 2) //153:53
                 {
-                    delim = ", "; //151:53
+                    delim = ", "; //153:53
                 }
                 var __loop12_var1 = __tmp1.__loop12_var1;
                 var ex = __tmp1.ex;
@@ -1262,29 +1265,29 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp5Line);
                         __out.Append(__tmp3Suffix);
-                        __out.AppendLine(); //152:37
+                        __out.AppendLine(); //154:37
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateParameters(Namespace currentNs, Operation op) //156:1
+        public string GenerateParameters(Namespace currentNs, Operation op) //158:1
         {
             StringBuilder __out = new StringBuilder();
             var __loop13_results = 
-                (from __loop13_var1 in __Enumerate((op).GetEnumerator()) //157:7
-                from p in __Enumerate((__loop13_var1.Parameters).GetEnumerator()) //157:11
+                (from __loop13_var1 in __Enumerate((op).GetEnumerator()) //159:7
+                from p in __Enumerate((__loop13_var1.Parameters).GetEnumerator()) //159:11
                 select new { __loop13_var1 = __loop13_var1, p = p}
-                ).ToList(); //157:2
+                ).ToList(); //159:2
             int __loop13_iteration = 0;
-            string delim = ""; //157:25
+            string delim = ""; //159:25
             foreach (var __tmp1 in __loop13_results)
             {
                 ++__loop13_iteration;
-                if (__loop13_iteration >= 2) //157:44
+                if (__loop13_iteration >= 2) //159:44
                 {
-                    delim = ", "; //157:44
+                    delim = ", "; //159:44
                 }
                 var __loop13_var1 = __tmp1.__loop13_var1;
                 var p = __tmp1.p;
@@ -1339,7 +1342,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp6Line);
                     }
                 }
-                string __tmp7Line = " "; //158:75
+                string __tmp7Line = " "; //160:75
                 __out.Append(__tmp7Line);
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(p.Name);
@@ -1356,14 +1359,14 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp8Line);
                         __out.Append(__tmp3Suffix);
-                        __out.AppendLine(); //158:84
+                        __out.AppendLine(); //160:84
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateOperation(Namespace currentNs, Operation op) //162:1
+        public string GenerateOperation(Namespace currentNs, Operation op) //164:1
         {
             StringBuilder __out = new StringBuilder();
             string __tmp1Prefix = string.Empty;
@@ -1407,7 +1410,7 @@ namespace MetaDslx.Soal //1:1
                 }
             }
             string __tmp7Prefix = string.Empty; 
-            string __tmp8Suffix = ";"; //165:114
+            string __tmp8Suffix = ";"; //167:114
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(GenerateReturnType(currentNs, op));
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
@@ -1425,7 +1428,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp9Line);
                 }
             }
-            string __tmp10Line = " "; //165:36
+            string __tmp10Line = " "; //167:36
             __out.Append(__tmp10Line);
             StringBuilder __tmp11 = new StringBuilder();
             __tmp11.Append(op.Name);
@@ -1443,7 +1446,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp11Line);
                 }
             }
-            string __tmp12Line = "("; //165:46
+            string __tmp12Line = "("; //167:46
             __out.Append(__tmp12Line);
             StringBuilder __tmp13 = new StringBuilder();
             __tmp13.Append(GenerateParameters(currentNs, op));
@@ -1461,7 +1464,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp13Line);
                 }
             }
-            string __tmp14Line = ")"; //165:82
+            string __tmp14Line = ")"; //167:82
             __out.Append(__tmp14Line);
             StringBuilder __tmp15 = new StringBuilder();
             __tmp15.Append(GenerateThrows(currentNs, op));
@@ -1478,13 +1481,13 @@ namespace MetaDslx.Soal //1:1
                     }
                     __out.Append(__tmp15Line);
                     __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //165:115
+                    __out.AppendLine(); //167:115
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateInterface(Namespace currentNs, Interface intf) //168:1
+        public string GenerateInterface(Namespace currentNs, Interface intf) //170:1
         {
             StringBuilder __out = new StringBuilder();
             string __tmp1Prefix = string.Empty;
@@ -1505,10 +1508,10 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //169:28
+                    __out.AppendLine(); //171:28
                 }
             }
-            string __tmp4Prefix = "interface "; //170:1
+            string __tmp4Prefix = "interface "; //172:1
             string __tmp5Suffix = string.Empty; 
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(intf.Name);
@@ -1526,23 +1529,23 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //170:22
+                    __out.AppendLine(); //172:22
                 }
             }
-            __out.Append("{"); //171:1
-            __out.AppendLine(); //171:2
+            __out.Append("{"); //173:1
+            __out.AppendLine(); //173:2
             var __loop14_results = 
-                (from __loop14_var1 in __Enumerate((intf).GetEnumerator()) //172:8
-                from op in __Enumerate((__loop14_var1.Operations).GetEnumerator()) //172:14
+                (from __loop14_var1 in __Enumerate((intf).GetEnumerator()) //174:8
+                from op in __Enumerate((__loop14_var1.Operations).GetEnumerator()) //174:14
                 select new { __loop14_var1 = __loop14_var1, op = op}
-                ).ToList(); //172:3
+                ).ToList(); //174:3
             int __loop14_iteration = 0;
             foreach (var __tmp7 in __loop14_results)
             {
                 ++__loop14_iteration;
                 var __loop14_var1 = __tmp7.__loop14_var1;
                 var op = __tmp7.op;
-                string __tmp8Prefix = "	"; //173:1
+                string __tmp8Prefix = "	"; //175:1
                 string __tmp9Suffix = string.Empty; 
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GenerateOperation(currentNs, op));
@@ -1560,31 +1563,31 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp8Prefix);
                         __out.Append(__tmp10Line);
                         __out.Append(__tmp9Suffix);
-                        __out.AppendLine(); //173:36
+                        __out.AppendLine(); //175:36
                     }
                 }
             }
-            __out.Append("}"); //175:1
-            __out.AppendLine(); //175:2
+            __out.Append("}"); //177:1
+            __out.AppendLine(); //177:2
             return __out.ToString();
         }
 
-        public string GenerateTransportBinding(Namespace currentNs, TransportBindingElement bnd) //178:1
+        public string GenerateTransportBinding(Namespace currentNs, TransportBindingElement bnd) //180:1
         {
             StringBuilder __out = new StringBuilder();
-            var __tmp1 = bnd; //179:10
-            if (bnd is HttpTransportBindingElement) //180:2
+            var __tmp1 = bnd; //181:10
+            if (bnd is HttpTransportBindingElement) //182:2
             {
-                if (((HttpTransportBindingElement)bnd).Ssl) //181:3
+                if (((HttpTransportBindingElement)bnd).Ssl) //183:3
                 {
-                    __out.Append("transport HTTP"); //182:1
-                    __out.AppendLine(); //182:15
-                    __out.Append("{"); //183:1
-                    __out.AppendLine(); //183:2
-                    __out.Append("	Ssl = true;"); //184:1
-                    __out.AppendLine(); //184:13
-                    string __tmp2Prefix = "	ClientAuthentication = "; //185:1
-                    string __tmp3Suffix = ";"; //185:72
+                    __out.Append("transport HTTP"); //184:1
+                    __out.AppendLine(); //184:15
+                    __out.Append("{"); //185:1
+                    __out.AppendLine(); //185:2
+                    __out.Append("	Ssl = true;"); //186:1
+                    __out.AppendLine(); //186:13
+                    string __tmp2Prefix = "	ClientAuthentication = "; //187:1
+                    string __tmp3Suffix = ";"; //187:72
                     StringBuilder __tmp4 = new StringBuilder();
                     __tmp4.Append(((HttpTransportBindingElement)bnd).ClientAuthentication.ToString().ToLower());
                     using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -1601,47 +1604,47 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp2Prefix);
                             __out.Append(__tmp4Line);
                             __out.Append(__tmp3Suffix);
-                            __out.AppendLine(); //185:73
+                            __out.AppendLine(); //187:73
                         }
                     }
-                    __out.Append("}"); //186:1
-                    __out.AppendLine(); //186:2
+                    __out.Append("}"); //188:1
+                    __out.AppendLine(); //188:2
                 }
-                else //187:3
+                else //189:3
                 {
-                    __out.Append("transport HTTP;"); //188:1
-                    __out.AppendLine(); //188:16
+                    __out.Append("transport HTTP;"); //190:1
+                    __out.AppendLine(); //190:16
                 }
             }
-            else if (bnd is RestTransportBindingElement) //190:2
+            else if (bnd is RestTransportBindingElement) //192:2
             {
-                __out.Append("transport REST;"); //190:39
-                __out.AppendLine(); //190:54
+                __out.Append("transport REST;"); //192:39
+                __out.AppendLine(); //192:54
             }
-            else if (bnd is WebSocketTransportBindingElement) //191:2
+            else if (bnd is WebSocketTransportBindingElement) //193:2
             {
-                __out.Append("transport WebSocket;"); //191:44
-                __out.AppendLine(); //191:64
-            }//192:2
+                __out.Append("transport WebSocket;"); //193:44
+                __out.AppendLine(); //193:64
+            }//194:2
             return __out.ToString();
         }
 
-        public string GenerateEncodingBinding(Namespace currentNs, EncodingBindingElement bnd) //195:1
+        public string GenerateEncodingBinding(Namespace currentNs, EncodingBindingElement bnd) //197:1
         {
             StringBuilder __out = new StringBuilder();
-            var __tmp1 = bnd; //196:10
-            if (bnd is SoapEncodingBindingElement) //197:2
+            var __tmp1 = bnd; //198:10
+            if (bnd is SoapEncodingBindingElement) //199:2
             {
-                if (((SoapEncodingBindingElement)bnd).Style != SoapEncodingStyle.DocumentWrapped || ((SoapEncodingBindingElement)bnd).Version != SoapVersion.Soap11 || ((SoapEncodingBindingElement)bnd).Mtom) //198:2
+                if (((SoapEncodingBindingElement)bnd).Style != SoapEncodingStyle.DocumentWrapped || ((SoapEncodingBindingElement)bnd).Version != SoapVersion.Soap11 || ((SoapEncodingBindingElement)bnd).Mtom) //200:2
                 {
-                    __out.Append("encoding SOAP"); //199:1
-                    __out.AppendLine(); //199:14
-                    __out.Append("{"); //200:1
-                    __out.AppendLine(); //200:2
-                    if (((SoapEncodingBindingElement)bnd).Style != SoapEncodingStyle.DocumentWrapped) //201:3
+                    __out.Append("encoding SOAP"); //201:1
+                    __out.AppendLine(); //201:14
+                    __out.Append("{"); //202:1
+                    __out.AppendLine(); //202:2
+                    if (((SoapEncodingBindingElement)bnd).Style != SoapEncodingStyle.DocumentWrapped) //203:3
                     {
-                        string __tmp2Prefix = "	Style = "; //202:1
-                        string __tmp3Suffix = ";"; //202:21
+                        string __tmp2Prefix = "	Style = "; //204:1
+                        string __tmp3Suffix = ";"; //204:21
                         StringBuilder __tmp4 = new StringBuilder();
                         __tmp4.Append(((SoapEncodingBindingElement)bnd).Style);
                         using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -1658,14 +1661,14 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp2Prefix);
                                 __out.Append(__tmp4Line);
                                 __out.Append(__tmp3Suffix);
-                                __out.AppendLine(); //202:22
+                                __out.AppendLine(); //204:22
                             }
                         }
                     }
-                    if (((SoapEncodingBindingElement)bnd).Version != SoapVersion.Soap11) //204:3
+                    if (((SoapEncodingBindingElement)bnd).Version != SoapVersion.Soap11) //206:3
                     {
-                        string __tmp5Prefix = "	Version = "; //205:1
-                        string __tmp6Suffix = ";"; //205:25
+                        string __tmp5Prefix = "	Version = "; //207:1
+                        string __tmp6Suffix = ";"; //207:25
                         StringBuilder __tmp7 = new StringBuilder();
                         __tmp7.Append(((SoapEncodingBindingElement)bnd).Version);
                         using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
@@ -1682,53 +1685,53 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp5Prefix);
                                 __out.Append(__tmp7Line);
                                 __out.Append(__tmp6Suffix);
-                                __out.AppendLine(); //205:26
+                                __out.AppendLine(); //207:26
                             }
                         }
                     }
-                    if (((SoapEncodingBindingElement)bnd).Mtom) //207:3
+                    if (((SoapEncodingBindingElement)bnd).Mtom) //209:3
                     {
-                        __out.Append("	Mtom = true;"); //208:1
-                        __out.AppendLine(); //208:14
+                        __out.Append("	Mtom = true;"); //210:1
+                        __out.AppendLine(); //210:14
                     }
-                    __out.Append("}"); //210:1
-                    __out.AppendLine(); //210:2
+                    __out.Append("}"); //212:1
+                    __out.AppendLine(); //212:2
                 }
-                else //211:2
+                else //213:2
                 {
-                    __out.Append("encoding SOAP;"); //212:1
-                    __out.AppendLine(); //212:15
+                    __out.Append("encoding SOAP;"); //214:1
+                    __out.AppendLine(); //214:15
                 }
             }
-            else if (bnd is XmlEncodingBindingElement) //214:2
+            else if (bnd is XmlEncodingBindingElement) //216:2
             {
-                __out.Append("encoding XML;"); //214:37
-                __out.AppendLine(); //214:50
+                __out.Append("encoding XML;"); //216:37
+                __out.AppendLine(); //216:50
             }
-            else if (bnd is JsonEncodingBindingElement) //215:2
+            else if (bnd is JsonEncodingBindingElement) //217:2
             {
-                __out.Append("encoding JSON;"); //215:38
-                __out.AppendLine(); //215:52
-            }//216:2
+                __out.Append("encoding JSON;"); //217:38
+                __out.AppendLine(); //217:52
+            }//218:2
             return __out.ToString();
         }
 
-        public string GenerateProtocolBinding(Namespace currentNs, ProtocolBindingElement bnd) //219:1
+        public string GenerateProtocolBinding(Namespace currentNs, ProtocolBindingElement bnd) //221:1
         {
             StringBuilder __out = new StringBuilder();
-            var __tmp1 = bnd; //220:10
-            if (bnd is WsAddressingBindingElement) //221:2
+            var __tmp1 = bnd; //222:10
+            if (bnd is WsAddressingBindingElement) //223:2
             {
-                __out.Append("protocol WsAddressing;"); //221:38
-                __out.AppendLine(); //221:60
-            }//222:2
+                __out.Append("protocol WsAddressing;"); //223:38
+                __out.AppendLine(); //223:60
+            }//224:2
             return __out.ToString();
         }
 
-        public string GenerateBinding(Namespace currentNs, Binding bnd) //225:1
+        public string GenerateBinding(Namespace currentNs, Binding bnd) //227:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "binding "; //226:1
+            string __tmp1Prefix = "binding "; //228:1
             string __tmp2Suffix = string.Empty; 
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(bnd.Name);
@@ -1746,12 +1749,12 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //226:19
+                    __out.AppendLine(); //228:19
                 }
             }
-            __out.Append("{"); //227:1
-            __out.AppendLine(); //227:2
-            string __tmp4Prefix = "	"; //228:1
+            __out.Append("{"); //229:1
+            __out.AppendLine(); //229:2
+            string __tmp4Prefix = "	"; //230:1
             string __tmp5Suffix = string.Empty; 
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(GenerateTransportBinding(currentNs, bnd.Transport));
@@ -1769,21 +1772,21 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //228:54
+                    __out.AppendLine(); //230:54
                 }
             }
             var __loop15_results = 
-                (from __loop15_var1 in __Enumerate((bnd).GetEnumerator()) //229:8
-                from enc in __Enumerate((__loop15_var1.Encodings).GetEnumerator()) //229:13
+                (from __loop15_var1 in __Enumerate((bnd).GetEnumerator()) //231:8
+                from enc in __Enumerate((__loop15_var1.Encodings).GetEnumerator()) //231:13
                 select new { __loop15_var1 = __loop15_var1, enc = enc}
-                ).ToList(); //229:3
+                ).ToList(); //231:3
             int __loop15_iteration = 0;
             foreach (var __tmp7 in __loop15_results)
             {
                 ++__loop15_iteration;
                 var __loop15_var1 = __tmp7.__loop15_var1;
                 var enc = __tmp7.enc;
-                string __tmp8Prefix = "	"; //230:1
+                string __tmp8Prefix = "	"; //232:1
                 string __tmp9Suffix = string.Empty; 
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GenerateEncodingBinding(currentNs, enc));
@@ -1801,22 +1804,22 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp8Prefix);
                         __out.Append(__tmp10Line);
                         __out.Append(__tmp9Suffix);
-                        __out.AppendLine(); //230:43
+                        __out.AppendLine(); //232:43
                     }
                 }
             }
             var __loop16_results = 
-                (from __loop16_var1 in __Enumerate((bnd).GetEnumerator()) //232:8
-                from prot in __Enumerate((__loop16_var1.Protocols).GetEnumerator()) //232:13
+                (from __loop16_var1 in __Enumerate((bnd).GetEnumerator()) //234:8
+                from prot in __Enumerate((__loop16_var1.Protocols).GetEnumerator()) //234:13
                 select new { __loop16_var1 = __loop16_var1, prot = prot}
-                ).ToList(); //232:3
+                ).ToList(); //234:3
             int __loop16_iteration = 0;
             foreach (var __tmp11 in __loop16_results)
             {
                 ++__loop16_iteration;
                 var __loop16_var1 = __tmp11.__loop16_var1;
                 var prot = __tmp11.prot;
-                string __tmp12Prefix = "	"; //233:1
+                string __tmp12Prefix = "	"; //235:1
                 string __tmp13Suffix = string.Empty; 
                 StringBuilder __tmp14 = new StringBuilder();
                 __tmp14.Append(GenerateProtocolBinding(currentNs, prot));
@@ -1834,19 +1837,19 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp12Prefix);
                         __out.Append(__tmp14Line);
                         __out.Append(__tmp13Suffix);
-                        __out.AppendLine(); //233:44
+                        __out.AppendLine(); //235:44
                     }
                 }
             }
-            __out.Append("}"); //235:1
-            __out.AppendLine(); //235:2
+            __out.Append("}"); //237:1
+            __out.AppendLine(); //237:2
             return __out.ToString();
         }
 
-        public string GenerateEndpoint(Namespace currentNs, Endpoint endp) //238:1
+        public string GenerateEndpoint(Namespace currentNs, Endpoint endp) //240:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "endpoint "; //239:1
+            string __tmp1Prefix = "endpoint "; //241:1
             string __tmp2Suffix = string.Empty; 
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(endp.Name);
@@ -1865,7 +1868,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp3Line);
                 }
             }
-            string __tmp4Line = " : "; //239:21
+            string __tmp4Line = " : "; //241:21
             __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(GenerateRef(currentNs, endp.Interface));
@@ -1882,13 +1885,13 @@ namespace MetaDslx.Soal //1:1
                     }
                     __out.Append(__tmp5Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //239:64
+                    __out.AppendLine(); //241:64
                 }
             }
-            __out.Append("{"); //240:1
-            __out.AppendLine(); //240:2
-            string __tmp6Prefix = "	binding "; //241:1
-            string __tmp7Suffix = ";"; //241:48
+            __out.Append("{"); //242:1
+            __out.AppendLine(); //242:2
+            string __tmp6Prefix = "	binding "; //243:1
+            string __tmp7Suffix = ";"; //243:48
             StringBuilder __tmp8 = new StringBuilder();
             __tmp8.Append(GenerateRef(currentNs, endp.Binding));
             using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
@@ -1905,11 +1908,11 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp6Prefix);
                     __out.Append(__tmp8Line);
                     __out.Append(__tmp7Suffix);
-                    __out.AppendLine(); //241:49
+                    __out.AppendLine(); //243:49
                 }
             }
-            string __tmp9Prefix = "	location "; //242:1
-            string __tmp10Suffix = ";"; //242:25
+            string __tmp9Prefix = "	location "; //244:1
+            string __tmp10Suffix = ";"; //244:25
             StringBuilder __tmp11 = new StringBuilder();
             __tmp11.Append(endp.Address);
             using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
@@ -1926,11 +1929,11 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp9Prefix);
                     __out.Append(__tmp11Line);
                     __out.Append(__tmp10Suffix);
-                    __out.AppendLine(); //242:26
+                    __out.AppendLine(); //244:26
                 }
             }
-            __out.Append("}"); //243:1
-            __out.AppendLine(); //243:2
+            __out.Append("}"); //245:1
+            __out.AppendLine(); //245:2
             return __out.ToString();
         }
 

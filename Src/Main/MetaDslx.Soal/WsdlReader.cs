@@ -972,52 +972,7 @@ namespace MetaDslx.Soal
                                 else sebe.Style = SoapEncodingStyle.DocumentWrapped;
                             }
                         }
-                        XElement policyElem = elem.Element(this.wsp + "Policy");
-                        XElement policyReferenceElem = elem.Element(this.wsp + "PolicyReference");
-                        if (policyElem != null)
-                        {
-                            this.ImportPolicy(policyElem, binding);
-                        }
-                        else if (policyReferenceElem != null)
-                        {
-                            XAttribute uriAttr = policyReferenceElem.Attribute("URI");
-                            if (uriAttr != null)
-                            {
-                                string refName = uriAttr.Value;
-                                string[] refParts = refName.Split('#');
-                                if (refParts.Length == 2)
-                                {
-                                    string refDoc = refParts[0];
-                                    string refId = refParts[1];
-                                    XNamespace uri = null;
-                                    if (string.IsNullOrWhiteSpace(refDoc))
-                                    {
-                                        uri = this.Uri;
-                                    }
-                                    else
-                                    {
-                                        uri = refDoc;
-                                    }
-                                    Binding policy = this.Importer.WsdlPolicies.Get(uri + refId);
-                                    if (policy == null)
-                                    {
-                                        this.Importer.Diagnostics.AddError("Could not resolve policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(policyReferenceElem));
-                                        continue;
-                                    }
-                                    this.ApplyPolicy(binding, policy);
-                                }
-                                else
-                                {
-                                    this.Importer.Diagnostics.AddError("Invalid policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(policyReferenceElem));
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                this.Importer.Diagnostics.AddError("The PolicyReference has no 'URI' attribute.", this.Uri, this.GetTextSpan(policyReferenceElem));
-                                continue;
-                            }
-                        }
+                        this.ImportAllPolicies(elem, binding);
                     }
                 }
             }
@@ -1031,8 +986,118 @@ namespace MetaDslx.Soal
                 {
                     if (elem.Name.LocalName == "service")
                     {
+                        XAttribute serviceNameAttr = elem.Attribute("name");
+                        string serviceName = null;
+                        if (serviceNameAttr != null)
+                        {
+                            serviceName = serviceNameAttr.Value;
+                        }
+                        List<XElement> policyElems = elem.Elements(this.wsp + "Policy").ToList();
+                        List<XElement> policyReferenceElems = elem.Elements(this.wsp + "PolicyReference").ToList();
+                        Binding serviceBinding = null;
+                        if (policyElems.Count > 0 || policyReferenceElems.Count > 0)
+                        {
+                            serviceBinding = SoalFactory.Instance.CreateBinding();
+                            this.ImportAllPolicies(elem, serviceBinding);
+                        }
+                        List<XElement> portElems = elem.Elements(wsdl + "port").ToList();
+                        bool singlePort = portElems.Count == 1;
+                        foreach (var portElem in portElems)
+                        {
+                            XAttribute portNameAttr = portElem.Attribute("name");
+                            string portName = null;
+                            if (portNameAttr != null)
+                            {
+                                portName = portNameAttr.Value;
+                            }
+                            if (singlePort && serviceName != null)
+                            {
+                                portName = serviceName;
+                            }
+                            XAttribute bindingAttr = portElem.Attribute("binding");
+                            if (bindingAttr != null)
+                            {
+                                Binding binding = this.Importer.WsdlBindings.Get(this.GetXName(portElem, bindingAttr.Value));
+                                XElement bindingElem = this.Importer.WsdlBindings.GetX(this.GetXName(portElem, bindingAttr.Value));
+                                if (binding == null || bindingElem == null)
+                                {
+                                    this.Importer.Diagnostics.AddError("The referenced binding could not be resolved.", this.Uri, this.GetTextSpan(bindingAttr));
+                                    continue;
+                                }
+                                List<XElement> portPolicyElems = portElem.Elements(this.wsp + "Policy").ToList();
+                                List<XElement> portPolicyReferenceElems = portElem.Elements(this.wsp + "PolicyReference").ToList();
+                                Binding portBinding = null;
+                                if (portPolicyElems.Count > 0 || portPolicyReferenceElems.Count > 0)
+                                {
+                                    portBinding = SoalFactory.Instance.CreateBinding();
+                                    this.ImportAllPolicies(portElem, portBinding);
+                                }
+                                if (portBinding != null || serviceBinding != null)
+                                {
+                                    Binding finalBinding = this.CloneBinding(binding);
+                                    this.ApplyPolicy(finalBinding, portBinding);
+                                    this.ApplyPolicy(finalBinding, serviceBinding);
+                                    finalBinding.Name = portName + "_Binding";
+                                    finalBinding.Namespace = this.Namespace;
+                                    binding = finalBinding;
+                                }
+                                string address = null;
+                                XElement soap11AddressElem = portElem.Element(soap11 + "address");
+                                XElement soap12AddressElem = portElem.Element(soap12 + "address");
+                                XElement soapAddressElem = null;
+                                if (soap11AddressElem != null) soapAddressElem = soap11AddressElem;
+                                else if (soap12AddressElem != null) soapAddressElem = soap12AddressElem;
+                                if (soapAddressElem != null)
+                                {
+                                    XAttribute locationAttr = soapAddressElem.Attribute("location");
+                                    if (locationAttr != null)
+                                    {
+                                        address = locationAttr.Value;
+                                    }
+                                }
+                                Interface intf = null;
+                                XAttribute bindingTypeAttr = bindingElem.Attribute("type");
+                                if (bindingTypeAttr != null)
+                                {
+                                    intf = this.Importer.WsdlPortTypes.Get(this.GetXName(bindingElem, bindingTypeAttr.Value));
+                                }
+                                if (intf != null)
+                                {
+                                    Endpoint endp = SoalFactory.Instance.CreateEndpoint();
+                                    endp.Name = portName;
+                                    endp.Interface = intf;
+                                    endp.Binding = binding;
+                                    endp.Address = address;
+                                    endp.Namespace = this.Namespace;
+                                }
+                                else
+                                {
+                                    this.Importer.Diagnostics.AddError("The interface referenced by the binding could not be resolved.", this.Uri, this.GetTextSpan(bindingTypeAttr));
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The port has no 'binding' attribute.", this.Uri, this.GetTextSpan(portElem));
+                                continue;
+                            }
+                        }
                     }
                 }
+            }
+        }
+
+        private void ImportAllPolicies(XElement elem, Binding binding)
+        {
+            List<XElement> policyElems = elem.Elements(this.wsp + "Policy").ToList();
+            List<XElement> policyReferenceElems = elem.Elements(this.wsp + "PolicyReference").ToList();
+            foreach (var policyElem in policyElems)
+            {
+                this.ImportPolicy(policyElem, binding);
+            }
+            foreach (var policyReferenceElem in policyReferenceElems)
+            {
+                this.ImportPolicyReference(policyReferenceElem, binding);
             }
         }
 
@@ -1074,6 +1139,47 @@ namespace MetaDslx.Soal
                 {
                     this.Importer.Diagnostics.AddWarning("The policy is not supported by the SOAL importer.", this.Uri, this.GetTextSpan(item));
                 }
+            }
+        }
+
+        private void ImportPolicyReference(XElement elem, Binding binding)
+        {
+            XAttribute uriAttr = elem.Attribute("URI");
+            if (uriAttr != null)
+            {
+                string refName = uriAttr.Value;
+                string[] refParts = refName.Split('#');
+                if (refParts.Length == 2)
+                {
+                    string refDoc = refParts[0];
+                    string refId = refParts[1];
+                    XNamespace uri = null;
+                    if (string.IsNullOrWhiteSpace(refDoc))
+                    {
+                        uri = this.Uri;
+                    }
+                    else
+                    {
+                        uri = refDoc;
+                    }
+                    Binding policy = this.Importer.WsdlPolicies.Get(uri + refId);
+                    if (policy == null)
+                    {
+                        this.Importer.Diagnostics.AddError("Could not resolve policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(elem));
+                        return;
+                    }
+                    this.ApplyPolicy(binding, policy);
+                }
+                else
+                {
+                    this.Importer.Diagnostics.AddError("Invalid policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(elem));
+                    return;
+                }
+            }
+            else
+            {
+                this.Importer.Diagnostics.AddError("The PolicyReference has no 'URI' attribute.", this.Uri, this.GetTextSpan(elem));
+                return;
             }
         }
 
@@ -1177,6 +1283,8 @@ namespace MetaDslx.Soal
 
         private void ApplyPolicy(Binding binding, Binding policy)
         {
+            if (binding == null) return;
+            if (policy == null) return;
             HttpTransportBindingElement bhtbe = binding.Transport as HttpTransportBindingElement;
             HttpTransportBindingElement phtbe = policy.Transport as HttpTransportBindingElement;
             if (bhtbe != null && phtbe != null)
@@ -1214,6 +1322,29 @@ namespace MetaDslx.Soal
                     binding.Protocols.Add(wabe);
                 }
             }
+        }
+
+        private Binding CloneBinding(Binding binding)
+        {
+            if (binding == null) return null;
+            Binding result = SoalFactory.Instance.CreateBinding();
+            if (binding.Transport is HttpTransportBindingElement)
+            {
+                result.Transport = SoalFactory.Instance.CreateHttpTransportBindingElement();
+            }
+            foreach (var enc in binding.Encodings)
+            {
+                if (enc is SoapEncodingBindingElement)
+                {
+                    SoapEncodingBindingElement benc = ((SoapEncodingBindingElement)enc);
+                    SoapEncodingBindingElement renc = SoalFactory.Instance.CreateSoapEncodingBindingElement();
+                    result.Encodings.Add(renc);
+                    renc.Version = benc.Version;
+                    renc.Style = benc.Style;
+                }
+            }
+            this.ApplyPolicy(result, binding);
+            return result;
         }
 
     }

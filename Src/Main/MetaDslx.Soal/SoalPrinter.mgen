@@ -116,10 +116,12 @@ template GenerateProperty(Namespace currentNs, Property prop)
 end template
 
 template GenerateRef(Namespace currentNs, Declaration decl)
+[if (decl != null)]
 [if (decl.Namespace != currentNs)]
 [decl.FullName()]\
 [else]
 [decl.Name]\
+[end if]
 [end if]
 end template
 
