@@ -12,7 +12,7 @@ namespace MetaDslx.Soal
     {
         public string Name { get; set; }
         public SoalType Type { get; set; }
-        public SoalType ReplacementType { get; set; }
+        public SoalType OriginalType { get; set; }
     }
 
     internal class WsdlMessage
@@ -89,7 +89,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void LoadImportedFiles()
+        public override void LoadWsdlFile()
         {
             //if (this.Importer.Diagnostics.HasErrors()) return;
             this.ImportPhase5();
@@ -137,7 +137,7 @@ namespace MetaDslx.Soal
                                             {
                                                 msg.Wrapped = false;
                                             }
-                                            partType = this.Importer.XsdElements.Get(this.GetXName(partElem, partXsdElemAttr.Value));
+                                            partType = this.Importer.WsdlElements.Get(this.GetXName(partElem, partXsdElemAttr.Value));
                                         }
                                         else if (partXsdTypeAttr != null)
                                         {
@@ -146,7 +146,7 @@ namespace MetaDslx.Soal
                                             if (typeRefName != null)
                                             {
                                                 //partType = this.Importer.ResolveXsdType(typeRefName.NamespaceName, typeRefName.LocalName);
-                                                partType = this.Importer.XsdTypes.Get(typeRefName);
+                                                partType = this.Importer.WsdlTypes.Get(typeRefName);
                                             }
                                             if (partType == null)
                                             {
@@ -166,8 +166,8 @@ namespace MetaDslx.Soal
                                     }
                                     WsdlMessagePart part = new WsdlMessagePart();
                                     part.Name = partNameAttr.Value;
-                                    part.Type = partType;
-                                    part.ReplacementType = this.Importer.ResolveXsdReplacementType(part.Type);
+                                    part.OriginalType = partType;
+                                    part.Type = this.Importer.ResolveXsdReplacementType(partType);
                                     msg.Parts.Add(part);
                                 }
                             }
@@ -320,7 +320,7 @@ namespace MetaDslx.Soal
                                                     part = inputMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.Type as Struct;
+                                                        st = part.OriginalType as Struct;
                                                     }
                                                 }
                                                 if (st != null)
@@ -356,7 +356,7 @@ namespace MetaDslx.Soal
                                                     part = outputMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.Type as Struct;
+                                                        st = part.OriginalType as Struct;
                                                     }
                                                 }
                                                 if (st != null && st.Properties.Count > 0)
@@ -406,7 +406,7 @@ namespace MetaDslx.Soal
                                                     part = faultMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.Type as Struct;
+                                                        st = part.OriginalType as Struct;
                                                     }
                                                 }
                                                 if (st != null)
@@ -429,9 +429,9 @@ namespace MetaDslx.Soal
                                                 {
                                                     Parameter param = SoalFactory.Instance.CreateParameter();
                                                     param.Name = part.Name;
-                                                    param.Type = part.ReplacementType;
+                                                    param.Type = part.Type;
                                                     op.Parameters.Add(param);
-                                                    if (part.ReplacementType == part.Type && part.ReplacementType is ArrayType && ((ArrayType)part.ReplacementType).InnerType != SoalInstance.Byte)
+                                                    if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
                                                         annot.Name = SoalAnnotations.NoWrap;
@@ -444,8 +444,8 @@ namespace MetaDslx.Soal
                                                 if (outputMsg.Parts.Count == 1)
                                                 {
                                                     WsdlMessagePart part = outputMsg.Parts[0];
-                                                    op.ReturnType = part.ReplacementType;
-                                                    if (part.ReplacementType == part.Type && part.ReplacementType is ArrayType && ((ArrayType)part.ReplacementType).InnerType != SoalInstance.Byte)
+                                                    op.ReturnType = part.Type;
+                                                    if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
                                                         annot.Name = SoalAnnotations.NoWrap;
@@ -505,7 +505,7 @@ namespace MetaDslx.Soal
                                             {
                                                 Parameter param = SoalFactory.Instance.CreateParameter();
                                                 param.Name = part.Name;
-                                                param.Type = part.ReplacementType;
+                                                param.Type = part.Type;
                                                 op.Parameters.Add(param);
                                             }
                                         }
@@ -514,7 +514,7 @@ namespace MetaDslx.Soal
                                             if (outputMsg.Parts.Count == 1)
                                             {
                                                 WsdlMessagePart part = outputMsg.Parts[0];
-                                                op.ReturnType = part.ReplacementType;
+                                                op.ReturnType = part.Type;
                                             }
                                             else
                                             {

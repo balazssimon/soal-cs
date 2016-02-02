@@ -88,7 +88,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void LoadImportedFiles()
+        public override void LoadXsdFile()
         {
             //if (this.Importer.Diagnostics.HasErrors()) return;
             this.ImportPhase2();
@@ -119,6 +119,7 @@ namespace MetaDslx.Soal
                         if (type != null)
                         {
                             this.ImportPhase2SimpleType(type, elem);
+                            this.Importer.WsdlTypes.Register(this, this.tns + type.Name, elem, type, false);
                         }
                     }
                     else if (elem.Name.LocalName == "complexType")
@@ -127,6 +128,7 @@ namespace MetaDslx.Soal
                         if (type != null)
                         {
                             this.ImportPhase2ComplexType(type, elem);
+                            this.Importer.WsdlTypes.Register(this, this.tns + type.Name, elem, type, false);
                         }
                     }
                 }
@@ -142,7 +144,16 @@ namespace MetaDslx.Soal
                 {
                     if (elem.Name.LocalName == "element")
                     {
-                        this.ImportPhase3Element(elem);
+                        SoalType type = this.ImportPhase3Element(elem);
+                        if (type != null)
+                        {
+                            XAttribute nameAttr = elem.Attribute("name");
+                            if (nameAttr != null)
+                            {
+                                string name = nameAttr.Value;
+                                this.Importer.WsdlElements.Register(this, this.tns + name, elem, type, false);
+                            }
+                        }
                     }
                     else if (elem.Name.LocalName == "attribute")
                     {
@@ -182,6 +193,10 @@ namespace MetaDslx.Soal
                 {
                     SoalType mo = this.Importer.XsdElements.Get(elem);
                     Struct st = mo as Struct;
+                    /*if (st == null)
+                    {
+                        st = this.Importer.GetReplacementType(mo) as Struct;
+                    }*/
                     if (st != null)
                     {
                         this.ImportPhase4Element(st, elem);
@@ -661,7 +676,11 @@ namespace MetaDslx.Soal
                     this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.ResolveXsdType(typeRef) as SoalType;
+                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
+                if (result == null)
+                {
+                    result = this.Importer.ResolveXsdPrimitiveType(typeRef);
+                }
                 if (result == null)
                 {
                     this.Importer.Diagnostics.AddError("Could not resolve type '" + typeAttr.Value + "'.", this.Uri, this.GetTextSpan(typeAttr));
@@ -751,7 +770,11 @@ namespace MetaDslx.Soal
                     this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.ResolveXsdType(typeRef) as SoalType;
+                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
+                if (result == null)
+                {
+                    result = this.Importer.ResolveXsdPrimitiveType(typeRef);
+                }
                 if (result != null)
                 {
                     PrimitiveType type = SoalFactory.Instance.CreatePrimitiveType();

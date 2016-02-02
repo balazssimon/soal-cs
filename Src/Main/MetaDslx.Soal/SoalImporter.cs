@@ -27,7 +27,7 @@ namespace MetaDslx.Soal
             this.importer = importer;
         }
 
-        internal TObject Register(XmlReader reader, XName xname, TXObject xobj, TObject obj)
+        internal TObject Register(XmlReader reader, XName xname, TXObject xobj, TObject obj, bool allowReverse = true)
         {
             TObject oldObject = null;
             if (this.objectsByName.TryGetValue(xname, out oldObject))
@@ -48,17 +48,20 @@ namespace MetaDslx.Soal
                 this.importer.Diagnostics.AddError("The " + this.name + " '" + xname + "' is already registered to '" + oldXObject.BaseUri + "' at '" + SoalImporter.GetTextSpan(oldXObject) + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
                 return null;
             }
-            if (this.elementsByObject.TryGetValue(obj, out oldXObject))
-            {
-                this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " in '" + oldXObject.BaseUri + "' at '" + SoalImporter.GetTextSpan(oldXObject) + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
-                return null;
-            }
             this.objectsByName.Add(xname, obj);
             this.objectsByElement.Add(xobj, obj);
             this.elementsByName.Add(xname, xobj);
-            if (!this.elementsByObject.ContainsKey(obj))
+            if (allowReverse)
             {
-                this.elementsByObject.Add(obj, xobj);
+                if (this.elementsByObject.TryGetValue(obj, out oldXObject))
+                {
+                    this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " in '" + oldXObject.BaseUri + "' at '" + SoalImporter.GetTextSpan(oldXObject) + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
+                    return null;
+                }
+                if (!this.elementsByObject.ContainsKey(obj))
+                {
+                    this.elementsByObject.Add(obj, xobj);
+                }
             }
             return obj;
         }
@@ -106,6 +109,8 @@ namespace MetaDslx.Soal
         internal ObjectStorage<SoalType, XElement> XsdAttributes { get; private set; }
         //internal ObjectStorage<SoalType, XElement> XsdGroups { get; private set; }
         //internal ObjectStorage<SoalType, XElement> XsdAttributeGroups { get; private set; }
+        internal ObjectStorage<SoalType, XElement> WsdlTypes { get; private set; }
+        internal ObjectStorage<SoalType, XElement> WsdlElements { get; private set; }
         internal ObjectStorage<WsdlMessage, XElement> WsdlMessages { get; private set; }
 
         private SoalImporter(ModelCompilerDiagnostics diagnostics)
@@ -119,6 +124,8 @@ namespace MetaDslx.Soal
             this.XsdAttributes = new ObjectStorage<SoalType, XElement>("attribute", this);
             //this.XsdGroups = new ObjectStorage<SoalType, XElement>("group", this);
             //this.XsdAttributeGroups = new ObjectStorage<SoalType, XElement>("attributeGroup", this);
+            this.WsdlTypes = new ObjectStorage<SoalType, XElement>("type", this);
+            this.WsdlElements = new ObjectStorage<SoalType, XElement>("element", this);
             this.WsdlMessages = new ObjectStorage<WsdlMessage, XElement>("message", this);
         }
 
@@ -154,7 +161,14 @@ namespace MetaDslx.Soal
             {
                 foreach (var r in reader.Value)
                 {
-                    r.LoadImportedFiles();
+                    r.LoadXsdFile();
+                }
+            }
+            foreach (var reader in importer.readers)
+            {
+                foreach (var r in reader.Value)
+                {
+                    r.LoadWsdlFile();
                 }
             }
         }
@@ -327,6 +341,13 @@ namespace MetaDslx.Soal
         internal void RemoveType(SoalType type)
         {
             this.typesToRemove.Add(type);
+        }
+
+        internal SoalType GetReplacementType(SoalType original)
+        {
+            SoalType result = null;
+            this.replacementTypes.TryGetValue(original, out result);
+            return result;
         }
 
         internal SoalType GetExceptionType(SoalType original)

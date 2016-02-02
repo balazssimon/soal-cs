@@ -49,6 +49,12 @@ namespace MetaDslx.Soal
 
         public abstract void CollectImportedFiles();
 
-        public abstract void LoadImportedFiles();
+        public virtual void LoadXsdFile()
+        {
+        }
+
+        public virtual void LoadWsdlFile()
+        {
+        }
     }
 }
