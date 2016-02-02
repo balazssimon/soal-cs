@@ -47,44 +47,8 @@ namespace MetaDslx.Soal
             }
         }
 
-        // XSD types:
-        public virtual void ImportPhase1()
-        {
-        }
+        public abstract void CollectImportedFiles();
 
-        // XSD simple type restriction base:
-        public virtual void ImportPhase2()
-        {
-        }
-
-        // XSD elements:
-        public virtual void ImportPhase3()
-        {
-        }
-
-        // XSD type structure:
-        public virtual void ImportPhase4()
-        {
-        }
-
-        // WSDL messages and policies:
-        public virtual void ImportPhase5()
-        {
-        }
-
-        // WSDL portTypes:
-        public virtual void ImportPhase6()
-        {
-        }
-
-        // WSDL bindings:
-        public virtual void ImportPhase7()
-        {
-        }
-
-        // WSDL services:
-        public virtual void ImportPhase8()
-        {
-        }
+        public abstract void LoadImportedFiles();
     }
 }

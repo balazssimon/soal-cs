@@ -28,7 +28,7 @@ namespace MetaDslx.Soal
         {
         }
 
-        public override void ImportPhase1()
+        public override void CollectImportedFiles()
         {
             xsd = XsdReader.XsdNamespace;
             XAttribute tnsAttr = this.Root.Attribute("targetNamespace");
@@ -88,7 +88,17 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase2()
+        public override void LoadImportedFiles()
+        {
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase2();
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase3();
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase4();
+        }
+
+        private void ImportPhase2()
         {
             if (tns == null) return;
             foreach (var elem in this.Root.Elements())
@@ -123,7 +133,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase3()
+        private void ImportPhase3()
         {
             if (tns == null) return;
             foreach (var elem in this.Root.Elements())
@@ -150,7 +160,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase4()
+        private void ImportPhase4()
         {
             if (tns == null) return;
             foreach (var elem in definedElements)
@@ -182,10 +192,10 @@ namespace MetaDslx.Soal
 
         private string GetUniqueName(string name, bool allowRename)
         {
-            if (allowRename && this.Importer.ResolveXsdType(this.Uri, name) != null)
+            if (allowRename && this.Importer.ResolveXsdType(this.tns + name) != null)
             {
                 int counter = 0;
-                while (this.Importer.ResolveXsdType(this.Uri, name + counter) != null)
+                while (this.Importer.ResolveXsdType(this.tns + (name + counter)) != null)
                 {
                     ++counter;
                 }
@@ -417,7 +427,7 @@ namespace MetaDslx.Soal
                     {
                         return null;
                     }
-                    SoalType type = this.Importer.ResolveXsdType(baseRef.NamespaceName, baseRef.LocalName);
+                    SoalType type = this.Importer.ResolveXsdType(baseRef);
                     bool stringBased = type == SoalInstance.String; //baseRef.Namespace == xsd && baseRef.LocalName == "string";
                     if (stringBased)
                     {
@@ -481,11 +491,19 @@ namespace MetaDslx.Soal
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(restrictionElem, baseRef.Value);
-                        SoalType type = this.Importer.ResolveXsdType(baseRefName.NamespaceName, baseRefName.LocalName);
+                        SoalType type = this.Importer.XsdTypes.Get(baseRefName);
+                        if (type == null)
+                        {
+                            type = this.Importer.ResolveXsdPrimitiveType(baseRefName);
+                        }
                         if (type != null)
                         {
-                            this.Importer.RegisterReplacementType(st, type);
-                            return type;
+                            st.BaseType = type as Struct;
+                            if (st.BaseType == null)
+                            {
+                                this.Importer.RegisterReplacementType(st, type);
+                            }
+                            elem = extensionElem;
                         }
                         else
                         {
@@ -505,10 +523,18 @@ namespace MetaDslx.Soal
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalType type = this.Importer.ResolveXsdType(baseRefName.NamespaceName, baseRefName.LocalName);
+                        SoalType type = this.Importer.XsdTypes.Get(baseRefName);
+                        if (type == null)
+                        {
+                            type = this.Importer.ResolveXsdPrimitiveType(baseRefName);
+                        }
                         if (type != null)
                         {
                             st.BaseType = type as Struct;
+                            if (st.BaseType == null)
+                            {
+                                this.Importer.RegisterReplacementType(st, type);
+                            }
                             elem = extensionElem;
                         }
                         else
@@ -538,7 +564,7 @@ namespace MetaDslx.Soal
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(restrictionElem, baseRef.Value);
-                        SoalType type = this.Importer.ResolveXsdType(baseRefName.NamespaceName, baseRefName.LocalName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             this.Importer.RegisterReplacementType(st, type);
@@ -562,7 +588,7 @@ namespace MetaDslx.Soal
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalType type = this.Importer.ResolveXsdType(baseRefName.NamespaceName, baseRefName.LocalName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             this.Importer.RegisterReplacementType(st, type);
@@ -615,6 +641,11 @@ namespace MetaDslx.Soal
                 else if (complexType != null)
                 {
                     result = this.ImportPhase1ComplexType(complexType, name, XsdTypeKind.Element, elem, true);
+                    Struct cst = result as Struct;
+                    if (cst != null)
+                    {
+                        this.ImportPhase2ComplexType(cst, complexType);
+                    }
                 }
                 else
                 {
@@ -630,11 +661,7 @@ namespace MetaDslx.Soal
                     this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
-                if (result == null)
-                {
-                    result = this.Importer.ResolveXsdPrimitiveType(typeRef.NamespaceName, typeRef.LocalName);
-                }
+                result = this.Importer.ResolveXsdType(typeRef) as SoalType;
                 if (result == null)
                 {
                     this.Importer.Diagnostics.AddError("Could not resolve type '" + typeAttr.Value + "'.", this.Uri, this.GetTextSpan(typeAttr));
@@ -674,7 +701,11 @@ namespace MetaDslx.Soal
                     array.InnerType = result;
                     result = array;
                 }
-                this.Importer.XsdElements.Register(this, tns + name, elem, result);
+                PrimitiveType type = SoalFactory.Instance.CreatePrimitiveType();
+                type.Name = this.GetUniqueName(name, true);
+                type.Namespace = this.Namespace;
+                this.Importer.XsdElements.Register(this, tns + name, elem, type);
+                this.Importer.RegisterReplacementType(type, result);
             }
             return result;
         }
@@ -720,14 +751,14 @@ namespace MetaDslx.Soal
                     this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
-                if (result == null)
-                {
-                    result = this.Importer.ResolveXsdPrimitiveType(typeRef.NamespaceName, typeRef.LocalName);
-                }
+                result = this.Importer.ResolveXsdType(typeRef) as SoalType;
                 if (result != null)
                 {
-                    this.Importer.XsdAttributes.Register(this, tns + name, elem, result);
+                    PrimitiveType type = SoalFactory.Instance.CreatePrimitiveType();
+                    type.Name = this.GetUniqueName(name, true);
+                    type.Namespace = this.Namespace;
+                    this.Importer.XsdAttributes.Register(this, tns + name, elem, type);
+                    this.Importer.RegisterReplacementType(type, result);
                 }
                 else
                 {
@@ -795,7 +826,7 @@ namespace MetaDslx.Soal
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalType type = this.Importer.ResolveXsdType(baseRefName.NamespaceName, baseRefName.LocalName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             elem = extensionElem;
@@ -863,8 +894,7 @@ namespace MetaDslx.Soal
                     {
                         if (child.Name.LocalName == "element")
                         {
-                            Property prop = this.ImportPhase4ElementProperty(st, rt, child, false);
-                            st.Properties.Add(prop);
+                            this.ImportPhase4ElementProperty(st, rt, child, false);
                         }
                     }
                 }
@@ -875,8 +905,7 @@ namespace MetaDslx.Soal
                 {
                     if (child.Name.LocalName == "attribute")
                     {
-                        Property prop = this.ImportPhase4ElementProperty(st, rt, child, true);
-                        st.Properties.Add(prop);
+                        this.ImportPhase4ElementProperty(st, rt, child, true);
                     }
                 }
             }
@@ -970,7 +999,7 @@ namespace MetaDslx.Soal
                         this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                         return null;
                     }
-                    type = this.Importer.ResolveXsdType(typeRef.NamespaceName, typeRef.LocalName) as SoalType;
+                    type = this.Importer.ResolveXsdType(typeRef) as SoalType;
                     if (type == null)
                     {
                         this.Importer.Diagnostics.AddError("Could not resolve type '" + typeAttr.Value + "'.", this.Uri, this.GetTextSpan(typeAttr));
@@ -1073,7 +1102,7 @@ namespace MetaDslx.Soal
                     prop.Annotations.Add(req);
                 }
             }
-            prop.Parent = st;
+            st.Properties.Add(prop);
             return prop;
         }
     }

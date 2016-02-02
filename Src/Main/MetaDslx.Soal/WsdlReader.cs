@@ -45,7 +45,7 @@ namespace MetaDslx.Soal
         {
         }
 
-        public override void ImportPhase1()
+        public override void CollectImportedFiles()
         {
             xsd = XsdReader.XsdNamespace;
             wsdl = WsdlReader.WsdlNamespace;
@@ -89,7 +89,19 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase5()
+        public override void LoadImportedFiles()
+        {
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase5();
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase6();
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase7();
+            //if (this.Importer.Diagnostics.HasErrors()) return;
+            this.ImportPhase8();
+        }
+
+        private void ImportPhase5()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -138,7 +150,7 @@ namespace MetaDslx.Soal
                                             }
                                             if (partType == null)
                                             {
-                                                partType = this.Importer.ResolveXsdPrimitiveType(typeRefName.NamespaceName, typeRefName.LocalName);
+                                                partType = this.Importer.ResolveXsdPrimitiveType(typeRefName);
                                             }
                                         }
                                         if (partType == null)
@@ -181,7 +193,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase6()
+        private void ImportPhase6()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -624,7 +636,7 @@ namespace MetaDslx.Soal
             return ex;
         }
 
-        public override void ImportPhase7()
+        private void ImportPhase7()
         {
             foreach (var elem in this.Root.Elements())
             {
@@ -637,7 +649,7 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void ImportPhase8()
+        private void ImportPhase8()
         {
             foreach (var elem in this.Root.Elements())
             {

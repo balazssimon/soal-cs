@@ -12,11 +12,11 @@ namespace MetaDslx.Soal
 {
     internal class ObjectStorage<TObject, TXObject> 
         where TObject : class
-        where TXObject : XObject
+        where TXObject : XElement
     {
         private string name;
         private SoalImporter importer;
-        private Dictionary<XObject, TObject> objectsByElement = new Dictionary<XObject, TObject>();
+        private Dictionary<TXObject, TObject> objectsByElement = new Dictionary<TXObject, TObject>();
         private Dictionary<XName, TObject> objectsByName = new Dictionary<XName, TObject>();
         private Dictionary<XName, TXObject> elementsByName = new Dictionary<XName, TXObject>();
         private Dictionary<TObject, TXObject> elementsByObject = new Dictionary<TObject, TXObject>();
@@ -50,8 +50,8 @@ namespace MetaDslx.Soal
             }
             if (this.elementsByObject.TryGetValue(obj, out oldXObject))
             {
-                //this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " '" + xname + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
-                //return null;
+                this.importer.Diagnostics.AddError("The object is alredy registered to " + this.name + " in '" + oldXObject.BaseUri + "' at '" + SoalImporter.GetTextSpan(oldXObject) + "'.", reader.Uri, SoalImporter.GetTextSpan(xobj));
+                return null;
             }
             this.objectsByName.Add(xname, obj);
             this.objectsByElement.Add(xobj, obj);
@@ -71,7 +71,7 @@ namespace MetaDslx.Soal
             return result;
         }
 
-        internal TObject Get(XObject xobj)
+        internal TObject Get(TXObject xobj)
         {
             if (xobj == null) return null;
             TObject result = null;
@@ -104,6 +104,8 @@ namespace MetaDslx.Soal
         internal ObjectStorage<SoalType, XElement> XsdTypes { get; private set; }
         internal ObjectStorage<SoalType, XElement> XsdElements { get; private set; }
         internal ObjectStorage<SoalType, XElement> XsdAttributes { get; private set; }
+        //internal ObjectStorage<SoalType, XElement> XsdGroups { get; private set; }
+        //internal ObjectStorage<SoalType, XElement> XsdAttributeGroups { get; private set; }
         internal ObjectStorage<WsdlMessage, XElement> WsdlMessages { get; private set; }
 
         private SoalImporter(ModelCompilerDiagnostics diagnostics)
@@ -115,6 +117,8 @@ namespace MetaDslx.Soal
             this.XsdTypes = new ObjectStorage<SoalType, XElement>("type", this);
             this.XsdElements = new ObjectStorage<SoalType, XElement>("element", this);
             this.XsdAttributes = new ObjectStorage<SoalType, XElement>("attribute", this);
+            //this.XsdGroups = new ObjectStorage<SoalType, XElement>("group", this);
+            //this.XsdAttributeGroups = new ObjectStorage<SoalType, XElement>("attributeGroup", this);
             this.WsdlMessages = new ObjectStorage<WsdlMessage, XElement>("message", this);
         }
 
@@ -128,27 +132,9 @@ namespace MetaDslx.Soal
             SoalImporter importer = new SoalImporter(diagnostics);
             importer.ImportFile(uri);
             if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase2(importer);
+            LoadImportedFiles(importer);
             if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase3(importer);
-            if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase4(importer);
-            if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase5(importer);
-            if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase6(importer);
-            if (importer.Diagnostics.HasErrors()) return;
-            ImportPhase7(importer);
-            if (importer.Diagnostics.HasErrors()) return;
-            foreach (var type in importer.typesToRemove)
-            {
-                Declaration decl = type as Declaration;
-                if (decl != null)
-                {
-                    decl.Namespace = null;
-                    ModelContext.Current.RemoveInstance((ModelObject)decl);
-                }
-            }
+            RemoveTypes(importer);
             foreach (var fileUri in importer.readers.Keys)
             {
                 if (!importer.Diagnostics.GetMessages(true).Any(m => m.FileName == fileUri && m.Severity == Severity.Error))
@@ -162,83 +148,29 @@ namespace MetaDslx.Soal
             }
         }
 
-        private static void ImportPhase2(SoalImporter importer)
+        private static void LoadImportedFiles(SoalImporter importer)
         {
             foreach (var reader in importer.readers)
             {
                 foreach (var r in reader.Value)
                 {
-                    r.ImportPhase2();
+                    r.LoadImportedFiles();
                 }
             }
         }
 
-        private static void ImportPhase3(SoalImporter importer)
+        private static void RemoveTypes(SoalImporter importer)
         {
-            foreach (var reader in importer.readers)
+            foreach (var type in importer.typesToRemove)
             {
-                foreach (var r in reader.Value)
+                Declaration decl = type as Declaration;
+                if (decl != null)
                 {
-                    r.ImportPhase3();
+                    decl.Namespace = null;
+                    ModelContext.Current.RemoveInstance((ModelObject)decl);
                 }
             }
         }
-
-        private static void ImportPhase4(SoalImporter importer)
-        {
-            foreach (var reader in importer.readers)
-            {
-                foreach (var r in reader.Value)
-                {
-                    r.ImportPhase4();
-                }
-            }
-        }
-
-        private static void ImportPhase5(SoalImporter importer)
-        {
-            foreach (var reader in importer.readers)
-            {
-                foreach (var r in reader.Value)
-                {
-                    r.ImportPhase5();
-                }
-            }
-        }
-
-        private static void ImportPhase6(SoalImporter importer)
-        {
-            foreach (var reader in importer.readers)
-            {
-                foreach (var r in reader.Value)
-                {
-                    r.ImportPhase6();
-                }
-            }
-        }
-
-        private static void ImportPhase7(SoalImporter importer)
-        {
-            foreach (var reader in importer.readers)
-            {
-                foreach (var r in reader.Value)
-                {
-                    r.ImportPhase7();
-                }
-            }
-        }
-
-        private static void ImportPhase8(SoalImporter importer)
-        {
-            foreach (var reader in importer.readers)
-            {
-                foreach (var r in reader.Value)
-                {
-                    r.ImportPhase8();
-                }
-            }
-        }
-
 
         internal static TextSpan GetTextSpan(XObject xobj)
         {
@@ -404,11 +336,11 @@ namespace MetaDslx.Soal
             return result;
         }
 
-        internal SoalType ResolveXsdPrimitiveType(string uri, string name)
+        internal SoalType ResolveXsdPrimitiveType(XName name)
         {
-            if (uri == XsdReader.XsdNamespace)
+            if (name.NamespaceName == XsdReader.XsdNamespace)
             {
-                switch (name)
+                switch (name.LocalName)
                 {
                     case "any": return SoalInstance.Object;
                     case "anySimpleType": return SoalInstance.Object;
@@ -464,18 +396,18 @@ namespace MetaDslx.Soal
             return null;
         }
 
-        internal SoalType ResolveXsdType(string uri, string name)
+        internal SoalType ResolveXsdType(XName name)
         {
             SoalType result = null;
-            if (uri == XsdReader.XsdNamespace)
+            if (name.NamespaceName == XsdReader.XsdNamespace)
             {
-                result = this.ResolveXsdPrimitiveType(uri, name);
+                result = this.ResolveXsdPrimitiveType(name);
                 if (result != null) return result;
             }
-            Namespace ns = this.GetNamespace(uri);
+            Namespace ns = this.GetNamespace(name.NamespaceName);
             if (ns != null)
             {
-                IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)ns }, ResolveKind.NameOrType, name, new ResolutionInfo(), ResolveFlags.Children);
+                IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)ns }, ResolveKind.NameOrType, name.LocalName, new ResolutionInfo(), ResolveFlags.Children);
                 ModelObject mo = results.FirstOrDefault();
                 SoalType type = mo as SoalType;
                 return this.ResolveXsdReplacementType(type);
@@ -519,13 +451,13 @@ namespace MetaDslx.Soal
             {
                 XsdReader reader = new XsdReader(this, root, uri);
                 this.RegisterReader(uri, reader);
-                reader.ImportPhase1();
+                reader.CollectImportedFiles();
             }
             else if (root.Name.LocalName == "definitions" && root.Name.NamespaceName == WsdlReader.WsdlNamespace)
             {
                 WsdlReader reader = new WsdlReader(this, root, uri);
                 this.RegisterReader(uri, reader);
-                reader.ImportPhase1();
+                reader.CollectImportedFiles();
             }
             else
             {

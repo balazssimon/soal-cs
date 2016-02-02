@@ -67,7 +67,7 @@ namespace SoalImport
                     {
                         Console.WriteLine(msg);
                     }
-                    if (!ModelCompilerContext.Current.Diagnostics.HasErrors())
+                    //if (!ModelCompilerContext.Current.Diagnostics.HasErrors())
                     {
                         SoalPrinter printer = new SoalPrinter(model.Instances);
                         using (StreamWriter writer = new StreamWriter(outputFileName))

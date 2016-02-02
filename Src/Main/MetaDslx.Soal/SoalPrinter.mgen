@@ -40,18 +40,20 @@ namespace [ns.FullName] = "[ns.Uri]"
 [end if]
 end template
 
-function string GetAncestor(StructuredType st)
+function string GetAncestor(Namespace currentNs, StructuredType st)
+	StructuredType baseType = null;
 	if (st is Struct)
-		if (((Struct)st).BaseType != null) 
-			return " : "+((Struct)st).BaseType.FullName();
-		end if
+		baseType = ((Struct)st).BaseType;
 	else if (st is Exception)
-		if (((Exception)st).BaseType != null)
-			return " : "+((Exception)st).BaseType.FullName();
-		end if
+		baseType = ((Exception)st).BaseType;
 	else if (st is Entity)
-		if (((Entity)st).BaseType != null)
-			return " : "+((Entity)st).BaseType.FullName();
+		baseType = ((Entity)st).BaseType;
+	end if
+	if (baseType != null)
+		if (baseType.Namespace == currentNs)
+			return " : "+baseType.Name;
+		else
+			return " : "+baseType.FullName();
 		end if
 	end if
 	return "";
@@ -100,7 +102,7 @@ exception \
 [else if (st is Entity)]
 entity \
 [end if]
-[st.Name][GetAncestor(st)]
+[st.Name][GetAncestor(currentNs, st)]
 {
 	[loop(st->prop:Properties)]
 	[GenerateProperty(currentNs, prop)]
