@@ -296,6 +296,14 @@ namespace MetaDslx.Soal
                                             if (outputMsg.Rpc) opRpc = true;
                                             if (outputMsg.Wrapped && outputMsg.ElementName == opName+"Response") opWrapped = true;
                                             else opNotWrapped = true;
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count > 1)
+                                            {
+                                                opNotWrapped = true;
+                                            }
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count == 1 && ((Struct)outputMsg.Parts[0].Type).Properties[0].Name != opName+"Result")
+                                            {
+                                                opNotWrapped = true;
+                                            }
                                         }
                                         else
                                         {
@@ -364,12 +372,7 @@ namespace MetaDslx.Soal
                                                         Parameter param = SoalFactory.Instance.CreateParameter();
                                                         param.Name = prop.Name;
                                                         param.Type = prop.Type;
-                                                        if (prop.HasAnnotation(SoalAnnotations.NoWrap))
-                                                        {
-                                                            Annotation annot = SoalFactory.Instance.CreateAnnotation();
-                                                            annot.Name = SoalAnnotations.NoWrap;
-                                                            param.Annotations.Add(annot);
-                                                        }
+                                                        this.CopyAnnotations(prop, param);
                                                         op.Parameters.Add(param);
                                                     }
                                                     this.Importer.RemoveType(st);
@@ -641,33 +644,33 @@ namespace MetaDslx.Soal
             Exception ex = SoalFactory.Instance.CreateException();
             ex.Name = st.Name;
             ex.Namespace = st.Namespace;
-            foreach (var annot in st.Annotations)
-            {
-                Annotation exAnnot = SoalFactory.Instance.CreateAnnotation();
-                exAnnot.Name = annot.Name;
-                ex.Annotations.Add(exAnnot);
-            }
+            this.CopyAnnotations(st, ex);
             foreach (var prop in st.Properties)
             {
                 Property exProp = SoalFactory.Instance.CreateProperty();
                 exProp.Name = prop.Name;
                 exProp.Type = prop.Type;
                 ex.Properties.Add(exProp);
-                foreach (var annot in prop.Annotations)
-                {
-                    Annotation exAnnot = SoalFactory.Instance.CreateAnnotation();
-                    exAnnot.Name = annot.Name;
-                    exProp.Annotations.Add(exAnnot);
-                    foreach (var annotProp in annot.Properties)
-                    {
-                        AnnotationProperty exAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
-                        exAnnotProp.Name = annotProp.Name;
-                        exAnnotProp.Value = annotProp.Value;
-                        exAnnot.Properties.Add(exAnnotProp);
-                    }
-                }
+                this.CopyAnnotations(prop, exProp);
             }
             return ex;
+        }
+
+        private void CopyAnnotations(AnnotatedElement from, AnnotatedElement to)
+        {
+            foreach (var annot in from.Annotations)
+            {
+                Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+                toAnnot.Name = annot.Name;
+                to.Annotations.Add(toAnnot);
+                foreach (var annotProp in annot.Properties)
+                {
+                    AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                    toAnnotProp.Name = annotProp.Name;
+                    toAnnotProp.Value = annotProp.Value;
+                    toAnnot.Properties.Add(toAnnotProp);
+                }
+            }
         }
 
         private void ImportPhase7()
@@ -700,7 +703,7 @@ namespace MetaDslx.Soal
                         Binding binding = SoalFactory.Instance.CreateBinding();
                         binding.Name = name;
                         binding.Namespace = this.Namespace;
-                        if (binding.Name.StartsWith(intf.Name+"_"))
+                        if (binding.Name.StartsWith(intf.Name+"_") && binding.Name.Length > intf.Name.Length+1)
                         {
                             binding.Name = name.Substring(intf.Name.Length + 1);
                         }
@@ -711,6 +714,10 @@ namespace MetaDslx.Soal
                         else if (name.ToLower().EndsWith("binding") && name.Length > 7)
                         {
                             binding.Name = binding.Name.Substring(0, binding.Name.Length - 7);
+                        }
+                        if (binding.Name.EndsWith("_" + intf.Name) && binding.Name.Length > intf.Name.Length + 1)
+                        {
+                            binding.Name = binding.Name.Substring(0, binding.Name.Length - (intf.Name.Length + 1));
                         }
                         this.Importer.WsdlBindings.Register(this, this.tns + name, elem, binding);
                         XElement soap11BindingElem = elem.Element(this.soap11 + "binding");
@@ -728,8 +735,9 @@ namespace MetaDslx.Soal
                             }
                             else
                             {
-                                this.Importer.Diagnostics.AddError("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
-                                continue;
+                                this.Importer.Diagnostics.AddWarning("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
+                                document = true;
+                                //continue;
                             }
                             XAttribute transportAttr = soap11BindingElem.Attribute("transport");
                             if (transportAttr != null)
@@ -741,12 +749,14 @@ namespace MetaDslx.Soal
                                 else
                                 {
                                     this.Importer.Diagnostics.AddWarning("Unknown transport: '"+transportAttr.Value+"'.", this.Uri, this.GetTextSpan(transportAttr));
+                                    http = true;
                                 }
                             }
                             else
                             {
-                                this.Importer.Diagnostics.AddError("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
-                                continue;
+                                this.Importer.Diagnostics.AddWarning("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
+                                http = true;
+                                //continue;
                             }
                         }
                         else if (soap12BindingElem != null)
@@ -759,8 +769,9 @@ namespace MetaDslx.Soal
                             }
                             else
                             {
-                                this.Importer.Diagnostics.AddError("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
-                                continue;
+                                this.Importer.Diagnostics.AddWarning("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
+                                document = true;
+                                //continue;
                             }
                             XAttribute transportAttr = soap12BindingElem.Attribute("transport");
                             if (transportAttr != null)
@@ -772,12 +783,14 @@ namespace MetaDslx.Soal
                                 else
                                 {
                                     this.Importer.Diagnostics.AddWarning("Unknown transport: '" + transportAttr.Value + "'.", this.Uri, this.GetTextSpan(transportAttr));
+                                    http = true;
                                 }
                             }
                             else
                             {
-                                this.Importer.Diagnostics.AddError("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
-                                continue;
+                                this.Importer.Diagnostics.AddWarning("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
+                                http = true;
+                                //continue;
                             }
                         }
                         bool errors = false;
