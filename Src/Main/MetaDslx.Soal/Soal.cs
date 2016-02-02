@@ -583,6 +583,10 @@ namespace MetaDslx.Soal
                 ModelProperty.Register("Interface", typeof(global::MetaDslx.Soal.Interface), typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Operation_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
             
+            public static readonly ModelProperty ActionProperty =
+                ModelProperty.Register("Action", typeof(string), typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Operation_ActionProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
+            
             public static readonly ModelProperty IsOnewayProperty =
                 ModelProperty.Register("IsOneway", typeof(bool), typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Soal.SoalDescriptor.Operation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Operation_IsOnewayProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
@@ -1395,6 +1399,7 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Database_EntitiesProperty;
 		public static readonly global::MetaDslx.Core.MetaClass Operation;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_InterfaceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty Operation_ActionProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_IsOnewayProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_ReturnTypeProperty;
 		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp88;
@@ -1645,6 +1650,7 @@ namespace MetaDslx.Soal
 				Database_EntitiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				Operation_InterfaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				Operation_ActionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation_IsOnewayProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Operation_ReturnTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				__tmp88 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
@@ -3039,6 +3045,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => AnnotatedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ActionProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_IsOnewayProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ReturnTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ParametersProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3065,6 +3072,20 @@ namespace MetaDslx.Soal
 				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Operation_ActionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_ActionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ActionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_ActionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
+				
+				
+				((ModelObject)Operation_ActionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Operation_ActionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Action", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ActionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)Operation_ActionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -5465,6 +5486,7 @@ namespace MetaDslx.Soal
     public interface Operation : global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.AnnotatedElement
     {
         global::MetaDslx.Soal.Interface Interface { get; set; }
+        string Action { get; set; }
         bool IsOneway { get; set; }
         global::MetaDslx.Soal.SoalType ReturnType { get; set; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Parameter> Parameters { get; }
@@ -5509,6 +5531,17 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Interface);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Operation.InterfaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.Operation.Action
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty, value); }
         }
         
         bool global::MetaDslx.Soal.Operation.IsOneway

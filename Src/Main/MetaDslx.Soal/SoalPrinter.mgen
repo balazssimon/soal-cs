@@ -182,7 +182,7 @@ template GenerateTransportBinding(Namespace currentNs, TransportBindingElement b
 transport HTTP
 {
 	Ssl = true;
-	ClientAuthentication = [bnd.ClientAuthentication];
+	ClientAuthentication = [bnd.ClientAuthentication.ToString().ToLower()];
 }
 	[else]
 transport HTTP;
@@ -216,12 +216,21 @@ encoding SOAP;
 [end switch]
 end template
 
+template GenerateProtocolBinding(Namespace currentNs, ProtocolBindingElement bnd)
+[switch (bnd)]
+[type as WsAddressingBindingElement:]protocol WsAddressing;
+[end switch]
+end template
+
 template GenerateBinding(Namespace currentNs, Binding bnd)
 binding [bnd.Name]
 {
 	[GenerateTransportBinding(currentNs, bnd.Transport)]
 	[loop(bnd->enc:Encodings)]
 	[GenerateEncodingBinding(currentNs, enc)]
+	[end loop]
+	[loop(bnd->prot:Protocols)]
+	[GenerateProtocolBinding(currentNs, prot)]
 	[end loop]
 }
 end template

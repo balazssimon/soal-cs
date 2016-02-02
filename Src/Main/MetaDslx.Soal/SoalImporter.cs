@@ -112,6 +112,10 @@ namespace MetaDslx.Soal
         internal ObjectStorage<SoalType, XElement> WsdlTypes { get; private set; }
         internal ObjectStorage<SoalType, XElement> WsdlElements { get; private set; }
         internal ObjectStorage<WsdlMessage, XElement> WsdlMessages { get; private set; }
+        internal ObjectStorage<Interface, XElement> WsdlPortTypes { get; private set; }
+        internal ObjectStorage<Binding, XElement> WsdlBindings { get; private set; }
+        internal ObjectStorage<Endpoint, XElement> WsdlServices { get; private set; }
+        internal ObjectStorage<Binding, XElement> WsdlPolicies { get; private set; }
 
         private SoalImporter(ModelCompilerDiagnostics diagnostics)
         {
@@ -127,6 +131,10 @@ namespace MetaDslx.Soal
             this.WsdlTypes = new ObjectStorage<SoalType, XElement>("type", this);
             this.WsdlElements = new ObjectStorage<SoalType, XElement>("element", this);
             this.WsdlMessages = new ObjectStorage<WsdlMessage, XElement>("message", this);
+            this.WsdlPortTypes = new ObjectStorage<Interface, XElement>("portType", this);
+            this.WsdlBindings = new ObjectStorage<Binding, XElement>("binding", this);
+            this.WsdlServices = new ObjectStorage<Endpoint, XElement>("service", this);
+            this.WsdlPolicies = new ObjectStorage<Binding, XElement>("policy", this);
         }
 
         public static void Import(string uri, ModelCompilerDiagnostics diagnostics = null)
@@ -226,11 +234,23 @@ namespace MetaDslx.Soal
 
         internal void ImportRelativeFile(string currentUri, string relativeUri)
         {
+            string importUri = this.GetAbsoluteFileUri(currentUri, relativeUri);
+            if (importUri != null)
+            {
+                this.ImportFile(relativeUri);
+            }
+            else
+            {
+                this.Diagnostics.AddError("Invalid relative URI in import '" + relativeUri + "'.", currentUri, new TextSpan());
+            }
+        }
+
+        internal string GetAbsoluteFileUri(string currentUri, string relativeUri)
+        {
             Uri uri;
             if (Uri.TryCreate(relativeUri, UriKind.Absolute, out uri))
             {
-                this.ImportFile(uri.AbsoluteUri);
-                return;
+                return uri.AbsoluteUri;
             }
             else
             {
@@ -240,27 +260,23 @@ namespace MetaDslx.Soal
                 {
                     if (Uri.TryCreate(baseUri, relativeUri, out uri))
                     {
-                        this.ImportFile(uri.AbsoluteUri);
-                        return;
+                        return uri.AbsoluteUri;
                     }
                     else
                     {
-                        this.Diagnostics.AddError("Invalid relative URI in import '" + relativeUri + "'.", currentUri, new TextSpan());
-                        return;
+                        return null;
                     }
                 }
                 else
                 {
                     if (Path.IsPathRooted(relativeUri))
                     {
-                        this.ImportFile(relativeUri);
-                        return;
+                        return relativeUri;
                     }
                     else
                     {
                         string absoluteUri = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(currentUri), relativeUri));
-                        this.ImportFile(absoluteUri);
-                        return;
+                        return absoluteUri;
                     }
                 }
             }

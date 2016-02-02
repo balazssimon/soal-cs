@@ -161,6 +161,7 @@
 	class Operation : NamedElement, AnnotatedElement
 	{
 		Interface Interface;
+		string Action;
 		bool IsOneway;
 		SoalType ReturnType;
 		containment list<Parameter> Parameters;

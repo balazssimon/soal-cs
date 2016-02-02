@@ -35,10 +35,31 @@ namespace MetaDslx.Soal
     internal class WsdlReader : XmlReader
     {
         public const string WsdlNamespace = "http://schemas.xmlsoap.org/wsdl/";
+        public const string WsdlSoap11Namespace = "http://schemas.xmlsoap.org/wsdl/soap/";
+        public const string WsdlSoap12Namespace = "http://schemas.xmlsoap.org/wsdl/soap12/";
         public const string WspNamespace = "http://www.w3.org/ns/ws-policy";
+        public const string WsuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+        public const string HttpTransportUri = "http://schemas.xmlsoap.org/soap/http";
+
+        public const string WsawNamespace = "http://www.w3.org/2006/05/addressing/wsdl";
+        public const string WsamNamespace = "http://www.w3.org/2007/05/addressing/metadata";
+        public const string WsomaNamespace = "http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization";
+        public const string Sp1Namespace = "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy";
+        public const string Sp2Namespace = "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702";
+
         private XNamespace xsd;
         private XNamespace wsdl;
+        private XNamespace wsp;
+        private XNamespace wsu;
+        private XNamespace soap11;
+        private XNamespace soap12;
         private XNamespace tns;
+
+        private XNamespace wsaw;
+        private XNamespace wsam;
+        private XNamespace wsoma;
+        private XNamespace sp1;
+        private XNamespace sp2;
 
         public WsdlReader(SoalImporter importer, XElement root, string uri)
             : base(importer, root, uri)
@@ -49,6 +70,17 @@ namespace MetaDslx.Soal
         {
             xsd = XsdReader.XsdNamespace;
             wsdl = WsdlReader.WsdlNamespace;
+            wsp = WsdlReader.WspNamespace;
+            wsu = WsdlReader.WsuNamespace;
+            soap11 = WsdlReader.WsdlSoap11Namespace;
+            soap12 = WsdlReader.WsdlSoap12Namespace;
+
+            wsaw = WsdlReader.WsawNamespace;
+            wsam = WsdlReader.WsamNamespace;
+            wsoma = WsdlReader.WsomaNamespace;
+            sp1 = WsdlReader.Sp1Namespace;
+            sp2 = WsdlReader.Sp2Namespace;
+
             XAttribute tnsAttr = this.Root.Attribute("targetNamespace");
             if (tnsAttr == null)
             {
@@ -187,7 +219,8 @@ namespace MetaDslx.Soal
                 {
                     if (elem.Name.LocalName == "Policy")
                     {
-                        // TODO
+                        Binding policy = SoalFactory.Instance.CreateBinding();
+                        this.ImportPolicy(elem, policy);
                     }
                 }
             }
@@ -208,6 +241,7 @@ namespace MetaDslx.Soal
                             Interface intf = SoalFactory.Instance.CreateInterface();
                             intf.Name = name;
                             intf.Namespace = this.Namespace;
+                            this.Importer.WsdlPortTypes.Register(this, this.tns + name, elem, intf);
                             int count = 0;
                             int rpc = 0;
                             int document = 0;
@@ -644,6 +678,346 @@ namespace MetaDslx.Soal
                 {
                     if (elem.Name.LocalName == "binding")
                     {
+                        XAttribute nameAttr = elem.Attribute("name");
+                        XAttribute typeAttr = elem.Attribute("type");
+                        if (nameAttr == null)
+                        {
+                            this.Importer.Diagnostics.AddError("The binding has no 'name' attribute.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (typeAttr == null)
+                        {
+                            this.Importer.Diagnostics.AddError("The binding has no 'type' attribute.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        string name = nameAttr.Value;
+                        Interface intf = this.Importer.WsdlPortTypes.Get(this.GetXName(elem, typeAttr.Value)) as Interface;
+                        if (intf == null)
+                        {
+                            this.Importer.Diagnostics.AddError("Could not resolve portType.", this.Uri, this.GetTextSpan(typeAttr));
+                            continue;
+                        }
+                        Binding binding = SoalFactory.Instance.CreateBinding();
+                        binding.Name = name;
+                        binding.Namespace = this.Namespace;
+                        if (binding.Name.StartsWith(intf.Name+"_"))
+                        {
+                            binding.Name = name.Substring(intf.Name.Length + 1);
+                        }
+                        if (name.ToLower().EndsWith("_binding") && name.Length > 8)
+                        {
+                            binding.Name = binding.Name.Substring(0, binding.Name.Length - 8);
+                        }
+                        else if (name.ToLower().EndsWith("binding") && name.Length > 7)
+                        {
+                            binding.Name = binding.Name.Substring(0, binding.Name.Length - 7);
+                        }
+                        this.Importer.WsdlBindings.Register(this, this.tns + name, elem, binding);
+                        XElement soap11BindingElem = elem.Element(this.soap11 + "binding");
+                        XElement soap12BindingElem = elem.Element(this.soap12 + "binding");
+                        bool rpc = false;
+                        bool document = false;
+                        bool http = false;
+                        if (soap11BindingElem != null)
+                        {
+                            XAttribute styleAttr = soap11BindingElem.Attribute("style");
+                            if (styleAttr != null)
+                            {
+                                if (styleAttr.Value == "document") document = true;
+                                if (styleAttr.Value == "rpc") rpc = true;
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
+                                continue;
+                            }
+                            XAttribute transportAttr = soap11BindingElem.Attribute("transport");
+                            if (transportAttr != null)
+                            {
+                                if (transportAttr.Value == WsdlReader.HttpTransportUri)
+                                {
+                                    http = true;
+                                }
+                                else
+                                {
+                                    this.Importer.Diagnostics.AddWarning("Unknown transport: '"+transportAttr.Value+"'.", this.Uri, this.GetTextSpan(transportAttr));
+                                }
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap11BindingElem));
+                                continue;
+                            }
+                        }
+                        else if (soap12BindingElem != null)
+                        {
+                            XAttribute styleAttr = soap12BindingElem.Attribute("style");
+                            if (styleAttr != null)
+                            {
+                                if (styleAttr.Value == "document") document = true;
+                                if (styleAttr.Value == "rpc") rpc = true;
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The soap binding has no 'style' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
+                                continue;
+                            }
+                            XAttribute transportAttr = soap12BindingElem.Attribute("transport");
+                            if (transportAttr != null)
+                            {
+                                if (transportAttr.Value == WsdlReader.HttpTransportUri)
+                                {
+                                    http = true;
+                                }
+                                else
+                                {
+                                    this.Importer.Diagnostics.AddWarning("Unknown transport: '" + transportAttr.Value + "'.", this.Uri, this.GetTextSpan(transportAttr));
+                                }
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The soap binding has no 'transport' attribute.", this.Uri, this.GetTextSpan(soap12BindingElem));
+                                continue;
+                            }
+                        }
+                        bool errors = false;
+                        bool soap11 = soap11BindingElem != null;
+                        bool soap12 = soap12BindingElem != null;
+                        bool opLiteral = false;
+                        bool opEncoded = false;
+                        List<Operation> unboundOps = new List<Operation>(intf.Operations);
+                        foreach (var opElem in elem.Elements(wsdl+"operation"))
+                        {
+                            XAttribute opNameAttr = opElem.Attribute("name");
+                            if (opNameAttr == null)
+                            {
+                                this.Importer.Diagnostics.AddError("The operation has no 'name' attribute.", this.Uri, this.GetTextSpan(opElem));
+                                errors = true;
+                                continue;
+                            }
+                            string opName = opNameAttr.Value;
+                            string action = null;
+                            XElement soap11OperationElem = elem.Element(this.soap11 + "operation");
+                            XElement soap12OperationElem = elem.Element(this.soap12 + "operation");
+                            if (soap11OperationElem != null)
+                            {
+                                soap11 = true;
+                                XAttribute styleAttr = soap11BindingElem.Attribute("style");
+                                if (styleAttr != null)
+                                {
+                                    if (styleAttr.Value == "document") document = true;
+                                    if (styleAttr.Value == "rpc") rpc = true;
+                                }
+                                XAttribute actionAttr = soap11BindingElem.Attribute("soapAction");
+                                if (actionAttr != null)
+                                {
+                                    action = actionAttr.Value;
+                                }
+                            }
+                            if (soap12OperationElem != null)
+                            {
+                                soap12 = true;
+                                XAttribute styleAttr = soap12BindingElem.Attribute("style");
+                                if (styleAttr != null)
+                                {
+                                    if (styleAttr.Value == "document") document = true;
+                                    if (styleAttr.Value == "rpc") rpc = true;
+                                }
+                                XAttribute actionAttr = soap12BindingElem.Attribute("soapAction");
+                                if (actionAttr != null)
+                                {
+                                    action = actionAttr.Value;
+                                }
+                            }
+                            bool found = false;
+                            foreach (var op in intf.Operations)
+                            {
+                                if (op.Name == opName)
+                                {
+                                    found = true;
+                                    unboundOps.Remove(op);
+                                    op.Action = action;
+                                    XElement inputElem = opElem.Element(wsdl + "input");
+                                    XElement outputElem = opElem.Element(wsdl + "output");
+                                    if (inputElem != null)
+                                    {
+                                        XElement soap11Elem = inputElem.Element(this.soap11 + "body");
+                                        XElement soap12Elem = inputElem.Element(this.soap12 + "body");
+                                        if (soap11Elem != null)
+                                        {
+                                            soap11 = true;
+                                            XAttribute useAttr = soap11Elem.Attribute("use");
+                                            if (useAttr != null)
+                                            {
+                                                if (useAttr.Value == "literal") opLiteral = true;
+                                                if (useAttr.Value == "encoded") opEncoded = true;
+                                            }
+                                        }
+                                        if (soap12Elem != null)
+                                        {
+                                            soap12 = true;
+                                            XAttribute useAttr = soap12Elem.Attribute("use");
+                                            if (useAttr != null)
+                                            {
+                                                if (useAttr.Value == "literal") opLiteral = true;
+                                                if (useAttr.Value == "encoded") opEncoded = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.Importer.Diagnostics.AddError("The operation has no input defined in the binding.", this.Uri, this.GetTextSpan(opElem));
+                                        errors = true;
+                                    }
+                                    if (!op.IsOneway)
+                                    {
+                                        if (outputElem != null)
+                                        {
+                                            XElement soap11Elem = inputElem.Element(this.soap11 + "body");
+                                            XElement soap12Elem = inputElem.Element(this.soap12 + "body");
+                                            if (soap11Elem != null)
+                                            {
+                                                soap11 = true;
+                                                XAttribute useAttr = soap11Elem.Attribute("use");
+                                                if (useAttr != null)
+                                                {
+                                                    if (useAttr.Value == "literal") opLiteral = true;
+                                                    if (useAttr.Value == "encoded") opEncoded = true;
+                                                }
+                                            }
+                                            if (soap12Elem != null)
+                                            {
+                                                soap12 = true;
+                                                XAttribute useAttr = soap12Elem.Attribute("use");
+                                                if (useAttr != null)
+                                                {
+                                                    if (useAttr.Value == "literal") opLiteral = true;
+                                                    if (useAttr.Value == "encoded") opEncoded = true;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            this.Importer.Diagnostics.AddError("The operation has no output defined in the binding.", this.Uri, this.GetTextSpan(opElem));
+                                            errors = true;
+                                        }
+                                    }
+                                    else if (outputElem != null)
+                                    {
+                                        this.Importer.Diagnostics.AddError("A oneway operation cannot have an output.", this.Uri, this.GetTextSpan(outputElem));
+                                        errors = true;
+                                    }
+                                    // TODO: faults
+                                    if (errors)
+                                    {
+                                        break;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (!found)
+                            {
+                                this.Importer.Diagnostics.AddError("The portType has no operation named '"+opName+"' attribute.", this.Uri, this.GetTextSpan(opNameAttr));
+                                errors = true;
+                            }
+                        }
+                        foreach (var op in unboundOps)
+                        {
+                            this.Importer.Diagnostics.AddError("The operation named '" + op.Name + "' from the portType '" + intf.Name + "' is not defined in the binding.", this.Uri, this.GetTextSpan(elem));
+                            errors = true;
+                        }
+                        if (errors)
+                        {
+                            continue;
+                        }
+                        if (document && rpc)
+                        {
+                            this.Importer.Diagnostics.AddError("The binding has mixed document and RPC styles.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (opLiteral && opEncoded)
+                        {
+                            this.Importer.Diagnostics.AddError("The binding has mixed literal and encoded styles.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (soap11 && soap12)
+                        {
+                            this.Importer.Diagnostics.AddError("The binding has mixed SOAP 1.1 and SOAP 1.2 protocols.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (document && intf.HasAnnotation(SoalAnnotations.Rpc))
+                        {
+                            this.Importer.Diagnostics.AddError("The binding is document style but the portType is RPC style.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (rpc && !intf.HasAnnotation(SoalAnnotations.Rpc))
+                        {
+                            this.Importer.Diagnostics.AddError("The binding is RPC style but the portType is document style.", this.Uri, this.GetTextSpan(elem));
+                            continue;
+                        }
+                        if (http)
+                        {
+                            binding.Transport = SoalFactory.Instance.CreateHttpTransportBindingElement();
+                        }
+                        if (soap11 || soap12)
+                        {
+                            SoapEncodingBindingElement sebe = SoalFactory.Instance.CreateSoapEncodingBindingElement();
+                            binding.Encodings.Add(sebe);
+                            sebe.Version = soap12 ? SoapVersion.Soap12 : SoapVersion.Soap11;
+                            if (rpc && opEncoded) sebe.Style = SoapEncodingStyle.RpcEncoded;
+                            else if (rpc && opLiteral) sebe.Style = SoapEncodingStyle.RpcLiteral;
+                            else if (document)
+                            {
+                                if (intf.HasAnnotation(SoalAnnotations.NoWrap)) sebe.Style = SoapEncodingStyle.DocumentLiteral;
+                                else sebe.Style = SoapEncodingStyle.DocumentWrapped;
+                            }
+                        }
+                        XElement policyElem = elem.Element(this.wsp + "Policy");
+                        XElement policyReferenceElem = elem.Element(this.wsp + "PolicyReference");
+                        if (policyElem != null)
+                        {
+                            this.ImportPolicy(policyElem, binding);
+                        }
+                        else if (policyReferenceElem != null)
+                        {
+                            XAttribute uriAttr = policyReferenceElem.Attribute("URI");
+                            if (uriAttr != null)
+                            {
+                                string refName = uriAttr.Value;
+                                string[] refParts = refName.Split('#');
+                                if (refParts.Length == 2)
+                                {
+                                    string refDoc = refParts[0];
+                                    string refId = refParts[1];
+                                    XNamespace uri = null;
+                                    if (string.IsNullOrWhiteSpace(refDoc))
+                                    {
+                                        uri = this.Uri;
+                                    }
+                                    else
+                                    {
+                                        uri = refDoc;
+                                    }
+                                    Binding policy = this.Importer.WsdlPolicies.Get(uri + refId);
+                                    if (policy == null)
+                                    {
+                                        this.Importer.Diagnostics.AddError("Could not resolve policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(policyReferenceElem));
+                                        continue;
+                                    }
+                                    this.ApplyPolicy(binding, policy);
+                                }
+                                else
+                                {
+                                    this.Importer.Diagnostics.AddError("Invalid policy reference: '" + refName + "'.", this.Uri, this.GetTextSpan(policyReferenceElem));
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                this.Importer.Diagnostics.AddError("The PolicyReference has no 'URI' attribute.", this.Uri, this.GetTextSpan(policyReferenceElem));
+                                continue;
+                            }
+                        }
                     }
                 }
             }
@@ -661,5 +1035,224 @@ namespace MetaDslx.Soal
                 }
             }
         }
+
+        private void ImportPolicy(XElement elem, Binding policy)
+        {
+            XAttribute id = elem.Attribute(wsu + "Id");
+            if (id != null)
+            {
+                string name = id.Value;
+                policy.Name = name;
+                XNamespace uri = this.Uri;
+                this.Importer.WsdlPolicies.Register(this, uri + name, elem, policy);
+            }
+            List<XElement> items = new List<XElement>();
+            if (!this.GetChildPolicies(elem, items)) return;
+            foreach (var item in items)
+            {
+                if (item.Name == wsaw + "UsingAddressing")
+                {
+                    this.ImportAddressingPolicy(item, wsaw, policy);
+                }
+                else if (item.Name == wsam + "Addressing")
+                {
+                    this.ImportAddressingPolicy(item, wsam, policy);
+                }
+                else if (item.Name == wsoma + "OptimizedMimeSerialization")
+                {
+                    this.ImportMtomPolicy(item, wsoma, policy);
+                }
+                else if (item.Name == sp1 + "TransportBinding")
+                {
+                    this.ImportTransportBindingPolicy(item, sp1, policy);
+                }
+                else if (item.Name == sp2 + "TransportBinding")
+                {
+                    this.ImportTransportBindingPolicy(item, sp2, policy);
+                }
+                else
+                {
+                    this.Importer.Diagnostics.AddWarning("The policy is not supported by the SOAL importer.", this.Uri, this.GetTextSpan(item));
+                }
+            }
+        }
+
+        private bool GetChildPolicies(XElement elem, List<XElement> children)
+        {
+            bool result = true;
+            foreach (var child in elem.Elements())
+            {
+                if (child.Name.NamespaceName == WsdlReader.WspNamespace)
+                {
+                    if (child.Name.LocalName == "Policy")
+                    {
+                        result &= this.GetChildPolicies(child, children);
+                    }
+                    if (child.Name.LocalName == "All")
+                    {
+                        result &= this.GetChildPolicies(child, children);
+                    }
+                    if (child.Name.LocalName == "ExactlyOne")
+                    {
+                        if (child.Elements().Count() > 1)
+                        {
+                            this.Importer.Diagnostics.AddError("Policy alternatives are not supported by the SOAL importer.", this.Uri, this.GetTextSpan(child));
+                            return false;
+                        }
+                        else
+                        {
+                            result &= this.GetChildPolicies(child, children);
+                        }
+                    }
+                }
+                else
+                {
+                    children.Add(child);
+                }
+            }
+            return result;
+        }
+
+        private void ImportAddressingPolicy(XElement elem, XNamespace wsa, Binding policy)
+        {
+            WsAddressingBindingElement wabe = SoalFactory.Instance.CreateWsAddressingBindingElement();
+            policy.Protocols.Add(wabe);
+        }
+
+        private void ImportMtomPolicy(XElement elem, XNamespace wsoma, Binding policy)
+        {
+            SoapEncodingBindingElement sebe = null; 
+            foreach (var enc in policy.Encodings)
+            {
+                if (enc is SoapEncodingBindingElement)
+                {
+                    sebe = (SoapEncodingBindingElement)enc;
+                    break;
+                }
+            }
+            if (sebe == null)
+            {
+                sebe = SoalFactory.Instance.CreateSoapEncodingBindingElement();
+            }
+            sebe.Mtom = true;
+            policy.Encodings.Add(sebe);
+        }
+
+        private void ImportTransportBindingPolicy(XElement elem, XNamespace sp, Binding policy)
+        {
+            bool https = false;
+            bool clientCert = false;
+            List<XElement> items = new List<XElement>();
+            if (!this.GetChildPolicies(elem, items)) return;
+            foreach (var item in items)
+            {
+                if (item.Name == sp + "TransportToken")
+                {
+                    List<XElement> tokenItems = new List<XElement>();
+                    this.GetChildPolicies(item, tokenItems);
+                    foreach (var tokenItem in tokenItems)
+                    {
+                        if (tokenItem.Name == sp + "HttpsToken")
+                        {
+                            https = true;
+                            XAttribute clientCertAttr = tokenItem.Attribute("RequireClientCertificate");
+                            if (clientCertAttr != null)
+                            {
+                                clientCert = clientCertAttr.Value == "true" || clientCertAttr.Value == "1";
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (https)
+            {
+                HttpTransportBindingElement htbe = SoalFactory.Instance.CreateHttpTransportBindingElement();
+                policy.Transport = htbe;
+                htbe.Ssl = true;
+                htbe.ClientAuthentication = clientCert;
+            }
+        }
+
+        private void ApplyPolicy(Binding binding, Binding policy)
+        {
+            HttpTransportBindingElement bhtbe = binding.Transport as HttpTransportBindingElement;
+            HttpTransportBindingElement phtbe = policy.Transport as HttpTransportBindingElement;
+            if (bhtbe != null && phtbe != null)
+            {
+                if (phtbe.Ssl)
+                {
+                    bhtbe.Ssl = phtbe.Ssl;
+                    bhtbe.ClientAuthentication = phtbe.ClientAuthentication;
+                }
+            }
+            binding.Protocols.Clear();
+            foreach (var benc in binding.Encodings)
+            {
+                if (benc is SoapEncodingBindingElement)
+                {
+                    SoapEncodingBindingElement bsebe = (SoapEncodingBindingElement)benc;
+                    foreach (var penc in policy.Encodings)
+                    {
+                        if (penc is SoapEncodingBindingElement)
+                        {
+                            SoapEncodingBindingElement psebe = (SoapEncodingBindingElement)penc;
+                            if (psebe.Mtom)
+                            {
+                                bsebe.Mtom = true;
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var protocol in policy.Protocols)
+            {
+                if (protocol is WsAddressingBindingElement)
+                {
+                    WsAddressingBindingElement wabe = SoalFactory.Instance.CreateWsAddressingBindingElement();
+                    binding.Protocols.Add(wabe);
+                }
+            }
+        }
+
+    }
+
+}
+
+
+/*
+List<XElement> faultElems = opElem.Elements(wsdl + "fault").ToList();
+List<Exception> unboundExcs = new List<Exception>(op.Exceptions);
+foreach (var faultElem in faultElems)
+{
+    XAttribute faultNameAttr = faultElem.Attribute("name");
+    if (faultNameAttr == null)
+    {
+        this.Importer.Diagnostics.AddError("The fault has no 'name' attribute.", this.Uri, this.GetTextSpan(faultNameAttr));
+        errors = true;
+        continue;
+    }
+    string faultName = faultNameAttr.Value;
+    bool faultFound = false;
+    foreach (var ex in op.Exceptions)
+    {
+        if (ex.Name == faultName)
+        {
+            faultFound = true;
+            unboundExcs.Remove(ex);
+            break;
+        }
+    }
+    if (!faultFound)
+    {
+        this.Importer.Diagnostics.AddError("The operation has no fault defined in the binding for '"+faultName+"'.", this.Uri, this.GetTextSpan(opElem));
+        errors = true;
     }
 }
+foreach (var ex in unboundExcs)
+{
+    this.Importer.Diagnostics.AddError("The fault '"+ex.Name+"' of the operation '" + op.Name + "' from the portType '" + intf.Name + "' is not defined in the binding.", this.Uri, this.GetTextSpan(opElem));
+    errors = true;
+}
+*/
