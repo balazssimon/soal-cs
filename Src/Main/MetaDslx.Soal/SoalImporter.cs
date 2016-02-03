@@ -102,6 +102,7 @@ namespace MetaDslx.Soal
         private Dictionary<SoalType, SoalType> exceptionTypes = new Dictionary<SoalType, SoalType>();
         private HashSet<SoalType> typesToRemove = new HashSet<SoalType>();
         private Dictionary<XName, WsdlMessage> messagesByName = new Dictionary<XName, WsdlMessage>();
+        private Dictionary<SoalType, int> referenceCounter = new Dictionary<SoalType, int>();
 
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
         internal ObjectStorage<SoalType, XElement> XsdTypes { get; private set; }
@@ -188,12 +189,45 @@ namespace MetaDslx.Soal
                 Declaration decl = type as Declaration;
                 if (decl != null)
                 {
-                    decl.Namespace = null;
-                    ModelContext.Current.RemoveInstance((ModelObject)decl);
+                    int count = 0;
+                    importer.referenceCounter.TryGetValue(type, out count);
+                    if (count <= 0)
+                    {
+                        decl.Namespace = null;
+                        ModelContext.Current.RemoveInstance((ModelObject)decl);
+                    }
                 }
             }
         }
 
+        internal void Reference(SoalType type)
+        {
+            int count = 0;
+            if (this.referenceCounter.TryGetValue(type, out count))
+            {
+                ++count;
+            }
+            else
+            {
+                count = 1;
+            }
+            this.referenceCounter[type] = count;
+        }
+        /*
+        internal void UnReference(SoalType type)
+        {
+            int count = 0;
+            if (this.referenceCounter.TryGetValue(type, out count))
+            {
+                --count;
+            }
+            else
+            {
+                count = 0;
+            }
+            this.referenceCounter[type] = count;
+        }
+        */
         internal static TextSpan GetTextSpan(XObject xobj)
         {
             IXmlLineInfo info = xobj;
@@ -338,6 +372,8 @@ namespace MetaDslx.Soal
 
         internal void RegisterReplacementType(SoalType from, SoalType to)
         {
+            if (from == null) return;
+            if (to == null) return;
             if (!replacementTypes.ContainsKey(from))
             {
                 this.replacementTypes.Add(from, to);
@@ -347,6 +383,8 @@ namespace MetaDslx.Soal
 
         internal void RegisterExceptionType(SoalType from, SoalType to)
         {
+            if (from == null) return;
+            if (to == null) return;
             if (!exceptionTypes.ContainsKey(from))
             {
                 this.exceptionTypes.Add(from, to);

@@ -57,7 +57,7 @@ namespace MetaDslx.Soal
                         }
                         else
                         {
-                            this.Importer.Diagnostics.AddError("Attribute 'schemaLocation' is missing from import.", this.Uri, this.GetTextSpan(elem));
+                            //this.Importer.Diagnostics.AddError("Attribute 'schemaLocation' is missing from import.", this.Uri, this.GetTextSpan(elem));
                         }
                     }
                     else if (elem.Name.LocalName == "element")
@@ -209,7 +209,7 @@ namespace MetaDslx.Soal
         {
             if (allowRename && this.Importer.ResolveXsdType(this.tns + name) != null)
             {
-                int counter = 0;
+                int counter = 1;
                 while (this.Importer.ResolveXsdType(this.tns + (name + counter)) != null)
                 {
                     ++counter;
@@ -995,17 +995,24 @@ namespace MetaDslx.Soal
                 {
                     XElement simpleType = elem.Element(xsd + "simpleType");
                     XElement complexType = elem.Element(xsd + "complexType");
+                    string typeName = this.GetUniqueName(name, true);
                     if (simpleType != null)
                     {
-                        type = this.ImportPhase1SimpleType(simpleType, name, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
+                        type = this.ImportPhase1SimpleType(simpleType, typeName, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
+                        type = this.ImportPhase2SimpleType(type as PrimitiveType, simpleType);
                     }
                     else if (complexType != null)
                     {
-                        type = this.ImportPhase1ComplexType(complexType, name, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
+                        type = this.ImportPhase1ComplexType(complexType, typeName, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
                         Struct childSt = type as Struct;
                         if (childSt != null)
                         {
-                            type = this.ImportPhase4ComplexType(childSt, complexType);
+                            type = this.ImportPhase2ComplexType(childSt, complexType);
+                            childSt = type as Struct;
+                            if (childSt != null)
+                            {
+                                type = this.ImportPhase4ComplexType(childSt, complexType);
+                            }
                         }
                     }
                     else
@@ -1030,6 +1037,7 @@ namespace MetaDslx.Soal
                     }
                 }
             }
+            SoalType originalType = type;
             type = this.Importer.ResolveXsdReplacementType(type);
             XAttribute nillableAttr = elem.Attribute("nillable");
             XAttribute minOccursAttr = elem.Attribute("minOccurs");
@@ -1085,33 +1093,6 @@ namespace MetaDslx.Soal
             }
             Property prop = SoalFactory.Instance.CreateProperty();
             prop.Name = name;
-            if (rt != null && rt is ArrayType)
-            {
-                ((ArrayType)rt).InnerType = type;
-                Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                noWrap.Name = SoalAnnotations.NoWrap;
-                prop.Annotations.Add(noWrap);
-                prop.Type = rt;
-            }
-            else
-            {
-                if (maxOccurs < 0 || maxOccurs > 1)
-                {
-                    ArrayType array = SoalFactory.Instance.CreateArrayType();
-                    array.InnerType = type;
-                    type = array;
-                    Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                    noWrap.Name = SoalAnnotations.NoWrap;
-                    prop.Annotations.Add(noWrap);
-                }
-                prop.Type = type;
-            }
-            if (minOccurs == 0 && maxOccurs == 1)
-            {
-                Annotation optional = SoalFactory.Instance.CreateAnnotation();
-                optional.Name = SoalAnnotations.Optional;
-                prop.Annotations.Add(optional);
-            }
             if (attribute)
             {
                 Annotation attr = SoalFactory.Instance.CreateAnnotation();
@@ -1123,6 +1104,42 @@ namespace MetaDslx.Soal
                     Annotation req = SoalFactory.Instance.CreateAnnotation();
                     req.Name = SoalAnnotations.Required;
                     prop.Annotations.Add(req);
+                }
+                prop.Type = type;
+            }
+            else
+            {
+                if (rt != null && rt is ArrayType)
+                {
+                    if (type is ArrayType || (type is NonNullableType && ((NonNullableType)type).InnerType is ArrayType))
+                    {
+                        type = originalType;
+                        this.Importer.Reference(type);
+                    }
+                    ((ArrayType)rt).InnerType = type;
+                    Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                    noWrap.Name = SoalAnnotations.NoWrap;
+                    prop.Annotations.Add(noWrap);
+                    prop.Type = rt;
+                }
+                else
+                {
+                    if (maxOccurs < 0 || maxOccurs > 1)
+                    {
+                        ArrayType array = SoalFactory.Instance.CreateArrayType();
+                        array.InnerType = type;
+                        type = array;
+                        Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                        noWrap.Name = SoalAnnotations.NoWrap;
+                        prop.Annotations.Add(noWrap);
+                    }
+                    prop.Type = type;
+                }
+                if (minOccurs == 0 && maxOccurs == 1)
+                {
+                    Annotation optional = SoalFactory.Instance.CreateAnnotation();
+                    optional.Name = SoalAnnotations.Optional;
+                    prop.Annotations.Add(optional);
                 }
             }
             st.Properties.Add(prop);

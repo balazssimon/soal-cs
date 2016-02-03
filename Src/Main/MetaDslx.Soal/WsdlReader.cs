@@ -372,6 +372,7 @@ namespace MetaDslx.Soal
                                                         Parameter param = SoalFactory.Instance.CreateParameter();
                                                         param.Name = prop.Name;
                                                         param.Type = prop.Type;
+                                                        this.Importer.Reference(param.Type);
                                                         this.CopyAnnotations(prop, param);
                                                         op.Parameters.Add(param);
                                                     }
@@ -410,6 +411,7 @@ namespace MetaDslx.Soal
                                                         this.Importer.Diagnostics.AddWarning("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetTextSpan(opElem));
                                                     }
                                                     op.ReturnType = prop.Type;
+                                                    this.Importer.Reference(op.ReturnType);
                                                     if (prop.HasAnnotation(SoalAnnotations.NoWrap))
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
@@ -467,6 +469,7 @@ namespace MetaDslx.Soal
                                                     Parameter param = SoalFactory.Instance.CreateParameter();
                                                     param.Name = part.Name;
                                                     param.Type = part.Type;
+                                                    this.Importer.Reference(param.Type);
                                                     op.Parameters.Add(param);
                                                     if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
@@ -482,6 +485,7 @@ namespace MetaDslx.Soal
                                                 {
                                                     WsdlMessagePart part = outputMsg.Parts[0];
                                                     op.ReturnType = part.Type;
+                                                    this.Importer.Reference(op.ReturnType);
                                                     if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
@@ -543,6 +547,7 @@ namespace MetaDslx.Soal
                                                 Parameter param = SoalFactory.Instance.CreateParameter();
                                                 param.Name = part.Name;
                                                 param.Type = part.Type;
+                                                this.Importer.Reference(param.Type);
                                                 op.Parameters.Add(param);
                                             }
                                         }
@@ -552,6 +557,7 @@ namespace MetaDslx.Soal
                                             {
                                                 WsdlMessagePart part = outputMsg.Parts[0];
                                                 op.ReturnType = part.Type;
+                                                this.Importer.Reference(op.ReturnType);
                                             }
                                             else
                                             {
@@ -650,6 +656,7 @@ namespace MetaDslx.Soal
                 Property exProp = SoalFactory.Instance.CreateProperty();
                 exProp.Name = prop.Name;
                 exProp.Type = prop.Type;
+                this.Importer.Reference(exProp.Type);
                 ex.Properties.Add(exProp);
                 this.CopyAnnotations(prop, exProp);
             }

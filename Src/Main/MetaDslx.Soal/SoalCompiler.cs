@@ -38,10 +38,16 @@ namespace MetaDslx.Soal
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.NoWrap);
+            annotations.Add(SoalAnnotations.Attribute);
+            annotations.Add(SoalAnnotations.Required);
+            annotations.Add(SoalAnnotations.Optional);
             allowedAnnotations.Add(typeof(Property), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.NoWrap);
+            annotations.Add(SoalAnnotations.Attribute);
+            annotations.Add(SoalAnnotations.Required);
+            annotations.Add(SoalAnnotations.Optional);
             allowedAnnotations.Add(typeof(Parameter), annotations);
 
             annotations = new HashSet<string>();

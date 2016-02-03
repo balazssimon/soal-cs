@@ -45,11 +45,40 @@ template Generate(Namespace ns)
 ^
 	<xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
 	<xs:complexType name="[stype.GetXsdName()]">
-		<xs:[GetStructKind(stype)]>
-			[loop(stype->prop:Properties)]
-			[GenerateElement(ns, prop.Name, prop.Type, prop.Annotations)]
-			[end loop]
-		</xs:[GetStructKind(stype)]>
+		[switch(stype)]
+		[type as Struct:]
+			[if (stype.BaseType != null)]
+		<xs:complexContent>
+			<xs:extension base="[stype.BaseType.GetNamespace(ns).Prefix]:[stype.BaseType.GetXsdName()]">
+				[GenerateStructuredTypeBody(ns, stype)]
+			</xs:extension>
+		</xs:complexContent>
+			[else]
+		[GenerateStructuredTypeBody(ns, stype)]
+			[end if]
+		[type as Exception:]
+			[if (stype.BaseType != null)]
+		<xs:complexContent>
+			<xs:extension base="[stype.BaseType.GetNamespace(ns).Prefix]:[stype.BaseType.GetXsdName()]">
+				[GenerateStructuredTypeBody(ns, stype)]
+			</xs:extension>
+		</xs:complexContent>
+			[else]
+		[GenerateStructuredTypeBody(ns, stype)]
+			[end if]
+		[type as Entity:]
+			[if (stype.BaseType != null)]
+		<xs:complexContent>
+			<xs:extension base="[stype.BaseType.GetNamespace(ns).Prefix]:[stype.BaseType.GetXsdName()]">
+				[GenerateStructuredTypeBody(ns, stype)]
+			</xs:extension>
+		</xs:complexContent>
+			[else]
+		[GenerateStructuredTypeBody(ns, stype)]
+			[end if]
+		[default:]
+		[GenerateStructuredTypeBody(ns, stype)]
+		[end switch]
 	</xs:complexType>
 	[end loop]
 	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
@@ -66,28 +95,45 @@ template Generate(Namespace ns)
 	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
 	<xs:complexType name="[op.Name]">
 		<xs:sequence>
-			[loop(op->param:Parameters)]
+			[loop(op->param:Parameters where !param.HasAnnotation(SoalAnnotations.Attribute))]
 			[GenerateElement(ns, param.Name, param.Type, param.Annotations)]
 			[end loop]
 		</xs:sequence>
+		[loop(op->param:Parameters where param.HasAnnotation(SoalAnnotations.Attribute))]
+		[GenerateElement(ns, param.Name, param.Type, param.Annotations)]
+		[end loop]
 	</xs:complexType>
 		[if (!op.IsOneway)]
 ^
 	<xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
 	<xs:complexType name="[op.Name]Response">
-			[if (op.ReturnType == SoalInstance.Void)]
+			[if (op.ReturnType == SoalInstance.Void || op.ReturnAnnotations.ContainsAnnotation(SoalAnnotations.Attribute))]
 		<xs:sequence/>
 			[else]
 		<xs:sequence>
 			[GenerateElement(ns, op.Name+"Result", op.ReturnType, op.ReturnAnnotations)]
 		</xs:sequence>
 			[end if]
+		[if (op.ReturnAnnotations.ContainsAnnotation(SoalAnnotations.Attribute))]
+		[GenerateElement(ns, op.Name+"Result", op.ReturnType, op.ReturnAnnotations)]
+		[end if]
 	</xs:complexType>
 		[end if]
 		[end if]
 		[end if]
 	[end loop]
 </xs:schema>
+end template
+
+template GenerateStructuredTypeBody(Namespace ns, StructuredType stype)
+<xs:[GetStructKind(stype)]>
+	[loop(stype->prop:Properties where !prop.HasAnnotation(SoalAnnotations.Attribute))]
+	[GenerateElement(ns, prop.Name, prop.Type, prop.Annotations)]
+	[end loop]
+</xs:[GetStructKind(stype)]>
+[loop(stype->prop:Properties where prop.HasAnnotation(SoalAnnotations.Attribute))]
+[GenerateElement(ns, prop.Name, prop.Type, prop.Annotations)]
+[end loop]
 end template
 
 template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots)
@@ -109,7 +155,7 @@ template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation
 <xs:element name="[name]" type="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]" nillable="[((ArrayType)((NonNullableType)t).InnerType).InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
 		[end if]
 	[else]
-<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"/>
+<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(annots)]/>
 	[end if]
 [end if]
 end template
@@ -124,8 +170,16 @@ function string GetStructKind(StructuredType st)
 	end if
 end function
 
+function string GetElementOptional(IList<Annotation> annots)
+	if (!annots.ContainsAnnotation(SoalAnnotations.Attribute) && annots.ContainsAnnotation(SoalAnnotations.Optional)) 
+		return " minOccurs=\"0\"";
+	else
+		return "";
+	end if
+end function
+
 function string GetAttributeRequired(IList<Annotation> annots)
-	if (annots.ContainsAnnotation(SoalAnnotations.Attribute)) 
+	if (annots.ContainsAnnotation(SoalAnnotations.Attribute) && annots.ContainsAnnotation(SoalAnnotations.Required)) 
 		return " use=\"required\"";
 	else
 		return "";

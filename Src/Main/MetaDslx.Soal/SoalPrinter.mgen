@@ -241,6 +241,6 @@ template GenerateEndpoint(Namespace currentNs, Endpoint endp)
 endpoint [endp.Name] : [GenerateRef(currentNs, endp.Interface)]
 {
 	binding [GenerateRef(currentNs, endp.Binding)];
-	location "[endp.Address]";
+	address "[endp.Address]";
 }
 end template

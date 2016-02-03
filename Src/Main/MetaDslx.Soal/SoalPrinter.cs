@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_SoalPrinter_1136448054;
-    namespace __Hidden_SoalPrinter_1136448054
+    using __Hidden_SoalPrinter_778116385;
+    namespace __Hidden_SoalPrinter_778116385
     {
         internal static class __Extensions
         {
@@ -1911,8 +1911,8 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(); //243:49
                 }
             }
-            string __tmp9Prefix = "	location \""; //244:1
-            string __tmp10Suffix = "\";"; //244:26
+            string __tmp9Prefix = "	address \""; //244:1
+            string __tmp10Suffix = "\";"; //244:25
             StringBuilder __tmp11 = new StringBuilder();
             __tmp11.Append(endp.Address);
             using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
@@ -1929,7 +1929,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp9Prefix);
                     __out.Append(__tmp11Line);
                     __out.Append(__tmp10Suffix);
-                    __out.AppendLine(); //244:28
+                    __out.AppendLine(); //244:27
                 }
             }
             __out.Append("}"); //245:1
