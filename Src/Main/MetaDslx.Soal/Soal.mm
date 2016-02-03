@@ -26,13 +26,15 @@
 	{
 		AnnotatedElement AnnotatedElement;
 		containment list<AnnotationProperty> Properties;
+		bool HasProperty(string name);
+		object GetPropertyValue(string name);
 	}
 
 	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;
 
 	class AnnotationProperty : NamedElement
 	{
-		string Value;
+		object Value;
 	}
 	
 	abstract class NamedElement

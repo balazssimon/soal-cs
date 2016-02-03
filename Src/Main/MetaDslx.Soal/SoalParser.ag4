@@ -38,7 +38,12 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
 $Property(Properties)
 $Symbol(AnnotationProperty)
-annotationProperty : $Property(Name) $Value identifier TAssign $Property(Value) $Value constantValue;
+annotationProperty : $Property(Name) $Value identifier TAssign $Property(Value) annotationPropertyValue;
+
+annotationPropertyValue
+	: constantValue
+	| typeofValue
+	;
 
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
@@ -279,9 +284,7 @@ endpointAddressProperty : KAddress $Property(Address) $Value stringLiteral TSemi
 // Types
 
 returnType 
-	: arrayType
-	| simpleType
-	| nonNullableArrayType
+	: typeReference
 	| voidType
 	;
 
@@ -351,6 +354,8 @@ constantValue
 	: literal
 	| identifier
 	;
+
+typeofValue : KTypeof TOpenParen $TypeUse returnType TCloseParen;
 
 // Identifiers
 $Name

@@ -38,7 +38,12 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
                      
                            
-annotationProperty :                        identifier TAssign                         constantValue;
+annotationProperty :                        identifier TAssign                  annotationPropertyValue;
+
+annotationPropertyValue
+	: constantValue
+	| typeofValue
+	;
 
                                                                       
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
@@ -279,9 +284,7 @@ endpointAddressProperty : KAddress                           stringLiteral TSemi
 // Types
 
 returnType 
-	: arrayType
-	| simpleType
-	| nonNullableArrayType
+	: typeReference
 	| voidType
 	;
 
@@ -351,6 +354,8 @@ constantValue
 	: literal
 	| identifier
 	;
+
+typeofValue : KTypeof TOpenParen          returnType TCloseParen;
 
 // Identifiers
      

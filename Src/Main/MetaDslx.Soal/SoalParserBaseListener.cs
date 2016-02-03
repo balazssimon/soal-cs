@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\w3m0114v.dwf\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\y1ixblxu.rm1\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -189,6 +189,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAnnotationProperty([NotNull] SoalParser.AnnotationPropertyContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationPropertyValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationPropertyValue([NotNull] SoalParser.AnnotationPropertyValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationPropertyValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationPropertyValue([NotNull] SoalParser.AnnotationPropertyValueContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1149,6 +1161,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitConstantValue([NotNull] SoalParser.ConstantValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.typeofValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeofValue([NotNull] SoalParser.TypeofValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.typeofValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeofValue([NotNull] SoalParser.TypeofValueContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// <para>The default implementation does nothing.</para>

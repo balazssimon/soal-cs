@@ -12,6 +12,7 @@ namespace MetaDslx.Soal
         public const string All = "All";
         public const string Choice = "Choice";
         public const string Rpc = "Rpc";
+        public const string Wrap = "NoWrap";
         public const string NoWrap = "NoWrap";
         public const string Optional = "Optional";
         public const string Attribute = "Attribute";
@@ -37,6 +38,24 @@ namespace MetaDslx.Soal
             {
                 return @this.OptionalName ?? string.Empty;
             }
+        }
+
+        public override bool Annotation_HasProperty(Annotation @this, string name)
+        {
+            foreach (var prop in @this.Properties)
+            {
+                if (prop.Name == name) return true;
+            }
+            return false;
+        }
+
+        public override object Annotation_GetPropertyValue(Annotation @this, string name)
+        {
+            foreach (var prop in @this.Properties)
+            {
+                if (prop.Name == name) return prop.Value;
+            }
+            return null;
         }
     }
 

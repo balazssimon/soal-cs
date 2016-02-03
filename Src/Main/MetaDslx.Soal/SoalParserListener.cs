@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\w3m0114v.dwf\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\y1ixblxu.rm1\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -159,6 +159,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotationProperty([NotNull] SoalParser.AnnotationPropertyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationPropertyValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationPropertyValue([NotNull] SoalParser.AnnotationPropertyValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationPropertyValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationPropertyValue([NotNull] SoalParser.AnnotationPropertyValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
 	/// </summary>
@@ -959,6 +969,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitConstantValue([NotNull] SoalParser.ConstantValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.typeofValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeofValue([NotNull] SoalParser.TypeofValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.typeofValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeofValue([NotNull] SoalParser.TypeofValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// </summary>

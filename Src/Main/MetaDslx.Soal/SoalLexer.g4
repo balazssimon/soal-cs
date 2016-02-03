@@ -45,6 +45,7 @@ KByte : 'byte';
 KBool : 'bool';
 KAny : 'any';
 KVoid : 'void';
+KTypeof : 'typeof';
 
 
 TSemicolon : ';';
