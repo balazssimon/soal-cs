@@ -68,7 +68,7 @@ namespace MetaDslx.Soal
                     foreach (var decl in ns.Declarations)
                     {
                         Interface intf = decl as Interface;
-                        if (intf != null)
+                        if (intf != null && !intf.HasAnnotation(SoalAnnotations.NoWrap) && !intf.HasAnnotation(SoalAnnotations.Rpc))
                         {
                             foreach (var op in intf.Operations)
                             {
