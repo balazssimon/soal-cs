@@ -34,7 +34,15 @@ namespace MetaDslx.Soal
             if (parts.Length == 2)
             {
                 XNamespace ns = elem.GetNamespaceOfPrefix(parts[0]);
-                return ns + parts[1];
+                if (ns != null)
+                {
+                    return ns + parts[1];
+                }
+                else
+                {
+                    this.Importer.Diagnostics.AddError("Invalid namespace prefix: " + parts[0], this.Uri, this.GetTextSpan(elem));
+                    return null;
+                }
             }
             else if (parts.Length == 1)
             {

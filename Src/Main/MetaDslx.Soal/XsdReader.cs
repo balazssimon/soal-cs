@@ -187,6 +187,7 @@ namespace MetaDslx.Soal
                     if (st != null)
                     {
                         this.ImportPhase4ComplexType(st, elem);
+                        this.Importer.AddRootType(st);
                     }
                 }
                 else if (elem.Name.LocalName == "element")
@@ -200,6 +201,7 @@ namespace MetaDslx.Soal
                     if (st != null)
                     {
                         this.ImportPhase4Element(st, elem);
+                        this.Importer.AddRootType(st);
                     }
                 }
             }
@@ -1134,6 +1136,8 @@ namespace MetaDslx.Soal
                     if (sap)
                     {
                         ((ArrayType)rt).InnerType = sapArray.InnerType;
+                        this.Importer.RegisterReplacementType(type, rt);
+                        //this.Importer.Reference(sapArray.InnerType);
                         //prop.Name = sapName;
                         Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
                         sapAnnot.Name = SoalAnnotations.Sap;
@@ -1157,23 +1161,23 @@ namespace MetaDslx.Soal
                 {
                     if (maxOccurs < 0 || maxOccurs > 1)
                     {
-                        if (sap)
+                        /*if (sap)
                         {
-                            /*type = sapArray;
+                            type = sapArray;
                             //prop.Name = sapName;
                             Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
                             sapAnnot.Name = SoalAnnotations.Sap;
-                            st.Annotations.Add(sapAnnot);*/
+                            st.Annotations.Add(sapAnnot);
                         }
                         else
-                        {
+                        {*/
                             ArrayType array = SoalFactory.Instance.CreateArrayType();
                             array.InnerType = type;
                             type = array;
                             Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
                             noWrap.Name = SoalAnnotations.NoWrap;
                             prop.Annotations.Add(noWrap);
-                        }
+                        //}
                     }
                     prop.Type = type;
                 }

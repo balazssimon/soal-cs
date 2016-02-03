@@ -100,6 +100,7 @@ namespace MetaDslx.Soal
         private Dictionary<string, Namespace> namespaces = new Dictionary<string, Namespace>();
         private Dictionary<SoalType, SoalType> replacementTypes = new Dictionary<SoalType, SoalType>();
         private Dictionary<SoalType, SoalType> exceptionTypes = new Dictionary<SoalType, SoalType>();
+        private HashSet<SoalType> rootTypes = new HashSet<SoalType>();
         private HashSet<SoalType> typesToRemove = new HashSet<SoalType>();
         private Dictionary<XName, WsdlMessage> messagesByName = new Dictionary<XName, WsdlMessage>();
         private Dictionary<SoalType, int> referenceCounter = new Dictionary<SoalType, int>();
@@ -189,19 +190,45 @@ namespace MetaDslx.Soal
                 Declaration decl = type as Declaration;
                 if (decl != null)
                 {
-                    int count = 0;
-                    importer.referenceCounter.TryGetValue(type, out count);
-                    if (count <= 0)
+                    /*if (importer.rootTypes.Contains(type))
                     {
-                        decl.Namespace = null;
-                        ModelContext.Current.RemoveInstance((ModelObject)decl);
+                        SoalType finalType = importer.GetReplacementType(type);
+                        int finalCount = 0;
+                        importer.referenceCounter.TryGetValue(type, out finalCount);
+                        int count = 0;
+                        importer.referenceCounter.TryGetValue(type, out count);
+                        if (finalCount > 0 && count <= 0)
+                        {
+                            decl.Namespace = null;
+                            ModelContext.Current.RemoveInstance((ModelObject)decl);
+                        }
+                    }
+                    else*/
+                    {
+                        /*SoalType finalType = importer.GetReplacementType(type);
+                        int finalCount = 0;
+                        importer.referenceCounter.TryGetValue(type, out finalCount);*/
+                        int count = 0;
+                        importer.referenceCounter.TryGetValue(type, out count);
+                        if (/*finalCount > 0 && */count <= 0)
+                        {
+                            decl.Namespace = null;
+                            ModelContext.Current.RemoveInstance((ModelObject)decl);
+                        }
                     }
                 }
             }
         }
 
+        internal void AddRootType(SoalType type)
+        {
+            if (type == null) return;
+            this.rootTypes.Add(type);
+        }
+
         internal void Reference(SoalType type)
         {
+            if (type == null) return;
             int count = 0;
             if (this.referenceCounter.TryGetValue(type, out count))
             {
