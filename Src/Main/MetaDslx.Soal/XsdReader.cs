@@ -940,6 +940,9 @@ namespace MetaDslx.Soal
             XAttribute refAttr = elem.Attribute("ref");
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
+            bool sap = false;
+            ArrayType sapArray = null;
+            string sapName = null;
             string name = null;
             SoalType type = null;
             if (refAttr != null)
@@ -1012,6 +1015,23 @@ namespace MetaDslx.Soal
                             if (childSt != null)
                             {
                                 type = this.ImportPhase4ComplexType(childSt, complexType);
+                                childSt = type as Struct;
+                                if (name == "item" && childSt != null && childSt.HasAnnotation(SoalAnnotations.All) && childSt.Properties.Count == 1)
+                                {
+                                    SoalType innerType = childSt.Properties[0].Type;
+                                    if (innerType is ArrayType || (innerType is NonNullableType && ((NonNullableType)innerType).InnerType is ArrayType))
+                                    {
+                                    }
+                                    else
+                                    {
+                                        sap = true;
+                                        sapName = childSt.Properties[0].Name;
+                                        sapArray = SoalFactory.Instance.CreateArrayType();
+                                        sapArray.InnerType = innerType;
+                                        //this.Importer.RegisterReplacementType(type, sapArray);
+                                        this.Importer.RemoveType(type);
+                                    }
+                                }
                             }
                         }
                     }
@@ -1111,27 +1131,49 @@ namespace MetaDslx.Soal
             {
                 if (rt != null && rt is ArrayType)
                 {
-                    if (type is ArrayType || (type is NonNullableType && ((NonNullableType)type).InnerType is ArrayType))
+                    if (sap)
                     {
-                        type = originalType;
-                        this.Importer.Reference(type);
+                        ((ArrayType)rt).InnerType = sapArray.InnerType;
+                        //prop.Name = sapName;
+                        Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
+                        sapAnnot.Name = SoalAnnotations.Sap;
+                        st.Annotations.Add(sapAnnot);
                     }
-                    ((ArrayType)rt).InnerType = type;
-                    Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                    noWrap.Name = SoalAnnotations.NoWrap;
-                    prop.Annotations.Add(noWrap);
+                    else
+                    {
+                        if (type is ArrayType || (type is NonNullableType && ((NonNullableType)type).InnerType is ArrayType))
+                        {
+                            type = originalType;
+                            this.Importer.Reference(type);
+                        }
+                        ((ArrayType)rt).InnerType = type;
+                        Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                        noWrap.Name = SoalAnnotations.NoWrap;
+                        prop.Annotations.Add(noWrap);
+                    }
                     prop.Type = rt;
                 }
                 else
                 {
                     if (maxOccurs < 0 || maxOccurs > 1)
                     {
-                        ArrayType array = SoalFactory.Instance.CreateArrayType();
-                        array.InnerType = type;
-                        type = array;
-                        Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                        noWrap.Name = SoalAnnotations.NoWrap;
-                        prop.Annotations.Add(noWrap);
+                        if (sap)
+                        {
+                            /*type = sapArray;
+                            //prop.Name = sapName;
+                            Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
+                            sapAnnot.Name = SoalAnnotations.Sap;
+                            st.Annotations.Add(sapAnnot);*/
+                        }
+                        else
+                        {
+                            ArrayType array = SoalFactory.Instance.CreateArrayType();
+                            array.InnerType = type;
+                            type = array;
+                            Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
+                            noWrap.Name = SoalAnnotations.NoWrap;
+                            prop.Annotations.Add(noWrap);
+                        }
                     }
                     prop.Type = type;
                 }
@@ -1141,6 +1183,12 @@ namespace MetaDslx.Soal
                     optional.Name = SoalAnnotations.Optional;
                     prop.Annotations.Add(optional);
                 }
+            }
+            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.Sap))
+            {
+                Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
+                sapAnnot.Name = SoalAnnotations.Sap;
+                prop.Annotations.Add(sapAnnot);
             }
             st.Properties.Add(prop);
             return prop;

@@ -41,6 +41,7 @@ namespace MetaDslx.Soal
             annotations.Add(SoalAnnotations.Attribute);
             annotations.Add(SoalAnnotations.Required);
             annotations.Add(SoalAnnotations.Optional);
+            annotations.Add(SoalAnnotations.Sap);
             allowedAnnotations.Add(typeof(Property), annotations);
 
             annotations = new HashSet<string>();
@@ -48,6 +49,7 @@ namespace MetaDslx.Soal
             annotations.Add(SoalAnnotations.Attribute);
             annotations.Add(SoalAnnotations.Required);
             annotations.Add(SoalAnnotations.Optional);
+            annotations.Add(SoalAnnotations.Sap);
             allowedAnnotations.Add(typeof(Parameter), annotations);
 
             annotations = new HashSet<string>();

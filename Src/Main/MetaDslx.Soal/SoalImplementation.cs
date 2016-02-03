@@ -16,6 +16,7 @@ namespace MetaDslx.Soal
         public const string Optional = "Optional";
         public const string Attribute = "Attribute";
         public const string Required = "Required";
+        public const string Sap = "Sap";
     }
 
     internal class SoalImplementation : SoalImplementationBase
