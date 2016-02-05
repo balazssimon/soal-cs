@@ -61,15 +61,34 @@ end function
 
 template GenerateAnnotations(AnnotatedElement ae)
 [loop(ae->annot:Annotations)]
-["["][annot.Name]["]"]
+["["][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
 [end loop]
 end template
 
 template GenerateAnnotationsSingleLine(AnnotatedElement ae)
 [loop(ae->annot:Annotations)]
-["["][annot.Name]["]"]\
+["["][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]\
 [end loop]
 end template
+
+template GenerateAnnotationProperties(Annotation annot)
+[loop(annot->prop:Properties; string delim = ""; delim = ", ")]
+[delim][prop.Name]=[GetAnnotationPropertyValue(prop)]\
+[end loop]
+end template
+
+function string GetAnnotationPropertyValue(AnnotationProperty prop)
+	if (prop.Value == null)
+		return string.Empty;
+	end if
+	if (prop.Value is string)
+		return "\""+prop.Value+"\"";
+	else if (prop.Value is bool)
+		return prop.Value.ToString().ToLower();
+	else
+		return prop.Value.ToString();
+	end if
+end function
 
 template GenerateReturnAnnotations(IList<Annotation> al)
 [loop(annot:al)]
@@ -81,16 +100,15 @@ template GenerateEnum(Namespace currentNs, Enum enm)
 [GenerateAnnotations(enm)]
 enum [enm.Name]
 {
-	[GenerateEnumLiterals(currentNs, enm)]
+	[loop(lit:enm.EnumLiterals; string delim = ",")]
+	[GenerateEnumLiteral(currentNs, lit)][delim]
+	[end loop]
 }
 end template
 
-template GenerateEnumLiterals(Namespace currentNs, Enum enm)
-	[loop(lit:enm.EnumLiterals; string delim = ""; delim = ", ")]
-[delim]
-[GenerateAnnotations(lit)]\
-[lit.Name]\
-	[end loop]
+template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit)
+[GenerateAnnotations(lit)]
+[lit.Name]
 end template
 
 template GenerateStructuredType(Namespace currentNs, StructuredType st)
@@ -163,7 +181,7 @@ end template
 
 template GenerateOperation(Namespace currentNs, Operation op)
 [GenerateAnnotations(op)]
-[GenerateReturnAnnotations(op.ReturnAnnotations)]\
+[GenerateReturnAnnotations(op.ReturnAnnotations)]
 [GenerateReturnType(currentNs, op)] [op.Name]([GenerateParameters(currentNs, op)])[GenerateThrows(currentNs, op)];
 end template
 

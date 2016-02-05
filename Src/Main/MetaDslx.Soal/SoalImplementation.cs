@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Soal
@@ -12,12 +13,31 @@ namespace MetaDslx.Soal
         public const string All = "All";
         public const string Choice = "Choice";
         public const string Rpc = "Rpc";
-        public const string Wrap = "NoWrap";
+        public const string Array = "Array";
+        public const string SapArray = "SapArray";
         public const string NoWrap = "NoWrap";
         public const string Optional = "Optional";
         public const string Attribute = "Attribute";
-        public const string Required = "Required";
-        public const string Sap = "Sap";
+        public const string Name = "Name";
+        public const string Restriction = "Restriction";
+    }
+
+    public class SoalAnnotationProperties
+    {
+        public const string Items = "items";
+        public const string Name = "name";
+        public const string Required = "required";
+        public const string Pattern = "pattern";
+        public const string Length = "length";
+        public const string MinLength = "minLength";
+        public const string MaxLength = "maxLength";
+        public const string MaxExclusive = "maxExclusive";
+        public const string MinExclusive = "minExclusive";
+        public const string MaxInclusive = "maxInclusive";
+        public const string MinInclusive = "minInclusive";
+        public const string TotalDigits = "totalDigits";
+        public const string FractionDigits = "fractionDigits";
+
     }
 
     internal class SoalImplementation : SoalImplementationBase
@@ -68,6 +88,62 @@ namespace MetaDslx.Soal
             return declaration.Namespace.FullName + "." + declaration.Name;
         }
 
+        public static bool IsIdentifier(this string name)
+        {
+            return Regex.IsMatch(name, @"[a-zA-Z\_][0-9a-zA-Z\_]*");
+        }
+
+        public static bool IsArrayType(this SoalType type)
+        {
+            if (type == null) return false;
+            if (type is NonNullableType) return ((NonNullableType)type).InnerType.IsArrayType();
+            if (type is NullableType) return ((NullableType)type).InnerType.IsArrayType();
+            if (type is ArrayType) return true;
+            return false;
+        }
+
+        public static SoalType GetCoreType(this SoalType type)
+        {
+            if (type == null) return null;
+            if (type is NonNullableType) return ((NonNullableType)type).InnerType.GetCoreType();
+            if (type is NullableType) return ((NullableType)type).InnerType.GetCoreType();
+            if (type is ArrayType) return ((ArrayType)type).InnerType.GetCoreType();
+            return type;
+        }
+
+        public static Annotation GetAnnotation(this AnnotatedElement annotatedElement, string annotation)
+        {
+            if (annotatedElement == null) return null;
+            foreach (var annot in annotatedElement.Annotations)
+            {
+                if (annot.Name == annotation) return annot;
+            }
+            return null;
+        }
+
+        public static AnnotationProperty GetAnnotationProperty(this Annotation annotation, string name)
+        {
+            if (annotation == null) return null;
+            foreach (var prop in annotation.Properties)
+            {
+                if (prop.Name == name)
+                {
+                    return prop;
+                }
+            }
+            return null;
+        }
+
+        public static Annotation GetAnnotation(this IList<Annotation> annotations, string annotation)
+        {
+            if (annotations == null) return null;
+            foreach (var annot in annotations)
+            {
+                if (annot.Name == annotation) return annot;
+            }
+            return null;
+        }
+
         public static bool HasAnnotation(this AnnotatedElement annotatedElement, string annotation)
         {
             if (annotatedElement == null) return false;
@@ -84,6 +160,20 @@ namespace MetaDslx.Soal
             foreach (var annot in annotations)
             {
                 if (annot.Name == annotation) return true;
+            }
+            return false;
+        }
+
+        public static bool GetBoolAnnotationProperty(this Annotation annotation, string name)
+        {
+            if (annotation == null) return false;
+            foreach (var prop in annotation.Properties)
+            {
+                if (prop.Name == name)
+                {
+                    if (prop.Value is bool) return (bool)prop.Value;
+                    else return false;
+                }
             }
             return false;
         }

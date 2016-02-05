@@ -54,7 +54,7 @@ declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entit
 // Enums
 
               
-enumDeclaration : annotationList? KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum identifier (TColon                                                                                qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
 
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 

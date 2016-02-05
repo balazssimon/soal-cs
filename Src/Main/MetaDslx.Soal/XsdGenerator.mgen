@@ -148,8 +148,8 @@ template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation
 <xs:attribute name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]"[GetAttributeRequired(annots)]/>
 	[end if]
 [else]
-	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && (annots.ContainsAnnotation(SoalAnnotations.NoWrap) || annots.ContainsAnnotation(SoalAnnotations.Sap)))]
-		[if (annots.ContainsAnnotation(SoalAnnotations.Sap))]
+	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && (annots.ContainsAnnotation(SoalAnnotations.NoWrap) || annots.ContainsAnnotation(SoalAnnotations.SapArray)))]
+		[if (annots.ContainsAnnotation(SoalAnnotations.SapArray))]
 <xs:element name="[name]" nillable="[t.IsNullableXsd()]">
 	<xs:complexType>
 		<xs:all>
@@ -199,7 +199,7 @@ function string GetElementOptional(IList<Annotation> annots)
 end function
 
 function string GetAttributeRequired(IList<Annotation> annots)
-	if (annots.ContainsAnnotation(SoalAnnotations.Attribute) && annots.ContainsAnnotation(SoalAnnotations.Required)) 
+	if (annots.GetAnnotation(SoalAnnotations.Attribute).GetBoolAnnotationProperty(SoalAnnotationProperties.Required)) 
 		return " use=\"required\"";
 	else
 		return "";

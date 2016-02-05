@@ -54,7 +54,7 @@ declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entit
 // Enums
 
 $TypeDef(Enum)
-enumDeclaration : annotationList? KEnum identifier TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum identifier (TColon $Property(BaseType) $TypeUse(symbolType=Enum,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
 
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 

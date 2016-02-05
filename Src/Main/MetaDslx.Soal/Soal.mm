@@ -99,6 +99,8 @@
 	[Scope]
 	class Enum : SoalType, Declaration
 	{
+		[InheritedScope]
+		Enum BaseType;
 		[ScopeEntry]
 		containment list<EnumLiteral> EnumLiterals;
 	}

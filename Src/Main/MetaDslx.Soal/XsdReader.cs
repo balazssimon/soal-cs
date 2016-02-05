@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -115,11 +116,15 @@ namespace MetaDslx.Soal
                     }
                     else if (elem.Name.LocalName == "simpleType")
                     {
-                        PrimitiveType type = this.Importer.XsdTypes.Get(elem) as PrimitiveType;
+                        SoalType type = this.Importer.XsdTypes.Get(elem);
                         if (type != null)
                         {
                             this.ImportPhase2SimpleType(type, elem);
-                            this.Importer.WsdlTypes.Register(this, this.tns + type.Name, elem, type, false);
+                            PrimitiveType pt = type as PrimitiveType;
+                            if (pt != null)
+                            {
+                                this.Importer.WsdlTypes.Register(this, this.tns + pt.Name, elem, pt, false);
+                            }
                         }
                     }
                     else if (elem.Name.LocalName == "complexType")
@@ -220,6 +225,42 @@ namespace MetaDslx.Soal
             }
             return name;
         }
+        
+        private string GetNewEnumLiteralName(Enum enm, string literal)
+        {
+            if (literal == null) return literal;
+            if (enm == null) return literal;
+            if (!string.IsNullOrEmpty(literal) && !Regex.IsMatch(literal, @"[a-zA-Z_].*"))
+            {
+                literal = "_" + literal;
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var ch in literal)
+            {
+                if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
+                {
+                    sb.Append(ch);
+                }
+                else
+                {
+                    sb.Append('_');
+                }
+            }
+            string value = sb.ToString();
+            string newValue = value;
+            int counter = 1;
+            if (string.IsNullOrEmpty(newValue))
+            {
+                value = "Value";
+                newValue = value + counter;
+            }
+            while (enm.EnumLiterals.Any(l => l.Name == newValue))
+            {
+                ++counter;
+                newValue = value + counter;
+            }
+            return newValue;
+        }
 
         private SoalType ImportPhase1SimpleType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
         {
@@ -247,52 +288,33 @@ namespace MetaDslx.Soal
                         return null;
                     }
                     bool stringBased = baseRef.Namespace == xsd && baseRef.LocalName == "string";
-                    if (stringBased)
+                    IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
+                    if (stringBased && enums.Any())
                     {
-                        IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
-                        if (enums.Any())
+                        Enum enm = SoalFactory.Instance.CreateEnum();
+                        //name = this.GetUniqueName(name, element);
+                        if (!register || (kind == XsdTypeKind.Type && this.Importer.XsdTypes.Register(this, tns + name, elem, enm) != null) ||
+                            (kind == XsdTypeKind.Element && this.Importer.XsdElements.Register(this, tns + name, parentElem, enm) != null) ||
+                            (kind == XsdTypeKind.Attribute && this.Importer.XsdAttributes.Register(this, tns + name, parentElem, enm) != null))
                         {
-                            Enum enm = SoalFactory.Instance.CreateEnum();
-                            //name = this.GetUniqueName(name, element);
-                            if (!register || (kind == XsdTypeKind.Type && this.Importer.XsdTypes.Register(this, tns + name, elem, enm) != null) ||
-                                (kind == XsdTypeKind.Element && this.Importer.XsdElements.Register(this, tns + name, parentElem, enm) != null) ||
-                                (kind == XsdTypeKind.Attribute && this.Importer.XsdAttributes.Register(this, tns + name, parentElem, enm) != null))
+                            if (register)
                             {
-                                if (register)
+                                if (kind == XsdTypeKind.Type)
                                 {
-                                    if (kind == XsdTypeKind.Type)
-                                    {
-                                        this.definedElements.Add(elem);
-                                    }
-                                    else
-                                    {
-                                        this.definedElements.Add(parentElem);
-                                    }
+                                    this.definedElements.Add(elem);
                                 }
-                                enm.Name = name;
-                                enm.Namespace = this.Namespace;
-                                foreach (var enumValue in enums)
+                                else
                                 {
-                                    XAttribute valueAttr = enumValue.Attribute("value");
-                                    if (valueAttr != null)
-                                    {
-                                        string value = valueAttr.Value;
-                                        EnumLiteral enmLit = SoalFactory.Instance.CreateEnumLiteral();
-                                        enmLit.Name = value;
-                                        enm.EnumLiterals.Add(enmLit);
-                                    }
-                                    else
-                                    {
-                                        this.Importer.Diagnostics.AddError("The enumeration has no 'value' attribute.", this.Uri, this.GetTextSpan(restriction));
-                                        return null;
-                                    }
+                                    this.definedElements.Add(parentElem);
                                 }
-                                return enm;
                             }
-                            else
-                            {
-                                ModelContext.Current.RemoveInstance((ModelObject)enm);
-                            }
+                            enm.Name = name;
+                            enm.Namespace = this.Namespace;
+                            return enm;
+                        }
+                        else
+                        {
+                            ModelContext.Current.RemoveInstance((ModelObject)enm);
                         }
                     }
                 }
@@ -305,11 +327,11 @@ namespace MetaDslx.Soal
             {
                 this.Importer.Diagnostics.AddWarning("The importer of this element is not implemented.", this.Uri, this.GetTextSpan(elem));
             }
+            PrimitiveType type = SoalFactory.Instance.CreatePrimitiveType();
+            type.Name = name;
+            type.Namespace = this.Namespace;
             if (register)
             {
-                PrimitiveType type = SoalFactory.Instance.CreatePrimitiveType();
-                type.Name = name;
-                type.Namespace = this.Namespace;
                 switch (kind)
                 {
                     case XsdTypeKind.Type:
@@ -322,7 +344,7 @@ namespace MetaDslx.Soal
                         break;
                 }
             }
-            return null;
+            return type;
         }
 
         private SoalType ImportPhase1ComplexType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
@@ -429,7 +451,7 @@ namespace MetaDslx.Soal
             return null;
         }
 
-        private SoalType ImportPhase2SimpleType(PrimitiveType pt, XElement elem)
+        private SoalType ImportPhase2SimpleType(SoalType type, XElement elem)
         {
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
@@ -444,37 +466,62 @@ namespace MetaDslx.Soal
                     {
                         return null;
                     }
-                    SoalType type = this.Importer.ResolveXsdType(baseRef);
-                    bool stringBased = type == SoalInstance.String; //baseRef.Namespace == xsd && baseRef.LocalName == "string";
-                    if (stringBased)
+                    SoalType baseType = this.Importer.ResolveXsdType(baseRef);
+                    if (baseType == null)
                     {
-                        IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
-                        if (!enums.Any())
+                        this.Importer.Diagnostics.AddError("Could not resolve type '" + baseAttr.Value + "'.", this.Uri, this.GetTextSpan(baseAttr));
+                        return null;
+                    }
+                    Enum enm = type as Enum;
+                    if (enm != null)
+                    {
+                        if (baseType is Enum)
                         {
-                            if (type != null)
+                            enm.BaseType = (Enum)baseType;
+                        }
+                        IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
+                        foreach (var enumValue in enums)
+                        {
+                            XAttribute valueAttr = enumValue.Attribute("value");
+                            if (valueAttr != null)
                             {
-                                this.Importer.RegisterReplacementType(pt, type);
-                                return type;
+                                string value = valueAttr.Value;
+                                EnumLiteral enmLit = SoalFactory.Instance.CreateEnumLiteral();
+                                string newValue = this.GetNewEnumLiteralName(enm, value);
+                                enmLit.Name = newValue;
+                                enm.EnumLiterals.Add(enmLit);
+                                if (value != newValue)
+                                {
+                                    Annotation annot = SoalFactory.Instance.CreateAnnotation();
+                                    annot.Name = SoalAnnotations.Name;
+                                    enmLit.Annotations.Add(annot);
+                                    AnnotationProperty annotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                                    annotProp.Name = SoalAnnotationProperties.Name;
+                                    annotProp.Value = value;
+                                    annot.Properties.Add(annotProp);
+                                }
                             }
                             else
                             {
-                                this.Importer.Diagnostics.AddError("Could not resolve type '" + baseAttr.Value + "'.", this.Uri, this.GetTextSpan(baseAttr));
+                                this.Importer.Diagnostics.AddError("The enumeration has no 'value' attribute.", this.Uri, this.GetTextSpan(restriction));
                                 return null;
                             }
                         }
                     }
                     else
                     {
-                        if (type != null)
-                        {
-                            this.Importer.RegisterReplacementType(pt, type);
-                            return type;
-                        }
-                        else
-                        {
-                            this.Importer.Diagnostics.AddError("Could not resolve type '" + baseAttr.Value + "'.", this.Uri, this.GetTextSpan(baseAttr));
-                            return null;
-                        }
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Pattern);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Length);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MinLength);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MaxLength);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MinInclusive);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MinExclusive);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MaxInclusive);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MaxExclusive);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.TotalDigits);
+                        this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.FractionDigits);
+                        this.Importer.RegisterReplacementType(type, baseType);
+                        return type;
                     }
                 }
                 else
@@ -487,6 +534,37 @@ namespace MetaDslx.Soal
                 return null;
             }
             return null;
+        }
+
+        private void ProcessXsdRestriction(SoalType type, XElement elem, string restrictionName)
+        {
+            XElement restrElem = elem.Element(xsd + restrictionName);
+            if (restrElem != null)
+            {
+                XAttribute valueAttr = restrElem.Attribute("value");
+                if (valueAttr != null)
+                {
+                    AnnotatedElement ae = type as AnnotatedElement;
+                    if (ae != null)
+                    {
+                        Annotation annot = ae.GetAnnotation(SoalAnnotations.Restriction);
+                        if (annot == null)
+                        {
+                            annot = SoalFactory.Instance.CreateAnnotation();
+                            annot.Name = SoalAnnotations.Restriction;
+                            ae.Annotations.Add(annot);
+                        }
+                        AnnotationProperty annotProp = annot.GetAnnotationProperty(restrictionName);
+                        if (annotProp == null)
+                        {
+                            annotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                            annotProp.Name = restrictionName;
+                            annot.Properties.Add(annotProp);
+                        }
+                        annotProp.Value = valueAttr.Value;
+                    }
+                }
+            }
         }
 
         private SoalType ImportPhase2ComplexType(Struct st, XElement elem)
@@ -942,6 +1020,12 @@ namespace MetaDslx.Soal
             XAttribute refAttr = elem.Attribute("ref");
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
+            bool required = false;
+            XAttribute useAttr = elem.Attribute("use");
+            if (useAttr != null && useAttr.Value == "required")
+            {
+                required = true;
+            }
             bool sap = false;
             ArrayType sapArray = null;
             string sapName = null;
@@ -968,6 +1052,11 @@ namespace MetaDslx.Soal
                     if (attribute)
                     {
                         type = this.Importer.XsdAttributes.Get(refName);
+                        useAttr = originalElem.Attribute("use");
+                        if (useAttr != null && useAttr.Value == "required")
+                        {
+                            required = true;
+                        }
                     }
                     else
                     {
@@ -1004,7 +1093,7 @@ namespace MetaDslx.Soal
                     if (simpleType != null)
                     {
                         type = this.ImportPhase1SimpleType(simpleType, typeName, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
-                        type = this.ImportPhase2SimpleType(type as PrimitiveType, simpleType);
+                        type = this.ImportPhase2SimpleType(type, simpleType);
                     }
                     else if (complexType != null)
                     {
@@ -1021,7 +1110,7 @@ namespace MetaDslx.Soal
                                 if (name == "item" && childSt != null && childSt.HasAnnotation(SoalAnnotations.All) && childSt.Properties.Count == 1)
                                 {
                                     SoalType innerType = childSt.Properties[0].Type;
-                                    if (innerType is ArrayType || (innerType is NonNullableType && ((NonNullableType)innerType).InnerType is ArrayType))
+                                    if (innerType.IsArrayType())
                                     {
                                     }
                                     else
@@ -1051,7 +1140,11 @@ namespace MetaDslx.Soal
                         this.Importer.Diagnostics.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetTextSpan(typeAttr));
                         return null;
                     }
-                    type = this.Importer.ResolveXsdType(typeRef) as SoalType;
+                    type = this.Importer.XsdTypes.Get(typeRef) as SoalType;
+                    if (type == null)
+                    {
+                        type = this.Importer.ResolveXsdPrimitiveType(typeRef) as SoalType;
+                    }
                     if (type == null)
                     {
                         this.Importer.Diagnostics.AddError("Could not resolve type '" + typeAttr.Value + "'.", this.Uri, this.GetTextSpan(typeAttr));
@@ -1120,14 +1213,14 @@ namespace MetaDslx.Soal
                 Annotation attr = SoalFactory.Instance.CreateAnnotation();
                 attr.Name = SoalAnnotations.Attribute;
                 prop.Annotations.Add(attr);
-                XAttribute useAttr = elem.Attribute("use");
-                if (useAttr != null && useAttr.Value == "required")
-                {
-                    Annotation req = SoalFactory.Instance.CreateAnnotation();
-                    req.Name = SoalAnnotations.Required;
-                    prop.Annotations.Add(req);
-                }
                 prop.Type = type;
+                if (required)
+                {
+                    AnnotationProperty attrUse = SoalFactory.Instance.CreateAnnotationProperty();
+                    attrUse.Name = SoalAnnotationProperties.Required;
+                    attrUse.Value = true;
+                    attr.Properties.Add(attrUse);
+                }
             }
             else
             {
@@ -1140,12 +1233,16 @@ namespace MetaDslx.Soal
                         //this.Importer.Reference(sapArray.InnerType);
                         //prop.Name = sapName;
                         Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
-                        sapAnnot.Name = SoalAnnotations.Sap;
+                        sapAnnot.Name = SoalAnnotations.SapArray;
                         st.Annotations.Add(sapAnnot);
+                        AnnotationProperty sapNameProp = SoalFactory.Instance.CreateAnnotationProperty();
+                        sapNameProp.Name = SoalAnnotationProperties.Items;
+                        sapNameProp.Value = sapName;
+                        sapAnnot.Properties.Add(sapNameProp);
                     }
                     else
                     {
-                        if (type is ArrayType || (type is NonNullableType && ((NonNullableType)type).InnerType is ArrayType))
+                        if (type.IsArrayType())
                         {
                             type = originalType;
                             this.Importer.Reference(type);
@@ -1154,6 +1251,17 @@ namespace MetaDslx.Soal
                         Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
                         noWrap.Name = SoalAnnotations.NoWrap;
                         prop.Annotations.Add(noWrap);
+                        SoalType coreType = type.GetCoreType();
+                        if (coreType is NamedElement && ((NamedElement)coreType).Name != prop.Name)
+                        {
+                            Annotation arrayAnnot = SoalFactory.Instance.CreateAnnotation();
+                            arrayAnnot.Name = SoalAnnotations.Array;
+                            st.Annotations.Add(arrayAnnot);
+                            AnnotationProperty arrayNameProp = SoalFactory.Instance.CreateAnnotationProperty();
+                            arrayNameProp.Name = SoalAnnotationProperties.Items;
+                            arrayNameProp.Value = prop.Name;
+                            arrayAnnot.Properties.Add(arrayNameProp);
+                        }
                     }
                     prop.Type = rt;
                 }
@@ -1188,11 +1296,18 @@ namespace MetaDslx.Soal
                     prop.Annotations.Add(optional);
                 }
             }
-            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.Sap))
+            //SoalType corePropType = prop.Type.GetCoreType();
+            if (originalType is AnnotatedElement && ((AnnotatedElement)originalType).HasAnnotation(SoalAnnotations.Restriction))
             {
-                Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
-                sapAnnot.Name = SoalAnnotations.Sap;
-                prop.Annotations.Add(sapAnnot);
+                this.CopyAnnotation(SoalAnnotations.Restriction, ((AnnotatedElement)originalType), prop);
+            }
+            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.Array))
+            {
+                this.CopyAnnotation(SoalAnnotations.Array, ((Struct)originalType), prop);
+            }
+            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.SapArray))
+            {
+                this.CopyAnnotation(SoalAnnotations.SapArray, ((Struct)originalType), prop);
             }
             st.Properties.Add(prop);
             return prop;

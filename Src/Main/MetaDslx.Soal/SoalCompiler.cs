@@ -37,32 +37,38 @@ namespace MetaDslx.Soal
             allowedAnnotations.Add(typeof(Interface), annotations);
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.Wrap);
+            annotations.Add(SoalAnnotations.Array);
+            annotations.Add(SoalAnnotations.SapArray);
             annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Attribute);
-            annotations.Add(SoalAnnotations.Required);
             annotations.Add(SoalAnnotations.Optional);
-            annotations.Add(SoalAnnotations.Sap);
+            annotations.Add(SoalAnnotations.Restriction);
             allowedAnnotations.Add(typeof(Property), annotations);
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.Wrap);
+            annotations.Add(SoalAnnotations.Array);
+            annotations.Add(SoalAnnotations.SapArray);
             annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Attribute);
-            annotations.Add(SoalAnnotations.Required);
             annotations.Add(SoalAnnotations.Optional);
-            annotations.Add(SoalAnnotations.Sap);
+            annotations.Add(SoalAnnotations.Restriction);
             allowedAnnotations.Add(typeof(Parameter), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
+            annotations.Add(SoalAnnotations.Array);
+            annotations.Add(SoalAnnotations.SapArray);
             allowedAnnotations.Add(typeof(Struct), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
             allowedAnnotations.Add(typeof(Exception), annotations);
+
+            annotations = new HashSet<string>();
+            annotations.Add(SoalAnnotations.Name);
+            allowedAnnotations.Add(typeof(EnumLiteral), annotations);
 
         }
 

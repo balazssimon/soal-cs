@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_XsdGenerator_1359933782;
-    namespace __Hidden_XsdGenerator_1359933782
+    using __Hidden_XsdGenerator_1627494562;
+    namespace __Hidden_XsdGenerator_1627494562
     {
         internal static class __Extensions
         {
@@ -73,7 +73,7 @@ namespace MetaDslx.Soal //1:1
         {
             StringBuilder __out = new StringBuilder();
             __out.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"); //9:1
-            __out.AppendLine(); //9:39
+            __out.AppendLine(false); //9:39
             string __tmp1Prefix = "<xs:schema targetNamespace=\""; //10:1
             string __tmp2Suffix = "\""; //10:37
             StringBuilder __tmp3 = new StringBuilder();
@@ -92,11 +92,11 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //10:38
+                    __out.AppendLine(false); //10:38
                 }
             }
             __out.Append("		xmlns:xs=\"http://www.w3.org/2001/XMLSchema\""); //11:1
-            __out.AppendLine(); //11:46
+            __out.AppendLine(false); //11:46
             string __tmp4Prefix = "		xmlns:"; //12:1
             string __tmp5Suffix = "\""; //12:30
             StringBuilder __tmp6 = new StringBuilder();
@@ -133,7 +133,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     __out.Append(__tmp8Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //12:31
+                    __out.AppendLine(false); //12:31
                 }
             }
             if (Properties.ImportXsd) //13:3
@@ -183,13 +183,13 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp14Line);
                             __out.Append(__tmp11Suffix);
-                            __out.AppendLine(); //15:33
+                            __out.AppendLine(false); //15:33
                         }
                     }
                 }
             }
             __out.Append("		elementFormDefault=\"qualified\">"); //18:1
-            __out.AppendLine(); //18:34
+            __out.AppendLine(false); //18:34
             if (Properties.ImportXsd) //19:3
             {
                 var __loop2_results = 
@@ -237,7 +237,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp20Line);
                             __out.Append(__tmp17Suffix);
-                            __out.AppendLine(); //21:72
+                            __out.AppendLine(false); //21:72
                         }
                     }
                 }
@@ -251,7 +251,7 @@ namespace MetaDslx.Soal //1:1
             {
                 ++__loop3_iteration;
                 var arr = __tmp21.arr;
-                __out.AppendLine(); //25:1
+                __out.AppendLine(true); //25:1
                 string __tmp22Prefix = "	<xs:element name=\""; //26:1
                 string __tmp23Suffix = "\"/>"; //26:76
                 StringBuilder __tmp24 = new StringBuilder();
@@ -306,7 +306,7 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp28Line);
                         __out.Append(__tmp23Suffix);
-                        __out.AppendLine(); //26:79
+                        __out.AppendLine(false); //26:79
                     }
                 }
                 string __tmp29Prefix = "	<xs:complexType name=\""; //27:1
@@ -327,11 +327,11 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp29Prefix);
                         __out.Append(__tmp31Line);
                         __out.Append(__tmp30Suffix);
-                        __out.AppendLine(); //27:44
+                        __out.AppendLine(false); //27:44
                     }
                 }
                 __out.Append("		<xs:sequence>"); //28:1
-                __out.AppendLine(); //28:16
+                __out.AppendLine(false); //28:16
                 string __tmp32Prefix = "			<xs:element name=\""; //29:1
                 string __tmp33Suffix = "\" minOccurs=\"0\" maxOccurs=\"unbounded\"/>"; //29:169
                 StringBuilder __tmp34 = new StringBuilder();
@@ -404,13 +404,13 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp40Line);
                         __out.Append(__tmp33Suffix);
-                        __out.AppendLine(); //29:208
+                        __out.AppendLine(false); //29:208
                     }
                 }
                 __out.Append("		</xs:sequence>"); //30:1
-                __out.AppendLine(); //30:17
+                __out.AppendLine(false); //30:17
                 __out.Append("	</xs:complexType>"); //31:1
-                __out.AppendLine(); //31:19
+                __out.AppendLine(false); //31:19
             }
             var __loop4_results = 
                 (from __loop4_var1 in __Enumerate((ns.Declarations).GetEnumerator()) //33:8
@@ -423,7 +423,7 @@ namespace MetaDslx.Soal //1:1
                 ++__loop4_iteration;
                 var __loop4_var1 = __tmp41.__loop4_var1;
                 var etype = __tmp41.etype;
-                __out.AppendLine(); //34:1
+                __out.AppendLine(true); //34:1
                 string __tmp42Prefix = "	<xs:element name=\""; //35:1
                 string __tmp43Suffix = "\"/>"; //35:80
                 StringBuilder __tmp44 = new StringBuilder();
@@ -478,7 +478,7 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp48Line);
                         __out.Append(__tmp43Suffix);
-                        __out.AppendLine(); //35:83
+                        __out.AppendLine(false); //35:83
                     }
                 }
                 string __tmp49Prefix = "	<xs:simpleType name=\""; //36:1
@@ -499,11 +499,11 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp49Prefix);
                         __out.Append(__tmp51Line);
                         __out.Append(__tmp50Suffix);
-                        __out.AppendLine(); //36:45
+                        __out.AppendLine(false); //36:45
                     }
                 }
                 __out.Append("		<xs:restriction base=\"xs:string\">"); //37:1
-                __out.AppendLine(); //37:36
+                __out.AppendLine(false); //37:36
                 var __loop5_results = 
                     (from __loop5_var1 in __Enumerate((etype).GetEnumerator()) //38:10
                     from elit in __Enumerate((__loop5_var1.EnumLiterals).GetEnumerator()) //38:17
@@ -533,14 +533,14 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp53Prefix);
                             __out.Append(__tmp55Line);
                             __out.Append(__tmp54Suffix);
-                            __out.AppendLine(); //39:41
+                            __out.AppendLine(false); //39:41
                         }
                     }
                 }
                 __out.Append("		</xs:restriction>"); //41:1
-                __out.AppendLine(); //41:20
+                __out.AppendLine(false); //41:20
                 __out.Append("	</xs:simpleType>"); //42:1
-                __out.AppendLine(); //42:18
+                __out.AppendLine(false); //42:18
             }
             var __loop6_results = 
                 (from __loop6_var1 in __Enumerate((ns.Declarations).GetEnumerator()) //44:8
@@ -553,7 +553,7 @@ namespace MetaDslx.Soal //1:1
                 ++__loop6_iteration;
                 var __loop6_var1 = __tmp56.__loop6_var1;
                 var stype = __tmp56.stype;
-                __out.AppendLine(); //45:1
+                __out.AppendLine(true); //45:1
                 string __tmp57Prefix = "	<xs:element name=\""; //46:1
                 string __tmp58Suffix = "\"/>"; //46:80
                 StringBuilder __tmp59 = new StringBuilder();
@@ -608,7 +608,7 @@ namespace MetaDslx.Soal //1:1
                         }
                         __out.Append(__tmp63Line);
                         __out.Append(__tmp58Suffix);
-                        __out.AppendLine(); //46:83
+                        __out.AppendLine(false); //46:83
                     }
                 }
                 string __tmp64Prefix = "	<xs:complexType name=\""; //47:1
@@ -629,7 +629,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp64Prefix);
                         __out.Append(__tmp66Line);
                         __out.Append(__tmp65Suffix);
-                        __out.AppendLine(); //47:46
+                        __out.AppendLine(false); //47:46
                     }
                 }
                 var __tmp67 = stype; //48:11
@@ -638,7 +638,7 @@ namespace MetaDslx.Soal //1:1
                     if (((Struct)stype).BaseType != null) //50:5
                     {
                         __out.Append("		<xs:complexContent>"); //51:1
-                        __out.AppendLine(); //51:22
+                        __out.AppendLine(false); //51:22
                         string __tmp68Prefix = "			<xs:extension base=\""; //52:1
                         string __tmp69Suffix = "\">"; //52:94
                         StringBuilder __tmp70 = new StringBuilder();
@@ -675,7 +675,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp72Line);
                                 __out.Append(__tmp69Suffix);
-                                __out.AppendLine(); //52:96
+                                __out.AppendLine(false); //52:96
                             }
                         }
                         string __tmp73Prefix = "				"; //53:1
@@ -696,13 +696,13 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp73Prefix);
                                 __out.Append(__tmp75Line);
                                 __out.Append(__tmp74Suffix);
-                                __out.AppendLine(); //53:44
+                                __out.AppendLine(false); //53:44
                             }
                         }
                         __out.Append("			</xs:extension>"); //54:1
-                        __out.AppendLine(); //54:19
+                        __out.AppendLine(false); //54:19
                         __out.Append("		</xs:complexContent>"); //55:1
-                        __out.AppendLine(); //55:23
+                        __out.AppendLine(false); //55:23
                     }
                     else //56:5
                     {
@@ -724,7 +724,7 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp76Prefix);
                                 __out.Append(__tmp78Line);
                                 __out.Append(__tmp77Suffix);
-                                __out.AppendLine(); //57:42
+                                __out.AppendLine(false); //57:42
                             }
                         }
                     }
@@ -734,7 +734,7 @@ namespace MetaDslx.Soal //1:1
                     if (((Exception)stype).BaseType != null) //60:5
                     {
                         __out.Append("		<xs:complexContent>"); //61:1
-                        __out.AppendLine(); //61:22
+                        __out.AppendLine(false); //61:22
                         string __tmp79Prefix = "			<xs:extension base=\""; //62:1
                         string __tmp80Suffix = "\">"; //62:94
                         StringBuilder __tmp81 = new StringBuilder();
@@ -771,7 +771,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp83Line);
                                 __out.Append(__tmp80Suffix);
-                                __out.AppendLine(); //62:96
+                                __out.AppendLine(false); //62:96
                             }
                         }
                         string __tmp84Prefix = "				"; //63:1
@@ -792,13 +792,13 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp84Prefix);
                                 __out.Append(__tmp86Line);
                                 __out.Append(__tmp85Suffix);
-                                __out.AppendLine(); //63:44
+                                __out.AppendLine(false); //63:44
                             }
                         }
                         __out.Append("			</xs:extension>"); //64:1
-                        __out.AppendLine(); //64:19
+                        __out.AppendLine(false); //64:19
                         __out.Append("		</xs:complexContent>"); //65:1
-                        __out.AppendLine(); //65:23
+                        __out.AppendLine(false); //65:23
                     }
                     else //66:5
                     {
@@ -820,7 +820,7 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp87Prefix);
                                 __out.Append(__tmp89Line);
                                 __out.Append(__tmp88Suffix);
-                                __out.AppendLine(); //67:42
+                                __out.AppendLine(false); //67:42
                             }
                         }
                     }
@@ -830,7 +830,7 @@ namespace MetaDslx.Soal //1:1
                     if (((Entity)stype).BaseType != null) //70:5
                     {
                         __out.Append("		<xs:complexContent>"); //71:1
-                        __out.AppendLine(); //71:22
+                        __out.AppendLine(false); //71:22
                         string __tmp90Prefix = "			<xs:extension base=\""; //72:1
                         string __tmp91Suffix = "\">"; //72:94
                         StringBuilder __tmp92 = new StringBuilder();
@@ -867,7 +867,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp94Line);
                                 __out.Append(__tmp91Suffix);
-                                __out.AppendLine(); //72:96
+                                __out.AppendLine(false); //72:96
                             }
                         }
                         string __tmp95Prefix = "				"; //73:1
@@ -888,13 +888,13 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp95Prefix);
                                 __out.Append(__tmp97Line);
                                 __out.Append(__tmp96Suffix);
-                                __out.AppendLine(); //73:44
+                                __out.AppendLine(false); //73:44
                             }
                         }
                         __out.Append("			</xs:extension>"); //74:1
-                        __out.AppendLine(); //74:19
+                        __out.AppendLine(false); //74:19
                         __out.Append("		</xs:complexContent>"); //75:1
-                        __out.AppendLine(); //75:23
+                        __out.AppendLine(false); //75:23
                     }
                     else //76:5
                     {
@@ -916,7 +916,7 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp98Prefix);
                                 __out.Append(__tmp100Line);
                                 __out.Append(__tmp99Suffix);
-                                __out.AppendLine(); //77:42
+                                __out.AppendLine(false); //77:42
                             }
                         }
                     }
@@ -941,12 +941,12 @@ namespace MetaDslx.Soal //1:1
                             __out.Append(__tmp101Prefix);
                             __out.Append(__tmp103Line);
                             __out.Append(__tmp102Suffix);
-                            __out.AppendLine(); //80:42
+                            __out.AppendLine(false); //80:42
                         }
                     }
                 }//81:4
                 __out.Append("	</xs:complexType>"); //82:1
-                __out.AppendLine(); //82:19
+                __out.AppendLine(false); //82:19
             }
             var __loop7_results = 
                 (from __loop7_var1 in __Enumerate((ns.Declarations).GetEnumerator()) //84:8
@@ -994,7 +994,7 @@ namespace MetaDslx.Soal //1:1
                                     __out.Append(__tmp106Prefix);
                                     __out.Append(__tmp108Line);
                                     __out.Append(__tmp107Suffix);
-                                    __out.AppendLine(); //88:91
+                                    __out.AppendLine(false); //88:91
                                 }
                             }
                         }
@@ -1018,14 +1018,14 @@ namespace MetaDslx.Soal //1:1
                                     __out.Append(__tmp109Prefix);
                                     __out.Append(__tmp111Line);
                                     __out.Append(__tmp110Suffix);
-                                    __out.AppendLine(); //91:80
+                                    __out.AppendLine(false); //91:80
                                 }
                             }
                         }
                     }
                     else //93:4
                     {
-                        __out.AppendLine(); //94:1
+                        __out.AppendLine(true); //94:1
                         string __tmp112Prefix = "	<xs:element name=\""; //95:1
                         string __tmp113Suffix = "\"/>"; //95:58
                         StringBuilder __tmp114 = new StringBuilder();
@@ -1080,7 +1080,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp118Line);
                                 __out.Append(__tmp113Suffix);
-                                __out.AppendLine(); //95:61
+                                __out.AppendLine(false); //95:61
                             }
                         }
                         string __tmp119Prefix = "	<xs:complexType name=\""; //96:1
@@ -1101,11 +1101,11 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp119Prefix);
                                 __out.Append(__tmp121Line);
                                 __out.Append(__tmp120Suffix);
-                                __out.AppendLine(); //96:35
+                                __out.AppendLine(false); //96:35
                             }
                         }
                         __out.Append("		<xs:sequence>"); //97:1
-                        __out.AppendLine(); //97:16
+                        __out.AppendLine(false); //97:16
                         var __loop9_results = 
                             (from __loop9_var1 in __Enumerate((op).GetEnumerator()) //98:10
                             from param in __Enumerate((__loop9_var1.Parameters).GetEnumerator()) //98:14
@@ -1136,12 +1136,12 @@ namespace MetaDslx.Soal //1:1
                                     __out.Append(__tmp123Prefix);
                                     __out.Append(__tmp125Line);
                                     __out.Append(__tmp124Suffix);
-                                    __out.AppendLine(); //99:68
+                                    __out.AppendLine(false); //99:68
                                 }
                             }
                         }
                         __out.Append("		</xs:sequence>"); //101:1
-                        __out.AppendLine(); //101:17
+                        __out.AppendLine(false); //101:17
                         var __loop10_results = 
                             (from __loop10_var1 in __Enumerate((op).GetEnumerator()) //102:9
                             from param in __Enumerate((__loop10_var1.Parameters).GetEnumerator()) //102:13
@@ -1172,15 +1172,15 @@ namespace MetaDslx.Soal //1:1
                                     __out.Append(__tmp127Prefix);
                                     __out.Append(__tmp129Line);
                                     __out.Append(__tmp128Suffix);
-                                    __out.AppendLine(); //103:67
+                                    __out.AppendLine(false); //103:67
                                 }
                             }
                         }
                         __out.Append("	</xs:complexType>"); //105:1
-                        __out.AppendLine(); //105:19
+                        __out.AppendLine(false); //105:19
                         if (!op.IsOneway) //106:4
                         {
-                            __out.AppendLine(); //107:1
+                            __out.AppendLine(true); //107:1
                             string __tmp130Prefix = "	<xs:element name=\""; //108:1
                             string __tmp131Suffix = "Response\"/>"; //108:66
                             StringBuilder __tmp132 = new StringBuilder();
@@ -1235,7 +1235,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     __out.Append(__tmp136Line);
                                     __out.Append(__tmp131Suffix);
-                                    __out.AppendLine(); //108:77
+                                    __out.AppendLine(false); //108:77
                                 }
                             }
                             string __tmp137Prefix = "	<xs:complexType name=\""; //109:1
@@ -1256,18 +1256,18 @@ namespace MetaDslx.Soal //1:1
                                     __out.Append(__tmp137Prefix);
                                     __out.Append(__tmp139Line);
                                     __out.Append(__tmp138Suffix);
-                                    __out.AppendLine(); //109:43
+                                    __out.AppendLine(false); //109:43
                                 }
                             }
                             if (op.ReturnType == SoalInstance.Void || op.ReturnAnnotations.ContainsAnnotation(SoalAnnotations.Attribute)) //110:5
                             {
                                 __out.Append("		<xs:sequence/>"); //111:1
-                                __out.AppendLine(); //111:17
+                                __out.AppendLine(false); //111:17
                             }
                             else //112:5
                             {
                                 __out.Append("		<xs:sequence>"); //113:1
-                                __out.AppendLine(); //113:16
+                                __out.AppendLine(false); //113:16
                                 string __tmp140Prefix = "			"; //114:1
                                 string __tmp141Suffix = string.Empty; 
                                 StringBuilder __tmp142 = new StringBuilder();
@@ -1286,11 +1286,11 @@ namespace MetaDslx.Soal //1:1
                                         __out.Append(__tmp140Prefix);
                                         __out.Append(__tmp142Line);
                                         __out.Append(__tmp141Suffix);
-                                        __out.AppendLine(); //114:80
+                                        __out.AppendLine(false); //114:80
                                     }
                                 }
                                 __out.Append("		</xs:sequence>"); //115:1
-                                __out.AppendLine(); //115:17
+                                __out.AppendLine(false); //115:17
                             }
                             if (op.ReturnAnnotations.ContainsAnnotation(SoalAnnotations.Attribute)) //117:4
                             {
@@ -1312,18 +1312,18 @@ namespace MetaDslx.Soal //1:1
                                         __out.Append(__tmp143Prefix);
                                         __out.Append(__tmp145Line);
                                         __out.Append(__tmp144Suffix);
-                                        __out.AppendLine(); //118:79
+                                        __out.AppendLine(false); //118:79
                                     }
                                 }
                             }
                             __out.Append("	</xs:complexType>"); //120:1
-                            __out.AppendLine(); //120:19
+                            __out.AppendLine(false); //120:19
                         }
                     }
                 }
             }
             __out.Append("</xs:schema>"); //125:1
-            __out.AppendLine(); //125:13
+            __out.AppendLine(false); //125:13
             return __out.ToString();
         }
 
@@ -1348,7 +1348,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //129:28
+                    __out.AppendLine(false); //129:28
                 }
             }
             var __loop11_results = 
@@ -1381,7 +1381,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp5Prefix);
                         __out.Append(__tmp7Line);
                         __out.Append(__tmp6Suffix);
-                        __out.AppendLine(); //131:63
+                        __out.AppendLine(false); //131:63
                     }
                 }
             }
@@ -1403,7 +1403,7 @@ namespace MetaDslx.Soal //1:1
                     __out.Append(__tmp8Prefix);
                     __out.Append(__tmp10Line);
                     __out.Append(__tmp9Suffix);
-                    __out.AppendLine(); //133:29
+                    __out.AppendLine(false); //133:29
                 }
             }
             var __loop12_results = 
@@ -1436,7 +1436,7 @@ namespace MetaDslx.Soal //1:1
                         __out.Append(__tmp12Prefix);
                         __out.Append(__tmp14Line);
                         __out.Append(__tmp13Suffix);
-                        __out.AppendLine(); //135:62
+                        __out.AppendLine(false); //135:62
                     }
                 }
             }
@@ -1524,7 +1524,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp9Line);
                                 __out.Append(__tmp2Suffix);
-                                __out.AppendLine(); //143:158
+                                __out.AppendLine(false); //143:158
                             }
                         }
                     }
@@ -1602,7 +1602,7 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp18Line);
                                 __out.Append(__tmp11Suffix);
-                                __out.AppendLine(); //145:216
+                                __out.AppendLine(false); //145:216
                             }
                         }
                     }
@@ -1681,16 +1681,16 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp27Line);
                             __out.Append(__tmp20Suffix);
-                            __out.AppendLine(); //148:112
+                            __out.AppendLine(false); //148:112
                         }
                     }
                 }
             }
             else //150:2
             {
-                if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && (annots.ContainsAnnotation(SoalAnnotations.NoWrap) || annots.ContainsAnnotation(SoalAnnotations.Sap))) //151:3
+                if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && (annots.ContainsAnnotation(SoalAnnotations.NoWrap) || annots.ContainsAnnotation(SoalAnnotations.SapArray))) //151:3
                 {
-                    if (annots.ContainsAnnotation(SoalAnnotations.Sap)) //152:4
+                    if (annots.ContainsAnnotation(SoalAnnotations.SapArray)) //152:4
                     {
                         string __tmp28Prefix = "<xs:element name=\""; //153:1
                         string __tmp29Suffix = "\">"; //153:56
@@ -1728,19 +1728,19 @@ namespace MetaDslx.Soal //1:1
                                 }
                                 __out.Append(__tmp32Line);
                                 __out.Append(__tmp29Suffix);
-                                __out.AppendLine(); //153:58
+                                __out.AppendLine(false); //153:58
                             }
                         }
                         __out.Append("	<xs:complexType>"); //154:1
-                        __out.AppendLine(); //154:18
+                        __out.AppendLine(false); //154:18
                         __out.Append("		<xs:all>"); //155:1
-                        __out.AppendLine(); //155:11
+                        __out.AppendLine(false); //155:11
                         __out.Append("			<xs:element name=\"item\" minOccurs=\"0\" maxOccurs=\"unbounded\">"); //156:1
-                        __out.AppendLine(); //156:64
+                        __out.AppendLine(false); //156:64
                         __out.Append("				<xs:complexType>"); //157:1
-                        __out.AppendLine(); //157:21
+                        __out.AppendLine(false); //157:21
                         __out.Append("					<xs:all>"); //158:1
-                        __out.AppendLine(); //158:14
+                        __out.AppendLine(false); //158:14
                         if (t is ArrayType) //159:5
                         {
                             string __tmp33Prefix = "						<xs:element name=\""; //160:1
@@ -1815,7 +1815,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     __out.Append(__tmp41Line);
                                     __out.Append(__tmp34Suffix);
-                                    __out.AppendLine(); //160:219
+                                    __out.AppendLine(false); //160:219
                                 }
                             }
                         }
@@ -1893,22 +1893,22 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     __out.Append(__tmp50Line);
                                     __out.Append(__tmp43Suffix);
-                                    __out.AppendLine(); //162:335
+                                    __out.AppendLine(false); //162:335
                                 }
                             }
                         }
                         __out.Append("					</xs:all>"); //164:1
-                        __out.AppendLine(); //164:15
+                        __out.AppendLine(false); //164:15
                         __out.Append("				</xs:complexType>"); //165:1
-                        __out.AppendLine(); //165:22
+                        __out.AppendLine(false); //165:22
                         __out.Append("			</xs:element>"); //166:1
-                        __out.AppendLine(); //166:17
+                        __out.AppendLine(false); //166:17
                         __out.Append("		</xs:all>"); //167:1
-                        __out.AppendLine(); //167:12
+                        __out.AppendLine(false); //167:12
                         __out.Append("	</xs:complexType>"); //168:1
-                        __out.AppendLine(); //168:19
+                        __out.AppendLine(false); //168:19
                         __out.Append("</xs:element>"); //169:1
-                        __out.AppendLine(); //169:14
+                        __out.AppendLine(false); //169:14
                     }
                     else //170:4
                     {
@@ -1986,7 +1986,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     __out.Append(__tmp59Line);
                                     __out.Append(__tmp52Suffix);
-                                    __out.AppendLine(); //172:216
+                                    __out.AppendLine(false); //172:216
                                 }
                             }
                         }
@@ -2064,7 +2064,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     __out.Append(__tmp68Line);
                                     __out.Append(__tmp61Suffix);
-                                    __out.AppendLine(); //174:303
+                                    __out.AppendLine(false); //174:303
                                 }
                             }
                         }
@@ -2162,7 +2162,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             __out.Append(__tmp79Line);
                             __out.Append(__tmp70Suffix);
-                            __out.AppendLine(); //178:139
+                            __out.AppendLine(false); //178:139
                         }
                     }
                 }
@@ -2200,7 +2200,7 @@ namespace MetaDslx.Soal //1:1
 
         public string GetAttributeRequired(IList<Annotation> annots) //201:1
         {
-            if (annots.ContainsAnnotation(SoalAnnotations.Attribute) && annots.ContainsAnnotation(SoalAnnotations.Required)) //202:2
+            if (annots.GetAnnotation(SoalAnnotations.Attribute).GetBoolAnnotationProperty(SoalAnnotationProperties.Required)) //202:2
             {
                 return " use=\"required\""; //203:3
             }
@@ -2210,5 +2210,51 @@ namespace MetaDslx.Soal //1:1
             }
         }
 
+        private class StringBuilder
+        {
+            private bool newLine;
+            private bool whitespaceLine;
+            private System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            
+            public StringBuilder()
+            {
+                this.newLine = true;
+                this.whitespaceLine = true;
+            }
+            
+            public void Append(string str)
+            {
+                if (str == null) return;
+                if (!string.IsNullOrEmpty(str))
+                {
+                    this.newLine = false;
+                }
+                if (!string.IsNullOrWhiteSpace(str))
+                {
+                    this.whitespaceLine = false;
+                }
+                builder.Append(str);
+            }
+            
+            public void Append(object obj)
+            {
+                if (obj == null) return;
+                string text = obj.ToString();
+                this.Append(text);
+            }
+            
+            public void AppendLine(bool force = false)
+            {
+                if (force || !this.newLine)
+                {
+                    builder.AppendLine();
+                }
+            }
+            
+            public override string ToString()
+            {
+                return builder.ToString();
+            }
+        }
     }
 }

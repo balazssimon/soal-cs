@@ -55,6 +55,43 @@ namespace MetaDslx.Soal
             }
         }
 
+        protected void CopyAnnotation(string name, AnnotatedElement from, AnnotatedElement to)
+        {
+            foreach (var annot in from.Annotations)
+            {
+                if (annot.Name == name)
+                {
+                    Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+                    toAnnot.Name = annot.Name;
+                    to.Annotations.Add(toAnnot);
+                    foreach (var annotProp in annot.Properties)
+                    {
+                        AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                        toAnnotProp.Name = annotProp.Name;
+                        toAnnotProp.Value = annotProp.Value;
+                        toAnnot.Properties.Add(toAnnotProp);
+                    }
+                }
+            }
+        }
+
+        protected void CopyAnnotations(AnnotatedElement from, AnnotatedElement to)
+        {
+            foreach (var annot in from.Annotations)
+            {
+                Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+                toAnnot.Name = annot.Name;
+                to.Annotations.Add(toAnnot);
+                foreach (var annotProp in annot.Properties)
+                {
+                    AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                    toAnnotProp.Name = annotProp.Name;
+                    toAnnotProp.Value = annotProp.Value;
+                    toAnnot.Properties.Add(toAnnotProp);
+                }
+            }
+        }
+
         public abstract void CollectImportedFiles();
 
         public virtual void LoadXsdFile()
