@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_SoalPrinter_778116385;
-    namespace __Hidden_SoalPrinter_778116385
+    using __Hidden_SoalPrinter_1983207351;
+    namespace __Hidden_SoalPrinter_1983207351
     {
         internal static class __Extensions
         {
@@ -84,7 +84,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -116,7 +117,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp3Line = __tmp3Reader.ReadLine();
                             if (__tmp3Line == null)
                             {
-                                __tmp3Line = "";
+                                if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                                else __tmp3Line = "";
                             }
                             __out.Append(__tmp1Prefix);
                             __out.Append(__tmp3Line);
@@ -135,7 +137,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp5Line = __tmp5Reader.ReadLine();
                             if (__tmp5Line == null)
                             {
-                                __tmp5Line = "";
+                                if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                                else __tmp5Line = "";
                             }
                             __out.Append(__tmp5Line);
                         }
@@ -153,7 +156,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp7Line = __tmp7Reader.ReadLine();
                             if (__tmp7Line == null)
                             {
-                                __tmp7Line = "";
+                                if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                                else __tmp7Line = "";
                             }
                             __out.Append(__tmp7Line);
                             __out.Append(__tmp2Suffix);
@@ -176,7 +180,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp10Line = __tmp10Reader.ReadLine();
                             if (__tmp10Line == null)
                             {
-                                __tmp10Line = "";
+                                if (string.IsNullOrEmpty(__tmp8Prefix) && string.IsNullOrEmpty(__tmp9Suffix)) break;
+                                else __tmp10Line = "";
                             }
                             __out.Append(__tmp8Prefix);
                             __out.Append(__tmp10Line);
@@ -195,7 +200,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp12Line = __tmp12Reader.ReadLine();
                             if (__tmp12Line == null)
                             {
-                                __tmp12Line = "";
+                                if (string.IsNullOrEmpty(__tmp8Prefix) && string.IsNullOrEmpty(__tmp9Suffix)) break;
+                                else __tmp12Line = "";
                             }
                             __out.Append(__tmp12Line);
                             __out.Append(__tmp9Suffix);
@@ -231,7 +237,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp16Line = __tmp16Reader.ReadLine();
                             if (__tmp16Line == null)
                             {
-                                __tmp16Line = "";
+                                if (string.IsNullOrEmpty(__tmp14Prefix) && string.IsNullOrEmpty(__tmp15Suffix)) break;
+                                else __tmp16Line = "";
                             }
                             __out.Append(__tmp14Prefix);
                             __out.Append(__tmp16Line);
@@ -267,7 +274,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp20Line = __tmp20Reader.ReadLine();
                             if (__tmp20Line == null)
                             {
-                                __tmp20Line = "";
+                                if (string.IsNullOrEmpty(__tmp18Prefix) && string.IsNullOrEmpty(__tmp19Suffix)) break;
+                                else __tmp20Line = "";
                             }
                             __out.Append(__tmp18Prefix);
                             __out.Append(__tmp20Line);
@@ -303,7 +311,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp24Line = __tmp24Reader.ReadLine();
                             if (__tmp24Line == null)
                             {
-                                __tmp24Line = "";
+                                if (string.IsNullOrEmpty(__tmp22Prefix) && string.IsNullOrEmpty(__tmp23Suffix)) break;
+                                else __tmp24Line = "";
                             }
                             __out.Append(__tmp22Prefix);
                             __out.Append(__tmp24Line);
@@ -339,7 +348,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp28Line = __tmp28Reader.ReadLine();
                             if (__tmp28Line == null)
                             {
-                                __tmp28Line = "";
+                                if (string.IsNullOrEmpty(__tmp26Prefix) && string.IsNullOrEmpty(__tmp27Suffix)) break;
+                                else __tmp28Line = "";
                             }
                             __out.Append(__tmp26Prefix);
                             __out.Append(__tmp28Line);
@@ -375,7 +385,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp32Line = __tmp32Reader.ReadLine();
                             if (__tmp32Line == null)
                             {
-                                __tmp32Line = "";
+                                if (string.IsNullOrEmpty(__tmp30Prefix) && string.IsNullOrEmpty(__tmp31Suffix)) break;
+                                else __tmp32Line = "";
                             }
                             __out.Append(__tmp30Prefix);
                             __out.Append(__tmp32Line);
@@ -411,11 +422,11 @@ namespace MetaDslx.Soal //1:1
             {
                 if (baseType.Namespace == currentNs) //53:3
                 {
-                    return " : " + baseType.Name; //54:4
+                    return ": " + baseType.Name; //54:4
                 }
                 else //55:3
                 {
-                    return " : " + baseType.FullName(); //56:4
+                    return ": " + baseType.FullName(); //56:4
                 }
             }
             return ""; //59:2
@@ -448,7 +459,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -465,7 +477,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp5Line = __tmp5Reader.ReadLine();
                         if (__tmp5Line == null)
                         {
-                            __tmp5Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp5Line = "";
                         }
                         __out.Append(__tmp5Line);
                     }
@@ -481,7 +494,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp6Line = __tmp6Reader.ReadLine();
                         if (__tmp6Line == null)
                         {
-                            __tmp6Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp6Line = "";
                         }
                         __out.Append(__tmp6Line);
                         __out.Append(__tmp3Suffix);
@@ -519,7 +533,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -536,7 +551,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp5Line = __tmp5Reader.ReadLine();
                         if (__tmp5Line == null)
                         {
-                            __tmp5Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp5Line = "";
                         }
                         __out.Append(__tmp5Line);
                     }
@@ -552,7 +568,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp6Line = __tmp6Reader.ReadLine();
                         if (__tmp6Line == null)
                         {
-                            __tmp6Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp6Line = "";
                         }
                         __out.Append(__tmp6Line);
                         __out.Append(__tmp3Suffix);
@@ -587,7 +604,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -604,7 +622,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp5Line = __tmp5Reader.ReadLine();
                         if (__tmp5Line == null)
                         {
-                            __tmp5Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp5Line = "";
                         }
                         __out.Append(__tmp5Line);
                     }
@@ -620,7 +639,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp6Line = __tmp6Reader.ReadLine();
                         if (__tmp6Line == null)
                         {
-                            __tmp6Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp6Line = "";
                         }
                         __out.Append(__tmp6Line);
                         __out.Append(__tmp3Suffix);
@@ -647,7 +667,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
@@ -668,7 +689,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
@@ -677,6 +699,7 @@ namespace MetaDslx.Soal //1:1
                 }
             }
             __out.Append("{"); //83:1
+            __out.AppendLine(); //83:2
             string __tmp7Prefix = "	"; //84:1
             string __tmp8Suffix = string.Empty; 
             StringBuilder __tmp9 = new StringBuilder();
@@ -690,7 +713,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp9Line = __tmp9Reader.ReadLine();
                     if (__tmp9Line == null)
                     {
-                        __tmp9Line = "";
+                        if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                        else __tmp9Line = "";
                     }
                     __out.Append(__tmp7Prefix);
                     __out.Append(__tmp9Line);
@@ -733,7 +757,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -754,7 +779,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp7Line = __tmp7Reader.ReadLine();
                         if (__tmp7Line == null)
                         {
-                            __tmp7Line = "";
+                            if (string.IsNullOrEmpty(__tmp5Prefix) && string.IsNullOrEmpty(__tmp6Suffix)) break;
+                            else __tmp7Line = "";
                         }
                         __out.Append(__tmp5Prefix);
                         __out.Append(__tmp7Line);
@@ -774,7 +800,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp10Line = __tmp10Reader.ReadLine();
                         if (__tmp10Line == null)
                         {
-                            __tmp10Line = "";
+                            if (string.IsNullOrEmpty(__tmp8Prefix) && string.IsNullOrEmpty(__tmp9Suffix)) break;
+                            else __tmp10Line = "";
                         }
                         __out.Append(__tmp8Prefix);
                         __out.Append(__tmp10Line);
@@ -801,7 +828,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
@@ -834,28 +862,32 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                 }
             }
-            StringBuilder __tmp7 = new StringBuilder();
-            __tmp7.Append(GetAncestor(currentNs, st));
-            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+            string __tmp7Line = " "; //105:10
+            __out.Append(__tmp7Line);
+            StringBuilder __tmp8 = new StringBuilder();
+            __tmp8.Append(GetAncestor(currentNs, st));
+            using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
             {
-                bool __tmp7_first = true;
-                while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                bool __tmp8_first = true;
+                while(__tmp8_first || !__tmp8Reader.EndOfStream)
                 {
-                    __tmp7_first = false;
-                    string __tmp7Line = __tmp7Reader.ReadLine();
-                    if (__tmp7Line == null)
+                    __tmp8_first = false;
+                    string __tmp8Line = __tmp8Reader.ReadLine();
+                    if (__tmp8Line == null)
                     {
-                        __tmp7Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp8Line = "";
                     }
-                    __out.Append(__tmp7Line);
+                    __out.Append(__tmp8Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //105:38
+                    __out.AppendLine(); //105:39
                 }
             }
             __out.Append("{"); //106:1
@@ -866,29 +898,30 @@ namespace MetaDslx.Soal //1:1
                 select new { __loop11_var1 = __loop11_var1, prop = prop}
                 ).ToList(); //107:3
             int __loop11_iteration = 0;
-            foreach (var __tmp8 in __loop11_results)
+            foreach (var __tmp9 in __loop11_results)
             {
                 ++__loop11_iteration;
-                var __loop11_var1 = __tmp8.__loop11_var1;
-                var prop = __tmp8.prop;
-                string __tmp9Prefix = "	"; //108:1
-                string __tmp10Suffix = string.Empty; 
-                StringBuilder __tmp11 = new StringBuilder();
-                __tmp11.Append(GenerateProperty(currentNs, prop));
-                using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
+                var __loop11_var1 = __tmp9.__loop11_var1;
+                var prop = __tmp9.prop;
+                string __tmp10Prefix = "	"; //108:1
+                string __tmp11Suffix = string.Empty; 
+                StringBuilder __tmp12 = new StringBuilder();
+                __tmp12.Append(GenerateProperty(currentNs, prop));
+                using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
                 {
-                    bool __tmp11_first = true;
-                    while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                    bool __tmp12_first = true;
+                    while(__tmp12_first || !__tmp12Reader.EndOfStream)
                     {
-                        __tmp11_first = false;
-                        string __tmp11Line = __tmp11Reader.ReadLine();
-                        if (__tmp11Line == null)
+                        __tmp12_first = false;
+                        string __tmp12Line = __tmp12Reader.ReadLine();
+                        if (__tmp12Line == null)
                         {
-                            __tmp11Line = "";
+                            if (string.IsNullOrEmpty(__tmp10Prefix) && string.IsNullOrEmpty(__tmp11Suffix)) break;
+                            else __tmp12Line = "";
                         }
-                        __out.Append(__tmp9Prefix);
-                        __out.Append(__tmp11Line);
-                        __out.Append(__tmp10Suffix);
+                        __out.Append(__tmp10Prefix);
+                        __out.Append(__tmp12Line);
+                        __out.Append(__tmp11Suffix);
                         __out.AppendLine(); //108:37
                     }
                 }
@@ -914,11 +947,13 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
+                    __out.AppendLine(); //114:28
                 }
             }
             string __tmp4Prefix = string.Empty; 
@@ -934,7 +969,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
@@ -953,7 +989,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp8Line = __tmp8Reader.ReadLine();
                     if (__tmp8Line == null)
                     {
-                        __tmp8Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp8Line = "";
                     }
                     __out.Append(__tmp8Line);
                     __out.Append(__tmp5Suffix);
@@ -983,7 +1020,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp3Line = __tmp3Reader.ReadLine();
                             if (__tmp3Line == null)
                             {
-                                __tmp3Line = "";
+                                if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                                else __tmp3Line = "";
                             }
                             __out.Append(__tmp1Prefix);
                             __out.Append(__tmp3Line);
@@ -1006,7 +1044,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp6Line = __tmp6Reader.ReadLine();
                             if (__tmp6Line == null)
                             {
-                                __tmp6Line = "";
+                                if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                                else __tmp6Line = "";
                             }
                             __out.Append(__tmp4Prefix);
                             __out.Append(__tmp6Line);
@@ -1036,7 +1075,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         if (__tmp3Line == null)
                         {
-                            __tmp3Line = "";
+                            if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                            else __tmp3Line = "";
                         }
                         __out.Append(__tmp1Prefix);
                         __out.Append(__tmp3Line);
@@ -1059,7 +1099,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp6Line = __tmp6Reader.ReadLine();
                         if (__tmp6Line == null)
                         {
-                            __tmp6Line = "";
+                            if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                            else __tmp6Line = "";
                         }
                         __out.Append(__tmp4Prefix);
                         __out.Append(__tmp6Line);
@@ -1082,7 +1123,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp9Line = __tmp9Reader.ReadLine();
                         if (__tmp9Line == null)
                         {
-                            __tmp9Line = "";
+                            if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                            else __tmp9Line = "";
                         }
                         __out.Append(__tmp7Prefix);
                         __out.Append(__tmp9Line);
@@ -1105,7 +1147,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp12Line = __tmp12Reader.ReadLine();
                         if (__tmp12Line == null)
                         {
-                            __tmp12Line = "";
+                            if (string.IsNullOrEmpty(__tmp10Prefix) && string.IsNullOrEmpty(__tmp11Suffix)) break;
+                            else __tmp12Line = "";
                         }
                         __out.Append(__tmp10Prefix);
                         __out.Append(__tmp12Line);
@@ -1122,7 +1165,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp13Line = __tmp13Reader.ReadLine();
                         if (__tmp13Line == null)
                         {
-                            __tmp13Line = "";
+                            if (string.IsNullOrEmpty(__tmp10Prefix) && string.IsNullOrEmpty(__tmp11Suffix)) break;
+                            else __tmp13Line = "";
                         }
                         __out.Append(__tmp13Line);
                         __out.Append(__tmp11Suffix);
@@ -1144,7 +1188,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp16Line = __tmp16Reader.ReadLine();
                         if (__tmp16Line == null)
                         {
-                            __tmp16Line = "";
+                            if (string.IsNullOrEmpty(__tmp14Prefix) && string.IsNullOrEmpty(__tmp15Suffix)) break;
+                            else __tmp16Line = "";
                         }
                         __out.Append(__tmp14Prefix);
                         __out.Append(__tmp16Line);
@@ -1168,7 +1213,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp19Line = __tmp19Reader.ReadLine();
                         if (__tmp19Line == null)
                         {
-                            __tmp19Line = "";
+                            if (string.IsNullOrEmpty(__tmp17Prefix) && string.IsNullOrEmpty(__tmp18Suffix)) break;
+                            else __tmp19Line = "";
                         }
                         __out.Append(__tmp17Prefix);
                         __out.Append(__tmp19Line);
@@ -1201,7 +1247,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         if (__tmp3Line == null)
                         {
-                            __tmp3Line = "";
+                            if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                            else __tmp3Line = "";
                         }
                         __out.Append(__tmp1Prefix);
                         __out.Append(__tmp3Line);
@@ -1244,7 +1291,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -1261,7 +1309,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp5Line = __tmp5Reader.ReadLine();
                         if (__tmp5Line == null)
                         {
-                            __tmp5Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp5Line = "";
                         }
                         __out.Append(__tmp5Line);
                         __out.Append(__tmp3Suffix);
@@ -1304,7 +1353,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         if (__tmp4Line == null)
                         {
-                            __tmp4Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp4Line = "";
                         }
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
@@ -1321,7 +1371,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp5Line = __tmp5Reader.ReadLine();
                         if (__tmp5Line == null)
                         {
-                            __tmp5Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp5Line = "";
                         }
                         __out.Append(__tmp5Line);
                     }
@@ -1337,7 +1388,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp6Line = __tmp6Reader.ReadLine();
                         if (__tmp6Line == null)
                         {
-                            __tmp6Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp6Line = "";
                         }
                         __out.Append(__tmp6Line);
                     }
@@ -1355,7 +1407,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp8Line = __tmp8Reader.ReadLine();
                         if (__tmp8Line == null)
                         {
-                            __tmp8Line = "";
+                            if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                            else __tmp8Line = "";
                         }
                         __out.Append(__tmp8Line);
                         __out.Append(__tmp3Suffix);
@@ -1382,11 +1435,13 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
+                    __out.AppendLine(); //165:26
                 }
             }
             string __tmp4Prefix = string.Empty;
@@ -1402,7 +1457,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
@@ -1422,7 +1478,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp9Line = __tmp9Reader.ReadLine();
                     if (__tmp9Line == null)
                     {
-                        __tmp9Line = "";
+                        if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                        else __tmp9Line = "";
                     }
                     __out.Append(__tmp7Prefix);
                     __out.Append(__tmp9Line);
@@ -1441,7 +1498,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp11Line = __tmp11Reader.ReadLine();
                     if (__tmp11Line == null)
                     {
-                        __tmp11Line = "";
+                        if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                        else __tmp11Line = "";
                     }
                     __out.Append(__tmp11Line);
                 }
@@ -1459,7 +1517,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp13Line = __tmp13Reader.ReadLine();
                     if (__tmp13Line == null)
                     {
-                        __tmp13Line = "";
+                        if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                        else __tmp13Line = "";
                     }
                     __out.Append(__tmp13Line);
                 }
@@ -1477,7 +1536,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp15Line = __tmp15Reader.ReadLine();
                     if (__tmp15Line == null)
                     {
-                        __tmp15Line = "";
+                        if (string.IsNullOrEmpty(__tmp7Prefix) && string.IsNullOrEmpty(__tmp8Suffix)) break;
+                        else __tmp15Line = "";
                     }
                     __out.Append(__tmp15Line);
                     __out.Append(__tmp8Suffix);
@@ -1503,7 +1563,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
@@ -1524,7 +1585,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
@@ -1558,7 +1620,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp10Line = __tmp10Reader.ReadLine();
                         if (__tmp10Line == null)
                         {
-                            __tmp10Line = "";
+                            if (string.IsNullOrEmpty(__tmp8Prefix) && string.IsNullOrEmpty(__tmp9Suffix)) break;
+                            else __tmp10Line = "";
                         }
                         __out.Append(__tmp8Prefix);
                         __out.Append(__tmp10Line);
@@ -1599,7 +1662,8 @@ namespace MetaDslx.Soal //1:1
                             string __tmp4Line = __tmp4Reader.ReadLine();
                             if (__tmp4Line == null)
                             {
-                                __tmp4Line = "";
+                                if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                                else __tmp4Line = "";
                             }
                             __out.Append(__tmp2Prefix);
                             __out.Append(__tmp4Line);
@@ -1656,7 +1720,8 @@ namespace MetaDslx.Soal //1:1
                                 string __tmp4Line = __tmp4Reader.ReadLine();
                                 if (__tmp4Line == null)
                                 {
-                                    __tmp4Line = "";
+                                    if (string.IsNullOrEmpty(__tmp2Prefix) && string.IsNullOrEmpty(__tmp3Suffix)) break;
+                                    else __tmp4Line = "";
                                 }
                                 __out.Append(__tmp2Prefix);
                                 __out.Append(__tmp4Line);
@@ -1680,7 +1745,8 @@ namespace MetaDslx.Soal //1:1
                                 string __tmp7Line = __tmp7Reader.ReadLine();
                                 if (__tmp7Line == null)
                                 {
-                                    __tmp7Line = "";
+                                    if (string.IsNullOrEmpty(__tmp5Prefix) && string.IsNullOrEmpty(__tmp6Suffix)) break;
+                                    else __tmp7Line = "";
                                 }
                                 __out.Append(__tmp5Prefix);
                                 __out.Append(__tmp7Line);
@@ -1744,7 +1810,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
@@ -1767,7 +1834,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     if (__tmp6Line == null)
                     {
-                        __tmp6Line = "";
+                        if (string.IsNullOrEmpty(__tmp4Prefix) && string.IsNullOrEmpty(__tmp5Suffix)) break;
+                        else __tmp6Line = "";
                     }
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
@@ -1799,7 +1867,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp10Line = __tmp10Reader.ReadLine();
                         if (__tmp10Line == null)
                         {
-                            __tmp10Line = "";
+                            if (string.IsNullOrEmpty(__tmp8Prefix) && string.IsNullOrEmpty(__tmp9Suffix)) break;
+                            else __tmp10Line = "";
                         }
                         __out.Append(__tmp8Prefix);
                         __out.Append(__tmp10Line);
@@ -1832,7 +1901,8 @@ namespace MetaDslx.Soal //1:1
                         string __tmp14Line = __tmp14Reader.ReadLine();
                         if (__tmp14Line == null)
                         {
-                            __tmp14Line = "";
+                            if (string.IsNullOrEmpty(__tmp12Prefix) && string.IsNullOrEmpty(__tmp13Suffix)) break;
+                            else __tmp14Line = "";
                         }
                         __out.Append(__tmp12Prefix);
                         __out.Append(__tmp14Line);
@@ -1862,7 +1932,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp3Line = __tmp3Reader.ReadLine();
                     if (__tmp3Line == null)
                     {
-                        __tmp3Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp3Line = "";
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
@@ -1881,7 +1952,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp5Line = __tmp5Reader.ReadLine();
                     if (__tmp5Line == null)
                     {
-                        __tmp5Line = "";
+                        if (string.IsNullOrEmpty(__tmp1Prefix) && string.IsNullOrEmpty(__tmp2Suffix)) break;
+                        else __tmp5Line = "";
                     }
                     __out.Append(__tmp5Line);
                     __out.Append(__tmp2Suffix);
@@ -1903,7 +1975,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp8Line = __tmp8Reader.ReadLine();
                     if (__tmp8Line == null)
                     {
-                        __tmp8Line = "";
+                        if (string.IsNullOrEmpty(__tmp6Prefix) && string.IsNullOrEmpty(__tmp7Suffix)) break;
+                        else __tmp8Line = "";
                     }
                     __out.Append(__tmp6Prefix);
                     __out.Append(__tmp8Line);
@@ -1924,7 +1997,8 @@ namespace MetaDslx.Soal //1:1
                     string __tmp11Line = __tmp11Reader.ReadLine();
                     if (__tmp11Line == null)
                     {
-                        __tmp11Line = "";
+                        if (string.IsNullOrEmpty(__tmp9Prefix) && string.IsNullOrEmpty(__tmp10Suffix)) break;
+                        else __tmp11Line = "";
                     }
                     __out.Append(__tmp9Prefix);
                     __out.Append(__tmp11Line);

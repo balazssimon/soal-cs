@@ -8,6 +8,9 @@ using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
+// The variable '...' is assigned but its value is never used
+#pragma warning disable 0219
+
 namespace MetaDslx.Soal
 {
     public class SoalParserAnnotator : SoalParserBaseVisitor<object>
@@ -79,7 +82,7 @@ namespace MetaDslx.Soal
                 {
                     foreach (var treeAnnot in treeAnnotList)
                     {
-                        SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;
+                        SymbolBasedAnnotation sta = treeAnnot as SymbolBasedAnnotation;
                         if (sta != null)
                         {
                             set = true;
@@ -2526,8 +2529,8 @@ namespace MetaDslx.Soal
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new SoalLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new SoalParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new SoalParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
             SoalParserAnnotator annotator = new SoalParserAnnotator();
@@ -2563,7 +2566,6 @@ namespace MetaDslx.Soal
         public SoalParser.MainContext ParseTree { get; private set; }
         public SoalLexer Lexer { get; private set; }
         public SoalParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
         
         public override List<object> LexerAnnotations { get; protected set; }
         public override List<object> ParserAnnotations { get; protected set; }
