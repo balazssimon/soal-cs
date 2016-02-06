@@ -19,8 +19,8 @@ namespace [ns.FullName] = "[ns.Uri]"
 	[GenerateEnum(ns, enm)]
 ^
 	[end loop]
-	[loop(ns->Declarations->st:typeof(StructuredType))]
-	[GenerateStructuredType(ns, st)]
+	[loop(ns->Declarations->st:typeof(Struct))]
+	[GenerateStruct(ns, st)]
 ^
 	[end loop]
 	[loop(ns->Declarations->intf:typeof(Interface))]
@@ -45,25 +45,18 @@ function string GetAncestor(Namespace currentNs, SoalType st)
 		Enum baseType = ((Enum)st).BaseType;
 		if (baseType != null)
 			if (baseType.Namespace == currentNs)
-				return ": "+baseType.Name;
+				return " : "+baseType.Name;
 			else
-				return ": "+baseType.FullName();
+				return " : "+baseType.FullName();
 			end if
 		end if
-	else
-		StructuredType baseType = null;
-		if (st is Struct)
-			baseType = ((Struct)st).BaseType;
-		else if (st is Exception)
-			baseType = ((Exception)st).BaseType;
-		else if (st is Entity)
-			baseType = ((Entity)st).BaseType;
-		end if
+	else if (st is Struct)
+		Struct baseType = ((Struct)st).BaseType;
 		if (baseType != null)
 			if (baseType.Namespace == currentNs)
-				return ": "+baseType.Name;
+				return " : "+baseType.Name;
 			else
-				return ": "+baseType.FullName();
+				return " : "+baseType.FullName();
 			end if
 		end if
 	end if
@@ -103,7 +96,7 @@ end function
 
 template GenerateReturnAnnotations(IList<Annotation> al)
 [loop(annot:al)]
-["[return: "][annot.Name]["]"]
+["[return: "][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
 [end loop]
 end template
 
@@ -122,16 +115,9 @@ template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit)
 [lit.Name]
 end template
 
-template GenerateStructuredType(Namespace currentNs, StructuredType st)
+template GenerateStruct(Namespace currentNs, Struct st)
 [GenerateAnnotations(st)]
-[if (st is Struct)]
-struct \
-[else if (st is Exception)]
-exception \
-[else if (st is Entity)]
-entity \
-[end if]
-[st.Name] [GetAncestor(currentNs, st)]
+struct [st.Name][GetAncestor(currentNs, st)]
 {
 	[loop(st->prop:Properties)]
 	[GenerateProperty(currentNs, prop)]

@@ -272,7 +272,7 @@ namespace MetaDslx.Soal
             return newValue;
         }
 
-        private string GetNewPropertyName(StructuredType st, string name)
+        private string GetNewPropertyName(Struct st, string name)
         {
             if (name == null) return name;
             if (st == null) return name;
@@ -521,6 +521,7 @@ namespace MetaDslx.Soal
                     Enum enm = type as Enum;
                     if (enm != null)
                     {
+                        string name = enm.Name;
                         if (baseType is Enum)
                         {
                             enm.BaseType = (Enum)baseType;
@@ -538,7 +539,7 @@ namespace MetaDslx.Soal
                                 enm.EnumLiterals.Add(enmLit);
                                 if (value != newValue)
                                 {
-                                    enmLit.SetAnnotationPropertyValue(SoalAnnotations.Name, SoalAnnotationProperties.Name, value);
+                                    enmLit.SetAnnotationPropertyValue(SoalAnnotations.Enum, SoalAnnotationProperties.Name, value);
                                 }
                             }
                             else
@@ -575,7 +576,6 @@ namespace MetaDslx.Soal
             {
                 return null;
             }
-            return null;
         }
 
         private void ProcessXsdRestriction(SoalType type, XElement elem, string restrictionName)
@@ -772,6 +772,7 @@ namespace MetaDslx.Soal
                 if (simpleType != null)
                 {
                     result = this.ImportPhase1SimpleType(simpleType, name, XsdTypeKind.Element, elem, true);
+                    result = this.ImportPhase2SimpleType(result, simpleType);
                 }
                 else if (complexType != null)
                 {
@@ -871,10 +872,16 @@ namespace MetaDslx.Soal
                 if (simpleType != null)
                 {
                     result = this.ImportPhase1SimpleType(simpleType, name, XsdTypeKind.Attribute, elem, true);
+                    result = this.ImportPhase2SimpleType(result, simpleType);
                 }
                 else if (complexType != null)
                 {
                     result = this.ImportPhase1ComplexType(complexType, name, XsdTypeKind.Attribute, elem, true);
+                    Struct cst = result as Struct;
+                    if (cst != null)
+                    {
+                        this.ImportPhase2ComplexType(cst, complexType);
+                    }
                 }
                 else
                 {
@@ -1271,7 +1278,7 @@ namespace MetaDslx.Soal
                     {
                         ((ArrayType)rt).InnerType = sapArray.InnerType;
                         this.Importer.RegisterReplacementType(type, rt);
-                        Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Element);
+                        Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
                         arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
                         arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, sapName);
                         arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Sap, true);
@@ -1285,10 +1292,10 @@ namespace MetaDslx.Soal
                         }
                         ((ArrayType)rt).InnerType = type;
                         SoalType coreType = type.GetCoreType();
+                        Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
+                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
                         if (coreType is NamedElement && ((NamedElement)coreType).Name != prop.Name)
                         {
-                            Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Element);
-                            arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
                             arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
                         }
                     }

@@ -85,11 +85,11 @@ namespace Soal
                         generator.SeparateXsdWsdl = separateXsdWsdl;
                         generator.SingleFileWsdl = singleFileWsdl;
                         generator.Generate();
-                        /*SoalPrinter printer = new SoalPrinter(compiler.Model.Instances);
+                        SoalPrinter printer = new SoalPrinter(compiler.Model.Instances);
                         using (StreamWriter writer = new StreamWriter(fileName+"0"))
                         {
                             writer.WriteLine(printer.Generate());
-                        }*/
+                        }
                     }
                     foreach (var msg in compiler.Diagnostics.GetMessages(true))
                     {

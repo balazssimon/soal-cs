@@ -49,7 +49,7 @@ $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 // Enums
 
@@ -67,12 +67,6 @@ enumLiteral : annotationList? identifier;
 $TypeDef(Struct)
 structDeclaration : annotationList? KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
-$TypeDef(Exception)
-exceptionDeclaration : annotationList? KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
-$TypeDef(Entity)
-entityDeclaration : annotationList? KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
 $Property(Properties)
 $NameDef(Property)
 propertyDeclaration : annotationList? $Property(Type) $TypeUse typeReference identifier TSemicolon;
@@ -84,7 +78,7 @@ $TypeDef(Database)
 databaseDeclaration : annotationList? KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
 $Property(Entities)
-entityReference : KEntity $TypeUse(Entity) qualifiedName TSemicolon;
+entityReference : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
 
 
 // Interface
@@ -94,7 +88,7 @@ interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operatio
 
 $Property(Operations)
 $NameDef(Operation)
-operationDeclaration : operationAnnotationList? ($Property(ReturnType) $TypeUse returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Exception) qualifiedNameList)? TSemicolon;
+operationDeclaration : operationAnnotationList? ($Property(ReturnType) $TypeUse returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 

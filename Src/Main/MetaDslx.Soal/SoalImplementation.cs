@@ -14,9 +14,10 @@ namespace MetaDslx.Soal
         public const string Choice = "Choice";
         public const string NoWrap = "NoWrap";
         public const string Rpc = "Rpc";
+        public const string Enum = "Enum";
+        public const string Type = "Type";
         public const string Element = "Element";
         public const string Attribute = "Attribute";
-        public const string Name = "Name";
         public const string Restriction = "Restriction";
     }
 
@@ -213,7 +214,7 @@ namespace MetaDslx.Soal
             List<Namespace> result = new List<Namespace>();
             foreach (var decl in ns.Declarations)
             {
-                StructuredType stype = decl as StructuredType;
+                Struct stype = decl as Struct;
                 if (stype != null)
                 {
                     foreach (var prop in stype.Properties)
@@ -252,36 +253,6 @@ namespace MetaDslx.Soal
             result.Remove(SoalGenerator.XsdNamespace);
             result.Remove(ns);
             result.Remove(null);
-            return result;
-        }
-
-        public static List<ArrayType> GetArrayTypes(this Namespace ns)
-        {
-            HashSet<string> arrayNames = new HashSet<string>();
-            List<ArrayType> result = new List<ArrayType>();
-            foreach (var decl in ns.Declarations)
-            {
-                StructuredType stype = decl as StructuredType;
-                if (stype != null)
-                {
-                    foreach (var prop in stype.Properties)
-                    {
-                        CheckArrayType(prop.Type, prop.Annotations, arrayNames, result);
-                    }
-                }
-                Interface intf = decl as Interface;
-                if (intf != null)
-                {
-                    foreach (var op in intf.Operations)
-                    {
-                        CheckArrayType(op.ReturnType, op.Annotations, arrayNames, result);
-                        foreach (var param in op.Parameters)
-                        {
-                            CheckArrayType(param.Type, param.Annotations, arrayNames, result);
-                        }
-                    }
-                }
-            }
             return result;
         }
 
@@ -364,9 +335,9 @@ namespace MetaDslx.Soal
                 Enum etype = (Enum)type;
                 return etype.Namespace;
             }
-            if (type is StructuredType)
+            if (type is Struct)
             {
-                StructuredType stype = (StructuredType)type;
+                Struct stype = (Struct)type;
                 return stype.Namespace;
             }
             return null;
@@ -412,12 +383,14 @@ namespace MetaDslx.Soal
             if (type is Enum)
             {
                 Enum etype = (Enum)type;
-                return etype.Name;
+                string newName = etype.GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Name) as string;
+                return newName ?? etype.Name;
             }
-            if (type is StructuredType)
+            if (type is Struct)
             {
-                StructuredType stype = (StructuredType)type;
-                return stype.Name;
+                Struct stype = (Struct)type;
+                string newName = stype.GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Name) as string;
+                return newName ?? stype.Name;
             }
             return null;
         }
@@ -445,9 +418,9 @@ namespace MetaDslx.Soal
                 Enum etype = (Enum)type;
                 return etype.Namespace != null && etype.Namespace.Uri != null;
             }
-            if (type is StructuredType)
+            if (type is Struct)
             {
-                StructuredType stype = (StructuredType)type;
+                Struct stype = (Struct)type;
                 return stype.Namespace != null && stype.Namespace.Uri != null;
             }
             return false;
@@ -460,7 +433,7 @@ namespace MetaDslx.Soal
             if (type is PrimitiveType) return ((PrimitiveType)type).Nullable;
             if (type is ArrayType) return true;
             if (type is Enum) return false;
-            if (type is StructuredType) return true;
+            if (type is Struct) return true;
             return false;
         }
 
@@ -469,9 +442,9 @@ namespace MetaDslx.Soal
             return type.IsNullable().ToString().ToLower();
         }
 
-        public static List<Exception> GetInterfaceExceptions(this Interface intf)
+        public static List<Struct> GetInterfaceExceptions(this Interface intf)
         {
-            List<Exception> result = new List<Exception>();
+            List<Struct> result = new List<Struct>();
             foreach (var op in intf.Operations)
             {
                 foreach (var ex in op.Exceptions)
@@ -485,9 +458,9 @@ namespace MetaDslx.Soal
             return result;
         }
 
-        public static List<Exception> GetInterfaceExceptions(this Namespace ns)
+        public static List<Struct> GetInterfaceExceptions(this Namespace ns)
         {
-            List<Exception> result = new List<Exception>();
+            List<Struct> result = new List<Struct>();
             foreach (var intf in ns.Declarations.OfType<Interface>())
             {
                 foreach (var op in intf.Operations)

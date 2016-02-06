@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\rldgf21p.1je\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\aij30tdy.qpn\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -229,26 +229,6 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStructDeclaration([NotNull] SoalParser.StructDeclarationContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.exceptionDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterExceptionDeclaration([NotNull] SoalParser.ExceptionDeclarationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.exceptionDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitExceptionDeclaration([NotNull] SoalParser.ExceptionDeclarationContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.propertyDeclaration"/>.
 	/// </summary>

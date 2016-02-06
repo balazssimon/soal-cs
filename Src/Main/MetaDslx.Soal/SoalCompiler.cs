@@ -32,7 +32,7 @@ namespace MetaDslx.Soal
             HashSet<string> annotations;
 
             annotations = new HashSet<string>();
-            //annotations.Add(SoalAnnotations.NoWrap);
+            annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Rpc);
             allowedAnnotations.Add(typeof(Interface), annotations);
 
@@ -51,17 +51,17 @@ namespace MetaDslx.Soal
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
-            annotations.Add(SoalAnnotations.Element);
+            annotations.Add(SoalAnnotations.Type);
             allowedAnnotations.Add(typeof(Struct), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
-            annotations.Add(SoalAnnotations.Element);
+            annotations.Add(SoalAnnotations.Type);
             allowedAnnotations.Add(typeof(Exception), annotations);
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.Name);
+            annotations.Add(SoalAnnotations.Enum);
             allowedAnnotations.Add(typeof(EnumLiteral), annotations);
 
         }

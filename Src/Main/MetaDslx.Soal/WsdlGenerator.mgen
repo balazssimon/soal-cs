@@ -65,11 +65,7 @@ end template
 
 template GenerateWsdlAbstractPart(Namespace ns)
 [loop(ns.Declarations->intf:typeof(Interface))]
-[GenerateMessages(intf)]
-[end loop]
-[GenerateFaultMessages(ns)]
-[loop(ns.Declarations->intf:typeof(Interface))]
-[GeneratePortType(intf)]
+[GenerateWsdlAbstractPart(intf)]
 [end loop]
 end template
 
@@ -85,14 +81,22 @@ template GenerateMessages(Interface intf)
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
 		[loop(op->param:Parameters)]
+			[if (param.Type.IsArrayType() && param.Type.GetCoreType() != SoalInstance.Byte)]
+	<wsdl:part name="[param.Name]" type="[intf.Namespace.Prefix]:[op.Name + param.Name.ToPascalCase()]"/>
+			[else]
 	<wsdl:part name="[param.Name]" type="[param.Type.GetNamespace(intf.Namespace).Prefix]:[param.Type.GetXsdName()]"/>
+			[end if]
 		[end loop]
 </wsdl:message>
 		[if(!op.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
 			[if (op.ReturnType != SoalInstance.Void)]
+				[if (op.ReturnType.IsArrayType() && op.ReturnType.GetCoreType() != SoalInstance.Byte)]
+	<wsdl:part name="result" type="[intf.Namespace.Prefix]:[op.Name + "Response"]"/>
+				[else]
 	<wsdl:part name="result" type="[op.ReturnType.GetNamespace(intf.Namespace).Prefix]:[op.ReturnType.GetXsdName()]"/>
+				[end if]
 			[end if]
 </wsdl:message>
 		[end if]
@@ -126,21 +130,19 @@ template GenerateMessages(Interface intf)
 [end loop]
 end template
 
-template GenerateFaultMessages(Namespace ns)
-[loop(ex:ns.GetInterfaceExceptions())]
-^
-<wsdl:message name="[ex.Name]_FaultMessage">
-	<wsdl:part name="fault" element="[ex.Namespace.Prefix]:[ex.Name]"/>
-</wsdl:message>
-[end loop]
-end template
-
 template GenerateFaultMessages(Interface intf)
 [loop(ex:intf.GetInterfaceExceptions())]
+	[if (intf.HasAnnotation(SoalAnnotations.Rpc))]
 ^
-<wsdl:message name="[ex.Name]_FaultMessage">
+<wsdl:message name="[intf.Name]_[ex.Name]_FaultMessage">
+	<wsdl:part name="fault" type="[ex.Namespace.Prefix]:[ex.Name]"/>
+</wsdl:message>
+	[else]
+^
+<wsdl:message name="[intf.Name]_[ex.Name]_FaultMessage">
 	<wsdl:part name="fault" element="[ex.Namespace.Prefix]:[ex.Name]"/>
 </wsdl:message>
+	[end if]
 [end loop]
 end template
 
@@ -153,12 +155,13 @@ end template
 
 template GenerateOperations(Interface intf)
 [loop(intf.Operations->op:typeof(Operation))]
+	[string action = op.Action != null ? op.Action : intf.Namespace.UriWithSlash() + intf.Name + "/" + op.Name]
 <wsdl:operation name="[op.Name]">
-	<wsdl:input wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name]" message="[op.Interface.Namespace.Prefix]:[op.Interface.Name]_[op.Name]_InputMessage"/>
+	<wsdl:input wsaw:action="[action]" message="[intf.Namespace.Prefix]:[intf.Name]_[op.Name]_InputMessage"/>
 [if(!op.IsOneway)]
-	<wsdl:output wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name + "Response"]" message="[op.Interface.Namespace.Prefix]:[op.Interface.Name]_[op.Name]_OutputMessage"/>
+	<wsdl:output wsaw:action="[action + "Response"]" message="[intf.Namespace.Prefix]:[intf.Name]_[op.Name]_OutputMessage"/>
 	[loop(ex:op.Exceptions)]
-	<wsdl:fault wsaw:action="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name + "Fault/" + ex.Name]" message="[op.Interface.Namespace.Prefix]:[ex.Name]_FaultMessage" name="[ex.Name]"/>
+	<wsdl:fault wsaw:action="[action + "Fault/" + ex.Name]" message="[intf.Namespace.Prefix]:[intf.Name]_[ex.Name]_FaultMessage" name="[ex.Name]"/>
 	[end loop]
 [end if]
 </wsdl:operation>
@@ -186,9 +189,10 @@ template GenerateWsdlBinding(Endpoint endp)
 		[end if]
 	[end if]
 	[loop(op:endp.Interface.Operations)]
+		[string action = op.Action != null ? op.Action : endp.Interface.Namespace.UriWithSlash() + endp.Interface.Name + "/" + op.Name]
 	<wsdl:operation name="[op.Name]">
 		[if(soapPrefix != null)]
-		<[soapPrefix]:operation style="[endp.Binding.GetWsdlSoapDocRpcStyle()]" soapAction="[op.Interface.Namespace.UriWithSlash() + op.Interface.Name + "/" + op.Name]"/>
+		<[soapPrefix]:operation style="[endp.Binding.GetWsdlSoapDocRpcStyle()]" soapAction="[action]"/>
 		[end if]
 		<wsdl:input>
 		[if(endp.Binding.HasOperationPolicy())]

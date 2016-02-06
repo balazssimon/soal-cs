@@ -90,7 +90,7 @@ namespace MetaDslx.Soal
                                 symbols.Add((ModelObject)op);
                             }
                         }
-                        StructuredType stype = decl as StructuredType;
+                        Struct stype = decl as Struct;
                         if (stype != null)
                         {
                             string key = stype.GetXsdName();
@@ -146,7 +146,7 @@ namespace MetaDslx.Soal
                                 }
                             }
                         }
-                        StructuredType stype = decl as StructuredType;
+                        Struct stype = decl as Struct;
                         if (stype != null)
                         {
                             foreach (var prop in stype.Properties)

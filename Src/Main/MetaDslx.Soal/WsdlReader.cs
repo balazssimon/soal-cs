@@ -461,13 +461,7 @@ namespace MetaDslx.Soal
                                                 }
                                                 if (st != null)
                                                 {
-                                                    Exception ex = this.Importer.GetExceptionType(st) as Exception;
-                                                    if (ex == null)
-                                                    {
-                                                        ex = this.CreateException(st);
-                                                        this.Importer.RegisterExceptionType(st, ex);
-                                                    }
-                                                    op.Exceptions.Add(ex);
+                                                    op.Exceptions.Add(st);
                                                 }
                                             }
                                         }
@@ -482,12 +476,16 @@ namespace MetaDslx.Soal
                                                     param.Type = part.Type;
                                                     this.Importer.Reference(param.Type);
                                                     op.Parameters.Add(param);
-                                                    /*if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
+                                                    if (part.OriginalType is Struct)
                                                     {
-                                                        Annotation annot = SoalFactory.Instance.CreateAnnotation();
-                                                        annot.Name = SoalAnnotations.NoWrap;
-                                                        param.Annotations.Add(annot);
-                                                    }*/
+                                                        object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                        if ((bool)origWrapped)
+                                                        {
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
+                                                        }
+                                                    }
                                                 }
                                             }
                                             if (outputMsg != null)
@@ -497,12 +495,16 @@ namespace MetaDslx.Soal
                                                     WsdlMessagePart part = outputMsg.Parts[0];
                                                     op.ReturnType = part.Type;
                                                     this.Importer.Reference(op.ReturnType);
-                                                    /*if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
+                                                    if (part.OriginalType is Struct)
                                                     {
-                                                        Annotation annot = SoalFactory.Instance.CreateAnnotation();
-                                                        annot.Name = SoalAnnotations.NoWrap;
-                                                        op.ReturnAnnotations.Add(annot);
-                                                    }*/
+                                                        object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                        if ((bool)origWrapped)
+                                                        {
+                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op);
+                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op);
+                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op);
+                                                        }
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -527,15 +529,13 @@ namespace MetaDslx.Soal
                                                     {
                                                         st = part.Type as Struct;
                                                     }
+                                                    else
+                                                    {
+                                                        this.Importer.Diagnostics.AddError("The fault message should have a complex type.", this.Uri, this.GetTextSpan(opElem));
+                                                    }
                                                     if (st != null)
                                                     {
-                                                        Exception ex = this.Importer.GetExceptionType(st) as Exception;
-                                                        if (ex == null)
-                                                        {
-                                                            ex = this.CreateException(st);
-                                                            this.Importer.RegisterExceptionType(st, ex);
-                                                        }
-                                                        op.Exceptions.Add(ex);
+                                                        op.Exceptions.Add(st);
                                                     }
                                                 }
                                                 else
@@ -560,6 +560,20 @@ namespace MetaDslx.Soal
                                                 param.Type = part.Type;
                                                 this.Importer.Reference(param.Type);
                                                 op.Parameters.Add(param);
+                                                if (part.OriginalType is Struct)
+                                                {
+                                                    object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                    string origItems = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
+                                                    SoalType coreType = part.Type.GetCoreType();
+                                                    string coreTypeName = coreType is NamedElement ? ((NamedElement)coreType).Name : null;
+                                                    object origSap = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
+                                                    if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
+                                                    {
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
+                                                    }
+                                                }
                                             }
                                         }
                                         if (outputMsg != null)
@@ -569,6 +583,20 @@ namespace MetaDslx.Soal
                                                 WsdlMessagePart part = outputMsg.Parts[0];
                                                 op.ReturnType = part.Type;
                                                 this.Importer.Reference(op.ReturnType);
+                                                if (part.OriginalType is Struct)
+                                                {
+                                                    object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                    string origItems = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
+                                                    SoalType coreType = part.Type.GetCoreType();
+                                                    string coreTypeName = coreType is NamedElement ? ((NamedElement)coreType).Name : null;
+                                                    object origSap = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
+                                                    if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
+                                                    {
+                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op);
+                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op);
+                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op);
+                                                    }
+                                                }
                                             }
                                             else
                                             {
@@ -596,13 +624,7 @@ namespace MetaDslx.Soal
                                             }
                                             if (st != null)
                                             {
-                                                Exception ex = this.Importer.GetExceptionType(st) as Exception;
-                                                if (ex == null)
-                                                {
-                                                    ex = this.CreateException(st);
-                                                    this.Importer.RegisterExceptionType(st, ex);
-                                                }
-                                                op.Exceptions.Add(ex);
+                                                op.Exceptions.Add(st);
                                             }
                                         }
                                         else
@@ -655,25 +677,6 @@ namespace MetaDslx.Soal
                 }
             }
         }
-
-        private Exception CreateException(Struct st)
-        {
-            Exception ex = SoalFactory.Instance.CreateException();
-            ex.Name = st.Name;
-            ex.Namespace = st.Namespace;
-            SoalImporter.CopyAnnotations(st, ex);
-            foreach (var prop in st.Properties)
-            {
-                Property exProp = SoalFactory.Instance.CreateProperty();
-                exProp.Name = prop.Name;
-                exProp.Type = prop.Type;
-                this.Importer.Reference(exProp.Type);
-                ex.Properties.Add(exProp);
-                SoalImporter.CopyAnnotations(prop, exProp);
-            }
-            return ex;
-        }
-
 
         private void ImportPhase7()
         {

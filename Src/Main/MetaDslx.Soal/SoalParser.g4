@@ -49,7 +49,7 @@ annotationPropertyValue
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : enumDeclaration | structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 // Enums
 
@@ -66,12 +66,6 @@ enumLiteral : annotationList? identifier;
 
                 
 structDeclaration : annotationList? KStruct identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
-                   
-exceptionDeclaration : annotationList? KException identifier (TColon                                                                                     qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
-                
-entityDeclaration : annotationList? KEntity identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
@@ -94,7 +88,7 @@ interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operatio
 
                      
                    
-operationDeclaration : operationAnnotationList? (                               returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows                                           qualifiedNameList)? TSemicolon;
+operationDeclaration : operationAnnotationList? (                               returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 

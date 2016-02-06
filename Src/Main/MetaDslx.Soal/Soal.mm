@@ -126,36 +126,17 @@
 
 	association EnumLiteral.Enum with Enum.EnumLiterals;
 
-	[Scope]
-	abstract class StructuredType : SoalType, Declaration
-	{
-		[ScopeEntry]
-		containment list<Property> Properties;
-	}
-
 	class Property : NamedElement, TypedElement, AnnotatedElement
 	{
-		StructuredType Parent;
 	}
 
-	association StructuredType.Properties with Property.Parent;
-
-	class Struct : StructuredType
+	[Scope]
+	class Struct : SoalType, Declaration
 	{
 		[InheritedScope]
 		Struct BaseType;
-	}
-
-	class Exception : StructuredType
-	{
-		[InheritedScope]
-		Exception BaseType;
-	}
-
-	class Entity : StructuredType
-	{
-		[InheritedScope]
-		Entity BaseType;
+		[ScopeEntry]
+		containment list<Property> Properties;
 	}
 
 	[Scope]
@@ -168,21 +149,18 @@
 	class Database : Interface
 	{
 		[ScopeEntry]
-		list<Entity> Entities;
+		list<Struct> Entities;
 	}
 
 	class Operation : NamedElement, AnnotatedElement
 	{
-		Interface Interface;
 		string Action;
 		bool IsOneway;
 		SoalType ReturnType;
 		containment list<Parameter> Parameters;
-		list<Exception> Exceptions;
+		list<Struct> Exceptions;
 		containment list<Annotation> ReturnAnnotations;
 	}
-
-	association Interface.Operations with Operation.Interface;
 
 	class Parameter : NamedElement, TypedElement, AnnotatedElement
 	{
@@ -192,7 +170,7 @@
 	association Operation.Parameters with Parameter.Operation;
 
 	[Scope]
-	class Component : Declaration, StructuredType
+	class Component : Declaration
 	{
 		[InheritedScope]
 		Component BaseComponent;

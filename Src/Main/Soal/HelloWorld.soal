@@ -2,15 +2,17 @@
 {
 
 	[All]
+	[Type(name="Möré")]
 	struct More
 	{
-		[NoWrap]
+		[Element(items="iii")]
 		int?[]! Integers;
+		[Element(wrapped=true, items="cplx")]
 		Complex![]! Complexes;
 		string! Name;
 	}
 	
-	exception MathFault
+	struct MathFault
 	{
 		int ErrorCode;
 		string ErrorMessage;
@@ -38,11 +40,11 @@
 	interface IHello
 	{
 		string SayHello(string name);
-		string SayHello2(Complex cplx1, Complex cplx2);
-		byte[] Abc(int[] i1, [NoWrap] int[] i2);
-		[return: NoWrap]
+		string SayHello2(Complex cplx1, More cplx2);
+		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
+		[return: Element(wrapped=true, items="jjjjj")]
 		int[] Abc2(byte[] i1, byte[] i2);
-		int[] Abc3([NoWrap] int[] i1, int[] i2);
+		int[] Abc3([Element(wrapped=true)] int[] i1, int[] i2);
 		double Divide(double left, double right) throws MathFault;
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right) throws MathFault;
@@ -51,7 +53,7 @@
 	binding HttpSoap11
 	{
 		transport HTTP;
-		encoding SOAP; // { Style = RpcLiteral; } { Style = DocumentLiteral; }
+		encoding SOAP;// { Style = RpcEncoded; } // { Style = RpcLiteral; } { Style = DocumentLiteral; }
 		protocol WsAddressing;
 	}
 
