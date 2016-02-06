@@ -138,35 +138,33 @@ end template
 
 template GenerateElement(Namespace ns, string name, SoalType t, IList<Annotation> annots)
 [if (annots.ContainsAnnotation(SoalAnnotations.Attribute))]
-	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && annots.ContainsAnnotation(SoalAnnotations.NoWrap))]
-		[if (t is ArrayType)]
-<xs:attribute name="[name]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]"[GetAttributeRequired(annots)]/>
-		[else]
-<xs:attribute name="[name]" type="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]"[GetAttributeRequired(annots)]/>
-		[end if]
-	[else]
-<xs:attribute name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]"[GetAttributeRequired(annots)]/>
-	[end if]
+<xs:attribute name="[name]" type="[t.GetCoreType().GetNamespace(ns).Prefix]:[t.GetCoreType().GetXsdName()]"[GetAttributeRequired(annots)]/>
 [else]
-	[if ((t is ArrayType || (t is NonNullableType && ((NonNullableType)t).InnerType is ArrayType)) && (annots.ContainsAnnotation(SoalAnnotations.NoWrap) || annots.ContainsAnnotation(SoalAnnotations.SapArray)))]
-		[if (annots.ContainsAnnotation(SoalAnnotations.SapArray))]
+	[if (t.IsArrayType())]
+		[object wrapped = annots.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped)]
+		[if (wrapped != null && (bool)wrapped)]
+			[object sap = annots.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Sap)]
+			[if (sap != null && (bool)sap)]
 <xs:element name="[name]" nillable="[t.IsNullableXsd()]">
 	<xs:complexType>
 		<xs:all>
 			<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:all>
-			[if (t is ArrayType)]
+				[if (t is ArrayType)]
 						<xs:element name="[((ArrayType)t).InnerType.GetXsdName()]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]" nillable="[((ArrayType)t).InnerType.IsNullableXsd()]"/>
-			[else]
+				[else]
 						<xs:element name="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]" type="[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)((NonNullableType)t).InnerType).InnerType.GetXsdName()]" nillable="[((ArrayType)((NonNullableType)t).InnerType).InnerType.IsNullableXsd()]"/>
-			[end if]
+				[end if]
 					</xs:all>
 				</xs:complexType>
 			</xs:element>
 		</xs:all>
 	</xs:complexType>
 </xs:element>
+			[else]
+<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(annots)]/>
+			[end if]
 		[else]
 			[if (t is ArrayType)]
 <xs:element name="[name]" type="[((ArrayType)t).InnerType.GetNamespace(ns).Prefix]:[((ArrayType)t).InnerType.GetXsdName()]" nillable="[((ArrayType)t).InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
@@ -191,7 +189,8 @@ function string GetStructKind(StructuredType st)
 end function
 
 function string GetElementOptional(IList<Annotation> annots)
-	if (!annots.ContainsAnnotation(SoalAnnotations.Attribute) && annots.ContainsAnnotation(SoalAnnotations.Optional)) 
+	object optional = annots.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Optional);
+	if (optional != null && (bool)optional) 
 		return " minOccurs=\"0\"";
 	else
 		return "";
@@ -199,7 +198,8 @@ function string GetElementOptional(IList<Annotation> annots)
 end function
 
 function string GetAttributeRequired(IList<Annotation> annots)
-	if (annots.GetAnnotation(SoalAnnotations.Attribute).GetBoolAnnotationProperty(SoalAnnotationProperties.Required)) 
+	object required = annots.GetAnnotationPropertyValue(SoalAnnotations.Attribute, SoalAnnotationProperties.Required);
+	if (required != null && (bool)required) 
 		return " use=\"required\"";
 	else
 		return "";

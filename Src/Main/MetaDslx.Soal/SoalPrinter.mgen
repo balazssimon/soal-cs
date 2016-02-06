@@ -40,20 +40,31 @@ namespace [ns.FullName] = "[ns.Uri]"
 [end if]
 end template
 
-function string GetAncestor(Namespace currentNs, StructuredType st)
-	StructuredType baseType = null;
-	if (st is Struct)
-		baseType = ((Struct)st).BaseType;
-	else if (st is Exception)
-		baseType = ((Exception)st).BaseType;
-	else if (st is Entity)
-		baseType = ((Entity)st).BaseType;
-	end if
-	if (baseType != null)
-		if (baseType.Namespace == currentNs)
-			return ": "+baseType.Name;
-		else
-			return ": "+baseType.FullName();
+function string GetAncestor(Namespace currentNs, SoalType st)
+	if (st is Enum)
+		Enum baseType = ((Enum)st).BaseType;
+		if (baseType != null)
+			if (baseType.Namespace == currentNs)
+				return ": "+baseType.Name;
+			else
+				return ": "+baseType.FullName();
+			end if
+		end if
+	else
+		StructuredType baseType = null;
+		if (st is Struct)
+			baseType = ((Struct)st).BaseType;
+		else if (st is Exception)
+			baseType = ((Exception)st).BaseType;
+		else if (st is Entity)
+			baseType = ((Entity)st).BaseType;
+		end if
+		if (baseType != null)
+			if (baseType.Namespace == currentNs)
+				return ": "+baseType.Name;
+			else
+				return ": "+baseType.FullName();
+			end if
 		end if
 	end if
 	return "";
@@ -98,7 +109,7 @@ end template
 
 template GenerateEnum(Namespace currentNs, Enum enm)
 [GenerateAnnotations(enm)]
-enum [enm.Name]
+enum [enm.Name] [GetAncestor(currentNs, enm)]
 {
 	[loop(lit:enm.EnumLiterals; string delim = ",")]
 	[GenerateEnumLiteral(currentNs, lit)][delim]
@@ -175,7 +186,7 @@ end template
 
 template GenerateParameters(Namespace currentNs, Operation op)
 [loop(op->p:Parameters; string delim = ""; delim = ", ")]
-[delim][GenerateAnnotationsSingleLine(p)][GenerateType(currentNs, p.Type)] [p.Name]
+[delim][GenerateAnnotationsSingleLine(p)][GenerateType(currentNs, p.Type)] [p.Name]\
 [end loop]
 end template
 

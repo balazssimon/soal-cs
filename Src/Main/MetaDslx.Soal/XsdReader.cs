@@ -19,6 +19,7 @@ namespace MetaDslx.Soal
 
     internal class XsdReader : XmlReader
     {
+        public const int PhaseCount = 3;
         public const string XsdNamespace = "http://www.w3.org/2001/XMLSchema";
         private XNamespace xsd;
         private XNamespace tns;
@@ -89,14 +90,23 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void LoadXsdFile()
+        public override void LoadXsdFile(int phase)
         {
             //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase2();
-            //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase3();
-            //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase4();
+            switch (phase)
+            {
+                case 0:
+                    this.ImportPhase2();
+                    break;
+                case 1:
+                    this.ImportPhase3();
+                    break;
+                case 2:
+                    this.ImportPhase4();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void ImportPhase2()
@@ -255,6 +265,42 @@ namespace MetaDslx.Soal
                 newValue = value + counter;
             }
             while (enm.EnumLiterals.Any(l => l.Name == newValue))
+            {
+                ++counter;
+                newValue = value + counter;
+            }
+            return newValue;
+        }
+
+        private string GetNewPropertyName(StructuredType st, string name)
+        {
+            if (name == null) return name;
+            if (st == null) return name;
+            if (!string.IsNullOrEmpty(name) && !Regex.IsMatch(name, @"[a-zA-Z_].*"))
+            {
+                name = "_" + name;
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var ch in name)
+            {
+                if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
+                {
+                    sb.Append(ch);
+                }
+                else
+                {
+                    sb.Append('_');
+                }
+            }
+            string value = sb.ToString();
+            string newValue = value;
+            int counter = 1;
+            if (string.IsNullOrEmpty(newValue))
+            {
+                value = "Value";
+                newValue = value + counter;
+            }
+            while (st.Properties.Any(p => p.Name == newValue))
             {
                 ++counter;
                 newValue = value + counter;
@@ -492,13 +538,7 @@ namespace MetaDslx.Soal
                                 enm.EnumLiterals.Add(enmLit);
                                 if (value != newValue)
                                 {
-                                    Annotation annot = SoalFactory.Instance.CreateAnnotation();
-                                    annot.Name = SoalAnnotations.Name;
-                                    enmLit.Annotations.Add(annot);
-                                    AnnotationProperty annotProp = SoalFactory.Instance.CreateAnnotationProperty();
-                                    annotProp.Name = SoalAnnotationProperties.Name;
-                                    annotProp.Value = value;
-                                    annot.Properties.Add(annotProp);
+                                    enmLit.SetAnnotationPropertyValue(SoalAnnotations.Name, SoalAnnotationProperties.Name, value);
                                 }
                             }
                             else
@@ -507,9 +547,11 @@ namespace MetaDslx.Soal
                                 return null;
                             }
                         }
+                        return enm;
                     }
                     else
                     {
+                        SoalImporter.CopyAnnotations(baseType as AnnotatedElement, type as AnnotatedElement);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Pattern);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Length);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MinLength);
@@ -547,21 +589,19 @@ namespace MetaDslx.Soal
                     AnnotatedElement ae = type as AnnotatedElement;
                     if (ae != null)
                     {
-                        Annotation annot = ae.GetAnnotation(SoalAnnotations.Restriction);
-                        if (annot == null)
+                        long longValue = 0;
+                        if (restrictionName == SoalAnnotationProperties.Pattern)
                         {
-                            annot = SoalFactory.Instance.CreateAnnotation();
-                            annot.Name = SoalAnnotations.Restriction;
-                            ae.Annotations.Add(annot);
+                            ae.SetAnnotationPropertyValue(SoalAnnotations.Restriction, restrictionName, valueAttr.Value);
                         }
-                        AnnotationProperty annotProp = annot.GetAnnotationProperty(restrictionName);
-                        if (annotProp == null)
+                        else if (long.TryParse(valueAttr.Value, out longValue))
                         {
-                            annotProp = SoalFactory.Instance.CreateAnnotationProperty();
-                            annotProp.Name = restrictionName;
-                            annot.Properties.Add(annotProp);
+                            ae.SetAnnotationPropertyValue(SoalAnnotations.Restriction, restrictionName, longValue);
                         }
-                        annotProp.Value = valueAttr.Value;
+                        else
+                        {
+                            ae.SetAnnotationPropertyValue(SoalAnnotations.Restriction, restrictionName, valueAttr.Value);
+                        }
                     }
                 }
             }
@@ -977,16 +1017,12 @@ namespace MetaDslx.Soal
             else if (choiceElem != null)
             {
                 complexElem = choiceElem;
-                Annotation choiceAnnot = SoalFactory.Instance.CreateAnnotation();
-                choiceAnnot.Name = SoalAnnotations.Choice;
-                st.Annotations.Add(choiceAnnot);
+                st.AddAnnotation(SoalAnnotations.Choice);
             }
             else if (allElem != null)
             {
                 complexElem = allElem;
-                Annotation allAnnot = SoalFactory.Instance.CreateAnnotation();
-                allAnnot.Name = SoalAnnotations.All;
-                st.Annotations.Add(allAnnot);
+                st.AddAnnotation(SoalAnnotations.All);
             }
             SoalType rt = this.Importer.ResolveXsdReplacementType(st);
             if (complexElem != null)
@@ -1207,38 +1243,38 @@ namespace MetaDslx.Soal
                 }
             }
             Property prop = SoalFactory.Instance.CreateProperty();
-            prop.Name = name;
+            string newName = this.GetNewPropertyName(st, name);
+            prop.Name = newName;
             if (attribute)
             {
-                Annotation attr = SoalFactory.Instance.CreateAnnotation();
-                attr.Name = SoalAnnotations.Attribute;
-                prop.Annotations.Add(attr);
                 prop.Type = type;
+                Annotation attrAnnot = prop.AddAnnotation(SoalAnnotations.Attribute);
                 if (required)
                 {
-                    AnnotationProperty attrUse = SoalFactory.Instance.CreateAnnotationProperty();
-                    attrUse.Name = SoalAnnotationProperties.Required;
-                    attrUse.Value = true;
-                    attr.Properties.Add(attrUse);
+                    attrAnnot.SetPropertyValue(SoalAnnotationProperties.Required, true);
+                }
+                if (newName != name)
+                {
+                    attrAnnot.SetPropertyValue(SoalAnnotationProperties.Name, name);
                 }
             }
             else
             {
+                if (newName != name)
+                {
+                    Annotation elemAnnot = prop.AddAnnotation(SoalAnnotations.Element);
+                    elemAnnot.SetPropertyValue(SoalAnnotationProperties.Name, name);
+                }
                 if (rt != null && rt is ArrayType)
                 {
                     if (sap)
                     {
                         ((ArrayType)rt).InnerType = sapArray.InnerType;
                         this.Importer.RegisterReplacementType(type, rt);
-                        //this.Importer.Reference(sapArray.InnerType);
-                        //prop.Name = sapName;
-                        Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
-                        sapAnnot.Name = SoalAnnotations.SapArray;
-                        st.Annotations.Add(sapAnnot);
-                        AnnotationProperty sapNameProp = SoalFactory.Instance.CreateAnnotationProperty();
-                        sapNameProp.Name = SoalAnnotationProperties.Items;
-                        sapNameProp.Value = sapName;
-                        sapAnnot.Properties.Add(sapNameProp);
+                        Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Element);
+                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
+                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, sapName);
+                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Sap, true);
                     }
                     else
                     {
@@ -1248,19 +1284,12 @@ namespace MetaDslx.Soal
                             this.Importer.Reference(type);
                         }
                         ((ArrayType)rt).InnerType = type;
-                        Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                        noWrap.Name = SoalAnnotations.NoWrap;
-                        prop.Annotations.Add(noWrap);
                         SoalType coreType = type.GetCoreType();
                         if (coreType is NamedElement && ((NamedElement)coreType).Name != prop.Name)
                         {
-                            Annotation arrayAnnot = SoalFactory.Instance.CreateAnnotation();
-                            arrayAnnot.Name = SoalAnnotations.Array;
-                            st.Annotations.Add(arrayAnnot);
-                            AnnotationProperty arrayNameProp = SoalFactory.Instance.CreateAnnotationProperty();
-                            arrayNameProp.Name = SoalAnnotationProperties.Items;
-                            arrayNameProp.Value = prop.Name;
-                            arrayAnnot.Properties.Add(arrayNameProp);
+                            Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Element);
+                            arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
+                            arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
                         }
                     }
                     prop.Type = rt;
@@ -1269,46 +1298,18 @@ namespace MetaDslx.Soal
                 {
                     if (maxOccurs < 0 || maxOccurs > 1)
                     {
-                        /*if (sap)
-                        {
-                            type = sapArray;
-                            //prop.Name = sapName;
-                            Annotation sapAnnot = SoalFactory.Instance.CreateAnnotation();
-                            sapAnnot.Name = SoalAnnotations.Sap;
-                            st.Annotations.Add(sapAnnot);
-                        }
-                        else
-                        {*/
-                            ArrayType array = SoalFactory.Instance.CreateArrayType();
-                            array.InnerType = type;
-                            type = array;
-                            Annotation noWrap = SoalFactory.Instance.CreateAnnotation();
-                            noWrap.Name = SoalAnnotations.NoWrap;
-                            prop.Annotations.Add(noWrap);
-                        //}
+                        ArrayType array = SoalFactory.Instance.CreateArrayType();
+                        array.InnerType = type;
+                        type = array;
                     }
                     prop.Type = type;
                 }
                 if (minOccurs == 0 && maxOccurs == 1)
                 {
-                    Annotation optional = SoalFactory.Instance.CreateAnnotation();
-                    optional.Name = SoalAnnotations.Optional;
-                    prop.Annotations.Add(optional);
+                    prop.SetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Optional, true);
                 }
             }
-            //SoalType corePropType = prop.Type.GetCoreType();
-            if (originalType is AnnotatedElement && ((AnnotatedElement)originalType).HasAnnotation(SoalAnnotations.Restriction))
-            {
-                this.CopyAnnotation(SoalAnnotations.Restriction, ((AnnotatedElement)originalType), prop);
-            }
-            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.Array))
-            {
-                this.CopyAnnotation(SoalAnnotations.Array, ((Struct)originalType), prop);
-            }
-            if (originalType is Struct && ((Struct)originalType).HasAnnotation(SoalAnnotations.SapArray))
-            {
-                this.CopyAnnotation(SoalAnnotations.SapArray, ((Struct)originalType), prop);
-            }
+            this.Importer.RegisterOriginalType((ModelObject)prop, originalType);
             st.Properties.Add(prop);
             return prop;
         }

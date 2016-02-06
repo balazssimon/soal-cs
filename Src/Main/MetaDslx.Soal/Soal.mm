@@ -20,6 +20,13 @@
 	abstract class AnnotatedElement
 	{
 		containment list<Annotation> Annotations;
+		Annotation AddAnnotation(string name);
+		bool HasAnnotation(string name);
+		Annotation GetAnnotation(string name);
+		list<Annotation> GetAnnotations(string name);
+		bool HasAnnotationProperty(string annotationName, string propertyName);
+		object GetAnnotationPropertyValue(string annotationName, string propertyName);
+		AnnotationProperty SetAnnotationPropertyValue(string annotationName, string propertyName, object propertyValue);
 	}
 
 	class Annotation : NamedElement
@@ -27,7 +34,9 @@
 		AnnotatedElement AnnotatedElement;
 		containment list<AnnotationProperty> Properties;
 		bool HasProperty(string name);
+		AnnotationProperty GetProperty(string name);
 		object GetPropertyValue(string name);
+		AnnotationProperty SetPropertyValue(string name, object value);
 	}
 
 	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;

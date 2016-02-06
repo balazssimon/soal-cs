@@ -32,38 +32,32 @@ namespace MetaDslx.Soal
             HashSet<string> annotations;
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.NoWrap);
+            //annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Rpc);
             allowedAnnotations.Add(typeof(Interface), annotations);
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.Array);
-            annotations.Add(SoalAnnotations.SapArray);
-            annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Attribute);
-            annotations.Add(SoalAnnotations.Optional);
+            annotations.Add(SoalAnnotations.Element);
             annotations.Add(SoalAnnotations.Restriction);
             allowedAnnotations.Add(typeof(Property), annotations);
 
             annotations = new HashSet<string>();
-            annotations.Add(SoalAnnotations.Array);
-            annotations.Add(SoalAnnotations.SapArray);
-            annotations.Add(SoalAnnotations.NoWrap);
             annotations.Add(SoalAnnotations.Attribute);
-            annotations.Add(SoalAnnotations.Optional);
+            annotations.Add(SoalAnnotations.Element);
             annotations.Add(SoalAnnotations.Restriction);
             allowedAnnotations.Add(typeof(Parameter), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
-            annotations.Add(SoalAnnotations.Array);
-            annotations.Add(SoalAnnotations.SapArray);
+            annotations.Add(SoalAnnotations.Element);
             allowedAnnotations.Add(typeof(Struct), annotations);
 
             annotations = new HashSet<string>();
             annotations.Add(SoalAnnotations.All);
             annotations.Add(SoalAnnotations.Choice);
+            annotations.Add(SoalAnnotations.Element);
             allowedAnnotations.Add(typeof(Exception), annotations);
 
             annotations = new HashSet<string>();

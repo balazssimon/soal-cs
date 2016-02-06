@@ -90,6 +90,13 @@ namespace MetaDslx.Soal
             return result;
         }
 
+        internal TXObject GetX(TObject obj)
+        {
+            if (obj == null) return null;
+            TXObject result = null;
+            this.elementsByObject.TryGetValue(obj, out result);
+            return result;
+        }
     }
 
     public class SoalImporter
@@ -100,6 +107,7 @@ namespace MetaDslx.Soal
         private Dictionary<string, Namespace> namespaces = new Dictionary<string, Namespace>();
         private Dictionary<SoalType, SoalType> replacementTypes = new Dictionary<SoalType, SoalType>();
         private Dictionary<SoalType, SoalType> exceptionTypes = new Dictionary<SoalType, SoalType>();
+        private Dictionary<ModelObject, SoalType> originalTypes = new Dictionary<ModelObject, SoalType>();
         private HashSet<SoalType> rootTypes = new HashSet<SoalType>();
         private HashSet<SoalType> typesToRemove = new HashSet<SoalType>();
         private Dictionary<XName, WsdlMessage> messagesByName = new Dictionary<XName, WsdlMessage>();
@@ -167,18 +175,25 @@ namespace MetaDslx.Soal
 
         private static void LoadImportedFiles(SoalImporter importer)
         {
-            foreach (var reader in importer.readers)
+            for (int i = 0; i < XsdReader.PhaseCount; i++)
             {
-                foreach (var r in reader.Value)
+                foreach (var reader in importer.readers)
                 {
-                    r.LoadXsdFile();
+                    foreach (var r in reader.Value)
+                    {
+                        r.LoadXsdFile(i);
+                    }
                 }
             }
-            foreach (var reader in importer.readers)
+            importer.CheckXsdTypes();
+            for (int i = 0; i < WsdlReader.PhaseCount; i++)
             {
-                foreach (var r in reader.Value)
+                foreach (var reader in importer.readers)
                 {
-                    r.LoadWsdlFile();
+                    foreach (var r in reader.Value)
+                    {
+                        r.LoadWsdlFile(i);
+                    }
                 }
             }
         }
@@ -257,6 +272,7 @@ namespace MetaDslx.Soal
         */
         internal static TextSpan GetTextSpan(XObject xobj)
         {
+            if (xobj == null) return new TextSpan();
             IXmlLineInfo info = xobj;
             return new TextSpan(info.LineNumber, info.LinePosition, info.LineNumber, info.LinePosition);
         }
@@ -395,6 +411,16 @@ namespace MetaDslx.Soal
             Namespace result = null;
             this.namespaces.TryGetValue(uri, out result);
             return result;
+        }
+
+        internal void RegisterOriginalType(ModelObject obj, SoalType type)
+        {
+            if (obj == null) return;
+            if (type == null) return;
+            if (!originalTypes.ContainsKey(obj))
+            {
+                this.originalTypes.Add(obj, type);
+            }
         }
 
         internal void RegisterReplacementType(SoalType from, SoalType to)
@@ -567,5 +593,117 @@ namespace MetaDslx.Soal
                 return;
             }
         }
+
+        private void CheckXsdTypes()
+        {
+            var types = ModelContext.Current.Instances.OfType<StructuredType>().ToList();
+            foreach (var type in types)
+            {
+                foreach (var prop in type.Properties)
+                {
+                    if (prop.Type == null || prop.Type.GetCoreType() == null)
+                    {
+                        XElement elem = this.XsdTypes.GetX(type);
+                        string uri = "";
+                        if (elem != null)
+                        {
+                            uri = elem.BaseUri;
+                        }
+                        this.Diagnostics.AddError("The property '" + type.Name + "." + prop.Name + "' has no type.", uri, SoalImporter.GetTextSpan(elem));
+                    }
+                    else
+                    {
+                        SoalType originalType = null;
+                        if (this.originalTypes.TryGetValue((ModelObject)prop, out originalType))
+                        {
+                            if (originalType is AnnotatedElement && ((AnnotatedElement)originalType).HasAnnotation(SoalAnnotations.Restriction))
+                            {
+                                SoalImporter.CopyAnnotation(SoalAnnotations.Restriction, ((AnnotatedElement)originalType), prop);
+                            }
+                            if (originalType is Struct)
+                            {
+                                object wrapped = ((Struct)originalType).GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped) ?? false;
+                                if ((bool)wrapped)
+                                {
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)originalType), prop);
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Element, SoalAnnotationProperties.Items, ((AnnotatedElement)originalType), prop);
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Element, SoalAnnotationProperties.Sap, ((AnnotatedElement)originalType), prop);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        internal static Annotation CloneAnnotation(Annotation annot)
+        {
+            Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+            toAnnot.Name = annot.Name;
+            foreach (var annotProp in annot.Properties)
+            {
+                AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                toAnnotProp.Name = annotProp.Name;
+                toAnnotProp.Value = annotProp.Value;
+                toAnnot.Properties.Add(toAnnotProp);
+            }
+            return toAnnot;
+        }
+
+        internal static void CopyAnnotationProperty(string annotationName, string propertyName, AnnotatedElement from, AnnotatedElement to)
+        {
+            foreach (var annot in from.Annotations)
+            {
+                if (annot.Name == annotationName)
+                {
+                    AnnotationProperty annotProp = annot.GetProperty(propertyName);
+                    if (annotProp != null)
+                    {
+                        to.SetAnnotationPropertyValue(annotationName, propertyName, annotProp.Value);
+                    }
+                }
+            }
+        }
+
+        internal static void CopyAnnotation(string name, AnnotatedElement from, AnnotatedElement to)
+        {
+            foreach (var annot in from.Annotations)
+            {
+                if (annot.Name == name)
+                {
+                    Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+                    toAnnot.Name = annot.Name;
+                    to.Annotations.Add(toAnnot);
+                    foreach (var annotProp in annot.Properties)
+                    {
+                        AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                        toAnnotProp.Name = annotProp.Name;
+                        toAnnotProp.Value = annotProp.Value;
+                        toAnnot.Properties.Add(toAnnotProp);
+                    }
+                }
+            }
+        }
+
+        internal static void CopyAnnotations(AnnotatedElement from, AnnotatedElement to)
+        {
+            if (from == null) return;
+            if (to == null) return;
+            foreach (var annot in from.Annotations)
+            {
+                Annotation toAnnot = SoalFactory.Instance.CreateAnnotation();
+                toAnnot.Name = annot.Name;
+                to.Annotations.Add(toAnnot);
+                foreach (var annotProp in annot.Properties)
+                {
+                    AnnotationProperty toAnnotProp = SoalFactory.Instance.CreateAnnotationProperty();
+                    toAnnotProp.Name = annotProp.Name;
+                    toAnnotProp.Value = annotProp.Value;
+                    toAnnot.Properties.Add(toAnnotProp);
+                }
+            }
+        }
+
     }
 }

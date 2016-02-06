@@ -12,11 +12,9 @@ namespace MetaDslx.Soal
     {
         public const string All = "All";
         public const string Choice = "Choice";
-        public const string Rpc = "Rpc";
-        public const string Array = "Array";
-        public const string SapArray = "SapArray";
         public const string NoWrap = "NoWrap";
-        public const string Optional = "Optional";
+        public const string Rpc = "Rpc";
+        public const string Element = "Element";
         public const string Attribute = "Attribute";
         public const string Name = "Name";
         public const string Restriction = "Restriction";
@@ -24,8 +22,11 @@ namespace MetaDslx.Soal
 
     public class SoalAnnotationProperties
     {
+        public const string Wrapped = "wrapped";
         public const string Items = "items";
+        public const string Sap = "sap";
         public const string Name = "name";
+        public const string Optional = "optional";
         public const string Required = "required";
         public const string Pattern = "pattern";
         public const string Length = "length";
@@ -60,23 +61,111 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override bool Annotation_HasProperty(Annotation @this, string name)
+        public override Annotation AnnotatedElement_AddAnnotation(AnnotatedElement @this, string name)
         {
-            foreach (var prop in @this.Properties)
+            Annotation result = @this.GetAnnotation(name);
+            if (result == null)
             {
-                if (prop.Name == name) return true;
+                result = SoalFactory.Instance.CreateAnnotation();
+                result.Name = name;
+                @this.Annotations.Add(result);
+            }
+            return result;
+        }
+
+        public override IList<Annotation> AnnotatedElement_GetAnnotations(AnnotatedElement @this, string name)
+        {
+            List<Annotation> result = new List<Soal.Annotation>();
+            if (@this == null) return result;
+            foreach (var annot in @this.Annotations)
+            {
+                if (annot.Name == name)
+                {
+                    result.Add(annot);
+                }
+            }
+            return result;
+        }
+
+        public override Annotation AnnotatedElement_GetAnnotation(AnnotatedElement @this, string name)
+        {
+            return @this.GetAnnotations(name).FirstOrDefault();
+        }
+
+        public override bool AnnotatedElement_HasAnnotation(AnnotatedElement @this, string name)
+        {
+            return @this.GetAnnotation(name) != null;
+        }
+
+        public override bool AnnotatedElement_HasAnnotationProperty(AnnotatedElement @this, string annotationName, string propertyName)
+        {
+            if (@this == null) return false;
+            Annotation annot = @this.GetAnnotation(annotationName);
+            if (annot != null)
+            { 
+                return annot.HasProperty(propertyName);
             }
             return false;
         }
 
-        public override object Annotation_GetPropertyValue(Annotation @this, string name)
+        public override object AnnotatedElement_GetAnnotationPropertyValue(AnnotatedElement @this, string annotationName, string propertyName)
         {
-            foreach (var prop in @this.Properties)
+            if (@this == null) return null;
+            Annotation annot = @this.GetAnnotation(annotationName);
+            if (annot != null)
             {
-                if (prop.Name == name) return prop.Value;
+                return annot.GetPropertyValue(propertyName);
             }
             return null;
         }
+
+        public override AnnotationProperty AnnotatedElement_SetAnnotationPropertyValue(AnnotatedElement @this, string annotationName, string propertyName, object propertyValue)
+        {
+            if (@this == null) return null;
+            Annotation annot = @this.AddAnnotation(annotationName);
+            return annot.SetPropertyValue(propertyName, propertyValue);
+        }
+
+        public override AnnotationProperty Annotation_GetProperty(Annotation @this, string name)
+        {
+            if (@this == null) return null;
+            foreach (var prop in @this.Properties)
+            {
+                if (prop.Name == name) return prop;
+            }
+            return null;
+        }
+
+        public override bool Annotation_HasProperty(Annotation @this, string name)
+        {
+            return @this.GetProperty(name) != null;
+        }
+
+        public override object Annotation_GetPropertyValue(Annotation @this, string name)
+        {
+            if (@this == null) return null;
+            AnnotationProperty prop = @this.GetProperty(name);
+            if (prop != null)
+            {
+                return prop.Value;
+            }
+            return null;
+        }
+
+        public override AnnotationProperty Annotation_SetPropertyValue(Annotation @this, string name, object value)
+        {
+            if (@this == null) return null;
+            AnnotationProperty prop = @this.GetProperty(name);
+            if (prop == null)
+            {
+                prop = SoalFactory.Instance.CreateAnnotationProperty();
+                prop.Name = name;
+                @this.Properties.Add(prop);
+            }
+            prop.Value = value;
+            return prop;
+        }
+
     }
 
     internal static class SoalExtensions
@@ -109,73 +198,6 @@ namespace MetaDslx.Soal
             if (type is NullableType) return ((NullableType)type).InnerType.GetCoreType();
             if (type is ArrayType) return ((ArrayType)type).InnerType.GetCoreType();
             return type;
-        }
-
-        public static Annotation GetAnnotation(this AnnotatedElement annotatedElement, string annotation)
-        {
-            if (annotatedElement == null) return null;
-            foreach (var annot in annotatedElement.Annotations)
-            {
-                if (annot.Name == annotation) return annot;
-            }
-            return null;
-        }
-
-        public static AnnotationProperty GetAnnotationProperty(this Annotation annotation, string name)
-        {
-            if (annotation == null) return null;
-            foreach (var prop in annotation.Properties)
-            {
-                if (prop.Name == name)
-                {
-                    return prop;
-                }
-            }
-            return null;
-        }
-
-        public static Annotation GetAnnotation(this IList<Annotation> annotations, string annotation)
-        {
-            if (annotations == null) return null;
-            foreach (var annot in annotations)
-            {
-                if (annot.Name == annotation) return annot;
-            }
-            return null;
-        }
-
-        public static bool HasAnnotation(this AnnotatedElement annotatedElement, string annotation)
-        {
-            if (annotatedElement == null) return false;
-            foreach (var annot in annotatedElement.Annotations)
-            {
-                if (annot.Name == annotation) return true;
-            }
-            return false;
-        }
-
-        public static bool ContainsAnnotation(this IList<Annotation> annotations, string annotation)
-        {
-            if (annotations == null) return false;
-            foreach (var annot in annotations)
-            {
-                if (annot.Name == annotation) return true;
-            }
-            return false;
-        }
-
-        public static bool GetBoolAnnotationProperty(this Annotation annotation, string name)
-        {
-            if (annotation == null) return false;
-            foreach (var prop in annotation.Properties)
-            {
-                if (prop.Name == name)
-                {
-                    if (prop.Value is bool) return (bool)prop.Value;
-                    else return false;
-                }
-            }
-            return false;
         }
 
         public static string UriWithSlash(this Namespace ns)
@@ -263,9 +285,45 @@ namespace MetaDslx.Soal
             return result;
         }
 
+        public static object GetAnnotationPropertyValue(this IList<Annotation> annotations, string annotationName, string propertyName)
+        {
+            foreach (var annot in annotations)
+            {
+                if (annot.Name == annotationName)
+                {
+                    return annot.GetPropertyValue(propertyName);
+                }
+            }
+            return null;
+        }
+
+        public static Annotation GetAnnotation(this IList<Annotation> annotations, string name)
+        {
+            foreach (var annot in annotations)
+            {
+                if (annot.Name == name)
+                {
+                    return annot;
+                }
+            }
+            return null;
+        }
+
+        public static bool ContainsAnnotation(this IList<Annotation> annotations, string name)
+        {
+            foreach (var annot in annotations)
+            {
+                if (annot.Name == name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private static void CheckArrayType(SoalType type, IList<Annotation> annotations, HashSet<string> arrayNames, List<ArrayType> arrayTypes)
         {
-            if (annotations.Any(a => a.Name == SoalAnnotations.NoWrap)) return;
+            if (annotations.Any(a => a.Name == SoalAnnotations.Element && !(bool)a.GetPropertyValue(SoalAnnotationProperties.Wrapped))) return;
             if (type is ArrayType)
             {
                 ArrayType atype = (ArrayType)type;

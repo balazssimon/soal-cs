@@ -34,6 +34,8 @@ namespace MetaDslx.Soal
 
     internal class WsdlReader : XmlReader
     {
+        public const int PhaseCount = 4;
+
         public const string WsdlNamespace = "http://schemas.xmlsoap.org/wsdl/";
         public const string WsdlSoap11Namespace = "http://schemas.xmlsoap.org/wsdl/soap/";
         public const string WsdlSoap12Namespace = "http://schemas.xmlsoap.org/wsdl/soap12/";
@@ -121,16 +123,26 @@ namespace MetaDslx.Soal
             }
         }
 
-        public override void LoadWsdlFile()
+        public override void LoadWsdlFile(int phase)
         {
             //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase5();
-            //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase6();
-            //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase7();
-            //if (this.Importer.Diagnostics.HasErrors()) return;
-            this.ImportPhase8();
+            switch (phase)
+            {
+                case 0:
+                    this.ImportPhase5();
+                    break;
+                case 1:
+                    this.ImportPhase6();
+                    break;
+                case 2:
+                    this.ImportPhase7();
+                    break;
+                case 3:
+                    this.ImportPhase8();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void ImportPhase5()
@@ -373,7 +385,7 @@ namespace MetaDslx.Soal
                                                         param.Name = prop.Name;
                                                         param.Type = prop.Type;
                                                         this.Importer.Reference(param.Type);
-                                                        this.CopyAnnotations(prop, param);
+                                                        SoalImporter.CopyAnnotations(prop, param);
                                                         op.Parameters.Add(param);
                                                     }
                                                     this.Importer.RemoveType(st);
@@ -412,11 +424,10 @@ namespace MetaDslx.Soal
                                                     }
                                                     op.ReturnType = prop.Type;
                                                     this.Importer.Reference(op.ReturnType);
-                                                    if (prop.HasAnnotation(SoalAnnotations.NoWrap))
+                                                    Annotation elemAnnot = prop.GetAnnotation(SoalAnnotations.Element);
+                                                    if (elemAnnot != null)
                                                     {
-                                                        Annotation annot = SoalFactory.Instance.CreateAnnotation();
-                                                        annot.Name = SoalAnnotations.NoWrap;
-                                                        op.ReturnAnnotations.Add(annot);
+                                                        op.ReturnAnnotations.Add(SoalImporter.CloneAnnotation(elemAnnot));
                                                     }
                                                     this.Importer.RemoveType(st);
                                                 }
@@ -471,12 +482,12 @@ namespace MetaDslx.Soal
                                                     param.Type = part.Type;
                                                     this.Importer.Reference(param.Type);
                                                     op.Parameters.Add(param);
-                                                    if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
+                                                    /*if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
                                                         annot.Name = SoalAnnotations.NoWrap;
                                                         param.Annotations.Add(annot);
-                                                    }
+                                                    }*/
                                                 }
                                             }
                                             if (outputMsg != null)
@@ -486,12 +497,12 @@ namespace MetaDslx.Soal
                                                     WsdlMessagePart part = outputMsg.Parts[0];
                                                     op.ReturnType = part.Type;
                                                     this.Importer.Reference(op.ReturnType);
-                                                    if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
+                                                    /*if (part.OriginalType == part.Type && part.Type is ArrayType && ((ArrayType)part.Type).InnerType != SoalInstance.Byte)
                                                     {
                                                         Annotation annot = SoalFactory.Instance.CreateAnnotation();
                                                         annot.Name = SoalAnnotations.NoWrap;
                                                         op.ReturnAnnotations.Add(annot);
-                                                    }
+                                                    }*/
                                                 }
                                                 else
                                                 {
@@ -650,7 +661,7 @@ namespace MetaDslx.Soal
             Exception ex = SoalFactory.Instance.CreateException();
             ex.Name = st.Name;
             ex.Namespace = st.Namespace;
-            this.CopyAnnotations(st, ex);
+            SoalImporter.CopyAnnotations(st, ex);
             foreach (var prop in st.Properties)
             {
                 Property exProp = SoalFactory.Instance.CreateProperty();
@@ -658,7 +669,7 @@ namespace MetaDslx.Soal
                 exProp.Type = prop.Type;
                 this.Importer.Reference(exProp.Type);
                 ex.Properties.Add(exProp);
-                this.CopyAnnotations(prop, exProp);
+                SoalImporter.CopyAnnotations(prop, exProp);
             }
             return ex;
         }
