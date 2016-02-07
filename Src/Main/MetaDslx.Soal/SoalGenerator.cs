@@ -139,7 +139,7 @@ namespace MetaDslx.Soal
                         {
                             foreach (var op in intf.Operations)
                             {
-                                this.CheckXsdNamespace(op.ReturnType, (ModelObject)op);
+                                this.CheckXsdNamespace(op.Result.Type, (ModelObject)op);
                                 foreach (var param in op.Parameters)
                                 {
                                     this.CheckXsdNamespace(param.Type, (ModelObject)param);

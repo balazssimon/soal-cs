@@ -381,7 +381,7 @@ namespace MetaDslx.Soal
                                                 {
                                                     foreach (var prop in st.Properties)
                                                     {
-                                                        Parameter param = SoalFactory.Instance.CreateParameter();
+                                                        InputParameter param = SoalFactory.Instance.CreateInputParameter();
                                                         param.Name = prop.Name;
                                                         param.Type = prop.Type;
                                                         this.Importer.Reference(param.Type);
@@ -393,7 +393,7 @@ namespace MetaDslx.Soal
                                                 else
                                                 {
                                                     this.Importer.Diagnostics.AddError("The input message part should be of 'complexType'.", this.Uri, this.GetTextSpan(opElem));
-                                                    op.ReturnType = SoalInstance.Void;
+                                                    op.Result.Type = SoalInstance.Void;
                                                     continue;
                                                 }
                                             }
@@ -414,7 +414,7 @@ namespace MetaDslx.Soal
                                                     if (st.Properties.Count > 1)
                                                     {
                                                         this.Importer.Diagnostics.AddError("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetTextSpan(opElem));
-                                                        op.ReturnType = SoalInstance.Void;
+                                                        op.Result.Type = SoalInstance.Void;
                                                         continue;
                                                     }
                                                     Property prop = st.Properties[0];
@@ -422,30 +422,26 @@ namespace MetaDslx.Soal
                                                     {
                                                         this.Importer.Diagnostics.AddWarning("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetTextSpan(opElem));
                                                     }
-                                                    op.ReturnType = prop.Type;
-                                                    this.Importer.Reference(op.ReturnType);
-                                                    Annotation elemAnnot = prop.GetAnnotation(SoalAnnotations.Element);
-                                                    if (elemAnnot != null)
-                                                    {
-                                                        op.ReturnAnnotations.Add(SoalImporter.CloneAnnotation(elemAnnot));
-                                                    }
+                                                    op.Result.Type = prop.Type;
+                                                    this.Importer.Reference(op.Result.Type);
+                                                    SoalImporter.CopyAnnotation(SoalAnnotations.Element, prop, op.Result);
                                                     this.Importer.RemoveType(st);
                                                 }
                                                 else if (st != null)
                                                 {
-                                                    op.ReturnType = SoalInstance.Void;
+                                                    op.Result.Type = SoalInstance.Void;
                                                     this.Importer.RemoveType(st);
                                                 }
                                                 else
                                                 {
                                                     this.Importer.Diagnostics.AddError("The output message part should be of 'complexType'.", this.Uri, this.GetTextSpan(opElem));
-                                                    op.ReturnType = SoalInstance.Void;
+                                                    op.Result.Type = SoalInstance.Void;
                                                     continue;
                                                 }
                                             }
                                             else
                                             {
-                                                op.IsOneway = true;
+                                                op.Result.IsOneway = true;
                                             }
                                             foreach (var faultMsg in faultMsgs)
                                             {
@@ -471,7 +467,7 @@ namespace MetaDslx.Soal
                                             {
                                                 foreach (var part in inputMsg.Parts)
                                                 {
-                                                    Parameter param = SoalFactory.Instance.CreateParameter();
+                                                    InputParameter param = SoalFactory.Instance.CreateInputParameter();
                                                     param.Name = part.Name;
                                                     param.Type = part.Type;
                                                     this.Importer.Reference(param.Type);
@@ -493,16 +489,16 @@ namespace MetaDslx.Soal
                                                 if (outputMsg.Parts.Count == 1)
                                                 {
                                                     WsdlMessagePart part = outputMsg.Parts[0];
-                                                    op.ReturnType = part.Type;
-                                                    this.Importer.Reference(op.ReturnType);
+                                                    op.Result.Type = part.Type;
+                                                    this.Importer.Reference(op.Result.Type);
                                                     if (part.OriginalType is Struct)
                                                     {
                                                         object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
                                                         if ((bool)origWrapped)
                                                         {
-                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op);
-                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op);
-                                                            SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                         }
                                                     }
                                                 }
@@ -512,12 +508,12 @@ namespace MetaDslx.Soal
                                                     {
                                                         this.Importer.Diagnostics.AddError("The output message should have a single part.", this.Uri, this.GetTextSpan(opElem));
                                                     }
-                                                    op.ReturnType = SoalInstance.Void;
+                                                    op.Result.Type = SoalInstance.Void;
                                                 }
                                             }
                                             else
                                             {
-                                                op.IsOneway = true;
+                                                op.Result.IsOneway = true;
                                             }
                                             foreach (var faultMsg in faultMsgs)
                                             {
@@ -555,7 +551,7 @@ namespace MetaDslx.Soal
                                         {
                                             foreach (var part in inputMsg.Parts)
                                             {
-                                                Parameter param = SoalFactory.Instance.CreateParameter();
+                                                InputParameter param = SoalFactory.Instance.CreateInputParameter();
                                                 param.Name = part.Name;
                                                 param.Type = part.Type;
                                                 this.Importer.Reference(param.Type);
@@ -581,8 +577,8 @@ namespace MetaDslx.Soal
                                             if (outputMsg.Parts.Count == 1)
                                             {
                                                 WsdlMessagePart part = outputMsg.Parts[0];
-                                                op.ReturnType = part.Type;
-                                                this.Importer.Reference(op.ReturnType);
+                                                op.Result.Type = part.Type;
+                                                this.Importer.Reference(op.Result.Type);
                                                 if (part.OriginalType is Struct)
                                                 {
                                                     object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
@@ -592,9 +588,9 @@ namespace MetaDslx.Soal
                                                     object origSap = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
                                                     if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
                                                     {
-                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op);
-                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op);
-                                                        SoalImporter.CopyReturnAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                     }
                                                 }
                                             }
@@ -604,12 +600,12 @@ namespace MetaDslx.Soal
                                                 {
                                                     this.Importer.Diagnostics.AddError("The output message should have a single part.", this.Uri, this.GetTextSpan(opElem));
                                                 }
-                                                op.ReturnType = SoalInstance.Void;
+                                                op.Result.Type = SoalInstance.Void;
                                             }
                                         }
                                         else
                                         {
-                                            op.IsOneway = true;
+                                            op.Result.IsOneway = true;
                                         }
                                     }
                                     foreach (var faultMsg in faultMsgs)
@@ -887,7 +883,7 @@ namespace MetaDslx.Soal
                                         this.Importer.Diagnostics.AddError("The operation has no input defined in the binding.", this.Uri, this.GetTextSpan(opElem));
                                         errors = true;
                                     }
-                                    if (!op.IsOneway)
+                                    if (!op.Result.IsOneway)
                                     {
                                         if (outputElem != null)
                                         {

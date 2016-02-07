@@ -63,15 +63,15 @@ function string GetAncestor(Namespace currentNs, SoalType st)
 	return "";
 end function
 
-template GenerateAnnotations(AnnotatedElement ae)
+template GenerateAnnotations(AnnotatedElement ae, bool isReturn)
 [loop(ae->annot:Annotations)]
-["["][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
+["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
 [end loop]
 end template
 
-template GenerateAnnotationsSingleLine(AnnotatedElement ae)
+template GenerateAnnotationsSingleLine(AnnotatedElement ae, bool isReturn)
 [loop(ae->annot:Annotations)]
-["["][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]\
+["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]\
 [end loop]
 end template
 
@@ -94,14 +94,8 @@ function string GetAnnotationPropertyValue(AnnotationProperty prop)
 	end if
 end function
 
-template GenerateReturnAnnotations(IList<Annotation> al)
-[loop(annot:al)]
-["[return: "][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
-[end loop]
-end template
-
 template GenerateEnum(Namespace currentNs, Enum enm)
-[GenerateAnnotations(enm)]
+[GenerateAnnotations(enm, false)]
 enum [enm.Name] [GetAncestor(currentNs, enm)]
 {
 	[loop(lit:enm.EnumLiterals; string delim = ",")]
@@ -111,12 +105,12 @@ enum [enm.Name] [GetAncestor(currentNs, enm)]
 end template
 
 template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit)
-[GenerateAnnotations(lit)]
+[GenerateAnnotations(lit, false)]
 [lit.Name]
 end template
 
 template GenerateStruct(Namespace currentNs, Struct st)
-[GenerateAnnotations(st)]
+[GenerateAnnotations(st, false)]
 struct [st.Name][GetAncestor(currentNs, st)]
 {
 	[loop(st->prop:Properties)]
@@ -126,7 +120,7 @@ struct [st.Name][GetAncestor(currentNs, st)]
 end template
 
 template GenerateProperty(Namespace currentNs, Property prop)
-[GenerateAnnotations(prop)]
+[GenerateAnnotations(prop, false)]
 [GenerateType(currentNs, prop.Type)] [prop.Name];
 end template
 
@@ -157,10 +151,10 @@ template GenerateType(Namespace currentNs, SoalType t)
 end template
 
 template GenerateReturnType(Namespace currentNs, Operation op)
-[if (op.IsOneway)]
+[if (op.Result.IsOneway)]
 oneway\
 [else]
-[GenerateType(currentNs, op.ReturnType)]\
+[GenerateType(currentNs, op.Result.Type)]\
 [end if]
 end template
 
@@ -172,18 +166,18 @@ end template
 
 template GenerateParameters(Namespace currentNs, Operation op)
 [loop(op->p:Parameters; string delim = ""; delim = ", ")]
-[delim][GenerateAnnotationsSingleLine(p)][GenerateType(currentNs, p.Type)] [p.Name]\
+[delim][GenerateAnnotationsSingleLine(p, false)][GenerateType(currentNs, p.Type)] [p.Name]\
 [end loop]
 end template
 
 template GenerateOperation(Namespace currentNs, Operation op)
-[GenerateAnnotations(op)]
-[GenerateReturnAnnotations(op.ReturnAnnotations)]
+[GenerateAnnotations(op, false)]
+[GenerateAnnotations(op.Result, true)]
 [GenerateReturnType(currentNs, op)] [op.Name]([GenerateParameters(currentNs, op)])[GenerateThrows(currentNs, op)];
 end template
 
 template GenerateInterface(Namespace currentNs, Interface intf)
-[GenerateAnnotations(intf)]
+[GenerateAnnotations(intf, false)]
 interface [intf.Name]
 {
 	[loop(intf->op:Operations)]

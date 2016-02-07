@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\aij30tdy.qpn\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\netvlb4d.3n2\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -80,25 +80,15 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotationList([NotNull] SoalParser.AnnotationListContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.operationAnnotationList"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.returnAnnotationList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterOperationAnnotationList([NotNull] SoalParser.OperationAnnotationListContext context);
+	void EnterReturnAnnotationList([NotNull] SoalParser.ReturnAnnotationListContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.operationAnnotationList"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.returnAnnotationList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitOperationAnnotationList([NotNull] SoalParser.OperationAnnotationListContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.operationAnnotation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterOperationAnnotation([NotNull] SoalParser.OperationAnnotationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.operationAnnotation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitOperationAnnotation([NotNull] SoalParser.OperationAnnotationContext context);
+	void ExitReturnAnnotationList([NotNull] SoalParser.ReturnAnnotationListContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.annotation"/>.
 	/// </summary>
@@ -299,6 +289,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParameter([NotNull] SoalParser.ParameterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.operationResult"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationResult([NotNull] SoalParser.OperationResultContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.operationResult"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationResult([NotNull] SoalParser.OperationResultContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.componentDeclaration"/>.
 	/// </summary>

@@ -155,19 +155,19 @@
 	class Operation : NamedElement, AnnotatedElement
 	{
 		string Action;
-		bool IsOneway;
-		SoalType ReturnType;
-		containment list<Parameter> Parameters;
+		containment list<InputParameter> Parameters;
+		readonly OutputParameter Result;
 		list<Struct> Exceptions;
-		containment list<Annotation> ReturnAnnotations;
 	}
 
-	class Parameter : NamedElement, TypedElement, AnnotatedElement
+	class InputParameter : NamedElement, TypedElement, AnnotatedElement
 	{
-		Operation Operation;
 	}
 
-	association Operation.Parameters with Parameter.Operation;
+	class OutputParameter : TypedElement, AnnotatedElement
+	{
+		bool IsOneway;
+	}
 
 	[Scope]
 	class Component : Declaration

@@ -88,14 +88,14 @@ template GenerateMessages(Interface intf)
 			[end if]
 		[end loop]
 </wsdl:message>
-		[if(!op.IsOneway)]
+		[if(!op.Result.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
-			[if (op.ReturnType != SoalInstance.Void)]
-				[if (op.ReturnType.IsArrayType() && op.ReturnType.GetCoreType() != SoalInstance.Byte)]
+			[if (op.Result.Type != SoalInstance.Void)]
+				[if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType() != SoalInstance.Byte)]
 	<wsdl:part name="result" type="[intf.Namespace.Prefix]:[op.Name + "Response"]"/>
 				[else]
-	<wsdl:part name="result" type="[op.ReturnType.GetNamespace(intf.Namespace).Prefix]:[op.ReturnType.GetXsdName()]"/>
+	<wsdl:part name="result" type="[op.Result.Type.GetNamespace(intf.Namespace).Prefix]:[op.Result.Type.GetXsdName()]"/>
 				[end if]
 			[end if]
 </wsdl:message>
@@ -107,10 +107,10 @@ template GenerateMessages(Interface intf)
 	<wsdl:part name="[param.Name]" element="[intf.Namespace.Prefix]:[op.Name][param.Name.ToPascalCase()]"/>
 		[end loop]
 </wsdl:message>
-		[if(!op.IsOneway)]
+		[if(!op.Result.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
-			[if (op.ReturnType != SoalInstance.Void)]
+			[if (op.Result.Type != SoalInstance.Void)]
 	<wsdl:part name="result" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
 			[end if]
 </wsdl:message>
@@ -120,7 +120,7 @@ template GenerateMessages(Interface intf)
 <wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
 	<wsdl:part name="parameters" element="[intf.Namespace.Prefix]:[op.Name]"/>
 </wsdl:message>
-		[if(!op.IsOneway)]
+		[if(!op.Result.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
 	<wsdl:part name="parameters" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
@@ -158,7 +158,7 @@ template GenerateOperations(Interface intf)
 	[string action = op.Action != null ? op.Action : intf.Namespace.UriWithSlash() + intf.Name + "/" + op.Name]
 <wsdl:operation name="[op.Name]">
 	<wsdl:input wsaw:action="[action]" message="[intf.Namespace.Prefix]:[intf.Name]_[op.Name]_InputMessage"/>
-[if(!op.IsOneway)]
+[if(!op.Result.IsOneway)]
 	<wsdl:output wsaw:action="[action + "Response"]" message="[intf.Namespace.Prefix]:[intf.Name]_[op.Name]_OutputMessage"/>
 	[loop(ex:op.Exceptions)]
 	<wsdl:fault wsaw:action="[action + "Fault/" + ex.Name]" message="[intf.Namespace.Prefix]:[intf.Name]_[ex.Name]_FaultMessage" name="[ex.Name]"/>
@@ -202,7 +202,7 @@ template GenerateWsdlBinding(Endpoint endp)
 			<[soapPrefix]:body use="[endp.Binding.GetWsdlSoapEncLitStyle()]"/>
 		[end if]
 		</wsdl:input>
-		[if(!op.IsOneway)]
+		[if(!op.Result.IsOneway)]
 		<wsdl:output>
 			[if(endp.Binding.HasOperationPolicy())]
 			<wsp:PolicyReference URI="#[endp.Binding.Name]_Output_Policy"/>

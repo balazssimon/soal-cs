@@ -15,18 +15,13 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 annotationList : annotation+;
 
-operationAnnotationList : operationAnnotation+;
-
-operationAnnotation
-	: annotation
-	| returnAnnotation
-	;
+returnAnnotationList : returnAnnotation+;
 
                       
                    
 annotation : TOpenBracket annotationBody TCloseBracket;
 
-                            
+                      
                    
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
@@ -88,14 +83,17 @@ interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operatio
 
                      
                    
-operationDeclaration : operationAnnotationList? (                               returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)? TSemicolon;
+operationDeclaration : annotationList? operationResult identifier TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 
                      
-                   
+                        
 parameter : annotationList?                          typeReference identifier;
 
+                 
+                        
+operationResult : returnAnnotationList? (                         returnType| onewayType);
 
 // Component
 
@@ -318,7 +316,7 @@ voidType
 	: KVoid
 	;
                                    
-                                                  
+                                            
 onewayType
 	: KOneway
 	;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\aij30tdy.qpn\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\netvlb4d.3n2\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -61,17 +61,11 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAnnotationList([NotNull] SoalParser.AnnotationListContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.operationAnnotationList"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.returnAnnotationList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOperationAnnotationList([NotNull] SoalParser.OperationAnnotationListContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.operationAnnotation"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitOperationAnnotation([NotNull] SoalParser.OperationAnnotationContext context);
+	Result VisitReturnAnnotationList([NotNull] SoalParser.ReturnAnnotationListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.annotation"/>.
 	/// </summary>
@@ -192,6 +186,12 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParameter([NotNull] SoalParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.operationResult"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperationResult([NotNull] SoalParser.OperationResultContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.componentDeclaration"/>.
 	/// </summary>

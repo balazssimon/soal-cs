@@ -15,18 +15,13 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 annotationList : annotation+;
 
-operationAnnotationList : operationAnnotation+;
-
-operationAnnotation
-	: annotation
-	| returnAnnotation
-	;
+returnAnnotationList : returnAnnotation+;
 
 $Property(Annotations)
 $Symbol(Annotation)
 annotation : TOpenBracket annotationBody TCloseBracket;
 
-$Property(ReturnAnnotations)
+$Property(Annotations)
 $Symbol(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
@@ -88,14 +83,17 @@ interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operatio
 
 $Property(Operations)
 $NameDef(Operation)
-operationDeclaration : operationAnnotationList? ($Property(ReturnType) $TypeUse returnType| onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)? TSemicolon;
+operationDeclaration : annotationList? operationResult identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 
 $Property(Parameters)
-$NameDef(Parameter)
+$NameDef(InputParameter)
 parameter : annotationList? $Property(Type) $TypeUse typeReference identifier;
 
+$Property(Result)
+$Symbol(OutputParameter)
+operationResult : returnAnnotationList? ($Property(Type) $TypeUse returnType| onewayType);
 
 // Component
 
@@ -318,7 +316,7 @@ voidType
 	: KVoid
 	;
 $Property(name=IsOneway,value=true)
-$Property(name=ReturnType,value=SoalInstance.Void)
+$Property(name=Type,value=SoalInstance.Void)
 onewayType
 	: KOneway
 	;

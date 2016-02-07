@@ -50,6 +50,13 @@ namespace MetaDslx.Soal
             else return @this.Namespace.FullName + "." + @this.Name;
         }
 
+        public override void Operation(Operation @this)
+        {
+            base.Operation(@this);
+            ((ModelObject)@this).MSet(SoalDescriptor.Operation.ResultProperty, SoalFactory.Instance.CreateOutputParameter());
+            //@this.Result = SoalFactory.Instance.CreateOutputParameter();
+        }
+
         public override string Port_Name(Port @this)
         {
             if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.Port.InterfaceProperty))
@@ -231,9 +238,9 @@ namespace MetaDslx.Soal
                 {
                     foreach (var op in intf.Operations)
                     {
-                        if (op.ReturnType is ArrayType)
+                        if (op.Result.Type is ArrayType)
                         {
-                            Namespace extns = op.ReturnType.GetNamespace(ns);
+                            Namespace extns = op.Result.Type.GetNamespace(ns);
                             if (!result.Contains(extns))
                             {
                                 result.Add(extns);

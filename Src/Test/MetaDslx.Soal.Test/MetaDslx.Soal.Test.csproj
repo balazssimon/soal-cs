@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A17195B5-93BA-4721-86F1-CBBD4F293723}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MetaDslx.Soal.Test</RootNamespace>
+    <AssemblyName>MetaDslx.Soal.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MetaDslx.Core" />
+    <Reference Include="MetaDslx.Compiler" />
+    <Reference Include="Antlr4.Runtime" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="XsdTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.Soal\MetaDslx.Soal.csproj">
+      <Project>{f901c1de-7845-484c-85a5-e8cd4846a9f7}</Project>
+      <Name>MetaDslx.Soal</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExpectedFiles\wsdl\Xsd01.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd01.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd02.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd02.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd03.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd03.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd04.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd04.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd05.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd05.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd06.Calc.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd06.Calc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd06.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd06.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd07.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd07.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd08.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd08.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd09.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd09.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd10.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd10.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd11.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd11.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd12.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd12.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd13.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd13.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd14.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd14.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd15.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd15.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd16.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd16.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd17.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd17.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\wsdl\Xsd18.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Xsd18.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\Xsd01.soal" />
+    <None Include="InputFiles\Xsd02.soal" />
+    <None Include="InputFiles\Xsd03.soal" />
+    <None Include="InputFiles\Xsd04.soal" />
+    <None Include="InputFiles\Xsd05.soal" />
+    <None Include="InputFiles\Xsd06.soal" />
+    <None Include="InputFiles\Xsd07.soal" />
+    <None Include="InputFiles\Xsd08.soal" />
+    <None Include="InputFiles\Xsd09.soal" />
+    <None Include="InputFiles\Xsd10.soal" />
+    <None Include="InputFiles\Xsd11.soal" />
+    <None Include="InputFiles\Xsd12.soal" />
+    <None Include="InputFiles\Xsd13.soal" />
+    <None Include="InputFiles\Xsd14.soal" />
+    <None Include="InputFiles\Xsd15.soal" />
+    <None Include="InputFiles\Xsd16.soal" />
+    <None Include="InputFiles\Xsd17.soal" />
+    <None Include="InputFiles\Xsd18.soal" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

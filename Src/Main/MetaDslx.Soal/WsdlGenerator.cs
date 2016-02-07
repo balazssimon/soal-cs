@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_WsdlGenerator_413249539;
-    namespace __Hidden_WsdlGenerator_413249539
+    using __Hidden_WsdlGenerator_870961929;
+    namespace __Hidden_WsdlGenerator_870961929
     {
         internal static class __Extensions
         {
@@ -820,7 +820,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     __out.Append("</wsdl:message>"); //90:1
                     __out.AppendLine(false); //90:16
-                    if (!op.IsOneway) //91:4
+                    if (!op.Result.IsOneway) //91:4
                     {
                         __out.AppendLine(true); //92:1
                         string __tmp25Prefix = string.Empty;
@@ -862,9 +862,9 @@ namespace MetaDslx.Soal //1:1
                         string __tmp30Line = "_OutputMessage\">"; //93:42
                         if (__tmp30Line != null) __out.Append(__tmp30Line);
                         __out.AppendLine(false); //93:58
-                        if (op.ReturnType != SoalInstance.Void) //94:5
+                        if (op.Result.Type != SoalInstance.Void) //94:5
                         {
-                            if (op.ReturnType.IsArrayType() && op.ReturnType.GetCoreType() != SoalInstance.Byte) //95:6
+                            if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType() != SoalInstance.Byte) //95:6
                             {
                                 string __tmp31Prefix = string.Empty;
                                 string __tmp32Line = "	<wsdl:part name=\"result\" type=\""; //96:1
@@ -913,7 +913,7 @@ namespace MetaDslx.Soal //1:1
                                 __out.Append(__tmp37Prefix);
                                 if (__tmp38Line != null) __out.Append(__tmp38Line);
                                 StringBuilder __tmp39 = new StringBuilder();
-                                __tmp39.Append(op.ReturnType.GetNamespace(intf.Namespace).Prefix);
+                                __tmp39.Append(op.Result.Type.GetNamespace(intf.Namespace).Prefix);
                                 using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
                                 {
                                     bool __tmp39_first = true;
@@ -927,10 +927,10 @@ namespace MetaDslx.Soal //1:1
                                         if (!__tmp39_last) __out.AppendLine(true);
                                     }
                                 }
-                                string __tmp40Line = ":"; //98:84
+                                string __tmp40Line = ":"; //98:85
                                 if (__tmp40Line != null) __out.Append(__tmp40Line);
                                 StringBuilder __tmp41 = new StringBuilder();
-                                __tmp41.Append(op.ReturnType.GetXsdName());
+                                __tmp41.Append(op.Result.Type.GetXsdName());
                                 using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
                                 {
                                     bool __tmp41_first = true;
@@ -944,9 +944,9 @@ namespace MetaDslx.Soal //1:1
                                         if (!__tmp41_last) __out.AppendLine(true);
                                     }
                                 }
-                                string __tmp42Line = "\"/>"; //98:113
+                                string __tmp42Line = "\"/>"; //98:115
                                 if (__tmp42Line != null) __out.Append(__tmp42Line);
-                                __out.AppendLine(false); //98:116
+                                __out.AppendLine(false); //98:118
                             }
                         }
                         __out.Append("</wsdl:message>"); //101:1
@@ -1080,7 +1080,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     __out.Append("</wsdl:message>"); //109:1
                     __out.AppendLine(false); //109:16
-                    if (!op.IsOneway) //110:4
+                    if (!op.Result.IsOneway) //110:4
                     {
                         __out.AppendLine(true); //111:1
                         string __tmp59Prefix = string.Empty;
@@ -1122,7 +1122,7 @@ namespace MetaDslx.Soal //1:1
                         string __tmp64Line = "_OutputMessage\">"; //112:42
                         if (__tmp64Line != null) __out.Append(__tmp64Line);
                         __out.AppendLine(false); //112:58
-                        if (op.ReturnType != SoalInstance.Void) //113:5
+                        if (op.Result.Type != SoalInstance.Void) //113:5
                         {
                             string __tmp65Prefix = string.Empty;
                             string __tmp66Line = "	<wsdl:part name=\"result\" element=\""; //114:1
@@ -1251,7 +1251,7 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(false); //121:76
                     __out.Append("</wsdl:message>"); //122:1
                     __out.AppendLine(false); //122:16
-                    if (!op.IsOneway) //123:4
+                    if (!op.Result.IsOneway) //123:4
                     {
                         __out.AppendLine(true); //124:1
                         string __tmp83Prefix = string.Empty;
@@ -1683,7 +1683,7 @@ namespace MetaDslx.Soal //1:1
                 string __tmp15Line = "_InputMessage\"/>"; //160:91
                 if (__tmp15Line != null) __out.Append(__tmp15Line);
                 __out.AppendLine(false); //160:107
-                if (!op.IsOneway) //161:2
+                if (!op.Result.IsOneway) //161:2
                 {
                     string __tmp16Prefix = string.Empty;
                     string __tmp17Line = "	<wsdl:output wsaw:action=\""; //162:1
@@ -2253,7 +2253,7 @@ namespace MetaDslx.Soal //1:1
                 }
                 __out.Append("		</wsdl:input>"); //204:1
                 __out.AppendLine(false); //204:16
-                if (!op.IsOneway) //205:4
+                if (!op.Result.IsOneway) //205:4
                 {
                     __out.Append("		<wsdl:output>"); //206:1
                     __out.AppendLine(false); //206:16
