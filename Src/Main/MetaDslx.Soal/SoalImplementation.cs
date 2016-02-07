@@ -263,42 +263,6 @@ namespace MetaDslx.Soal
             return result;
         }
 
-        public static object GetAnnotationPropertyValue(this IList<Annotation> annotations, string annotationName, string propertyName)
-        {
-            foreach (var annot in annotations)
-            {
-                if (annot.Name == annotationName)
-                {
-                    return annot.GetPropertyValue(propertyName);
-                }
-            }
-            return null;
-        }
-
-        public static Annotation GetAnnotation(this IList<Annotation> annotations, string name)
-        {
-            foreach (var annot in annotations)
-            {
-                if (annot.Name == name)
-                {
-                    return annot;
-                }
-            }
-            return null;
-        }
-
-        public static bool ContainsAnnotation(this IList<Annotation> annotations, string name)
-        {
-            foreach (var annot in annotations)
-            {
-                if (annot.Name == name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private static void CheckArrayType(SoalType type, IList<Annotation> annotations, HashSet<string> arrayNames, List<ArrayType> arrayTypes)
         {
             if (annotations.Any(a => a.Name == SoalAnnotations.Element && !(bool)a.GetPropertyValue(SoalAnnotationProperties.Wrapped))) return;

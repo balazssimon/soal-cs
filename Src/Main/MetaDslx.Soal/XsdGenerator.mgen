@@ -122,6 +122,7 @@ template GenerateStructBody(Namespace ns, Struct stype)
 end template
 
 template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement ae)
+[Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
 [if (ae.HasAnnotation(SoalAnnotations.Attribute))]
 <xs:attribute name="[name]" type="[t.GetCoreType().GetNamespace(ns).Prefix]:[t.GetCoreType().GetXsdName()]"[GetAttributeRequired(ae)]/>
 [else]
@@ -141,10 +142,19 @@ template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement
 			<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:all>
-					[if (items != null)]
-						<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+					[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+						[if (items != null)]
+						<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]">
+						[else]
+						<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]">
+						[end if]
+						[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
 					[else]
+						[if (items != null)]
+						<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+						[else]
 						<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+						[end if]
 					[end if]
 					</xs:all>
 				</xs:complexType>
@@ -152,26 +162,46 @@ template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement
 		</xs:all>
 				[else]
 		<xs:sequence>
-					[if (items != null)]
-			<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+					[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+						[if (items != null)]
+			<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+						[else]
+			<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+						[end if]
+			[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
 					[else]
+						[if (items != null)]
+			<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+						[else]
 			<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+						[end if]
 					[end if]
 		</xs:sequence>
 				[end if]
 	</xs:complexType>
 </xs:element>
 			[else]
+				[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+<xs:element name="[name]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+				[else]
 <xs:element name="[name]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[end if]
 			[end if]
 		[end if]
 	[else]
+		[if (restrAnnot != null && t.GetCoreType() is PrimitiveType)]
+<xs:element name="[name]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]>
+[GenerateRestrictions(t.GetNamespace(ns).Prefix+":"+t.GetXsdName(), restrAnnot)]
+		[else]
 <xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]/>
+		[end if]
 	[end if]
 [end if]
 end template
 
 template GenerateParamType(Namespace ns, string name, SoalType t, AnnotatedElement ae)
+[Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
 [if (t.IsArrayType())]
 	[ArrayType array = t is NonNullableType ? (ArrayType)((NonNullableType)t).InnerType : (ArrayType)t]
 	[if (array.GetCoreType() != SoalInstance.Byte)]
@@ -183,10 +213,19 @@ template GenerateParamType(Namespace ns, string name, SoalType t, AnnotatedEleme
 		<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 			<xs:complexType>
 				<xs:all>
-			[if (items != null)]
-					<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+			[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+				[if (items != null)]
+					<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]">
+				[else]
+					<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]">
+				[end if]
+					[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
 			[else]
+				[if (items != null)]
+					<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+				[else]
 					<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+				[end if]
 			[end if]
 				</xs:all>
 			</xs:complexType>
@@ -194,16 +233,36 @@ template GenerateParamType(Namespace ns, string name, SoalType t, AnnotatedEleme
 	</xs:all>
 		[else]
 	<xs:sequence>
-			[if (items != null)]
-		<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+			[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+				[if (items != null)]
+		<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+				[else]
+		<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+				[end if]
+		[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
 			[else]
+				[if (items != null)]
+		<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[else]
 		<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[end if]
 			[end if]
 	</xs:sequence>
 		[end if]
 </xs:complexType>
 	[end if]
 [end if]
+end template
+
+template GenerateRestrictions(string baseType, Annotation ae)
+	<xs:simpleType>
+		<xs:restriction base="[baseType]">
+			[loop(ae->prop:Properties)]
+			<xs:[prop.Name] value="[prop.Value]"/>
+			[end loop]
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
 end template
 
 function string GetStructKind(Struct st)
