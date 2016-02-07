@@ -48,13 +48,18 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="XsdTest.cs" />
+    <Compile Include="GenerateWsdlTest.cs" />
+    <Compile Include="GenerateXsdTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ImportXsdTest.cs" />
+    <Compile Include="ImportWsdlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Soal\MetaDslx.Soal.csproj">
@@ -63,100 +68,215 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ExpectedFiles\wsdl\Wsdl01.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Wsdl02.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Wsdl03.Hello.wsdl" />
+    <None Include="ExpectedFiles\wsdl\Wsdl04.Hello.wsdl" />
     <None Include="ExpectedFiles\wsdl\Xsd01.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd01.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd02.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd02.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd03.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd03.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd04.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd04.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd05.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd05.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd06.Calc.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd06.Calc.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd06.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd06.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd07.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd07.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd08.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd08.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd09.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd09.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd10.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd10.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd11.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd11.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd12.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd12.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd13.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd13.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd14.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd14.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd15.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd15.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd16.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd16.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd17.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd17.Hello.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ExpectedFiles\wsdl\Xsd18.Hello.wsdl" />
-    <None Include="ExpectedFiles\wsdl\Xsd18.Hello.xsd">
+    <None Include="ExpectedFiles\xsd\Wsdl01.Hello.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="InputFiles\Xsd01.soal" />
-    <None Include="InputFiles\Xsd02.soal" />
-    <None Include="InputFiles\Xsd03.soal" />
-    <None Include="InputFiles\Xsd04.soal" />
-    <None Include="InputFiles\Xsd05.soal" />
-    <None Include="InputFiles\Xsd06.soal" />
-    <None Include="InputFiles\Xsd07.soal" />
-    <None Include="InputFiles\Xsd08.soal" />
-    <None Include="InputFiles\Xsd09.soal" />
-    <None Include="InputFiles\Xsd10.soal" />
-    <None Include="InputFiles\Xsd11.soal" />
-    <None Include="InputFiles\Xsd12.soal" />
-    <None Include="InputFiles\Xsd13.soal" />
-    <None Include="InputFiles\Xsd14.soal" />
-    <None Include="InputFiles\Xsd15.soal" />
-    <None Include="InputFiles\Xsd16.soal" />
-    <None Include="InputFiles\Xsd17.soal" />
-    <None Include="InputFiles\Xsd18.soal" />
+    <None Include="ExpectedFiles\xsd\Wsdl02.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Wsdl03.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Wsdl04.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd01.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd02.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd03.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd04.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd05.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd06.Calc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd06.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd07.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd08.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd09.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd10.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd11.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd12.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd13.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd14.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd15.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd16.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd17.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExpectedFiles\xsd\Xsd18.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\soal\Wsdl01.soal" />
+    <None Include="InputFiles\soal\Wsdl02.soal" />
+    <None Include="InputFiles\soal\Wsdl03.soal" />
+    <None Include="InputFiles\soal\Wsdl04.soal" />
+    <None Include="InputFiles\soal\Xsd01.soal" />
+    <None Include="InputFiles\soal\Xsd02.soal" />
+    <None Include="InputFiles\soal\Xsd03.soal" />
+    <None Include="InputFiles\soal\Xsd04.soal" />
+    <None Include="InputFiles\soal\Xsd05.soal" />
+    <None Include="InputFiles\soal\Xsd06.soal" />
+    <None Include="InputFiles\soal\Xsd07.soal" />
+    <None Include="InputFiles\soal\Xsd08.soal" />
+    <None Include="InputFiles\soal\Xsd09.soal" />
+    <None Include="InputFiles\soal\Xsd10.soal" />
+    <None Include="InputFiles\soal\Xsd11.soal" />
+    <None Include="InputFiles\soal\Xsd12.soal" />
+    <None Include="InputFiles\soal\Xsd13.soal" />
+    <None Include="InputFiles\soal\Xsd14.soal" />
+    <None Include="InputFiles\soal\Xsd15.soal" />
+    <None Include="InputFiles\soal\Xsd16.soal" />
+    <None Include="InputFiles\soal\Xsd17.soal" />
+    <None Include="InputFiles\soal\Xsd18.soal" />
+    <None Include="InputFiles\wsdl\Wsdl01.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Wsdl02.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Wsdl03.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Wsdl04.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd01.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd02.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd03.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd04.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd05.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd06.Calc.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd06.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd07.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd08.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd09.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd10.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd11.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd12.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd13.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd14.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd15.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd16.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd17.Hello.wsdl" />
+    <None Include="InputFiles\wsdl\Xsd18.Hello.wsdl" />
+    <None Include="InputFiles\xsd\Wsdl01.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Wsdl02.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Wsdl03.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Wsdl04.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd01.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd02.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd03.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd04.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd05.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd06.Calc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd06.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd07.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd08.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd09.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd10.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd11.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd12.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd13.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd14.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd15.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd16.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd17.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InputFiles\xsd\Xsd18.Hello.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExpectedFiles\soal\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
