@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\netvlb4d.3n2\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\2y0slo31.ozt\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -412,6 +412,16 @@ public partial class SoalParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCompositeDeclaration([NotNull] SoalParser.CompositeDeclarationContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.assemblyDeclaration"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAssemblyDeclaration([NotNull] SoalParser.AssemblyDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.compositeElements"/>.
 	/// <para>

@@ -44,7 +44,7 @@ $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 // Enums
 
@@ -136,8 +136,11 @@ $Property(Language)
 $NameDef(Language)
 componentLanguage : KLanguage identifier TSemicolon;
 
-$TypeDef
-compositeDeclaration : ($SymbolType(Assembly) KAssembly | $SymbolType(Composite) KComposite) identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+$TypeDef(Composite)
+compositeDeclaration : KComposite identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+$TypeDef(Assembly)
+assemblyDeclaration : KAssembly identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
@@ -151,7 +154,8 @@ compositeElement
 	| compositeWire
 	;
 
-compositeComponent : KComponent $Property(Components) $TypeUse(Component) qualifiedName TSemicolon;
+$Property(Components)
+compositeComponent : KComponent $NameUse(Component) qualifiedName TSemicolon;
 
 $Property(Wires)
 $Symbol(Wire)

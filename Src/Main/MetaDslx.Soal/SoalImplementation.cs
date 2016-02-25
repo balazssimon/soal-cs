@@ -61,7 +61,15 @@ namespace MetaDslx.Soal
         {
             if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.Port.InterfaceProperty))
             {
-                return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
+                if (@this.OptionalName != null)
+                {
+                    return @this.OptionalName;
+                }
+                else
+                {
+                    if (@this.Interface != null) return @this.Interface.Name;
+                    else return string.Empty;
+                }
             }
             else
             {

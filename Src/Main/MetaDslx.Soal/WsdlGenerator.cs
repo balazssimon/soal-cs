@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_WsdlGenerator_870961929;
-    namespace __Hidden_WsdlGenerator_870961929
+    using __Hidden_WsdlGenerator_314538470;
+    namespace __Hidden_WsdlGenerator_314538470
     {
         internal static class __Extensions
         {
@@ -78,9 +78,7 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             __out.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"); //12:1
             __out.AppendLine(false); //12:39
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<wsdl:definitions targetNamespace=\""; //13:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(ns.Uri);
@@ -100,9 +98,7 @@ namespace MetaDslx.Soal //1:1
             string __tmp4Line = "\"  "; //13:44
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             __out.AppendLine(false); //13:47
-            string __tmp5Prefix = string.Empty;
             string __tmp6Line = "	xmlns:"; //14:1
-            __out.Append(__tmp5Prefix);
             if (__tmp6Line != null) __out.Append(__tmp6Line);
             StringBuilder __tmp7 = new StringBuilder();
             __tmp7.Append(ns.Prefix);
@@ -148,9 +144,7 @@ namespace MetaDslx.Soal //1:1
             {
                 ++__loop1_iteration;
                 var ins = __tmp11.ins;
-                string __tmp12Prefix = string.Empty;
                 string __tmp13Line = "	xmlns:"; //16:1
-                __out.Append(__tmp12Prefix);
                 if (__tmp13Line != null) __out.Append(__tmp13Line);
                 StringBuilder __tmp14 = new StringBuilder();
                 __tmp14.Append(ins.Prefix);
@@ -323,7 +317,6 @@ namespace MetaDslx.Soal //1:1
             __out.AppendLine(false); //45:13
             if (Properties.SingleFileWsdl) //46:2
             {
-                string __tmp1Prefix = string.Empty;
                 StringBuilder __tmp2 = new StringBuilder();
                 __tmp2.Append(XsdGenerator.Generate(ns));
                 using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -335,7 +328,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp2_first = false;
                         string __tmp2Line = __tmp2Reader.ReadLine();
                         __tmp2_last = __tmp2Reader.EndOfStream;
-                        __out.Append(__tmp1Prefix);
                         if (__tmp2Line != null) __out.Append(__tmp2Line);
                         if (!__tmp2_last) __out.AppendLine(true);
                         __out.AppendLine(false); //47:28
@@ -348,9 +340,7 @@ namespace MetaDslx.Soal //1:1
                 __out.AppendLine(false); //49:13
                 if (Properties.SeparateXsdWsdl) //50:4
                 {
-                    string __tmp3Prefix = string.Empty;
                     string __tmp4Line = "		<xs:import namespace=\""; //51:1
-                    __out.Append(__tmp3Prefix);
                     if (__tmp4Line != null) __out.Append(__tmp4Line);
                     StringBuilder __tmp5 = new StringBuilder();
                     __tmp5.Append(ns.Uri);
@@ -396,9 +386,7 @@ namespace MetaDslx.Soal //1:1
                     {
                         ++__loop2_iteration;
                         var ins = __tmp9.ins;
-                        string __tmp10Prefix = string.Empty;
                         string __tmp11Line = "		<xs:import namespace=\""; //53:1
-                        __out.Append(__tmp10Prefix);
                         if (__tmp11Line != null) __out.Append(__tmp11Line);
                         StringBuilder __tmp12 = new StringBuilder();
                         __tmp12.Append(ins.Uri);
@@ -439,9 +427,7 @@ namespace MetaDslx.Soal //1:1
                 }
                 else //55:4
                 {
-                    string __tmp16Prefix = string.Empty;
                     string __tmp17Line = "		<xs:import namespace=\""; //56:1
-                    __out.Append(__tmp16Prefix);
                     if (__tmp17Line != null) __out.Append(__tmp17Line);
                     StringBuilder __tmp18 = new StringBuilder();
                     __tmp18.Append(ns.Uri);
@@ -487,9 +473,7 @@ namespace MetaDslx.Soal //1:1
                     {
                         ++__loop3_iteration;
                         var ins = __tmp22.ins;
-                        string __tmp23Prefix = string.Empty;
                         string __tmp24Line = "		<xs:import namespace=\""; //58:1
-                        __out.Append(__tmp23Prefix);
                         if (__tmp24Line != null) __out.Append(__tmp24Line);
                         StringBuilder __tmp25 = new StringBuilder();
                         __tmp25.Append(ins.Uri);
@@ -550,7 +534,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop4_iteration;
                 var __loop4_var1 = __tmp1.__loop4_var1;
                 var intf = __tmp1.intf;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(GenerateWsdlAbstractPart(intf));
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -562,7 +545,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                         __out.AppendLine(false); //68:33
@@ -575,7 +557,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateWsdlAbstractPart(Interface intf) //72:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateMessages(intf));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -587,13 +568,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //73:25
                 }
             }
-            string __tmp3Prefix = string.Empty;
             StringBuilder __tmp4 = new StringBuilder();
             __tmp4.Append(GenerateFaultMessages(intf));
             using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -605,13 +584,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp4_first = false;
                     string __tmp4Line = __tmp4Reader.ReadLine();
                     __tmp4_last = __tmp4Reader.EndOfStream;
-                    __out.Append(__tmp3Prefix);
                     if (__tmp4Line != null) __out.Append(__tmp4Line);
                     if (!__tmp4_last) __out.AppendLine(true);
                     __out.AppendLine(false); //74:30
                 }
             }
-            string __tmp5Prefix = string.Empty;
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(GeneratePortType(intf));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -623,7 +600,6 @@ namespace MetaDslx.Soal //1:1
                     __tmp6_first = false;
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     __tmp6_last = __tmp6Reader.EndOfStream;
-                    __out.Append(__tmp5Prefix);
                     if (__tmp6Line != null) __out.Append(__tmp6Line);
                     if (!__tmp6_last) __out.AppendLine(true);
                     __out.AppendLine(false); //75:25
@@ -649,9 +625,7 @@ namespace MetaDslx.Soal //1:1
                 if (intf.HasAnnotation(SoalAnnotations.Rpc)) //80:3
                 {
                     __out.AppendLine(true); //81:1
-                    string __tmp2Prefix = string.Empty;
                     string __tmp3Line = "<wsdl:message name=\""; //82:1
-                    __out.Append(__tmp2Prefix);
                     if (__tmp3Line != null) __out.Append(__tmp3Line);
                     StringBuilder __tmp4 = new StringBuilder();
                     __tmp4.Append(intf.Name);
@@ -701,9 +675,7 @@ namespace MetaDslx.Soal //1:1
                         var param = __tmp8.param;
                         if (param.Type.IsArrayType() && param.Type.GetCoreType() != SoalInstance.Byte) //84:5
                         {
-                            string __tmp9Prefix = string.Empty;
                             string __tmp10Line = "	<wsdl:part name=\""; //85:1
-                            __out.Append(__tmp9Prefix);
                             if (__tmp10Line != null) __out.Append(__tmp10Line);
                             StringBuilder __tmp11 = new StringBuilder();
                             __tmp11.Append(param.Name);
@@ -760,9 +732,7 @@ namespace MetaDslx.Soal //1:1
                         }
                         else //86:5
                         {
-                            string __tmp17Prefix = string.Empty;
                             string __tmp18Line = "	<wsdl:part name=\""; //87:1
-                            __out.Append(__tmp17Prefix);
                             if (__tmp18Line != null) __out.Append(__tmp18Line);
                             StringBuilder __tmp19 = new StringBuilder();
                             __tmp19.Append(param.Name);
@@ -823,9 +793,7 @@ namespace MetaDslx.Soal //1:1
                     if (!op.Result.IsOneway) //91:4
                     {
                         __out.AppendLine(true); //92:1
-                        string __tmp25Prefix = string.Empty;
                         string __tmp26Line = "<wsdl:message name=\""; //93:1
-                        __out.Append(__tmp25Prefix);
                         if (__tmp26Line != null) __out.Append(__tmp26Line);
                         StringBuilder __tmp27 = new StringBuilder();
                         __tmp27.Append(intf.Name);
@@ -866,9 +834,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType() != SoalInstance.Byte) //95:6
                             {
-                                string __tmp31Prefix = string.Empty;
                                 string __tmp32Line = "	<wsdl:part name=\"result\" type=\""; //96:1
-                                __out.Append(__tmp31Prefix);
                                 if (__tmp32Line != null) __out.Append(__tmp32Line);
                                 StringBuilder __tmp33 = new StringBuilder();
                                 __tmp33.Append(intf.Namespace.Prefix);
@@ -908,9 +874,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //97:6
                             {
-                                string __tmp37Prefix = string.Empty;
                                 string __tmp38Line = "	<wsdl:part name=\"result\" type=\""; //98:1
-                                __out.Append(__tmp37Prefix);
                                 if (__tmp38Line != null) __out.Append(__tmp38Line);
                                 StringBuilder __tmp39 = new StringBuilder();
                                 __tmp39.Append(op.Result.Type.GetNamespace(intf.Namespace).Prefix);
@@ -956,9 +920,7 @@ namespace MetaDslx.Soal //1:1
                 else if (intf.HasAnnotation(SoalAnnotations.NoWrap)) //103:3
                 {
                     __out.AppendLine(true); //104:1
-                    string __tmp43Prefix = string.Empty;
                     string __tmp44Line = "<wsdl:message name=\""; //105:1
-                    __out.Append(__tmp43Prefix);
                     if (__tmp44Line != null) __out.Append(__tmp44Line);
                     StringBuilder __tmp45 = new StringBuilder();
                     __tmp45.Append(intf.Name);
@@ -1006,9 +968,7 @@ namespace MetaDslx.Soal //1:1
                         ++__loop7_iteration;
                         var __loop7_var1 = __tmp49.__loop7_var1;
                         var param = __tmp49.param;
-                        string __tmp50Prefix = string.Empty;
                         string __tmp51Line = "	<wsdl:part name=\""; //107:1
-                        __out.Append(__tmp50Prefix);
                         if (__tmp51Line != null) __out.Append(__tmp51Line);
                         StringBuilder __tmp52 = new StringBuilder();
                         __tmp52.Append(param.Name);
@@ -1083,9 +1043,7 @@ namespace MetaDslx.Soal //1:1
                     if (!op.Result.IsOneway) //110:4
                     {
                         __out.AppendLine(true); //111:1
-                        string __tmp59Prefix = string.Empty;
                         string __tmp60Line = "<wsdl:message name=\""; //112:1
-                        __out.Append(__tmp59Prefix);
                         if (__tmp60Line != null) __out.Append(__tmp60Line);
                         StringBuilder __tmp61 = new StringBuilder();
                         __tmp61.Append(intf.Name);
@@ -1124,9 +1082,7 @@ namespace MetaDslx.Soal //1:1
                         __out.AppendLine(false); //112:58
                         if (op.Result.Type != SoalInstance.Void) //113:5
                         {
-                            string __tmp65Prefix = string.Empty;
                             string __tmp66Line = "	<wsdl:part name=\"result\" element=\""; //114:1
-                            __out.Append(__tmp65Prefix);
                             if (__tmp66Line != null) __out.Append(__tmp66Line);
                             StringBuilder __tmp67 = new StringBuilder();
                             __tmp67.Append(intf.Namespace.Prefix);
@@ -1171,9 +1127,7 @@ namespace MetaDslx.Soal //1:1
                 else //118:3
                 {
                     __out.AppendLine(true); //119:1
-                    string __tmp71Prefix = string.Empty;
                     string __tmp72Line = "<wsdl:message name=\""; //120:1
-                    __out.Append(__tmp71Prefix);
                     if (__tmp72Line != null) __out.Append(__tmp72Line);
                     StringBuilder __tmp73 = new StringBuilder();
                     __tmp73.Append(intf.Name);
@@ -1210,9 +1164,7 @@ namespace MetaDslx.Soal //1:1
                     string __tmp76Line = "_InputMessage\">"; //120:42
                     if (__tmp76Line != null) __out.Append(__tmp76Line);
                     __out.AppendLine(false); //120:57
-                    string __tmp77Prefix = string.Empty;
                     string __tmp78Line = "	<wsdl:part name=\"parameters\" element=\""; //121:1
-                    __out.Append(__tmp77Prefix);
                     if (__tmp78Line != null) __out.Append(__tmp78Line);
                     StringBuilder __tmp79 = new StringBuilder();
                     __tmp79.Append(intf.Namespace.Prefix);
@@ -1254,9 +1206,7 @@ namespace MetaDslx.Soal //1:1
                     if (!op.Result.IsOneway) //123:4
                     {
                         __out.AppendLine(true); //124:1
-                        string __tmp83Prefix = string.Empty;
                         string __tmp84Line = "<wsdl:message name=\""; //125:1
-                        __out.Append(__tmp83Prefix);
                         if (__tmp84Line != null) __out.Append(__tmp84Line);
                         StringBuilder __tmp85 = new StringBuilder();
                         __tmp85.Append(intf.Name);
@@ -1293,9 +1243,7 @@ namespace MetaDslx.Soal //1:1
                         string __tmp88Line = "_OutputMessage\">"; //125:42
                         if (__tmp88Line != null) __out.Append(__tmp88Line);
                         __out.AppendLine(false); //125:58
-                        string __tmp89Prefix = string.Empty;
                         string __tmp90Line = "	<wsdl:part name=\"parameters\" element=\""; //126:1
-                        __out.Append(__tmp89Prefix);
                         if (__tmp90Line != null) __out.Append(__tmp90Line);
                         StringBuilder __tmp91 = new StringBuilder();
                         __tmp91.Append(intf.Namespace.Prefix);
@@ -1355,9 +1303,7 @@ namespace MetaDslx.Soal //1:1
                 if (intf.HasAnnotation(SoalAnnotations.Rpc)) //135:3
                 {
                     __out.AppendLine(true); //136:1
-                    string __tmp2Prefix = string.Empty;
                     string __tmp3Line = "<wsdl:message name=\""; //137:1
-                    __out.Append(__tmp2Prefix);
                     if (__tmp3Line != null) __out.Append(__tmp3Line);
                     StringBuilder __tmp4 = new StringBuilder();
                     __tmp4.Append(intf.Name);
@@ -1394,9 +1340,7 @@ namespace MetaDslx.Soal //1:1
                     string __tmp7Line = "_FaultMessage\">"; //137:42
                     if (__tmp7Line != null) __out.Append(__tmp7Line);
                     __out.AppendLine(false); //137:57
-                    string __tmp8Prefix = string.Empty;
                     string __tmp9Line = "	<wsdl:part name=\"fault\" type=\""; //138:1
-                    __out.Append(__tmp8Prefix);
                     if (__tmp9Line != null) __out.Append(__tmp9Line);
                     StringBuilder __tmp10 = new StringBuilder();
                     __tmp10.Append(ex.Namespace.Prefix);
@@ -1439,9 +1383,7 @@ namespace MetaDslx.Soal //1:1
                 else //140:3
                 {
                     __out.AppendLine(true); //141:1
-                    string __tmp14Prefix = string.Empty;
                     string __tmp15Line = "<wsdl:message name=\""; //142:1
-                    __out.Append(__tmp14Prefix);
                     if (__tmp15Line != null) __out.Append(__tmp15Line);
                     StringBuilder __tmp16 = new StringBuilder();
                     __tmp16.Append(intf.Name);
@@ -1478,9 +1420,7 @@ namespace MetaDslx.Soal //1:1
                     string __tmp19Line = "_FaultMessage\">"; //142:42
                     if (__tmp19Line != null) __out.Append(__tmp19Line);
                     __out.AppendLine(false); //142:57
-                    string __tmp20Prefix = string.Empty;
                     string __tmp21Line = "	<wsdl:part name=\"fault\" element=\""; //143:1
-                    __out.Append(__tmp20Prefix);
                     if (__tmp21Line != null) __out.Append(__tmp21Line);
                     StringBuilder __tmp22 = new StringBuilder();
                     __tmp22.Append(ex.Namespace.Prefix);
@@ -1528,9 +1468,7 @@ namespace MetaDslx.Soal //1:1
         {
             StringBuilder __out = new StringBuilder();
             __out.AppendLine(true); //150:1
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<wsdl:portType name=\""; //151:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(intf.Name);
@@ -1588,9 +1526,7 @@ namespace MetaDslx.Soal //1:1
                 var __loop9_var1 = __tmp1.__loop9_var1;
                 var op = __tmp1.op;
                 string action = op.Action != null ? op.Action : intf.Namespace.UriWithSlash() + intf.Name + "/" + op.Name; //158:3
-                string __tmp2Prefix = string.Empty;
                 string __tmp3Line = "<wsdl:operation name=\""; //159:1
-                __out.Append(__tmp2Prefix);
                 if (__tmp3Line != null) __out.Append(__tmp3Line);
                 StringBuilder __tmp4 = new StringBuilder();
                 __tmp4.Append(op.Name);
@@ -1610,9 +1546,7 @@ namespace MetaDslx.Soal //1:1
                 string __tmp5Line = "\">"; //159:32
                 if (__tmp5Line != null) __out.Append(__tmp5Line);
                 __out.AppendLine(false); //159:34
-                string __tmp6Prefix = string.Empty;
                 string __tmp7Line = "	<wsdl:input wsaw:action=\""; //160:1
-                __out.Append(__tmp6Prefix);
                 if (__tmp7Line != null) __out.Append(__tmp7Line);
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(action);
@@ -1685,9 +1619,7 @@ namespace MetaDslx.Soal //1:1
                 __out.AppendLine(false); //160:107
                 if (!op.Result.IsOneway) //161:2
                 {
-                    string __tmp16Prefix = string.Empty;
                     string __tmp17Line = "	<wsdl:output wsaw:action=\""; //162:1
-                    __out.Append(__tmp16Prefix);
                     if (__tmp17Line != null) __out.Append(__tmp17Line);
                     StringBuilder __tmp18 = new StringBuilder();
                     __tmp18.Append(action + "Response");
@@ -1767,9 +1699,7 @@ namespace MetaDslx.Soal //1:1
                     {
                         ++__loop10_iteration;
                         var ex = __tmp26.ex;
-                        string __tmp27Prefix = string.Empty;
                         string __tmp28Line = "	<wsdl:fault wsaw:action=\""; //164:1
-                        __out.Append(__tmp27Prefix);
                         if (__tmp28Line != null) __out.Append(__tmp28Line);
                         StringBuilder __tmp29 = new StringBuilder();
                         __tmp29.Append(action + "Fault/" + ex.Name);
@@ -1879,7 +1809,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop11_iteration;
                 var __loop11_var1 = __tmp1.__loop11_var1;
                 var endp = __tmp1.endp;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(GenerateWsdlBinding(endp));
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -1891,7 +1820,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                         __out.AppendLine(false); //173:28
@@ -1906,9 +1834,7 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             __out.AppendLine(true); //178:1
             string soapPrefix = endp.Binding.GetSoapPrefix(); //179:2
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<wsdl:binding name=\""; //180:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(endp.Interface.Name);
@@ -1981,9 +1907,7 @@ namespace MetaDslx.Soal //1:1
             __out.AppendLine(false); //180:135
             if (endp.Binding.HasPolicy()) //181:3
             {
-                string __tmp11Prefix = string.Empty;
                 string __tmp12Line = "	<wsp:PolicyReference URI=\"#"; //182:1
-                __out.Append(__tmp11Prefix);
                 if (__tmp12Line != null) __out.Append(__tmp12Line);
                 StringBuilder __tmp13 = new StringBuilder();
                 __tmp13.Append(endp.Binding.Name);
@@ -2008,9 +1932,7 @@ namespace MetaDslx.Soal //1:1
             {
                 if (endp.Binding.Transport is HttpTransportBindingElement) //185:4
                 {
-                    string __tmp15Prefix = string.Empty;
                     string __tmp16Line = "	<"; //186:1
-                    __out.Append(__tmp15Prefix);
                     if (__tmp16Line != null) __out.Append(__tmp16Line);
                     StringBuilder __tmp17 = new StringBuilder();
                     __tmp17.Append(soapPrefix);
@@ -2050,9 +1972,7 @@ namespace MetaDslx.Soal //1:1
                 }
                 else //187:4
                 {
-                    string __tmp21Prefix = string.Empty;
                     string __tmp22Line = "	<"; //188:1
-                    __out.Append(__tmp21Prefix);
                     if (__tmp22Line != null) __out.Append(__tmp22Line);
                     StringBuilder __tmp23 = new StringBuilder();
                     __tmp23.Append(soapPrefix);
@@ -2101,9 +2021,7 @@ namespace MetaDslx.Soal //1:1
                 ++__loop12_iteration;
                 var op = __tmp27.op;
                 string action = op.Action != null ? op.Action : endp.Interface.Namespace.UriWithSlash() + endp.Interface.Name + "/" + op.Name; //192:4
-                string __tmp28Prefix = string.Empty;
                 string __tmp29Line = "	<wsdl:operation name=\""; //193:1
-                __out.Append(__tmp28Prefix);
                 if (__tmp29Line != null) __out.Append(__tmp29Line);
                 StringBuilder __tmp30 = new StringBuilder();
                 __tmp30.Append(op.Name);
@@ -2125,9 +2043,7 @@ namespace MetaDslx.Soal //1:1
                 __out.AppendLine(false); //193:35
                 if (soapPrefix != null) //194:4
                 {
-                    string __tmp32Prefix = string.Empty;
                     string __tmp33Line = "		<"; //195:1
-                    __out.Append(__tmp32Prefix);
                     if (__tmp33Line != null) __out.Append(__tmp33Line);
                     StringBuilder __tmp34 = new StringBuilder();
                     __tmp34.Append(soapPrefix);
@@ -2186,9 +2102,7 @@ namespace MetaDslx.Soal //1:1
                 __out.AppendLine(false); //197:15
                 if (endp.Binding.HasOperationPolicy()) //198:4
                 {
-                    string __tmp40Prefix = string.Empty;
                     string __tmp41Line = "			<wsp:PolicyReference URI=\"#"; //199:1
-                    __out.Append(__tmp40Prefix);
                     if (__tmp41Line != null) __out.Append(__tmp41Line);
                     StringBuilder __tmp42 = new StringBuilder();
                     __tmp42.Append(endp.Binding.Name);
@@ -2211,9 +2125,7 @@ namespace MetaDslx.Soal //1:1
                 }
                 if (soapPrefix != null) //201:4
                 {
-                    string __tmp44Prefix = string.Empty;
                     string __tmp45Line = "			<"; //202:1
-                    __out.Append(__tmp44Prefix);
                     if (__tmp45Line != null) __out.Append(__tmp45Line);
                     StringBuilder __tmp46 = new StringBuilder();
                     __tmp46.Append(soapPrefix);
@@ -2259,9 +2171,7 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(false); //206:16
                     if (endp.Binding.HasOperationPolicy()) //207:5
                     {
-                        string __tmp50Prefix = string.Empty;
                         string __tmp51Line = "			<wsp:PolicyReference URI=\"#"; //208:1
-                        __out.Append(__tmp50Prefix);
                         if (__tmp51Line != null) __out.Append(__tmp51Line);
                         StringBuilder __tmp52 = new StringBuilder();
                         __tmp52.Append(endp.Binding.Name);
@@ -2284,9 +2194,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     if (soapPrefix != null) //210:5
                     {
-                        string __tmp54Prefix = string.Empty;
                         string __tmp55Line = "			<"; //211:1
-                        __out.Append(__tmp54Prefix);
                         if (__tmp55Line != null) __out.Append(__tmp55Line);
                         StringBuilder __tmp56 = new StringBuilder();
                         __tmp56.Append(soapPrefix);
@@ -2335,9 +2243,7 @@ namespace MetaDslx.Soal //1:1
                     {
                         ++__loop13_iteration;
                         var ex = __tmp60.ex;
-                        string __tmp61Prefix = string.Empty;
                         string __tmp62Line = "		<wsdl:fault name=\""; //215:1
-                        __out.Append(__tmp61Prefix);
                         if (__tmp62Line != null) __out.Append(__tmp62Line);
                         StringBuilder __tmp63 = new StringBuilder();
                         __tmp63.Append(ex.Name);
@@ -2359,9 +2265,7 @@ namespace MetaDslx.Soal //1:1
                         __out.AppendLine(false); //215:32
                         if (soapPrefix != null) //216:5
                         {
-                            string __tmp65Prefix = string.Empty;
                             string __tmp66Line = "			<"; //217:1
-                            __out.Append(__tmp65Prefix);
                             if (__tmp66Line != null) __out.Append(__tmp66Line);
                             StringBuilder __tmp67 = new StringBuilder();
                             __tmp67.Append(soapPrefix);
@@ -2442,7 +2346,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop14_iteration;
                 var __loop14_var1 = __tmp1.__loop14_var1;
                 var endp = __tmp1.endp;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(GenerateWsdlEndpoint(endp));
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -2454,7 +2357,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                         __out.AppendLine(false); //229:29
@@ -2469,9 +2371,7 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             __out.AppendLine(true); //234:1
             string soapPrefix = endp.Binding.GetSoapPrefix(); //235:2
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<wsdl:service name=\""; //236:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(endp.Name);
@@ -2491,9 +2391,7 @@ namespace MetaDslx.Soal //1:1
             string __tmp4Line = "\">"; //236:32
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             __out.AppendLine(false); //236:34
-            string __tmp5Prefix = string.Empty;
             string __tmp6Line = "	<wsdl:port name=\""; //237:1
-            __out.Append(__tmp5Prefix);
             if (__tmp6Line != null) __out.Append(__tmp6Line);
             StringBuilder __tmp7 = new StringBuilder();
             __tmp7.Append(endp.Interface.Name);
@@ -2583,9 +2481,7 @@ namespace MetaDslx.Soal //1:1
             __out.AppendLine(false); //237:151
             if (soapPrefix != null) //238:3
             {
-                string __tmp17Prefix = string.Empty;
                 string __tmp18Line = "		<"; //239:1
-                __out.Append(__tmp17Prefix);
                 if (__tmp18Line != null) __out.Append(__tmp18Line);
                 StringBuilder __tmp19 = new StringBuilder();
                 __tmp19.Append(soapPrefix);
@@ -2644,7 +2540,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop15_iteration;
                 var __loop15_var1 = __tmp1.__loop15_var1;
                 var binding = __tmp1.binding;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(GenerateWsdlPolicy(binding));
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -2656,7 +2551,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                         __out.AppendLine(false); //249:30
@@ -2672,9 +2566,7 @@ namespace MetaDslx.Soal //1:1
             if (binding.HasPolicy()) //254:2
             {
                 __out.AppendLine(true); //255:1
-                string __tmp1Prefix = string.Empty;
                 string __tmp2Line = "<wsp:Policy wsu:Id=\""; //256:1
-                __out.Append(__tmp1Prefix);
                 if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(binding.Name);

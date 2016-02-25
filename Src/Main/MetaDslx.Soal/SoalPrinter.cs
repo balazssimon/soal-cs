@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_SoalPrinter_452715671;
-    namespace __Hidden_SoalPrinter_452715671
+    using __Hidden_SoalPrinter_1382163557;
+    namespace __Hidden_SoalPrinter_1382163557
     {
         internal static class __Extensions
         {
@@ -71,7 +71,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop1_iteration;
                 var __loop1_var1 = __tmp1.__loop1_var1;
                 var ns = __tmp1.ns;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(GenerateNamespace(ns));
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -83,7 +82,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                         __out.AppendLine(false); //6:24
@@ -100,9 +98,7 @@ namespace MetaDslx.Soal //1:1
             {
                 if (ns.Prefix != null) //12:2
                 {
-                    string __tmp1Prefix = string.Empty;
                     string __tmp2Line = "namespace "; //13:1
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     StringBuilder __tmp3 = new StringBuilder();
                     __tmp3.Append(ns.FullName);
@@ -159,9 +155,7 @@ namespace MetaDslx.Soal //1:1
                 }
                 else //14:2
                 {
-                    string __tmp9Prefix = string.Empty;
                     string __tmp10Line = "namespace "; //15:1
-                    __out.Append(__tmp9Prefix);
                     if (__tmp10Line != null) __out.Append(__tmp10Line);
                     StringBuilder __tmp11 = new StringBuilder();
                     __tmp11.Append(ns.FullName);
@@ -422,7 +416,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop7_iteration;
                 var __loop7_var1 = __tmp1.__loop7_var1;
                 var annot = __tmp1.annot;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append("[");
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -434,7 +427,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                     }
@@ -525,7 +517,6 @@ namespace MetaDslx.Soal //1:1
                 ++__loop8_iteration;
                 var __loop8_var1 = __tmp1.__loop8_var1;
                 var annot = __tmp1.annot;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append("[");
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -537,7 +528,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                     }
@@ -632,7 +622,6 @@ namespace MetaDslx.Soal //1:1
                 }
                 var __loop9_var1 = __tmp1.__loop9_var1;
                 var prop = __tmp1.prop;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(delim);
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -644,7 +633,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                     }
@@ -708,7 +696,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateEnum(Namespace currentNs, Enum enm) //97:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(enm, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -720,15 +707,12 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //98:34
                 }
             }
-            string __tmp3Prefix = string.Empty;
             string __tmp4Line = "enum "; //99:1
-            __out.Append(__tmp3Prefix);
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(enm.Name);
@@ -817,7 +801,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit) //107:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(lit, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -829,13 +812,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //108:34
                 }
             }
-            string __tmp3Prefix = string.Empty;
             StringBuilder __tmp4 = new StringBuilder();
             __tmp4.Append(lit.Name);
             using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -847,7 +828,6 @@ namespace MetaDslx.Soal //1:1
                     __tmp4_first = false;
                     string __tmp4Line = __tmp4Reader.ReadLine();
                     __tmp4_last = __tmp4Reader.EndOfStream;
-                    __out.Append(__tmp3Prefix);
                     if (__tmp4Line != null) __out.Append(__tmp4Line);
                     if (!__tmp4_last) __out.AppendLine(true);
                     __out.AppendLine(false); //109:11
@@ -859,7 +839,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateStruct(Namespace currentNs, Struct st) //112:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(st, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -871,15 +850,12 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //113:33
                 }
             }
-            string __tmp3Prefix = string.Empty;
             string __tmp4Line = "struct "; //114:1
-            __out.Append(__tmp3Prefix);
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(st.Name);
@@ -952,7 +928,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateProperty(Namespace currentNs, Property prop) //122:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(prop, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -964,13 +939,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //123:35
                 }
             }
-            string __tmp3Prefix = string.Empty;
             StringBuilder __tmp4 = new StringBuilder();
             __tmp4.Append(GenerateType(currentNs, prop.Type));
             using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -982,7 +955,6 @@ namespace MetaDslx.Soal //1:1
                     __tmp4_first = false;
                     string __tmp4Line = __tmp4Reader.ReadLine();
                     __tmp4_last = __tmp4Reader.EndOfStream;
-                    __out.Append(__tmp3Prefix);
                     if (__tmp4Line != null) __out.Append(__tmp4Line);
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
@@ -1017,7 +989,6 @@ namespace MetaDslx.Soal //1:1
             {
                 if (decl.Namespace != currentNs) //129:2
                 {
-                    string __tmp1Prefix = string.Empty;
                     StringBuilder __tmp2 = new StringBuilder();
                     __tmp2.Append(decl.FullName());
                     using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -1029,7 +1000,6 @@ namespace MetaDslx.Soal //1:1
                             __tmp2_first = false;
                             string __tmp2Line = __tmp2Reader.ReadLine();
                             __tmp2_last = __tmp2Reader.EndOfStream;
-                            __out.Append(__tmp1Prefix);
                             if (__tmp2Line != null) __out.Append(__tmp2Line);
                             if (!__tmp2_last) __out.AppendLine(true);
                         }
@@ -1037,7 +1007,6 @@ namespace MetaDslx.Soal //1:1
                 }
                 else //131:2
                 {
-                    string __tmp3Prefix = string.Empty;
                     StringBuilder __tmp4 = new StringBuilder();
                     __tmp4.Append(decl.Name);
                     using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -1049,7 +1018,6 @@ namespace MetaDslx.Soal //1:1
                             __tmp4_first = false;
                             string __tmp4Line = __tmp4Reader.ReadLine();
                             __tmp4_last = __tmp4Reader.EndOfStream;
-                            __out.Append(__tmp3Prefix);
                             if (__tmp4Line != null) __out.Append(__tmp4Line);
                             if (!__tmp4_last) __out.AppendLine(true);
                         }
@@ -1064,7 +1032,6 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             if (t is PrimitiveType) //138:2
             {
-                string __tmp1Prefix = string.Empty;
                 StringBuilder __tmp2 = new StringBuilder();
                 __tmp2.Append(((PrimitiveType)t).Name);
                 using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -1076,7 +1043,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp2_first = false;
                         string __tmp2Line = __tmp2Reader.ReadLine();
                         __tmp2_last = __tmp2Reader.EndOfStream;
-                        __out.Append(__tmp1Prefix);
                         if (__tmp2Line != null) __out.Append(__tmp2Line);
                         if (!__tmp2_last) __out.AppendLine(true);
                     }
@@ -1084,7 +1050,6 @@ namespace MetaDslx.Soal //1:1
             }
             else if (t is NullableType) //140:2
             {
-                string __tmp3Prefix = string.Empty;
                 StringBuilder __tmp4 = new StringBuilder();
                 __tmp4.Append(GenerateType(currentNs, ((NullableType)t).InnerType));
                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -1096,7 +1061,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp4_first = false;
                         string __tmp4Line = __tmp4Reader.ReadLine();
                         __tmp4_last = __tmp4Reader.EndOfStream;
-                        __out.Append(__tmp3Prefix);
                         if (__tmp4Line != null) __out.Append(__tmp4Line);
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
@@ -1106,7 +1070,6 @@ namespace MetaDslx.Soal //1:1
             }
             else if (t is NonNullableType) //142:2
             {
-                string __tmp6Prefix = string.Empty;
                 StringBuilder __tmp7 = new StringBuilder();
                 __tmp7.Append(GenerateType(currentNs, ((NonNullableType)t).InnerType));
                 using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
@@ -1118,7 +1081,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp7_first = false;
                         string __tmp7Line = __tmp7Reader.ReadLine();
                         __tmp7_last = __tmp7Reader.EndOfStream;
-                        __out.Append(__tmp6Prefix);
                         if (__tmp7Line != null) __out.Append(__tmp7Line);
                         if (!__tmp7_last) __out.AppendLine(true);
                     }
@@ -1128,7 +1090,6 @@ namespace MetaDslx.Soal //1:1
             }
             else if (t is ArrayType) //144:2
             {
-                string __tmp9Prefix = string.Empty;
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GenerateType(currentNs, ((ArrayType)t).InnerType));
                 using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
@@ -1140,7 +1101,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp10_first = false;
                         string __tmp10Line = __tmp10Reader.ReadLine();
                         __tmp10_last = __tmp10Reader.EndOfStream;
-                        __out.Append(__tmp9Prefix);
                         if (__tmp10Line != null) __out.Append(__tmp10Line);
                         if (!__tmp10_last) __out.AppendLine(true);
                     }
@@ -1163,7 +1123,6 @@ namespace MetaDslx.Soal //1:1
             }
             else if (t is Declaration) //146:2
             {
-                string __tmp12Prefix = string.Empty;
                 StringBuilder __tmp13 = new StringBuilder();
                 __tmp13.Append(GenerateRef(currentNs, (Declaration)t));
                 using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
@@ -1175,7 +1134,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp13_first = false;
                         string __tmp13Line = __tmp13Reader.ReadLine();
                         __tmp13_last = __tmp13Reader.EndOfStream;
-                        __out.Append(__tmp12Prefix);
                         if (__tmp13Line != null) __out.Append(__tmp13Line);
                         if (!__tmp13_last) __out.AppendLine(true);
                         __out.AppendLine(false); //147:41
@@ -1184,7 +1142,6 @@ namespace MetaDslx.Soal //1:1
             }
             else //148:2
             {
-                string __tmp14Prefix = string.Empty;
                 StringBuilder __tmp15 = new StringBuilder();
                 __tmp15.Append(t);
                 using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
@@ -1196,7 +1153,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp15_first = false;
                         string __tmp15Line = __tmp15Reader.ReadLine();
                         __tmp15_last = __tmp15Reader.EndOfStream;
-                        __out.Append(__tmp14Prefix);
                         if (__tmp15Line != null) __out.Append(__tmp15Line);
                         if (!__tmp15_last) __out.AppendLine(true);
                     }
@@ -1214,7 +1170,6 @@ namespace MetaDslx.Soal //1:1
             }
             else //156:2
             {
-                string __tmp1Prefix = string.Empty;
                 StringBuilder __tmp2 = new StringBuilder();
                 __tmp2.Append(GenerateType(currentNs, op.Result.Type));
                 using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -1226,7 +1181,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp2_first = false;
                         string __tmp2Line = __tmp2Reader.ReadLine();
                         __tmp2_last = __tmp2Reader.EndOfStream;
-                        __out.Append(__tmp1Prefix);
                         if (__tmp2Line != null) __out.Append(__tmp2Line);
                         if (!__tmp2_last) __out.AppendLine(true);
                     }
@@ -1254,7 +1208,6 @@ namespace MetaDslx.Soal //1:1
                 }
                 var __loop12_var1 = __tmp1.__loop12_var1;
                 var ex = __tmp1.ex;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(delim);
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -1266,7 +1219,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                     }
@@ -1310,7 +1262,6 @@ namespace MetaDslx.Soal //1:1
                 }
                 var __loop13_var1 = __tmp1.__loop13_var1;
                 var p = __tmp1.p;
-                string __tmp2Prefix = string.Empty;
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(delim);
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -1322,7 +1273,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
                         __tmp3_last = __tmp3Reader.EndOfStream;
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         if (!__tmp3_last) __out.AppendLine(true);
                     }
@@ -1381,7 +1331,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateOperation(Namespace currentNs, Operation op) //173:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(op, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -1393,13 +1342,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //174:33
                 }
             }
-            string __tmp3Prefix = string.Empty;
             StringBuilder __tmp4 = new StringBuilder();
             __tmp4.Append(GenerateAnnotations(op.Result, true));
             using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -1411,13 +1358,11 @@ namespace MetaDslx.Soal //1:1
                     __tmp4_first = false;
                     string __tmp4Line = __tmp4Reader.ReadLine();
                     __tmp4_last = __tmp4Reader.EndOfStream;
-                    __out.Append(__tmp3Prefix);
                     if (__tmp4Line != null) __out.Append(__tmp4Line);
                     if (!__tmp4_last) __out.AppendLine(true);
                     __out.AppendLine(false); //175:39
                 }
             }
-            string __tmp5Prefix = string.Empty;
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(GenerateReturnType(currentNs, op));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -1429,7 +1374,6 @@ namespace MetaDslx.Soal //1:1
                     __tmp6_first = false;
                     string __tmp6Line = __tmp6Reader.ReadLine();
                     __tmp6_last = __tmp6Reader.EndOfStream;
-                    __out.Append(__tmp5Prefix);
                     if (__tmp6Line != null) __out.Append(__tmp6Line);
                     if (!__tmp6_last) __out.AppendLine(true);
                 }
@@ -1494,7 +1438,6 @@ namespace MetaDslx.Soal //1:1
         public string GenerateInterface(Namespace currentNs, Interface intf) //179:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             StringBuilder __tmp2 = new StringBuilder();
             __tmp2.Append(GenerateAnnotations(intf, false));
             using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
@@ -1506,15 +1449,12 @@ namespace MetaDslx.Soal //1:1
                     __tmp2_first = false;
                     string __tmp2Line = __tmp2Reader.ReadLine();
                     __tmp2_last = __tmp2Reader.EndOfStream;
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     if (!__tmp2_last) __out.AppendLine(true);
                     __out.AppendLine(false); //180:35
                 }
             }
-            string __tmp3Prefix = string.Empty;
             string __tmp4Line = "interface "; //181:1
-            __out.Append(__tmp3Prefix);
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(intf.Name);
@@ -1583,9 +1523,7 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(false); //194:2
                     __out.Append("	Ssl = true;"); //195:1
                     __out.AppendLine(false); //195:13
-                    string __tmp2Prefix = string.Empty;
                     string __tmp3Line = "	ClientAuthentication = "; //196:1
-                    __out.Append(__tmp2Prefix);
                     if (__tmp3Line != null) __out.Append(__tmp3Line);
                     StringBuilder __tmp4 = new StringBuilder();
                     __tmp4.Append(((HttpTransportBindingElement)bnd).ClientAuthentication.ToString().ToLower());
@@ -1641,9 +1579,7 @@ namespace MetaDslx.Soal //1:1
                     __out.AppendLine(false); //211:2
                     if (((SoapEncodingBindingElement)bnd).Style != SoapEncodingStyle.DocumentWrapped) //212:3
                     {
-                        string __tmp2Prefix = string.Empty;
                         string __tmp3Line = "	Style = "; //213:1
-                        __out.Append(__tmp2Prefix);
                         if (__tmp3Line != null) __out.Append(__tmp3Line);
                         StringBuilder __tmp4 = new StringBuilder();
                         __tmp4.Append(((SoapEncodingBindingElement)bnd).Style);
@@ -1666,9 +1602,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     if (((SoapEncodingBindingElement)bnd).Version != SoapVersion.Soap11) //215:3
                     {
-                        string __tmp6Prefix = string.Empty;
                         string __tmp7Line = "	Version = "; //216:1
-                        __out.Append(__tmp6Prefix);
                         if (__tmp7Line != null) __out.Append(__tmp7Line);
                         StringBuilder __tmp8 = new StringBuilder();
                         __tmp8.Append(((SoapEncodingBindingElement)bnd).Version);
@@ -1731,9 +1665,7 @@ namespace MetaDslx.Soal //1:1
         public string GenerateBinding(Namespace currentNs, Binding bnd) //236:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "binding "; //237:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(bnd.Name);
@@ -1839,9 +1771,7 @@ namespace MetaDslx.Soal //1:1
         public string GenerateEndpoint(Namespace currentNs, Endpoint endp) //249:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "endpoint "; //250:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(endp.Name);
@@ -1878,9 +1808,7 @@ namespace MetaDslx.Soal //1:1
             }
             __out.Append("{"); //251:1
             __out.AppendLine(false); //251:2
-            string __tmp6Prefix = string.Empty;
             string __tmp7Line = "	binding "; //252:1
-            __out.Append(__tmp6Prefix);
             if (__tmp7Line != null) __out.Append(__tmp7Line);
             StringBuilder __tmp8 = new StringBuilder();
             __tmp8.Append(GenerateRef(currentNs, endp.Binding));
@@ -1900,9 +1828,7 @@ namespace MetaDslx.Soal //1:1
             string __tmp9Line = ";"; //252:48
             if (__tmp9Line != null) __out.Append(__tmp9Line);
             __out.AppendLine(false); //252:49
-            string __tmp10Prefix = string.Empty;
             string __tmp11Line = "	address \""; //253:1
-            __out.Append(__tmp10Prefix);
             if (__tmp11Line != null) __out.Append(__tmp11Line);
             StringBuilder __tmp12 = new StringBuilder();
             __tmp12.Append(endp.Address);

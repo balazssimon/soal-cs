@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\netvlb4d.3n2\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\2y0slo31.ozt\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -409,6 +409,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCompositeDeclaration([NotNull] SoalParser.CompositeDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.assemblyDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssemblyDeclaration([NotNull] SoalParser.AssemblyDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.assemblyDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssemblyDeclaration([NotNull] SoalParser.AssemblyDeclarationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.compositeElements"/>.
 	/// </summary>

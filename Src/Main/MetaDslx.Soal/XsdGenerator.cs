@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_XsdGenerator_113116563;
-    namespace __Hidden_XsdGenerator_113116563
+    using __Hidden_XsdGenerator_316941627;
+    namespace __Hidden_XsdGenerator_316941627
     {
         internal static class __Extensions
         {
@@ -74,9 +74,7 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             __out.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"); //9:1
             __out.AppendLine(false); //9:39
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<xs:schema targetNamespace=\""; //10:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(ns.Uri);
@@ -98,9 +96,7 @@ namespace MetaDslx.Soal //1:1
             __out.AppendLine(false); //10:38
             __out.Append("		xmlns:xs=\"http://www.w3.org/2001/XMLSchema\""); //11:1
             __out.AppendLine(false); //11:46
-            string __tmp5Prefix = string.Empty;
             string __tmp6Line = "		xmlns:"; //12:1
-            __out.Append(__tmp5Prefix);
             if (__tmp6Line != null) __out.Append(__tmp6Line);
             StringBuilder __tmp7 = new StringBuilder();
             __tmp7.Append(ns.Prefix);
@@ -148,9 +144,7 @@ namespace MetaDslx.Soal //1:1
                 {
                     ++__loop1_iteration;
                     var ins = __tmp11.ins;
-                    string __tmp12Prefix = string.Empty;
                     string __tmp13Line = "		xmlns:"; //15:1
-                    __out.Append(__tmp12Prefix);
                     if (__tmp13Line != null) __out.Append(__tmp13Line);
                     StringBuilder __tmp14 = new StringBuilder();
                     __tmp14.Append(ins.Prefix);
@@ -202,9 +196,7 @@ namespace MetaDslx.Soal //1:1
                 {
                     ++__loop2_iteration;
                     var ins = __tmp18.ins;
-                    string __tmp19Prefix = string.Empty;
                     string __tmp20Line = "	<xs:import namespace=\""; //21:1
-                    __out.Append(__tmp19Prefix);
                     if (__tmp20Line != null) __out.Append(__tmp20Line);
                     StringBuilder __tmp21 = new StringBuilder();
                     __tmp21.Append(ins.Uri);
@@ -255,9 +247,7 @@ namespace MetaDslx.Soal //1:1
                 var __loop3_var1 = __tmp25.__loop3_var1;
                 var etype = __tmp25.etype;
                 __out.AppendLine(true); //25:1
-                string __tmp26Prefix = string.Empty;
                 string __tmp27Line = "	<xs:element name=\""; //26:1
-                __out.Append(__tmp26Prefix);
                 if (__tmp27Line != null) __out.Append(__tmp27Line);
                 StringBuilder __tmp28 = new StringBuilder();
                 __tmp28.Append(etype.GetXsdName());
@@ -311,9 +301,7 @@ namespace MetaDslx.Soal //1:1
                 string __tmp33Line = "\"/>"; //26:80
                 if (__tmp33Line != null) __out.Append(__tmp33Line);
                 __out.AppendLine(false); //26:83
-                string __tmp34Prefix = string.Empty;
                 string __tmp35Line = "	<xs:simpleType name=\""; //27:1
-                __out.Append(__tmp34Prefix);
                 if (__tmp35Line != null) __out.Append(__tmp35Line);
                 StringBuilder __tmp36 = new StringBuilder();
                 __tmp36.Append(etype.GetXsdName());
@@ -335,9 +323,7 @@ namespace MetaDslx.Soal //1:1
                 __out.AppendLine(false); //27:45
                 if (etype.BaseType != null) //28:4
                 {
-                    string __tmp38Prefix = string.Empty;
                     string __tmp39Line = "		<xs:restriction base=\""; //29:1
-                    __out.Append(__tmp38Prefix);
                     if (__tmp39Line != null) __out.Append(__tmp39Line);
                     StringBuilder __tmp40 = new StringBuilder();
                     __tmp40.Append(etype.BaseType.GetNamespace(ns).Prefix);
@@ -393,9 +379,7 @@ namespace MetaDslx.Soal //1:1
                     var elit = __tmp44.elit;
                     if (elit.HasAnnotationProperty(SoalAnnotations.Enum, SoalAnnotationProperties.Name)) //34:6
                     {
-                        string __tmp45Prefix = string.Empty;
                         string __tmp46Line = "			<xs:enumeration value=\""; //35:1
-                        __out.Append(__tmp45Prefix);
                         if (__tmp46Line != null) __out.Append(__tmp46Line);
                         StringBuilder __tmp47 = new StringBuilder();
                         __tmp47.Append(elit.GetAnnotationPropertyValue(SoalAnnotations.Enum, SoalAnnotationProperties.Name));
@@ -418,9 +402,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     else //36:6
                     {
-                        string __tmp49Prefix = string.Empty;
                         string __tmp50Line = "			<xs:enumeration value=\""; //37:1
-                        __out.Append(__tmp49Prefix);
                         if (__tmp50Line != null) __out.Append(__tmp50Line);
                         StringBuilder __tmp51 = new StringBuilder();
                         __tmp51.Append(elit.Name);
@@ -459,9 +441,7 @@ namespace MetaDslx.Soal //1:1
                 var __loop5_var1 = __tmp53.__loop5_var1;
                 var stype = __tmp53.stype;
                 __out.AppendLine(true); //44:1
-                string __tmp54Prefix = string.Empty;
                 string __tmp55Line = "	<xs:element name=\""; //45:1
-                __out.Append(__tmp54Prefix);
                 if (__tmp55Line != null) __out.Append(__tmp55Line);
                 StringBuilder __tmp56 = new StringBuilder();
                 __tmp56.Append(stype.GetXsdName());
@@ -515,9 +495,7 @@ namespace MetaDslx.Soal //1:1
                 string __tmp61Line = "\"/>"; //45:80
                 if (__tmp61Line != null) __out.Append(__tmp61Line);
                 __out.AppendLine(false); //45:83
-                string __tmp62Prefix = string.Empty;
                 string __tmp63Line = "	<xs:complexType name=\""; //46:1
-                __out.Append(__tmp62Prefix);
                 if (__tmp63Line != null) __out.Append(__tmp63Line);
                 StringBuilder __tmp64 = new StringBuilder();
                 __tmp64.Append(stype.GetXsdName());
@@ -541,9 +519,7 @@ namespace MetaDslx.Soal //1:1
                 {
                     __out.Append("		<xs:complexContent>"); //48:1
                     __out.AppendLine(false); //48:22
-                    string __tmp66Prefix = string.Empty;
                     string __tmp67Line = "			<xs:extension base=\""; //49:1
-                    __out.Append(__tmp66Prefix);
                     if (__tmp67Line != null) __out.Append(__tmp67Line);
                     StringBuilder __tmp68 = new StringBuilder();
                     __tmp68.Append(stype.BaseType.GetNamespace(ns).Prefix);
@@ -756,9 +732,7 @@ namespace MetaDslx.Soal //1:1
                     else //76:5
                     {
                         __out.AppendLine(true); //77:1
-                        string __tmp87Prefix = string.Empty;
                         string __tmp88Line = "	<xs:element name=\""; //78:1
-                        __out.Append(__tmp87Prefix);
                         if (__tmp88Line != null) __out.Append(__tmp88Line);
                         StringBuilder __tmp89 = new StringBuilder();
                         __tmp89.Append(op.Name);
@@ -812,9 +786,7 @@ namespace MetaDslx.Soal //1:1
                         string __tmp94Line = "\"/>"; //78:58
                         if (__tmp94Line != null) __out.Append(__tmp94Line);
                         __out.AppendLine(false); //78:61
-                        string __tmp95Prefix = string.Empty;
                         string __tmp96Line = "	<xs:complexType name=\""; //79:1
-                        __out.Append(__tmp95Prefix);
                         if (__tmp96Line != null) __out.Append(__tmp96Line);
                         StringBuilder __tmp97 = new StringBuilder();
                         __tmp97.Append(op.Name);
@@ -905,9 +877,7 @@ namespace MetaDslx.Soal //1:1
                         if (!op.Result.IsOneway) //89:6
                         {
                             __out.AppendLine(true); //90:1
-                            string __tmp105Prefix = string.Empty;
                             string __tmp106Line = "	<xs:element name=\""; //91:1
-                            __out.Append(__tmp105Prefix);
                             if (__tmp106Line != null) __out.Append(__tmp106Line);
                             StringBuilder __tmp107 = new StringBuilder();
                             __tmp107.Append(op.Name);
@@ -961,9 +931,7 @@ namespace MetaDslx.Soal //1:1
                             string __tmp112Line = "Response\"/>"; //91:66
                             if (__tmp112Line != null) __out.Append(__tmp112Line);
                             __out.AppendLine(false); //91:77
-                            string __tmp113Prefix = string.Empty;
                             string __tmp114Line = "	<xs:complexType name=\""; //92:1
-                            __out.Append(__tmp113Prefix);
                             if (__tmp114Line != null) __out.Append(__tmp114Line);
                             StringBuilder __tmp115 = new StringBuilder();
                             __tmp115.Append(op.Name);
@@ -1048,9 +1016,7 @@ namespace MetaDslx.Soal //1:1
         public string GenerateStructBody(Namespace ns, Struct stype) //111:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "<xs:"; //112:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(GetStructKind(stype));
@@ -1102,9 +1068,7 @@ namespace MetaDslx.Soal //1:1
                     }
                 }
             }
-            string __tmp8Prefix = string.Empty;
             string __tmp9Line = "</xs:"; //117:1
-            __out.Append(__tmp8Prefix);
             if (__tmp9Line != null) __out.Append(__tmp9Line);
             StringBuilder __tmp10 = new StringBuilder();
             __tmp10.Append(GetStructKind(stype));
@@ -1137,7 +1101,6 @@ namespace MetaDslx.Soal //1:1
                 var __loop12_var1 = __tmp12.__loop12_var1;
                 var prop = __tmp12.prop;
                 string newName = prop.GetAnnotationPropertyValue(SoalAnnotations.Attribute, SoalAnnotationProperties.Name) as string; //119:3
-                string __tmp13Prefix = string.Empty;
                 StringBuilder __tmp14 = new StringBuilder();
                 __tmp14.Append(GenerateElement(ns, newName == null ? prop.Name : newName, prop.Type, prop));
                 using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
@@ -1149,7 +1112,6 @@ namespace MetaDslx.Soal //1:1
                         __tmp14_first = false;
                         string __tmp14Line = __tmp14Reader.ReadLine();
                         __tmp14_last = __tmp14Reader.EndOfStream;
-                        __out.Append(__tmp13Prefix);
                         if (__tmp14Line != null) __out.Append(__tmp14Line);
                         if (!__tmp14_last) __out.AppendLine(true);
                         __out.AppendLine(false); //120:78
@@ -1165,9 +1127,7 @@ namespace MetaDslx.Soal //1:1
             Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction); //125:2
             if (ae.HasAnnotation(SoalAnnotations.Attribute)) //126:2
             {
-                string __tmp1Prefix = string.Empty;
                 string __tmp2Line = "<xs:attribute name=\""; //127:1
-                __out.Append(__tmp1Prefix);
                 if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(name);
@@ -1246,9 +1206,7 @@ namespace MetaDslx.Soal //1:1
                     ArrayType array = t is NonNullableType ? (ArrayType)((NonNullableType)t).InnerType : (ArrayType)t; //130:4
                     if (array.GetCoreType() == SoalInstance.Byte) //131:4
                     {
-                        string __tmp11Prefix = string.Empty;
                         string __tmp12Line = "<xs:element name=\""; //132:1
-                        __out.Append(__tmp11Prefix);
                         if (__tmp12Line != null) __out.Append(__tmp12Line);
                         StringBuilder __tmp13 = new StringBuilder();
                         __tmp13.Append(name);
@@ -1343,9 +1301,7 @@ namespace MetaDslx.Soal //1:1
                         if (wrapped != null && (bool)wrapped) //135:5
                         {
                             string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string; //136:6
-                            string __tmp23Prefix = string.Empty;
                             string __tmp24Line = "<xs:element name=\""; //137:1
-                            __out.Append(__tmp23Prefix);
                             if (__tmp24Line != null) __out.Append(__tmp24Line);
                             StringBuilder __tmp25 = new StringBuilder();
                             __tmp25.Append(name);
@@ -1416,9 +1372,7 @@ namespace MetaDslx.Soal //1:1
                                 {
                                     if (items != null) //146:8
                                     {
-                                        string __tmp31Prefix = string.Empty;
                                         string __tmp32Line = "						<xs:element name=\""; //147:1
-                                        __out.Append(__tmp31Prefix);
                                         if (__tmp32Line != null) __out.Append(__tmp32Line);
                                         StringBuilder __tmp33 = new StringBuilder();
                                         __tmp33.Append(items);
@@ -1458,9 +1412,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     else //148:8
                                     {
-                                        string __tmp37Prefix = string.Empty;
                                         string __tmp38Line = "						<xs:element name=\""; //149:1
-                                        __out.Append(__tmp37Prefix);
                                         if (__tmp38Line != null) __out.Append(__tmp38Line);
                                         StringBuilder __tmp39 = new StringBuilder();
                                         __tmp39.Append(array.InnerType.GetXsdName());
@@ -1521,9 +1473,7 @@ namespace MetaDslx.Soal //1:1
                                 {
                                     if (items != null) //153:8
                                     {
-                                        string __tmp45Prefix = string.Empty;
                                         string __tmp46Line = "						<xs:element name=\""; //154:1
-                                        __out.Append(__tmp45Prefix);
                                         if (__tmp46Line != null) __out.Append(__tmp46Line);
                                         StringBuilder __tmp47 = new StringBuilder();
                                         __tmp47.Append(items);
@@ -1597,9 +1547,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     else //155:8
                                     {
-                                        string __tmp55Prefix = string.Empty;
                                         string __tmp56Line = "						<xs:element name=\""; //156:1
-                                        __out.Append(__tmp55Prefix);
                                         if (__tmp56Line != null) __out.Append(__tmp56Line);
                                         StringBuilder __tmp57 = new StringBuilder();
                                         __tmp57.Append(array.InnerType.GetXsdName());
@@ -1689,9 +1637,7 @@ namespace MetaDslx.Soal //1:1
                                 {
                                     if (items != null) //166:8
                                     {
-                                        string __tmp65Prefix = string.Empty;
                                         string __tmp66Line = "			<xs:element name=\""; //167:1
-                                        __out.Append(__tmp65Prefix);
                                         if (__tmp66Line != null) __out.Append(__tmp66Line);
                                         StringBuilder __tmp67 = new StringBuilder();
                                         __tmp67.Append(items);
@@ -1731,9 +1677,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     else //168:8
                                     {
-                                        string __tmp71Prefix = string.Empty;
                                         string __tmp72Line = "			<xs:element name=\""; //169:1
-                                        __out.Append(__tmp71Prefix);
                                         if (__tmp72Line != null) __out.Append(__tmp72Line);
                                         StringBuilder __tmp73 = new StringBuilder();
                                         __tmp73.Append(array.InnerType.GetXsdName());
@@ -1794,9 +1738,7 @@ namespace MetaDslx.Soal //1:1
                                 {
                                     if (items != null) //173:8
                                     {
-                                        string __tmp79Prefix = string.Empty;
                                         string __tmp80Line = "			<xs:element name=\""; //174:1
-                                        __out.Append(__tmp79Prefix);
                                         if (__tmp80Line != null) __out.Append(__tmp80Line);
                                         StringBuilder __tmp81 = new StringBuilder();
                                         __tmp81.Append(items);
@@ -1870,9 +1812,7 @@ namespace MetaDslx.Soal //1:1
                                     }
                                     else //175:8
                                     {
-                                        string __tmp89Prefix = string.Empty;
                                         string __tmp90Line = "			<xs:element name=\""; //176:1
-                                        __out.Append(__tmp89Prefix);
                                         if (__tmp90Line != null) __out.Append(__tmp90Line);
                                         StringBuilder __tmp91 = new StringBuilder();
                                         __tmp91.Append(array.InnerType.GetXsdName());
@@ -1957,9 +1897,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType) //184:6
                             {
-                                string __tmp99Prefix = string.Empty;
                                 string __tmp100Line = "<xs:element name=\""; //185:1
-                                __out.Append(__tmp99Prefix);
                                 if (__tmp100Line != null) __out.Append(__tmp100Line);
                                 StringBuilder __tmp101 = new StringBuilder();
                                 __tmp101.Append(name);
@@ -1996,7 +1934,6 @@ namespace MetaDslx.Soal //1:1
                                 string __tmp104Line = "\" minOccurs=\"0\" maxOccurs=\"unbounded\">"; //185:70
                                 if (__tmp104Line != null) __out.Append(__tmp104Line);
                                 __out.AppendLine(false); //185:108
-                                string __tmp105Prefix = string.Empty;
                                 StringBuilder __tmp106 = new StringBuilder();
                                 __tmp106.Append(GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix + ":" + array.InnerType.GetXsdName(), restrAnnot));
                                 using(StreamReader __tmp106Reader = new StreamReader(this.__ToStream(__tmp106.ToString())))
@@ -2008,7 +1945,6 @@ namespace MetaDslx.Soal //1:1
                                         __tmp106_first = false;
                                         string __tmp106Line = __tmp106Reader.ReadLine();
                                         __tmp106_last = __tmp106Reader.EndOfStream;
-                                        __out.Append(__tmp105Prefix);
                                         if (__tmp106Line != null) __out.Append(__tmp106Line);
                                         if (!__tmp106_last) __out.AppendLine(true);
                                         __out.AppendLine(false); //186:109
@@ -2017,9 +1953,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //187:6
                             {
-                                string __tmp107Prefix = string.Empty;
                                 string __tmp108Line = "<xs:element name=\""; //188:1
-                                __out.Append(__tmp107Prefix);
                                 if (__tmp108Line != null) __out.Append(__tmp108Line);
                                 StringBuilder __tmp109 = new StringBuilder();
                                 __tmp109.Append(name);
@@ -2098,9 +2032,7 @@ namespace MetaDslx.Soal //1:1
                 {
                     if (restrAnnot != null && t.GetCoreType() is PrimitiveType) //193:4
                     {
-                        string __tmp117Prefix = string.Empty;
                         string __tmp118Line = "<xs:element name=\""; //194:1
-                        __out.Append(__tmp117Prefix);
                         if (__tmp118Line != null) __out.Append(__tmp118Line);
                         StringBuilder __tmp119 = new StringBuilder();
                         __tmp119.Append(name);
@@ -2154,7 +2086,6 @@ namespace MetaDslx.Soal //1:1
                         string __tmp124Line = ">"; //194:81
                         if (__tmp124Line != null) __out.Append(__tmp124Line);
                         __out.AppendLine(false); //194:82
-                        string __tmp125Prefix = string.Empty;
                         StringBuilder __tmp126 = new StringBuilder();
                         __tmp126.Append(GenerateRestrictions(t.GetNamespace(ns).Prefix + ":" + t.GetXsdName(), restrAnnot));
                         using(StreamReader __tmp126Reader = new StreamReader(this.__ToStream(__tmp126.ToString())))
@@ -2166,7 +2097,6 @@ namespace MetaDslx.Soal //1:1
                                 __tmp126_first = false;
                                 string __tmp126Line = __tmp126Reader.ReadLine();
                                 __tmp126_last = __tmp126Reader.EndOfStream;
-                                __out.Append(__tmp125Prefix);
                                 if (__tmp126Line != null) __out.Append(__tmp126Line);
                                 if (!__tmp126_last) __out.AppendLine(true);
                                 __out.AppendLine(false); //195:81
@@ -2175,9 +2105,7 @@ namespace MetaDslx.Soal //1:1
                     }
                     else //196:4
                     {
-                        string __tmp127Prefix = string.Empty;
                         string __tmp128Line = "<xs:element name=\""; //197:1
-                        __out.Append(__tmp127Prefix);
                         if (__tmp128Line != null) __out.Append(__tmp128Line);
                         StringBuilder __tmp129 = new StringBuilder();
                         __tmp129.Append(name);
@@ -2281,9 +2209,7 @@ namespace MetaDslx.Soal //1:1
                 if (array.GetCoreType() != SoalInstance.Byte) //207:3
                 {
                     string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string; //208:4
-                    string __tmp1Prefix = string.Empty;
                     string __tmp2Line = "<xs:complexType name=\""; //209:1
-                    __out.Append(__tmp1Prefix);
                     if (__tmp2Line != null) __out.Append(__tmp2Line);
                     StringBuilder __tmp3 = new StringBuilder();
                     __tmp3.Append(name);
@@ -2318,9 +2244,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (items != null) //217:6
                             {
-                                string __tmp5Prefix = string.Empty;
                                 string __tmp6Line = "					<xs:element name=\""; //218:1
-                                __out.Append(__tmp5Prefix);
                                 if (__tmp6Line != null) __out.Append(__tmp6Line);
                                 StringBuilder __tmp7 = new StringBuilder();
                                 __tmp7.Append(items);
@@ -2360,9 +2284,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //219:6
                             {
-                                string __tmp11Prefix = string.Empty;
                                 string __tmp12Line = "					<xs:element name=\""; //220:1
-                                __out.Append(__tmp11Prefix);
                                 if (__tmp12Line != null) __out.Append(__tmp12Line);
                                 StringBuilder __tmp13 = new StringBuilder();
                                 __tmp13.Append(array.InnerType.GetXsdName());
@@ -2423,9 +2345,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (items != null) //224:6
                             {
-                                string __tmp19Prefix = string.Empty;
                                 string __tmp20Line = "					<xs:element name=\""; //225:1
-                                __out.Append(__tmp19Prefix);
                                 if (__tmp20Line != null) __out.Append(__tmp20Line);
                                 StringBuilder __tmp21 = new StringBuilder();
                                 __tmp21.Append(items);
@@ -2499,9 +2419,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //226:6
                             {
-                                string __tmp29Prefix = string.Empty;
                                 string __tmp30Line = "					<xs:element name=\""; //227:1
-                                __out.Append(__tmp29Prefix);
                                 if (__tmp30Line != null) __out.Append(__tmp30Line);
                                 StringBuilder __tmp31 = new StringBuilder();
                                 __tmp31.Append(array.InnerType.GetXsdName());
@@ -2591,9 +2509,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (items != null) //237:6
                             {
-                                string __tmp39Prefix = string.Empty;
                                 string __tmp40Line = "		<xs:element name=\""; //238:1
-                                __out.Append(__tmp39Prefix);
                                 if (__tmp40Line != null) __out.Append(__tmp40Line);
                                 StringBuilder __tmp41 = new StringBuilder();
                                 __tmp41.Append(items);
@@ -2633,9 +2549,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //239:6
                             {
-                                string __tmp45Prefix = string.Empty;
                                 string __tmp46Line = "		<xs:element name=\""; //240:1
-                                __out.Append(__tmp45Prefix);
                                 if (__tmp46Line != null) __out.Append(__tmp46Line);
                                 StringBuilder __tmp47 = new StringBuilder();
                                 __tmp47.Append(array.InnerType.GetXsdName());
@@ -2696,9 +2610,7 @@ namespace MetaDslx.Soal //1:1
                         {
                             if (items != null) //244:6
                             {
-                                string __tmp53Prefix = string.Empty;
                                 string __tmp54Line = "		<xs:element name=\""; //245:1
-                                __out.Append(__tmp53Prefix);
                                 if (__tmp54Line != null) __out.Append(__tmp54Line);
                                 StringBuilder __tmp55 = new StringBuilder();
                                 __tmp55.Append(items);
@@ -2772,9 +2684,7 @@ namespace MetaDslx.Soal //1:1
                             }
                             else //246:6
                             {
-                                string __tmp63Prefix = string.Empty;
                                 string __tmp64Line = "		<xs:element name=\""; //247:1
-                                __out.Append(__tmp63Prefix);
                                 if (__tmp64Line != null) __out.Append(__tmp64Line);
                                 StringBuilder __tmp65 = new StringBuilder();
                                 __tmp65.Append(array.InnerType.GetXsdName());
@@ -2862,9 +2772,7 @@ namespace MetaDslx.Soal //1:1
             StringBuilder __out = new StringBuilder();
             __out.Append("	<xs:simpleType>"); //258:1
             __out.AppendLine(false); //258:17
-            string __tmp1Prefix = string.Empty;
             string __tmp2Line = "		<xs:restriction base=\""; //259:1
-            __out.Append(__tmp1Prefix);
             if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(baseType);
@@ -2895,9 +2803,7 @@ namespace MetaDslx.Soal //1:1
                 ++__loop13_iteration;
                 var __loop13_var1 = __tmp5.__loop13_var1;
                 var prop = __tmp5.prop;
-                string __tmp6Prefix = string.Empty;
                 string __tmp7Line = "			<xs:"; //261:1
-                __out.Append(__tmp6Prefix);
                 if (__tmp7Line != null) __out.Append(__tmp7Line);
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(prop.Name);

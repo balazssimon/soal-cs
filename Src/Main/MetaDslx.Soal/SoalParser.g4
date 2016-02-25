@@ -44,7 +44,7 @@ annotationPropertyValue
 namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 // Enums
 
@@ -136,8 +136,11 @@ componentImplementation : KImplementation identifier TSemicolon;
                   
 componentLanguage : KLanguage identifier TSemicolon;
 
-        
-compositeDeclaration : (                      KAssembly |                        KComposite) identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+                   
+compositeDeclaration : KComposite identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+                  
+assemblyDeclaration : KAssembly identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
@@ -151,7 +154,8 @@ compositeElement
 	| compositeWire
 	;
 
-compositeComponent : KComponent                                           qualifiedName TSemicolon;
+                     
+compositeComponent : KComponent                     qualifiedName TSemicolon;
 
                 
              

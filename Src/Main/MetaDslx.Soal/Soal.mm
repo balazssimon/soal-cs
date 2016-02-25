@@ -227,7 +227,7 @@
 	class Implementation : NamedElement
 	{
 	}
-
+	
 	class Language : NamedElement
 	{
 	}
