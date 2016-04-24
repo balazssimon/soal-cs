@@ -355,7 +355,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp20);
                 TypeUseAnnotation __tmp21 = new TypeUseAnnotation();
                 __tmp21.SymbolTypes.Add(typeof(Enum));
-                __tmp21.ResolveFlags = ResolveFlags.Parent;
+                __tmp21.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp21);
             }
             this.HandleSymbolType(context);
@@ -411,7 +411,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp25);
                 TypeUseAnnotation __tmp26 = new TypeUseAnnotation();
                 __tmp26.SymbolTypes.Add(typeof(Struct));
-                __tmp26.ResolveFlags = ResolveFlags.Parent;
+                __tmp26.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp26);
             }
             this.HandleSymbolType(context);
@@ -653,7 +653,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp49);
                 TypeUseAnnotation __tmp50 = new TypeUseAnnotation();
                 __tmp50.SymbolTypes.Add(typeof(Component));
-                __tmp50.ResolveFlags = ResolveFlags.Parent;
+                __tmp50.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp50);
             }
             this.HandleSymbolType(context);
@@ -681,7 +681,7 @@ namespace MetaDslx.Soal
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp51 = new PropertyAnnotation();
-            __tmp51.Name = "Services";
+            __tmp51.Name = "Ports";
             treeAnnotList.Add(__tmp51);
             SymbolAnnotation __tmp52 = new SymbolAnnotation();
             __tmp52.SymbolType = typeof(Service);
@@ -729,7 +729,7 @@ namespace MetaDslx.Soal
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp57 = new PropertyAnnotation();
-            __tmp57.Name = "References";
+            __tmp57.Name = "Ports";
             treeAnnotList.Add(__tmp57);
             SymbolAnnotation __tmp58 = new SymbolAnnotation();
             __tmp58.SymbolType = typeof(Reference);
@@ -888,7 +888,7 @@ namespace MetaDslx.Soal
                 TypeUseAnnotation __tmp74 = new TypeUseAnnotation();
                 __tmp74.SymbolTypes.Add(typeof(Component));
                 __tmp74.SymbolTypes.Add(typeof(Composite));
-                __tmp74.ResolveFlags = ResolveFlags.Parent;
+                __tmp74.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp74);
             }
             this.HandleSymbolType(context);
@@ -921,7 +921,7 @@ namespace MetaDslx.Soal
                 TypeUseAnnotation __tmp77 = new TypeUseAnnotation();
                 __tmp77.SymbolTypes.Add(typeof(Component));
                 __tmp77.SymbolTypes.Add(typeof(Composite));
-                __tmp77.ResolveFlags = ResolveFlags.Parent;
+                __tmp77.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp77);
             }
             this.HandleSymbolType(context);
@@ -2527,10 +2527,7 @@ namespace MetaDslx.Soal
             SoalParserPropertyEvaluator propertyEvaluator = new SoalParserPropertyEvaluator(this);
             propertyEvaluator.Visit(this.ParseTree);
             
-            foreach (var symbol in this.Data.GetSymbols())
-            {
-                symbol.MEvalLazyValues();
-            }
+            this.Model.EvalLazyValues();
             foreach (var symbol in this.Data.GetSymbols())
             {
                 if (symbol.MHasUninitializedValue())

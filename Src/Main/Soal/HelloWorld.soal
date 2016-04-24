@@ -80,12 +80,12 @@
 		service IHello;
 		implementation EJB; // implementation DotNet;
 	}
-	composite CinemaApp
+	/*composite CinemaApp
 	{
 		component UserDB;
 		component UserLogic; // TODO: Cannot resolve name or type.
 		wire UserDB.HelloDB to UserLogic.HelloDB;
-	}
+	}*/
 }
 
 namespace CalcNs = c:"http://www.hello.org/CalcNs"

@@ -378,7 +378,12 @@ namespace MetaDslx.Soal
             IEnumerable<ModelObject> currentScope = new ModelObject[] { ModelCompilerContext.Current.GlobalScope };
             while (i < names.Length)
             {
-                IEnumerable<ModelObject> nextScope = ModelCompilerContext.Current.ResolutionProvider.Resolve(currentScope, ResolveKind.Name, names[0], new ResolutionInfo(), ResolveFlags.Children);
+                ResolutionInfo ri = new ResolutionInfo();
+                ri.Scopes.Add((ModelObject)currentScope);
+                ri.Kind = ResolveKind.Name;
+                ri.QualifiedNameNodes.Add(names[0]);
+                ri.Location = ResolutionLocation.Children;
+                var nextScope = ModelCompilerContext.Current.ResolutionProvider.Resolve(ri).ResolvedObjects;
                 if (nextScope.Any())
                 {
                     currentScope = nextScope;
@@ -516,7 +521,12 @@ namespace MetaDslx.Soal
             Namespace ns = this.GetNamespace(name.NamespaceName);
             if (ns != null)
             {
-                IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)ns }, ResolveKind.NameOrType, name.LocalName, new ResolutionInfo(), ResolveFlags.Children);
+                ResolutionInfo ri = new ResolutionInfo();
+                ri.Scopes.Add((ModelObject)ns);
+                ri.Kind = ResolveKind.NameOrType;
+                ri.QualifiedNameNodes.Add(name.LocalName);
+                ri.Location = ResolutionLocation.Children;
+                IEnumerable<ModelObject> results = ModelCompilerContext.Current.ResolutionProvider.Resolve(ri).ResolvedObjects;
                 ModelObject mo = results.FirstOrDefault();
                 SoalType type = mo as SoalType;
                 return this.ResolveXsdReplacementType(type);

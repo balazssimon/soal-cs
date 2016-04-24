@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="cinema.soal" />
     <None Include="HelloWorld.soal" />
   </ItemGroup>
   <ItemGroup>

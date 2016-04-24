@@ -49,7 +49,7 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
               
-enumDeclaration : annotationList? KEnum identifier (TColon                                                                                qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum identifier (TColon                                                                                  qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
 
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
@@ -60,7 +60,7 @@ enumLiteral : annotationList? identifier;
 // Structs and exceptions
 
                 
-structDeclaration : annotationList? KStruct identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
@@ -98,7 +98,7 @@ operationResult : returnAnnotationList? (                         returnType| on
 // Component
 
                    
-componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                                                                          qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                                                                            qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -110,10 +110,10 @@ componentElement
 	| componentLanguage
 	;
 
-                   
+                
                 
 componentService : KService                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
-                     
+                
                   
 componentReference : KReference                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
 
@@ -137,10 +137,10 @@ componentImplementation : KImplementation identifier TSemicolon;
 componentLanguage : KLanguage identifier TSemicolon;
 
                    
-compositeDeclaration : KComposite identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : KComposite identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
                   
-assemblyDeclaration : KAssembly identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+assemblyDeclaration : KAssembly identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 

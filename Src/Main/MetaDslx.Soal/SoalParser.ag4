@@ -49,7 +49,7 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
 $TypeDef(Enum)
-enumDeclaration : annotationList? KEnum identifier (TColon $Property(BaseType) $TypeUse(symbolType=Enum,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum identifier (TColon $Property(BaseType) $TypeUse(symbolType=Enum,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
 
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
@@ -60,7 +60,7 @@ enumLiteral : annotationList? identifier;
 // Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : annotationList? KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
@@ -98,7 +98,7 @@ operationResult : returnAnnotationList? ($Property(Type) $TypeUse returnType| on
 // Component
 
 $TypeDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -110,10 +110,10 @@ componentElement
 	| componentLanguage
 	;
 
-$Property(Services)
+$Property(Ports)
 $Symbol(Service)
 componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
-$Property(References)
+$Property(Ports)
 $Symbol(Reference)
 componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
 
@@ -137,10 +137,10 @@ $NameDef(Language)
 componentLanguage : KLanguage identifier TSemicolon;
 
 $TypeDef(Composite)
-compositeDeclaration : KComposite identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : KComposite identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 $TypeDef(Assembly)
-assemblyDeclaration : KAssembly identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+assemblyDeclaration : KAssembly identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 

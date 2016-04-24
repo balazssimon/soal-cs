@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_WsdlGenerator_314538470;
-    namespace __Hidden_WsdlGenerator_314538470
+    using __Hidden_WsdlGenerator_670222462;
+    namespace __Hidden_WsdlGenerator_670222462
     {
         internal static class __Extensions
         {

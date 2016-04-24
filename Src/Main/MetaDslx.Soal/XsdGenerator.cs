@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_XsdGenerator_316941627;
-    namespace __Hidden_XsdGenerator_316941627
+    using __Hidden_XsdGenerator_754591631;
+    namespace __Hidden_XsdGenerator_754591631
     {
         internal static class __Extensions
         {

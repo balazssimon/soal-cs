@@ -176,9 +176,9 @@
 		Component BaseComponent;
 		bool IsAbstract;
 		[ScopeEntry]
-		containment list<Service> Services;
-		[ScopeEntry]
-		containment list<Reference> References;
+		containment list<Port> Ports;
+		containment list<Service> Services subsets Ports;
+		containment list<Reference> References subsets Ports;
 		[ScopeEntry]
 		containment list<Property> Properties;
 		containment Implementation Implementation;
@@ -209,12 +209,15 @@
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
 		}
 
+		Component Component;
 		[Name]
 		derived string Name;
 		string OptionalName;
 		Interface Interface;
 		Binding Binding;
 	}
+
+	association Port.Component with Component.Ports;
 
 	class Service : Port
 	{

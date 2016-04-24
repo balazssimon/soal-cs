@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Soal //1:1
 {
-    using __Hidden_SoalPrinter_1382163557;
-    namespace __Hidden_SoalPrinter_1382163557
+    using __Hidden_SoalPrinter_1386643771;
+    namespace __Hidden_SoalPrinter_1386643771
     {
         internal static class __Extensions
         {

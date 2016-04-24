@@ -607,12 +607,19 @@ namespace MetaDslx.Soal
         	
             [ScopeEntry]
             [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Port), "Component")]
+            public static readonly ModelProperty PortsProperty =
+                ModelProperty.Register("Ports", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>), typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.SoalDescriptor.Component), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Component_PortsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
+        	
+            [ContainmentAttribute]
+            // ERROR: subsetted property 'global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty' must be a property of an ancestor class
             public static readonly ModelProperty ServicesProperty =
                 ModelProperty.Register("Services", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service>), typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.SoalDescriptor.Component), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Component_ServicesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
         	
-            [ScopeEntry]
             [ContainmentAttribute]
+            // ERROR: subsetted property 'global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty' must be a property of an ancestor class
             public static readonly ModelProperty ReferencesProperty =
                 ModelProperty.Register("References", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Reference>), typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.SoalDescriptor.Component), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Component_ReferencesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
@@ -722,6 +729,11 @@ namespace MetaDslx.Soal
                 get { return global::MetaDslx.Soal.SoalInstance.Port; }
             }
         
+        	
+            [OppositeAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Component), "Ports")]
+            public static readonly ModelProperty ComponentProperty =
+                ModelProperty.Register("Component", typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.Port), typeof(global::MetaDslx.Soal.SoalDescriptor.Port), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Port_ComponentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
         	
             [Name]
             [ReadonlyAttribute]
@@ -1398,8 +1410,9 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Component_IsAbstractProperty;
 		private static readonly global::MetaDslx.Core.MetaAnnotation __tmp130;
 		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp131;
+		public static readonly global::MetaDslx.Core.MetaProperty Component_PortsProperty;
+		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp132;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_ServicesProperty;
-		private static readonly global::MetaDslx.Core.MetaAnnotation __tmp132;
 		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp133;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_ReferencesProperty;
 		private static readonly global::MetaDslx.Core.MetaAnnotation __tmp134;
@@ -1419,6 +1432,7 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Wire_TargetProperty;
 		public static readonly global::MetaDslx.Core.MetaClass Port;
 		private static readonly global::MetaDslx.Core.MetaConstructor __tmp139;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_ComponentProperty;
 		private static readonly global::MetaDslx.Core.MetaAnnotation __tmp140;
 		public static readonly global::MetaDslx.Core.MetaProperty Port_NameProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Port_OptionalNameProperty;
@@ -1679,8 +1693,9 @@ namespace MetaDslx.Soal
 				Component_IsAbstractProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				__tmp130 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				__tmp131 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+				Component_PortsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				__tmp132 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
 				Component_ServicesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
-				__tmp132 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				__tmp133 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
 				Component_ReferencesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				__tmp134 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
@@ -1700,6 +1715,7 @@ namespace MetaDslx.Soal
 				Wire_TargetProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Port = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				__tmp139 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstructor();
+				Port_ComponentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				__tmp140 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				Port_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Port_OptionalNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
@@ -3112,7 +3128,8 @@ namespace MetaDslx.Soal
 				((ModelObject)__tmp116).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "Enum", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp116).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)__tmp116).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				// Invalid property value type: __tmp116.global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
+				((ModelObject)__tmp116).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty);
+				// Invalid property value type: __tmp116.global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = MetaDslx.Core.BindingInfo
 				((ModelObject)__tmp116).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
 				((ModelObject)__tmp116).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => EnumLiteral_EnumProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp116).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
@@ -3375,6 +3392,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_BaseComponentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_IsAbstractProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_PortsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_ServicesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_ReferencesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_PropertiesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3421,22 +3439,36 @@ namespace MetaDslx.Soal
 				((ModelObject)__tmp131).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)__tmp131).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp131).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
-				((ModelObject)__tmp131).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Service, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)__tmp131).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Port, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Port_ComponentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, new Lazy<object>(() => Component_ServicesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, new Lazy<object>(() => Component_ReferencesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Ports", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp131, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PortsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => __tmp130, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)__tmp132).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
+				((ModelObject)__tmp132).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)__tmp132).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
+				((ModelObject)__tmp132).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Service, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, new Lazy<object>(() => Component_PortsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Services", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp131, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => __tmp130, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)__tmp132).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)__tmp132).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)__tmp132).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
-				((ModelObject)__tmp132).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp132, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp133).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)__tmp133).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp133).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
@@ -3445,13 +3477,13 @@ namespace MetaDslx.Soal
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, new Lazy<object>(() => Component_PortsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "References", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp133, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => __tmp132, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp134).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)__tmp134).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp134).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
@@ -3582,6 +3614,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Port, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Port).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
 				((ModelObject)Port).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Port_ComponentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Port).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Port_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Port).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Port_OptionalNameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Port).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Port_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3600,6 +3633,17 @@ namespace MetaDslx.Soal
 				((ModelObject)__tmp139).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Port", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp139).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
 				((ModelObject)__tmp139).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Port, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Component_PortsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Component", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Port_ComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)Port_ComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp140).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)__tmp140).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Name", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp140).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
@@ -5989,6 +6033,7 @@ namespace MetaDslx.Soal
     {
         global::MetaDslx.Soal.Component BaseComponent { get; set; }
         bool IsAbstract { get; set; }
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port> Ports { get; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service> Services { get; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Reference> References { get; }
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> Properties { get; }
@@ -6016,6 +6061,7 @@ namespace MetaDslx.Soal
     
         public ComponentImpl() 
         {
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, new global::MetaDslx.Core.ModelList<Port>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
@@ -6044,6 +6090,16 @@ namespace MetaDslx.Soal
                 else return default(bool);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.IsAbstractProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port> global::MetaDslx.Soal.Component.Ports
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>);
+            }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service> global::MetaDslx.Soal.Component.Services
@@ -6194,6 +6250,7 @@ namespace MetaDslx.Soal
         {
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, new global::MetaDslx.Core.ModelList<Port>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
@@ -6242,6 +6299,16 @@ namespace MetaDslx.Soal
                 else return default(bool);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.IsAbstractProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port> global::MetaDslx.Soal.Component.Ports
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>);
+            }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service> global::MetaDslx.Soal.Component.Services
@@ -6390,6 +6457,7 @@ namespace MetaDslx.Soal
         {
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, new global::MetaDslx.Core.ModelList<Port>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
@@ -6438,6 +6506,16 @@ namespace MetaDslx.Soal
                 else return default(bool);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.IsAbstractProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port> global::MetaDslx.Soal.Component.Ports
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Port>);
+            }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service> global::MetaDslx.Soal.Component.Services
@@ -6615,6 +6693,7 @@ namespace MetaDslx.Soal
     
     public interface Port
     {
+        global::MetaDslx.Soal.Component Component { get; set; }
         string Name { get; }
         string OptionalName { get; set; }
         global::MetaDslx.Soal.Interface Interface { get; set; }
@@ -6644,6 +6723,17 @@ namespace MetaDslx.Soal
             this.MDerivedSet(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty, () => global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Port_Name(this));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Port(this);
             this.MMakeDefault();
+        }
+        
+        global::MetaDslx.Soal.Component global::MetaDslx.Soal.Port.Component
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Component)result;
+                else return default(global::MetaDslx.Soal.Component);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
         }
         
         string global::MetaDslx.Soal.Port.Name
@@ -6719,6 +6809,17 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        global::MetaDslx.Soal.Component global::MetaDslx.Soal.Port.Component
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Component)result;
+                else return default(global::MetaDslx.Soal.Component);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
+        }
+        
         string global::MetaDslx.Soal.Port.Name
         {
             get 
@@ -6790,6 +6891,17 @@ namespace MetaDslx.Soal
             this.MDerivedSet(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty, () => global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Port_Name(this));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Reference(this);
             this.MMakeDefault();
+        }
+        
+        global::MetaDslx.Soal.Component global::MetaDslx.Soal.Port.Component
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Component)result;
+                else return default(global::MetaDslx.Soal.Component);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
         }
         
         string global::MetaDslx.Soal.Port.Name
