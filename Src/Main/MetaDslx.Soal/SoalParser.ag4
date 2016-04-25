@@ -110,10 +110,10 @@ componentElement
 	| componentLanguage
 	;
 
-$Property(Ports)
+$Property(Services)
 $Symbol(Service)
 componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
-$Property(Ports)
+$Property(References)
 $Symbol(Reference)
 componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
 

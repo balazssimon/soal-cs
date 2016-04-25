@@ -110,10 +110,10 @@ componentElement
 	| componentLanguage
 	;
 
-                
+                   
                 
 componentService : KService                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
-                
+                     
                   
 componentReference : KReference                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
 

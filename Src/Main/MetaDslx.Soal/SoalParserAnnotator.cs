@@ -681,7 +681,7 @@ namespace MetaDslx.Soal
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp51 = new PropertyAnnotation();
-            __tmp51.Name = "Ports";
+            __tmp51.Name = "Services";
             treeAnnotList.Add(__tmp51);
             SymbolAnnotation __tmp52 = new SymbolAnnotation();
             __tmp52.SymbolType = typeof(Service);
@@ -729,7 +729,7 @@ namespace MetaDslx.Soal
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp57 = new PropertyAnnotation();
-            __tmp57.Name = "Ports";
+            __tmp57.Name = "References";
             treeAnnotList.Add(__tmp57);
             SymbolAnnotation __tmp58 = new SymbolAnnotation();
             __tmp58.SymbolType = typeof(Reference);

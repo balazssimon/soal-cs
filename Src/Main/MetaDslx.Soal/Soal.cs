@@ -613,13 +613,13 @@ namespace MetaDslx.Soal
             
         	
             [ContainmentAttribute]
-            // ERROR: subsetted property 'global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty' must be a property of an ancestor class
+            [SubsetsAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Component), "Ports")]
             public static readonly ModelProperty ServicesProperty =
                 ModelProperty.Register("Services", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Service>), typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.SoalDescriptor.Component), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Component_ServicesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
         	
             [ContainmentAttribute]
-            // ERROR: subsetted property 'global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty' must be a property of an ancestor class
+            [SubsetsAttribute(typeof(global::MetaDslx.Soal.SoalDescriptor.Component), "Ports")]
             public static readonly ModelProperty ReferencesProperty =
                 ModelProperty.Register("References", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Reference>), typeof(global::MetaDslx.Soal.Component), typeof(global::MetaDslx.Soal.SoalDescriptor.Component), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Component_ReferencesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
