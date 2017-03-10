@@ -109,7 +109,7 @@ namespace CinemaNs = cin:"http://www.iit.bme.hu/Cinema"
 	
 	interface IReservationLogic
 	{
-		Movie[] GetMovies();
+		Movie[] GetMovies2();
 		Screening[] GetScreenings(string movieId) throws CinemaException;
 		Seat[] GetSeats(string screeningId) throws CinemaException;
 		ReservedSeat[] GetReservedSeats(string screeningId) throws CinemaException;
@@ -139,42 +139,42 @@ namespace CinemaNs = cin:"http://www.iit.bme.hu/Cinema"
 	
 	component CinemaData
 	{
-		service CinemaDB;
+		service CinemaDB CinemaDB;
 		implementation JPA; // data EntityFramework;
 	}
 	
 	component UserLogic
 	{
-		reference CinemaDB;
-		service IUserLogic;
+		reference CinemaDB CinemaDB;
+		service IUserLogic IUserLogic;
 		implementation EJB; // implementation DotNet;
 	}
 
 	component CinemaLogic
 	{
-		reference CinemaDB;
-		service ICinemaLogic;
+		reference CinemaDB CinemaDB;
+		service ICinemaLogic ICinemaLogic;
 		implementation EJB; // implementation DotNet;
 	}
 
 	component ReservationLogic
 	{
-		reference CinemaDB;
-		service IReservationLogic;
+		reference CinemaDB CinemaDB;
+		service IReservationLogic IReservationLogic;
 		implementation EJB; // implementation DotNet;
 	}
 	
 	component CinemaWeb
 	{
-		reference IUserLogic;
-		reference ICinemaLogic;
-		reference IReservationLogic;
+		reference IUserLogic IUserLogic;
+		reference ICinemaLogic ICinemaLogic;
+		reference IReservationLogic IReservationLogic;
 		implementation JSF; // implementation AspNet;
 	}
 
 	component ReservationClient
 	{
-		reference IReservationLogic
+		reference IReservationLogic IReservationLogic
 		{
 			binding WebSocketBinding;
 		}

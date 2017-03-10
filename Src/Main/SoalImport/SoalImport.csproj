@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SoalImport</RootNamespace>
     <AssemblyName>SoalImport</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,17 +34,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MetaDslx.Compiler.Antlr4, Version=0.8.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\meta-cs\Install\MetaDslx.Compiler.Antlr4.dll</HintPath>
+    </Reference>
+    <Reference Include="MetaDslx.Core, Version=0.8.6272.4952, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\meta-cs\Install\MetaDslx.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Collections.Immutable" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="MetaDslx.Core" />
-    <Reference Include="MetaDslx.Compiler" />
-    <Reference Include="Antlr4.Runtime" />
+    <Reference Include="Antlr4.Runtime.Standard" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -53,9 +61,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.Soal\MetaDslx.Soal.csproj">
-      <Project>{f901c1de-7845-484c-85a5-e8cd4846a9f7}</Project>
-      <Name>MetaDslx.Soal</Name>
+    <ProjectReference Include="..\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj">
+      <Project>{bc0fae27-a84d-40fb-8641-75f21872cb87}</Project>
+      <Name>MetaDslx.Languages.Soal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

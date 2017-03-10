@@ -62,7 +62,7 @@
 		binding HttpSoap11;
 		address "http://www.tempuri.org";
 	}
-
+	
 	database HelloDB
 	{
 		entity Complex;

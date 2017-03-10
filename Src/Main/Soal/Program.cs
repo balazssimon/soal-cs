@@ -1,5 +1,10 @@
-﻿using MetaDslx.Core;
-using MetaDslx.Soal;
+﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Core;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Generator;
+using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Languages.Soal.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -75,37 +80,45 @@ namespace Soal
                 {
                     Console.WriteLine("Warning: conflicting options '-separateXsdWsdl' and '-singleFileWsdl'. '-singleFileWsdl' will be used.");
                 }
+                string source;
                 using (StreamReader reader = new StreamReader(fileName))
                 {
-                    string source = reader.ReadToEnd();
-                    SoalCompiler compiler = new SoalCompiler(source, Path.GetFileName(fileName));
-                    compiler.Compile();
-                    if (!compiler.Diagnostics.HasErrors())
+                    source = reader.ReadToEnd();
+                }
+                SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(source);
+                MetadataReference soalReference = MetadataReference.CreateFromModel(SoalInstance.Model);
+                SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree);
+                ImmutableModel model = compilation.Model;
+                DiagnosticBag generatorDiagnostics = new DiagnosticBag();
+                if (!compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
+                {
+                    SoalGenerator generator = new SoalGenerator(model, outputDirectory, generatorDiagnostics, fileName);
+                    generator.SeparateXsdWsdl = separateXsdWsdl;
+                    generator.SingleFileWsdl = singleFileWsdl;
+                    generator.Generate();
+                    SoalPrinter printer = new SoalPrinter(model.Symbols);
+                    using (StreamWriter writer = new StreamWriter(fileName+"0"))
                     {
-                        Model model = compiler.Model;
-                        GenJpaInterface(model);
-                        /*SoalGenerator generator = new SoalGenerator(compiler.Model, outputDirectory, compiler.Diagnostics, compiler.FileName);
-                        generator.SeparateXsdWsdl = separateXsdWsdl;
-                        generator.SingleFileWsdl = singleFileWsdl;
-                        generator.Generate();*/
-                        SoalPrinter printer = new SoalPrinter(compiler.Model.Instances);
-                        using (StreamWriter writer = new StreamWriter(fileName+"0"))
-                        {
-                            writer.WriteLine(printer.Generate());
-                        }
-                    }
-                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
-                    {
-                        Console.WriteLine(msg);
+                        writer.WriteLine(printer.Generate());
                     }
                 }
+                foreach (var diagnostic in compilation.GetDiagnostics())
+                {
+                    string msg = DiagnosticFormatter.Instance.Format(diagnostic);
+                    Console.WriteLine(msg);
+                }
+                foreach (var diagnostic in generatorDiagnostics.AsEnumerable())
+                {
+                    string msg = DiagnosticFormatter.Instance.Format(diagnostic);
+                    Console.WriteLine(msg);
+                }
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine(ex);
             }
         }
-
+        /*
         private static void GenJpaInterface(Model model)
         {
             foreach (Component comp in model.CachedInstances.OfType<Component>().ToList())
@@ -262,6 +275,6 @@ namespace Soal
                     }
                 }
             }
-        }
+        }*/
     }
 }

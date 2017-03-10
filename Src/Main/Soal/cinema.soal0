@@ -1,0 +1,136 @@
+namespace CinemaNs = cin:"http://www.iit.bme.hu/Cinema"
+{
+	enum ReservationStatus 
+	{
+		Reserved,
+		Sold
+	}
+
+	enum SeatStatus 
+	{
+		Free,
+		Locked,
+		Reserved,
+		Sold
+	}
+
+	struct CinemaException
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+	struct User
+	{
+		string UserName;
+		string Password;
+		Role[] Roles;
+	}
+
+	struct Role
+	{
+		string RoleName;
+		User[] Users;
+	}
+
+	struct Movie
+	{
+		string Title;
+		string Director;
+		string Cast;
+		TimeSpan Duration;
+	}
+
+	struct Screening
+	{
+		Movie Movie;
+		Auditorium Auditorium;
+		DateTime ScreeningStart;
+	}
+
+	struct Auditorium
+	{
+		string Name;
+		Seat[] Seats;
+	}
+
+	struct Seat
+	{
+		Auditorium Auditorium;
+		string Row;
+		string Column;
+	}
+
+	struct ReservedSeat
+	{
+		Screening Screening;
+		Seat Seat;
+		SeatStatus Status;
+	}
+
+	struct Reservation
+	{
+		Screening Screening;
+		ReservedSeat[] Seats;
+		ReservationStatus Status;
+	}
+
+	interface CinemaDB
+	{
+	}
+
+	interface IUserLogic
+	{
+		User[] GetUsers();
+		Role[] GetRoles();
+		string AddUser(string userName, string password);
+		string AddRole(string roleName);
+		void AddUserToRole(string userId, string roleId);
+		void DeleteUser(string userId);
+	}
+
+	interface ICinemaLogic
+	{
+		Movie[] GetMovies();
+		Auditorium[] GetAuditoriums();
+		Screening[] GetScreeningsForMovie(string movieId);
+		Screening[] GetScreeningsForAuditoriums(string auditoriumId);
+		string AddMovie(Movie movie);
+		string AddScreening(Screening screening);
+		Reservation[] GetReservations(string screeningId);
+		void DeleteReservation(string reservationId);
+	}
+
+	interface IReservationLogic
+	{
+		Movie[] GetMovies2();
+		Screening[] GetScreenings(string movieId) throws CinemaException;
+		Seat[] GetSeats(string screeningId) throws CinemaException;
+		ReservedSeat[] GetReservedSeats(string screeningId) throws CinemaException;
+		string Lock(string screeningId, Seat seat, int count) throws CinemaException;
+		void Unlock(string lockId) throws CinemaException;
+		void Reserve(string lockId) throws CinemaException;
+		void Buy(string lockId, string creditCardNumber) throws CinemaException;
+	}
+
+	binding Soap11Binding
+	{
+		transport HTTP;
+		encoding SOAP;
+	}
+
+	binding RestBinding
+	{
+		transport REST;
+		encoding XML;
+	}
+
+	binding WebSocketBinding
+	{
+		transport WebSocket;
+		encoding JSON;
+	}
+
+}
+
+

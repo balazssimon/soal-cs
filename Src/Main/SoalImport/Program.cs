@@ -1,5 +1,7 @@
-﻿using MetaDslx.Core;
-using MetaDslx.Soal;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Core;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Generator;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,21 +61,18 @@ namespace SoalImport
                     Console.WriteLine("Could not find file: " + inputFileName);
                     return;
                 }
-                Model model = new Model();
-                using (ModelContextScope scope = new ModelContextScope(model))
+                DiagnosticBag importDiagnostics = new DiagnosticBag();
+                ImmutableModel model = SoalImporter.Import(inputFileName, importDiagnostics);
+                foreach (var msg in importDiagnostics.AsEnumerable())
                 {
-                    SoalImporter.Import(inputFileName);
-                    foreach (var msg in ModelCompilerContext.Current.Diagnostics.GetMessages(true))
+                    Console.WriteLine(msg);
+                }
+                //if (!ModelCompilerContext.Current.Diagnostics.HasErrors())
+                {
+                    SoalPrinter printer = new SoalPrinter(model.Symbols);
+                    using (StreamWriter writer = new StreamWriter(outputFileName))
                     {
-                        Console.WriteLine(msg);
-                    }
-                    //if (!ModelCompilerContext.Current.Diagnostics.HasErrors())
-                    {
-                        SoalPrinter printer = new SoalPrinter(model.Instances);
-                        using (StreamWriter writer = new StreamWriter(outputFileName))
-                        {
-                            writer.WriteLine(printer.Generate());
-                        }
+                        writer.WriteLine(printer.Generate());
                     }
                 }
             }
