@@ -1,5 +1,4 @@
-﻿using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Symbols;
+﻿using MetaDslx.Languages.Soal.Symbols;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -310,11 +309,11 @@ namespace MetaDslx.Languages.Soal.Importer
                                             if (outputMsg.Rpc) opRpc = true;
                                             if (outputMsg.Wrapped && outputMsg.ElementName == opName+"Response") opWrapped = true;
                                             else opNotWrapped = true;
-                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count > 1)
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is StructBuilder && ((StructBuilder)outputMsg.Parts[0].Type).Properties.Count > 1)
                                             {
                                                 opNotWrapped = true;
                                             }
-                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count == 1 && ((Struct)outputMsg.Parts[0].Type).Properties[0].Name != opName+"Result")
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is StructBuilder && ((StructBuilder)outputMsg.Parts[0].Type).Properties.Count == 1 && ((StructBuilder)outputMsg.Parts[0].Type).Properties[0].Name != opName+"Result")
                                             {
                                                 opNotWrapped = true;
                                             }
@@ -358,6 +357,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                     }
                                     OperationBuilder op = this.Factory.Operation();
                                     op.Name = opName;
+                                    op.Result = Factory.OutputParameter();
                                     intf.Operations.Add(op);
                                     if (opDocument)
                                     {
@@ -460,6 +460,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 if (st != null)
                                                 {
                                                     op.Exceptions.Add(st);
+                                                    this.Importer.Reference(st);
                                                 }
                                             }
                                         }
@@ -534,6 +535,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (st != null)
                                                     {
                                                         op.Exceptions.Add(st);
+                                                        this.Importer.Reference(st);
                                                     }
                                                 }
                                                 else
@@ -586,7 +588,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     object origWrapped = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
                                                     string origItems = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
                                                     SoalTypeBuilder coreType = part.Type.GetCoreType();
-                                                    string coreTypeName = coreType is NamedElement ? ((NamedElement)coreType).Name : null;
+                                                    string coreTypeName = coreType is NamedElementBuilder ? ((NamedElementBuilder)coreType).Name : null;
                                                     object origSap = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
                                                     if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
                                                     {

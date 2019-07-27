@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Core;
 using MetaDslx.Languages.Soal;
 using MetaDslx.Languages.Soal.Generator;
+using Microsoft.CodeAnalysis;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.Soal.Test
 {
@@ -30,13 +30,9 @@ namespace MetaDslx.Soal.Test
             }
             Assert.IsFalse(diagnostics.HasAnyErrors());
             Directory.CreateDirectory(outputDirectory);
-            string outputSoal = null;
             SoalPrinter printer = new SoalPrinter(model.Symbols);
-            using (StreamWriter writer = new StreamWriter(outputFileName))
-            {
-                outputSoal = printer.Generate();
-                writer.WriteLine(outputSoal);
-            }
+            string outputSoal = printer.Generate();
+            File.WriteAllText(outputFileName, outputSoal);
             string expectedSoal = null;
             using (StreamReader reader = new StreamReader(expectedFileName))
             {

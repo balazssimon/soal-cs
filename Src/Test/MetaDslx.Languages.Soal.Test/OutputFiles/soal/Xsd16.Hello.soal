@@ -1,8 +1,4 @@
-namespace  = ""
-{
-}
-
-namespace  = "http://www.hello.org/test"
+namespace Xsd16.Hello = hw:"http://www.hello.org/test"
 {
 	struct NameValues
 	{
@@ -11,7 +7,7 @@ namespace  = "http://www.hello.org/test"
 
 	struct Values
 	{
-		[Element(wrapped=true)]
+		[Element(wrapped=true, items="Items")]
 		int[][] A;
 		NameValues[] B;
 	}
@@ -23,5 +19,4 @@ namespace  = "http://www.hello.org/test"
 	}
 
 }
-
 

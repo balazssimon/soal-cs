@@ -1,7 +1,7 @@
 ﻿namespace MetaDslx.Languages.Soal.Generator;
-generator SoalPrinter for IEnumerable<ISymbol>;
+generator SoalPrinter for IEnumerable<IMetaSymbol>;
 
-using MetaDslx.Core;
+using MetaDslx.Modeling;
 using MetaDslx.Languages.Soal.Symbols;
 
 template Generate()
@@ -11,7 +11,7 @@ template Generate()
 end template
 
 template GenerateNamespace(Namespace ns)
-[if (ns.Declarations.Count > 0)]
+[if (ns.Declarations.Where(d => !(d is Namespace)).Count() > 0)]
 [if (ns.Prefix != null)]
 namespace [ns.FullName] = [ns.Prefix]:"[ns.Uri]"
 [else]
@@ -75,7 +75,7 @@ end template
 
 template GenerateAnnotationsSingleLine(AnnotatedElement ae, bool isReturn)
 [loop(ae->annot:Annotations)]
-["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]\
+["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["] "]\
 [end loop]
 end template
 
@@ -100,7 +100,7 @@ end function
 
 template GenerateEnum(Namespace currentNs, Symbols.Enum enm)
 [GenerateAnnotations(enm, false)]
-enum [enm.Name] [GetAncestor(currentNs, enm)]
+enum [enm.Name][GetAncestor(currentNs, enm)]
 {
 	[loop(lit:enm.EnumLiterals; separator comma = ",")]
 	[GenerateEnumLiteral(currentNs, lit)][comma]

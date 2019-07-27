@@ -1,10 +1,6 @@
-namespace Wsdl02 = ""
+namespace Wsdl02.Hello = hw:"http://www.hello.org/HelloNs"
 {
-}
-
-namespace Wsdl02.Hello = "http://www.hello.org/HelloNs"
-{
-	enum SeatStatus 
+	enum SeatStatus
 	{
 		Free,
 		Locked,
@@ -14,7 +10,7 @@ namespace Wsdl02.Hello = "http://www.hello.org/HelloNs"
 	struct MathFault
 	{
 		int ErrorCode;
-		string? ErrorMessage;
+		string ErrorMessage;
 	}
 
 	struct Complex
@@ -28,12 +24,12 @@ namespace Wsdl02.Hello = "http://www.hello.org/HelloNs"
 	{
 		string SayHello(string name);
 		string SayHello2(Complex cplx1, Complex cplx2);
-		byte[] Abc(int[] i1, [Element(wrapped=true)]int[] i2);
-		[return: Element(wrapped=true)]
+		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
+		[return: Element(wrapped=true, items="jjjjj")]
 		int[] Abc2(byte[] i1, byte[] i2);
-		int[] Abc3([Element(wrapped=true)]int[] i1, int[] i2);
-		double Divide(double left, double right)throws MathFault;
-		Complex DivideComplex(Complex left, Complex right)throws MathFault;
+		int[] Abc3([Element(wrapped=true)] int[] i1, int[] i2);
+		double Divide(double left, double right) throws MathFault;
+		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right);
 	}
 
@@ -54,5 +50,4 @@ namespace Wsdl02.Hello = "http://www.hello.org/HelloNs"
 	}
 
 }
-
 

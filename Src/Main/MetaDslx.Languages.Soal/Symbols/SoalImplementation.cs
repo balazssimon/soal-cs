@@ -1,5 +1,4 @@
-﻿using MetaDslx.Languages.Soal.Generator;
-using MetaDslx.Languages.Soal.Symbols.Internal;
+﻿using MetaDslx.Languages.Soal.Symbols.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,12 +89,6 @@ namespace MetaDslx.Languages.Soal.Symbols
                 };
         }
 
-        public override void Operation(OperationBuilder _this)
-        {
-            base.Operation(_this);
-            SoalFactory f = new SoalFactory(_this.MModel);
-            _this.Result = f.OutputParameter();
-        }
     }
 
     internal static class SoalExtensions
@@ -109,7 +102,7 @@ namespace MetaDslx.Languages.Soal.Symbols
 
         public static bool IsIdentifier(this string name)
         {
-            return Regex.IsMatch(name, @"[a-zA-Z\_][0-9a-zA-Z\_]*");
+            return Regex.IsMatch(name, @"[a-zA-Z_][0-9a-zA-Z_]*");
         }
 
         public static bool IsArrayType(this SoalType type)
@@ -333,7 +326,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             {
                 ArrayType atype = (ArrayType)type;
                 string aname = atype.GetXsdName();
-                if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
+                if (atype.InnerType.MId != SoalInstance.Byte.MId && !arrayNames.Contains(aname))
                 {
                     arrayNames.Add(aname);
                     arrayTypes.Add(atype);
@@ -345,7 +338,7 @@ namespace MetaDslx.Languages.Soal.Symbols
                 if (atype != null)
                 {
                     string aname = atype.GetXsdName();
-                    if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
+                    if (atype.InnerType.MId != SoalInstance.Byte.MId && !arrayNames.Contains(aname))
                     {
                         arrayNames.Add(aname);
                         arrayTypes.Add(atype);
@@ -361,7 +354,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             if (type is NonNullableType) return GetNamespace(((NonNullableType)type).InnerType, currentNamespace);
             if (type is ArrayType)
             {
-                if (((ArrayType)type).InnerType == SoalInstance.Byte) return SoalGenerator.XsdNamespace;
+                if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return SoalGenerator.XsdNamespace;
                 else return currentNamespace;
             }
             if (type is Enum)
@@ -411,7 +404,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             if (type is NonNullableType) return GetXsdName(((NonNullableType)type).InnerType);
             if (type is ArrayType)
             {
-                if (((ArrayType)type).InnerType == SoalInstance.Byte) return "base64Binary";
+                if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return "base64Binary";
                 else return (GetXsdName(((ArrayType)type).InnerType) + "List").ToPascalCase();
             }
             if (type is Enum)

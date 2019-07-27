@@ -1,8 +1,4 @@
-namespace  = ""
-{
-}
-
-namespace  = "http://www.hello.org/test"
+namespace Xsd10.Hello = hw:"http://www.hello.org/test"
 {
 	struct Complex
 	{
@@ -12,9 +8,9 @@ namespace  = "http://www.hello.org/test"
 
 	struct PrimitiveNonNulls
 	{
-		string NonNullString;
+		string! NonNullString;
 		int[] IntNonNullArray;
-		string[] NonNullStringNonNullArray;
+		string![] NonNullStringNonNullArray;
 	}
 
 	struct LongNulls
@@ -32,5 +28,4 @@ namespace  = "http://www.hello.org/test"
 	}
 
 }
-
 

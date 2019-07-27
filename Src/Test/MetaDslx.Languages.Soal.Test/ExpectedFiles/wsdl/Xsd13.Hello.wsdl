@@ -18,14 +18,9 @@
 	xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
 >
 	
-	
 	<wsdl:types>
 		<xs:schema>
-			<xs:import namespace="http://www.hello.org/test" schemaLocation="Xsd13.Hello.xsd"/>
+			<xs:import namespace="http://www.hello.org/test" schemaLocation="../xsd/Xsd13.Hello.xsd"/>
 		</xs:schema>
 	</wsdl:types>
-	
-	
-	
 </wsdl:definitions>
-

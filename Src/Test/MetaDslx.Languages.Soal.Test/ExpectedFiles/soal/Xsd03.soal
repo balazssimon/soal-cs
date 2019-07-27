@@ -1,4 +1,4 @@
-﻿namespace Xsd03.Hello = hw:"http://www.hello.org/test"
+namespace Xsd03.Hello = hw:"http://www.hello.org/test"
 {
 	[Choice]
 	struct MathFault
@@ -6,4 +6,6 @@
 		int ErrorCode;
 		string ErrorMessage;
 	}
+
 }
+

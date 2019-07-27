@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Soal": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\Wsdl01.soal"
+    }
+  }
+}

@@ -19,15 +19,10 @@
 	xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
 >
 	
-	
 	<wsdl:types>
 		<xs:schema>
 			<xs:import namespace="http://www.hello.org/test" schemaLocation="../xsd/Xsd06.Hello.xsd"/>
 			<xs:import namespace="http://www.calc.org/test" schemaLocation="../xsd/Xsd06.Calc.xsd"/>
 		</xs:schema>
 	</wsdl:types>
-	
-	
-	
 </wsdl:definitions>
-

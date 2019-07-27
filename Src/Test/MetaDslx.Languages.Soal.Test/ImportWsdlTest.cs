@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using MetaDslx.Languages.Soal;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Core;
 using MetaDslx.Languages.Soal.Generator;
+using Microsoft.CodeAnalysis;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.Soal.Test
 {
@@ -30,17 +30,31 @@ namespace MetaDslx.Soal.Test
             }
             Assert.IsFalse(diagnostics.HasAnyErrors());
             Directory.CreateDirectory(outputDirectory);
-            string outputSoal = null;
             SoalPrinter printer = new SoalPrinter(model.Symbols);
-            using (StreamWriter writer = new StreamWriter(outputFileName))
-            {
-                outputSoal = printer.Generate();
-                writer.WriteLine(outputSoal);
-            }
+            string outputSoal = printer.Generate();
+            File.WriteAllText(outputFileName, outputSoal);
             string expectedSoal = null;
             using (StreamReader reader = new StreamReader(expectedFileName))
             {
                 expectedSoal = reader.ReadToEnd();
+            }
+            int firstDiff = -1;
+            int line = 1;
+            int column = 1;
+            int max = Math.Max(expectedSoal.Length, outputSoal.Length);
+            for (int i = 0; i < max; i++)
+            {
+                if (expectedSoal[i] != outputSoal[i])
+                {
+                    firstDiff = i;
+                    break;
+                }
+                ++column;
+                if (expectedSoal[i] == '\n')
+                {
+                    ++line;
+                    column = 1;
+                }
             }
             Assert.AreEqual(expectedSoal, outputSoal);
             return result;

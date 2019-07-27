@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soal", "Main\Soal\Soal.csproj", "{B506FB27-625F-4777-8C02-D6480546153F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoalImport", "Main\SoalImport\SoalImport.csproj", "{6FC91763-179D-4865-868A-D7CCA0022927}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal.Test", "Test\MetaDslx.Languages.Soal.Test\MetaDslx.Languages.Soal.Test.csproj", "{A17195B5-93BA-4721-86F1-CBBD4F293723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal", "Main\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{BC0FAE27-A84D-40FB-8641-75F21872CB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Soal", "Main\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{BC0FAE27-A84D-40FB-8641-75F21872CB87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soal", "Main\Soal\Soal.csproj", "{0BD726FC-EC78-42BC-BBD7-2CAB92E6E7FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoalImport", "Main\SoalImport\SoalImport.csproj", "{F0D73B1E-BF4B-4683-A80D-B17BA49017AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B506FB27-625F-4777-8C02-D6480546153F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B506FB27-625F-4777-8C02-D6480546153F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B506FB27-625F-4777-8C02-D6480546153F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B506FB27-625F-4777-8C02-D6480546153F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FC91763-179D-4865-868A-D7CCA0022927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FC91763-179D-4865-868A-D7CCA0022927}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FC91763-179D-4865-868A-D7CCA0022927}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FC91763-179D-4865-868A-D7CCA0022927}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A17195B5-93BA-4721-86F1-CBBD4F293723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A17195B5-93BA-4721-86F1-CBBD4F293723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17195B5-93BA-4721-86F1-CBBD4F293723}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,8 +25,19 @@ Global
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD726FC-EC78-42BC-BBD7-2CAB92E6E7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD726FC-EC78-42BC-BBD7-2CAB92E6E7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD726FC-EC78-42BC-BBD7-2CAB92E6E7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD726FC-EC78-42BC-BBD7-2CAB92E6E7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0D73B1E-BF4B-4683-A80D-B17BA49017AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0D73B1E-BF4B-4683-A80D-B17BA49017AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0D73B1E-BF4B-4683-A80D-B17BA49017AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0D73B1E-BF4B-4683-A80D-B17BA49017AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3352DD9-C80A-4A55-9A63-A2BB8F792F58}
 	EndGlobalSection
 EndGlobal

@@ -1,10 +1,6 @@
-namespace  = ""
+namespace Xsd05.Hello = hw:"http://www.hello.org/test"
 {
-}
-
-namespace  = "http://www.hello.org/test"
-{
-	enum Colors 
+	enum Colors
 	{
 		Red,
 		Green,
@@ -12,5 +8,4 @@ namespace  = "http://www.hello.org/test"
 	}
 
 }
-
 

@@ -82,7 +82,7 @@ template GenerateMessages(Interface intf)
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_InputMessage">
 		[loop(op->param:Parameters)]
-			[if (param.Type.IsArrayType() && param.Type.GetCoreType() != SoalInstance.Byte)]
+			[if (param.Type.IsArrayType() && param.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
 	<wsdl:part name="[param.Name]" type="[intf.Namespace.Prefix]:[op.Name + param.Name.ToPascalCase()]"/>
 			[else]
 	<wsdl:part name="[param.Name]" type="[param.Type.GetNamespace(intf.Namespace).Prefix]:[param.Type.GetXsdName()]"/>
@@ -92,8 +92,8 @@ template GenerateMessages(Interface intf)
 		[if(!op.Result.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
-			[if (op.Result.Type != SoalInstance.Void)]
-				[if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType() != SoalInstance.Byte)]
+			[if (op.Result.Type.MId != SoalInstance.Void.MId)]
+				[if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
 	<wsdl:part name="result" type="[intf.Namespace.Prefix]:[op.Name + "Response"]"/>
 				[else]
 	<wsdl:part name="result" type="[op.Result.Type.GetNamespace(intf.Namespace).Prefix]:[op.Result.Type.GetXsdName()]"/>
@@ -111,7 +111,7 @@ template GenerateMessages(Interface intf)
 		[if(!op.Result.IsOneway)]
 ^
 <wsdl:message name="[intf.Name]_[op.Name]_OutputMessage">
-			[if (op.Result.Type != SoalInstance.Void)]
+			[if (op.Result.Type.MId != SoalInstance.Void.MId)]
 	<wsdl:part name="result" element="[intf.Namespace.Prefix]:[op.Name]Response"/>
 			[end if]
 </wsdl:message>

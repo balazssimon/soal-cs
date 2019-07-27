@@ -3,11 +3,12 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using MetaDslx.Languages.Soal.Syntax;
-using MetaDslx.Compiler;
 using MetaDslx.Languages.Soal;
-using MetaDslx.Core;
-using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Languages.Soal.Symbols;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.Soal.Test
 {
@@ -27,10 +28,15 @@ namespace MetaDslx.Soal.Test
                 inputSoal = reader.ReadToEnd();
             }
             SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(inputSoal);
-            MetadataReference soalReference = MetadataReference.CreateFromModel(SoalInstance.Model);
-            SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree);
+            ModelReference soalReference = ModelReference.CreateFromModel(SoalInstance.Model);
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            SoalCompilationOptions options = new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.NetModule, topLevelBinderFlags: binderFlags);
+            SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree).WithOptions(options);
+            compilation.ForceComplete();
             ImmutableModel model = compilation.Model;
-            Assert.IsFalse(compilation.GetDiagnostics().Any(d => d.Severity == Compiler.Diagnostics.DiagnosticSeverity.Error));
+
+            Assert.IsFalse(compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error));
+
             DiagnosticBag generatorDiagnostics = new DiagnosticBag();
             SoalGenerator generator = new SoalGenerator(model, outputDirectory, generatorDiagnostics, inputFileName);
             generator.SeparateXsdWsdl = true;

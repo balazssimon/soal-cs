@@ -69,4 +69,3 @@
 	<xs:element name="DivideOLeft" type="xs:double" nillable="false"/>
 	<xs:element name="DivideORight" type="xs:double" nillable="false"/>
 </xs:schema>
-

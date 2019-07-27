@@ -1,15 +1,10 @@
-namespace  = ""
-{
-}
-
-namespace  = "http://www.hello.org/test"
+namespace Xsd01.Hello = hw:"http://www.hello.org/test"
 {
 	struct MathFault
 	{
 		int ErrorCode;
-		string? ErrorMessage;
+		string ErrorMessage;
 	}
 
 }
-
 

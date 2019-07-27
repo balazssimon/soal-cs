@@ -1,8 +1,4 @@
-namespace  = ""
-{
-}
-
-namespace  = "http://www.hello.org/test"
+namespace Xsd09.Hello = hw:"http://www.hello.org/test"
 {
 	struct IntList
 	{
@@ -16,5 +12,4 @@ namespace  = "http://www.hello.org/test"
 	}
 
 }
-
 

@@ -1,7 +1,7 @@
-﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Text;
-using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Symbols;
+﻿using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;

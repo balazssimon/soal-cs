@@ -30,8 +30,6 @@
 		containment list<AnnotationProperty> Properties;
 	}
 
-	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;
-
 	class AnnotationProperty : NamedElement
 	{
 		object Value;
@@ -56,11 +54,7 @@
 	}
 
 	[Type]
-	abstract class SoalType
-	{
-	}
-
-	class NamedType : SoalType, NamedElement
+	abstract class SoalType : NamedElement
 	{
 	}
 
@@ -75,8 +69,6 @@
 	{
 		string Uri;
 		string Prefix;
-		[Import]
-		list<Namespace> Usings;
 		containment list<Declaration> Declarations;
 	}
 
@@ -168,7 +160,7 @@
 		containment list<Reference> References subsets Ports;
 		containment list<Property> Properties;
 		containment Implementation Implementation;
-		containment Language Language;
+		containment ProgrammingLanguage Language;
 	}
 
 	class Composite : Component
@@ -208,7 +200,7 @@
 	{
 	}
 	
-	class Language : NamedElement
+	class ProgrammingLanguage : NamedElement
 	{
 	}
 	

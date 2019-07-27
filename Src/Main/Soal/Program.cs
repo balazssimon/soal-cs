@@ -1,10 +1,11 @@
-﻿using MetaDslx.Compiler;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Core;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Languages.Soal;
 using MetaDslx.Languages.Soal.Generator;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Languages.Soal.Syntax;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,8 +87,11 @@ namespace Soal
                     source = reader.ReadToEnd();
                 }
                 SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(source);
-                MetadataReference soalReference = MetadataReference.CreateFromModel(SoalInstance.Model);
-                SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree);
+                ModelReference soalReference = ModelReference.CreateFromModel(SoalInstance.Model);
+                BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+                SoalCompilationOptions options = new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.NetModule, topLevelBinderFlags: binderFlags);
+                SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree).WithOptions(options);
+                compilation.ForceComplete();
                 ImmutableModel model = compilation.Model;
                 DiagnosticBag generatorDiagnostics = new DiagnosticBag();
                 if (!compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
@@ -102,14 +106,15 @@ namespace Soal
                         writer.WriteLine(printer.Generate());
                     }
                 }
+                DiagnosticFormatter formatter = new DiagnosticFormatter();
                 foreach (var diagnostic in compilation.GetDiagnostics())
                 {
-                    string msg = DiagnosticFormatter.Instance.Format(diagnostic);
+                    string msg = formatter.Format(diagnostic);
                     Console.WriteLine(msg);
                 }
                 foreach (var diagnostic in generatorDiagnostics.AsEnumerable())
                 {
-                    string msg = DiagnosticFormatter.Instance.Format(diagnostic);
+                    string msg = formatter.Format(diagnostic);
                     Console.WriteLine(msg);
                 }
             }

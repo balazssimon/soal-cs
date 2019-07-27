@@ -1,12 +1,8 @@
-namespace  = ""
-{
-}
-
-namespace  = "http://www.hello.org/test"
+namespace Xsd06.Hello = hw:"http://www.hello.org/test"
 {
 	struct Complex
 	{
-		 cc;
+		Xsd06.Calc.Complex cc;
 		double Re;
 		double Im;
 		Time Time;
@@ -14,16 +10,15 @@ namespace  = "http://www.hello.org/test"
 
 }
 
-namespace  = "http://www.calc.org/test"
+namespace Xsd06.Calc = cc:"http://www.calc.org/test"
 {
 	struct Complex
 	{
-		 hc;
+		Xsd06.Hello.Complex hc;
 		double Re;
 		double Im;
 		Time Time;
 	}
 
 }
-
 

@@ -1,8 +1,8 @@
-﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Text;
-using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Importer;
+﻿using MetaDslx.Languages.Soal.Importer;
 using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -110,7 +110,7 @@ namespace MetaDslx.Languages.Soal
         private Dictionary<string, HashSet<Importer.XmlReader>> readers = new Dictionary<string, HashSet<Importer.XmlReader>>();
         private Dictionary<string, NamespaceBuilder> namespaces = new Dictionary<string, NamespaceBuilder>();
         private Dictionary<SoalTypeBuilder, SoalTypeBuilder> replacementTypes = new Dictionary<SoalTypeBuilder, SoalTypeBuilder>();
-        private Dictionary<ISymbol, SoalTypeBuilder> originalTypes = new Dictionary<ISymbol, SoalTypeBuilder>();
+        private Dictionary<IMetaSymbol, SoalTypeBuilder> originalTypes = new Dictionary<IMetaSymbol, SoalTypeBuilder>();
         private HashSet<SoalTypeBuilder> rootTypes = new HashSet<SoalTypeBuilder>();
         private HashSet<SoalTypeBuilder> typesToRemove = new HashSet<SoalTypeBuilder>();
         private Dictionary<XName, WsdlMessage> messagesByName = new Dictionary<XName, WsdlMessage>();
@@ -137,7 +137,7 @@ namespace MetaDslx.Languages.Soal
             this.namespaceCounter = 0;
             MutableModelGroup group = new MutableModelGroup();
             group.AddReference(SoalInstance.Model);
-            this.Model = group.CreateModel();
+            this.Model = group.CreateModel("ImportedModel", new ModelVersion());
             this.Factory = new Symbols.SoalFactory(this.Model);
             this.byteArray = this.Factory.ArrayType();
             this.byteArray.InnerType = SoalInstance.Byte.ToMutable();
@@ -160,16 +160,17 @@ namespace MetaDslx.Languages.Soal
             if (importer.Diagnostics.HasAnyErrors()) return importer.Model.ToImmutable();
             LoadImportedFiles(importer);
             if (importer.Diagnostics.HasAnyErrors()) return importer.Model.ToImmutable();
+            importer.Model.EvaluateLazyValues();
             RemoveTypes(importer);
             foreach (var fileUri in importer.readers.Keys)
             {
                 if (!importer.Diagnostics.AsEnumerable().Any(d => d.Location.GetLineSpan().Path == fileUri && d.Severity == DiagnosticSeverity.Error))
                 {
-                    importer.AddInfo("File successfully imported.", fileUri, LinePositionSpan.Zero);
+                    importer.AddInfo("File successfully imported.", fileUri, default);
                 }
                 else
                 {
-                    importer.AddError("Could not import file.", fileUri, LinePositionSpan.Zero);
+                    importer.AddError("Could not import file.", fileUri, default);
                 }
             }
             return importer.Model.ToImmutable();
@@ -202,17 +203,17 @@ namespace MetaDslx.Languages.Soal
 
         internal void AddError(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(Location.Create(fileUri, TextSpan.Default, location), SoalImporterErrorCode.Error, message);
+            this.Diagnostics.Add(SoalImporterErrorCode.Error, Location.Create(fileUri, default, location), message);
         }
 
         internal void AddWarning(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(Location.Create(fileUri, TextSpan.Default, location), SoalImporterErrorCode.Warning, message);
+            this.Diagnostics.Add(SoalImporterErrorCode.Warning, Location.Create(fileUri, default, location), message);
         }
 
         internal void AddInfo(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(Location.Create(fileUri, TextSpan.Default, location), SoalImporterErrorCode.Info, message);
+            this.Diagnostics.Add(SoalImporterErrorCode.Info, Location.Create(fileUri, default, location), message);
         }
 
         private static void RemoveTypes(SoalImporter importer)
@@ -289,7 +290,7 @@ namespace MetaDslx.Languages.Soal
             }
             catch(System.Exception ex)
             {
-                this.AddError("Could not import file: "+ex.Message, fileUri, LinePositionSpan.Zero);
+                this.AddError("Could not import file: "+ex.Message, fileUri, default);
             }
         }
 
@@ -302,7 +303,7 @@ namespace MetaDslx.Languages.Soal
             }
             else
             {
-                this.AddError("Invalid relative URI in import '" + relativeUri + "'.", currentUri, LinePositionSpan.Zero);
+                this.AddError("Invalid relative URI in import '" + relativeUri + "'.", currentUri, default);
             }
         }
 
@@ -354,7 +355,7 @@ namespace MetaDslx.Languages.Soal
             {
                 if (result.Uri != uri)
                 {
-                    this.AddWarning("Namespace '" + result.FullName + "' has conflicting URIs: '" + result.FullName + "' and '" + uri + "'", reader.Uri, LinePositionSpan.Zero);
+                    this.AddWarning("Namespace '" + result.FullName + "' has conflicting URIs: '" + result.FullName + "' and '" + uri + "'", reader.Uri, default);
                 }
                 return result;
             }
@@ -363,6 +364,7 @@ namespace MetaDslx.Languages.Soal
             NamespaceBuilder currentNs = null;
             while (i < names.Length)
             {
+                var parentNs = currentNs;
                 if (i == 0)
                 {
                     NamespaceBuilder rootNs = this.Model.Symbols.OfType<NamespaceBuilder>().FirstOrDefault(ns => ns.Name == names[0] && ns.Namespace == null);
@@ -375,10 +377,18 @@ namespace MetaDslx.Languages.Soal
                 if (currentNs != null)
                 {
                     ++i;
+                    if (i == names.Length)
+                    {
+                        if (string.IsNullOrEmpty(currentNs.Prefix))
+                        {
+                            currentNs.Prefix = prefix;
+                        }
+                        this.namespaces.Add(uri, currentNs);
+                        return currentNs;
+                    }
                 }
                 else
                 {
-                    NamespaceBuilder parentNs = currentNs;
                     while(i < names.Length)
                     {
                         NamespaceBuilder ns = this.Factory.Namespace();
@@ -391,6 +401,7 @@ namespace MetaDslx.Languages.Soal
                             ns.Uri = uri;
                             result = ns;
                             this.namespaces.Add(uri, ns);
+                            return result;
                         }
                         parentNs = ns;
                     }
@@ -406,7 +417,7 @@ namespace MetaDslx.Languages.Soal
             return result;
         }
 
-        internal void RegisterOriginalType(ISymbol obj, SoalTypeBuilder type)
+        internal void RegisterOriginalType(IMetaSymbol obj, SoalTypeBuilder type)
         {
             if (obj == null) return;
             if (type == null) return;
@@ -430,6 +441,11 @@ namespace MetaDslx.Languages.Soal
         internal void RemoveType(SoalTypeBuilder type)
         {
             this.typesToRemove.Add(type);
+        }
+
+        internal void RemoveNamespace(NamespaceBuilder ns)
+        {
+            this.Model.RemoveSymbol(ns);
         }
 
         internal SoalTypeBuilder GetReplacementType(SoalTypeBuilder original)
@@ -594,7 +610,7 @@ namespace MetaDslx.Languages.Soal
                     else
                     {
                         SoalTypeBuilder originalType = null;
-                        if (this.originalTypes.TryGetValue((ISymbol)prop, out originalType))
+                        if (this.originalTypes.TryGetValue((IMetaSymbol)prop, out originalType))
                         {
                             if (originalType is AnnotatedElementBuilder && ((AnnotatedElementBuilder)originalType).HasAnnotation(SoalAnnotations.Restriction))
                             {

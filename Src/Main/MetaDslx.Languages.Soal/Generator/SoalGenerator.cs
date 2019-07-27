@@ -1,9 +1,8 @@
-﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Symbols;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Core;
+﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.Languages.Soal.Generator;
 using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -47,13 +46,14 @@ namespace MetaDslx.Languages.Soal
         public bool SeparateXsdWsdl { get; set; }
         public bool SingleFileWsdl { get; set; }
 
-        private void AddDiagnostic(ISymbol symbol, ErrorCode errorCode, params object[] args)
+        private void AddDiagnostic(IMetaSymbol symbol, ErrorCode errorCode, params object[] args)
         {
-            ImmutableArray<SyntaxReference> references = (ImmutableArray<SyntaxReference>)symbol.MGet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
+            /*ImmutableArray<SyntaxReference> references = symbol.DeclaringSyntaxReferences;
             foreach (var reference in references)
             {
-                this.diagnostics.Add(reference.GetLocation(), SoalGeneratorErrorCode.XsdTypeDefinedMultipleTimes, args);
-            }
+                this.diagnostics.Add(SoalGeneratorErrorCode.XsdTypeDefinedMultipleTimes, reference.GetSyntax().GetLocation(), args);
+            }*/
+            this.diagnostics.Add(SoalGeneratorErrorCode.XsdTypeDefinedMultipleTimes, Location.None, args);
         }
 
         private void PrepareGeneration()
@@ -90,7 +90,7 @@ namespace MetaDslx.Languages.Soal
             var namespaces = this.Model.Symbols.OfType<Namespace>().ToList();
             foreach (var ns in namespaces)
             {
-                Dictionary<string, List<ISymbol>> typeNames = new Dictionary<string, List<ISymbol>>();
+                Dictionary<string, List<IMetaSymbol>> typeNames = new Dictionary<string, List<IMetaSymbol>>();
                 if (ns.Uri != null)
                 {
                     foreach (var decl in ns.Declarations)
@@ -101,51 +101,51 @@ namespace MetaDslx.Languages.Soal
                             foreach (var op in intf.Operations)
                             {
                                 string key = op.Name;
-                                List<ISymbol> symbols = null;
+                                List<IMetaSymbol> symbols = null;
                                 if (!typeNames.TryGetValue(key, out symbols))
                                 {
-                                    symbols = new List<ISymbol>();
+                                    symbols = new List<IMetaSymbol>();
                                     typeNames.Add(key, symbols);
                                 }
-                                symbols.Add((ISymbol)op);
+                                symbols.Add(op);
                                 key = op.Name + "Response";
                                 symbols = null;
                                 if (!typeNames.TryGetValue(key, out symbols))
                                 {
-                                    symbols = new List<ISymbol>();
+                                    symbols = new List<IMetaSymbol>();
                                     typeNames.Add(key, symbols);
                                 }
-                                symbols.Add((ISymbol)op);
+                                symbols.Add(op);
                             }
                         }
                         Struct stype = decl as Struct;
                         if (stype != null)
                         {
                             string key = stype.GetXsdName();
-                            List<ISymbol> symbols = null;
+                            List<IMetaSymbol> symbols = null;
                             if (!typeNames.TryGetValue(key, out symbols))
                             {
-                                symbols = new List<ISymbol>();
+                                symbols = new List<IMetaSymbol>();
                                 typeNames.Add(key, symbols);
                             }
-                            symbols.Add((ISymbol)stype);
+                            symbols.Add(stype);
                         }
                         Symbols.Enum etype = decl as Symbols.Enum;
                         if (etype != null)
                         {
                             string key = etype.GetXsdName();
-                            List<ISymbol> symbols = null;
+                            List<IMetaSymbol> symbols = null;
                             if (!typeNames.TryGetValue(key, out symbols))
                             {
-                                symbols = new List<ISymbol>();
+                                symbols = new List<IMetaSymbol>();
                                 typeNames.Add(key, symbols);
                             }
-                            symbols.Add((ISymbol)etype);
+                            symbols.Add(etype);
                         }
                     }
                     foreach (var key in typeNames.Keys)
                     {
-                        List<ISymbol> symbols = typeNames[key];
+                        List<IMetaSymbol> symbols = typeNames[key];
                         if (symbols.Count > 1)
                         {
                             foreach (var symbol in symbols)
@@ -167,10 +167,10 @@ namespace MetaDslx.Languages.Soal
                         {
                             foreach (var op in intf.Operations)
                             {
-                                this.CheckXsdNamespace(op.Result.Type, (ISymbol)op);
+                                this.CheckXsdNamespace(op.Result.Type, (IMetaSymbol)op);
                                 foreach (var param in op.Parameters)
                                 {
-                                    this.CheckXsdNamespace(param.Type, (ISymbol)param);
+                                    this.CheckXsdNamespace(param.Type, (IMetaSymbol)param);
                                 }
                             }
                         }
@@ -179,7 +179,7 @@ namespace MetaDslx.Languages.Soal
                         {
                             foreach (var prop in stype.Properties)
                             {
-                                this.CheckXsdNamespace(prop.Type, (ISymbol)prop);
+                                this.CheckXsdNamespace(prop.Type, (IMetaSymbol)prop);
                             }
                         }
                     }
@@ -187,7 +187,7 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        private void CheckXsdNamespace(SoalType type, ISymbol symbol)
+        private void CheckXsdNamespace(SoalType type, IMetaSymbol symbol)
         {
             if (!type.HasXsdNamespace())
             {
@@ -223,20 +223,14 @@ namespace MetaDslx.Languages.Soal
                     if (!this.SingleFileWsdl)
                     {
                         string xsdFileName = Path.Combine(xsdDirectory, ns.FullName + ".xsd");
-                        using (StreamWriter writer = new StreamWriter(xsdFileName))
-                        {
-                            XsdGenerator xsdGen = new XsdGenerator(ns);
-                            writer.WriteLine(xsdGen.Generate(ns));
-                        }
+                        XsdGenerator xsdGen = new XsdGenerator(ns);
+                        File.WriteAllText(xsdFileName, xsdGen.Generate(ns));
                     }
                     string wsdlFileName = Path.Combine(wsdlDirectory, ns.FullName + ".wsdl");
-                    using (StreamWriter writer = new StreamWriter(wsdlFileName))
-                    {
-                        WsdlGenerator wsdlGen = new WsdlGenerator(ns);
-                        wsdlGen.Properties.SingleFileWsdl = this.SingleFileWsdl;
-                        wsdlGen.Properties.SeparateXsdWsdl = this.SeparateXsdWsdl;
-                        writer.WriteLine(wsdlGen.Generate(ns));
-                    }
+                    WsdlGenerator wsdlGen = new WsdlGenerator(ns);
+                    wsdlGen.Properties.SingleFileWsdl = this.SingleFileWsdl;
+                    wsdlGen.Properties.SeparateXsdWsdl = this.SeparateXsdWsdl;
+                    File.WriteAllText(wsdlFileName, wsdlGen.Generate(ns));
                 }
             }
         }

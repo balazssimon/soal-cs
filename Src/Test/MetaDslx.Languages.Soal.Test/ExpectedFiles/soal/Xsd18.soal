@@ -1,4 +1,4 @@
-﻿namespace Xsd18.Hello = hw:"http://www.hello.org/test"
+namespace Xsd18.Hello = hw:"http://www.hello.org/test"
 {
 	struct MathFault
 	{
@@ -7,4 +7,6 @@
 		[Restriction(pattern="[A-Z]")]
 		string ErrorMessage;
 	}
+
 }
+

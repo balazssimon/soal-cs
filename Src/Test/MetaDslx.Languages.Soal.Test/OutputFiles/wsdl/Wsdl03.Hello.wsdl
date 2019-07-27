@@ -19,8 +19,6 @@
 >
 	
 	<wsp:Policy wsu:Id="HttpSoap11_Policy">
-		
-		
 		<wsam:Addressing/>
 	</wsp:Policy>
 	
@@ -223,4 +221,3 @@
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
-

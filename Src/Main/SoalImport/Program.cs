@@ -1,7 +1,7 @@
-﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Core;
-using MetaDslx.Languages.Soal;
+﻿using MetaDslx.Languages.Soal;
 using MetaDslx.Languages.Soal.Generator;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;

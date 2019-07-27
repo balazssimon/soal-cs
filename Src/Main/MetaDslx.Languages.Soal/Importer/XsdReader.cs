@@ -1,5 +1,4 @@
-﻿using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Symbols;
+﻿using MetaDslx.Languages.Soal.Symbols;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +45,13 @@ namespace MetaDslx.Languages.Soal.Importer
                 tns = string.Empty;
                 this.Namespace = this.Importer.CreateNamespace(this, string.Empty, null, Path.GetFileNameWithoutExtension(this.Uri));
             }
+            foreach (var attr in this.Root.Attributes())
+            {
+                if (attr.IsNamespaceDeclaration && attr.Value == tns && string.IsNullOrEmpty(this.Namespace.Prefix))
+                {
+                    this.Namespace.Prefix = attr.Name.LocalName;
+                }
+            }
             definedElements = new List<XElement>();
             foreach (var elem in this.Root.Elements())
             {
@@ -89,6 +95,10 @@ namespace MetaDslx.Languages.Soal.Importer
                 {
                     //this.Importer.AddError("Unexpected element.", this.Uri, this.GetTextSpan(elem));
                 }
+            }
+            if (this.Namespace.Uri == string.Empty && this.Namespace.Declarations.Count == 0)
+            {
+                this.Importer.RemoveNamespace(this.Namespace);
             }
         }
 
@@ -1229,13 +1239,13 @@ namespace MetaDslx.Languages.Soal.Importer
             }
             if (type is PrimitiveTypeBuilder)
             {
-                if (nillable && type != SoalInstance.Object && type != SoalInstance.String)
+                if (nillable && type.MId != SoalInstance.Object.MId && type.MId != SoalInstance.String.MId)
                 {
                     NullableTypeBuilder nullable = this.Factory.NullableType();
                     nullable.InnerType = type;
                     type = nullable;
                 }
-                else if (!nillable && (type == SoalInstance.Object || type == SoalInstance.String))
+                else if (!nillable && (type.MId == SoalInstance.Object.MId || type.MId == SoalInstance.String.MId))
                 {
                     NonNullableTypeBuilder nonNull = this.Factory.NonNullableType();
                     nonNull.InnerType = type;
@@ -1296,7 +1306,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         SoalTypeBuilder coreType = type.GetCoreType();
                         AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
                         arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
-                        if (coreType is NamedElement && ((NamedElement)coreType).Name != prop.Name)
+                        if (coreType is NamedElementBuilder && ((NamedElementBuilder)coreType).Name != prop.Name)
                         {
                             arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
                         }
