@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Soal.Generator;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
@@ -15,6 +16,8 @@ namespace MetaDslx.Languages.Soal
 {
     public class SoalGenerator
     {
+        private ImmutableDictionary<IMetaSymbol, Symbol> _symbolMap;
+
         public static Namespace XsdNamespace { get; private set; }
 
         static SoalGenerator()
@@ -28,7 +31,7 @@ namespace MetaDslx.Languages.Soal
         }
 
 
-        public SoalGenerator(ImmutableModel model, string outputDirectory, DiagnosticBag diagnostics, string fileName)
+        public SoalGenerator(ImmutableModel model, ImmutableDictionary<IMetaSymbol, Symbol> symbolMap, string outputDirectory, DiagnosticBag diagnostics, string fileName)
         {
             this.FileName = fileName;
             this.OutputDirectory = outputDirectory;
@@ -36,6 +39,7 @@ namespace MetaDslx.Languages.Soal
             this.SeparateXsdWsdl = false;
             this.SingleFileWsdl = false;
             this.modelBuilder = model.ToMutable(true);
+            _symbolMap = symbolMap;
         }
 
         private DiagnosticBag diagnostics;
@@ -46,14 +50,20 @@ namespace MetaDslx.Languages.Soal
         public bool SeparateXsdWsdl { get; set; }
         public bool SingleFileWsdl { get; set; }
 
-        private void AddDiagnostic(IMetaSymbol symbol, ErrorCode errorCode, params object[] args)
+        private void AddDiagnostic(IMetaSymbol modelObject, ErrorCode errorCode, params object[] args)
         {
-            /*ImmutableArray<SyntaxReference> references = symbol.DeclaringSyntaxReferences;
-            foreach (var reference in references)
+            if (_symbolMap.TryGetValue(modelObject, out Symbol symbol))
             {
-                this.diagnostics.Add(SoalGeneratorErrorCode.XsdTypeDefinedMultipleTimes, reference.GetSyntax().GetLocation(), args);
-            }*/
-            this.diagnostics.Add(SoalGeneratorErrorCode.XsdTypeDefinedMultipleTimes, Location.None, args);
+                ImmutableArray<SyntaxReference> references = symbol.DeclaringSyntaxReferences;
+                foreach (var reference in references)
+                {
+                    this.diagnostics.Add(errorCode, reference.GetSyntax().GetLocation(), args);
+                }
+            }
+            else
+            {
+                this.diagnostics.Add(errorCode, Location.None, args);
+            }
         }
 
         private void PrepareGeneration()

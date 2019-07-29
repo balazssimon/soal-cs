@@ -1,4 +1,4 @@
-﻿namespace Xsd17.Hello = hw:"http://www.hello.org/test"
+namespace Xsd17.Hello = hw:"http://www.hello.org/test"
 {
 	struct IntValues
 	{
@@ -18,5 +18,6 @@
 		[Element(wrapped=true, items="b", sap=true)]
 		NameValues[] B;
 	}
-	
+
 }
+

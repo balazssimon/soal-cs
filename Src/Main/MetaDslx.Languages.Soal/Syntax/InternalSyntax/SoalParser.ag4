@@ -371,35 +371,21 @@ returnType
 	: voidType
 	| typeReference
 	;
-
+	
 $SymbolUse(SoalType)
 typeReference 
-	: nonNullableArrayType
-	| arrayType
-	| simpleType
-	| nulledType
+	: $SymbolDef(ArrayType) $Property(InnerType) typeReference TOpenBracket TCloseBracket #arrayTypeReference
+	| $SymbolDef(NullableType) $Property(InnerType) typeReference TQuestion #nullableTypeReference
+	| simpleType #simpleTypeReference
+	| qualifier #qualifierReference
 	;
 
 $SymbolUse(SoalType)
-simpleType : valueType | objectType | qualifier;
-
-$SymbolUse(SoalType)
-nulledType : nullableType | nonNullableType;
-
-$SymbolUse(SoalType)
-referenceType : objectType | qualifier;
-
-$SymbolUse(SoalType)
 $Identifier
-objectType 
+simpleType 
 	: KObject 
 	| KString
-	;
-
-$SymbolUse(SoalType)
-$Identifier
-valueType 
-	: KInt 
+	| KInt 
 	| KLong 
 	| KFloat 
 	| KDouble 
@@ -417,6 +403,7 @@ voidType
 	: KVoid
 	;
 
+$Property(name=IsOneway,value=true)
 $SymbolUse(SoalType)
 $Value(SoalInstance.Void)
 onewayType
@@ -424,30 +411,10 @@ onewayType
 	;
 
 operationReturnType
-	: $Property(name=IsOneway,value=true) onewayType
+	: onewayType
 	| voidType
 	| typeReference
 	;
-
-$SymbolDef(NullableType)
-nullableType : $Property(InnerType) valueType TQuestion;
-
-$SymbolDef(NonNullableType)
-nonNullableType : $Property(InnerType) referenceType TExclamation;
-
-$SymbolDef(NonNullableType)
-nonNullableArrayType : $Property(InnerType) arrayType TExclamation;
-
-arrayType
-	: simpleArrayType
-	| nulledArrayType
-	;
-
-$SymbolDef(ArrayType)
-simpleArrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
-
-$SymbolDef(ArrayType)
-nulledArrayType : $Property(InnerType) nulledType TOpenBracket TCloseBracket;
 
 constantValue
 	: literal

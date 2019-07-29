@@ -1,4 +1,6 @@
-﻿using MetaDslx.Languages.Soal.Symbols.Internal;
+﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Soal.Symbols.Internal;
+using MetaDslx.Modeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,10 +52,8 @@ namespace MetaDslx.Languages.Soal.Symbols
             SoalFactory f = new SoalFactory(_this.Model);
             _this.Object = f.PrimitiveType();
             _this.Object.Name = "object";
-            _this.Object.Nullable = true;
             _this.String = f.PrimitiveType();
             _this.String.Name = "string";
-            _this.String.Nullable = true;
             _this.Int = f.PrimitiveType();
             _this.Int.Name = "int";
             _this.Long = f.PrimitiveType();
@@ -93,6 +93,7 @@ namespace MetaDslx.Languages.Soal.Symbols
 
     internal static class SoalExtensions
     {
+
         public static string FullName(this Declaration declaration)
         {
             if (declaration == null) return string.Empty;
@@ -108,7 +109,6 @@ namespace MetaDslx.Languages.Soal.Symbols
         public static bool IsArrayType(this SoalType type)
         {
             if (type == null) return false;
-            if (type is NonNullableType) return ((NonNullableType)type).InnerType.IsArrayType();
             if (type is NullableType) return ((NullableType)type).InnerType.IsArrayType();
             if (type is ArrayType) return true;
             return false;
@@ -117,7 +117,6 @@ namespace MetaDslx.Languages.Soal.Symbols
         public static bool IsArrayType(this SoalTypeBuilder type)
         {
             if (type == null) return false;
-            if (type is NonNullableTypeBuilder) return ((NonNullableTypeBuilder)type).InnerType.IsArrayType();
             if (type is NullableTypeBuilder) return ((NullableTypeBuilder)type).InnerType.IsArrayType();
             if (type is ArrayTypeBuilder) return true;
             return false;
@@ -126,7 +125,6 @@ namespace MetaDslx.Languages.Soal.Symbols
         public static SoalType GetCoreType(this SoalType type)
         {
             if (type == null) return null;
-            if (type is NonNullableType) return ((NonNullableType)type).InnerType.GetCoreType();
             if (type is NullableType) return ((NullableType)type).InnerType.GetCoreType();
             if (type is ArrayType) return ((ArrayType)type).InnerType.GetCoreType();
             return type;
@@ -135,7 +133,6 @@ namespace MetaDslx.Languages.Soal.Symbols
         public static SoalTypeBuilder GetCoreType(this SoalTypeBuilder type)
         {
             if (type == null) return null;
-            if (type is NonNullableTypeBuilder) return ((NonNullableTypeBuilder)type).InnerType.GetCoreType();
             if (type is NullableTypeBuilder) return ((NullableTypeBuilder)type).InnerType.GetCoreType();
             if (type is ArrayTypeBuilder) return ((ArrayTypeBuilder)type).InnerType.GetCoreType();
             return type;
@@ -332,26 +329,12 @@ namespace MetaDslx.Languages.Soal.Symbols
                     arrayTypes.Add(atype);
                 }
             }
-            else if (type is NonNullableType)
-            {
-                ArrayType atype = ((NonNullableType)type).InnerType as ArrayType;
-                if (atype != null)
-                {
-                    string aname = atype.GetXsdName();
-                    if (atype.InnerType.MId != SoalInstance.Byte.MId && !arrayNames.Contains(aname))
-                    {
-                        arrayNames.Add(aname);
-                        arrayTypes.Add(atype);
-                    }
-                }
-            }
         }
 
         public static Namespace GetNamespace(this SoalType type, Namespace currentNamespace)
         {
             if (type is PrimitiveType) return SoalGenerator.XsdNamespace;
             if (type is NullableType) return GetNamespace(((NullableType)type).InnerType, currentNamespace);
-            if (type is NonNullableType) return GetNamespace(((NonNullableType)type).InnerType, currentNamespace);
             if (type is ArrayType)
             {
                 if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return SoalGenerator.XsdNamespace;
@@ -401,7 +384,6 @@ namespace MetaDslx.Languages.Soal.Symbols
                 }
             }
             if (type is NullableType) return GetXsdName(((NullableType)type).InnerType);
-            if (type is NonNullableType) return GetXsdName(((NonNullableType)type).InnerType);
             if (type is ArrayType)
             {
                 if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return "base64Binary";
@@ -438,7 +420,6 @@ namespace MetaDslx.Languages.Soal.Symbols
         {
             if (type is PrimitiveType) return true;
             if (type is NullableType) return HasXsdNamespace(((NullableType)type).InnerType);
-            if (type is NonNullableType) return HasXsdNamespace(((NonNullableType)type).InnerType);
             if (type is ArrayType) return HasXsdNamespace(((ArrayType)type).InnerType);
             if (type is Enum)
             {
@@ -455,13 +436,7 @@ namespace MetaDslx.Languages.Soal.Symbols
 
         public static bool IsNullable(this SoalType type)
         {
-            if (type is NonNullableType) return false;
-            if (type is NullableType) return true;
-            if (type is PrimitiveType) return ((PrimitiveType)type).Nullable;
-            if (type is ArrayType) return true;
-            if (type is Enum) return false;
-            if (type is Struct) return true;
-            return false;
+            return type is NullableType;
         }
 
         public static string IsNullableXsd(this SoalType type)

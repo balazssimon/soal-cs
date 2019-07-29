@@ -38,10 +38,13 @@ namespace MetaDslx.Soal.Test
             Assert.IsFalse(compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error));
 
             DiagnosticBag generatorDiagnostics = new DiagnosticBag();
-            SoalGenerator generator = new SoalGenerator(model, outputDirectory, generatorDiagnostics, inputFileName);
+            SoalGenerator generator = new SoalGenerator(model, compilation.BuildModelObjectToSymbolMap(), outputDirectory, generatorDiagnostics, inputFileName);
             generator.SeparateXsdWsdl = true;
             generator.SingleFileWsdl = false;
             generator.Generate();
+
+            Assert.IsFalse(generatorDiagnostics.AsEnumerable().Any(d => d.Severity == DiagnosticSeverity.Error));
+
             string expectedXsd = null;
             using (StreamReader reader = new StreamReader(expectedFileName))
             {

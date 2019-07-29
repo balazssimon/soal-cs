@@ -17,7 +17,7 @@
 	<xs:complexType name="MathFault">
 		<xs:sequence>
 			<xs:element name="ErrorCode" type="xs:int" nillable="false"/>
-			<xs:element name="ErrorMessage" type="xs:string" nillable="true"/>
+			<xs:element name="ErrorMessage" type="xs:string" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -32,29 +32,29 @@
 	<xs:element name="SayHello" type="hw:SayHello"/>
 	<xs:complexType name="SayHello">
 		<xs:sequence>
-			<xs:element name="name" type="xs:string" nillable="true"/>
+			<xs:element name="name" type="xs:string" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="SayHelloResponse" type="hw:SayHelloResponse"/>
 	<xs:complexType name="SayHelloResponse">
 		<xs:sequence>
-			<xs:element name="SayHelloResult" type="xs:string" nillable="true"/>
+			<xs:element name="SayHelloResult" type="xs:string" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="SayHello2" type="hw:SayHello2"/>
 	<xs:complexType name="SayHello2">
 		<xs:sequence>
-			<xs:element name="cplx1" type="hw:Complex" nillable="true"/>
-			<xs:element name="cplx2" type="hw:Complex" nillable="true"/>
+			<xs:element name="cplx1" type="hw:Complex" nillable="false"/>
+			<xs:element name="cplx2" type="hw:Complex" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="SayHello2Response" type="hw:SayHello2Response"/>
 	<xs:complexType name="SayHello2Response">
 		<xs:sequence>
-			<xs:element name="SayHello2Result" type="xs:string" nillable="true"/>
+			<xs:element name="SayHello2Result" type="xs:string" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -62,7 +62,7 @@
 	<xs:complexType name="Abc">
 		<xs:sequence>
 			<xs:element name="i1" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="i2" nillable="true">
+			<xs:element name="i2" nillable="false">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="iiiii" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
@@ -75,22 +75,22 @@
 	<xs:element name="AbcResponse" type="hw:AbcResponse"/>
 	<xs:complexType name="AbcResponse">
 		<xs:sequence>
-			<xs:element name="AbcResult" type="xs:base64Binary" nillable="true"/>
+			<xs:element name="AbcResult" type="xs:base64Binary" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="Abc2" type="hw:Abc2"/>
 	<xs:complexType name="Abc2">
 		<xs:sequence>
-			<xs:element name="i1" type="xs:base64Binary" nillable="true"/>
-			<xs:element name="i2" type="xs:base64Binary" nillable="true"/>
+			<xs:element name="i1" type="xs:base64Binary" nillable="false"/>
+			<xs:element name="i2" type="xs:base64Binary" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="Abc2Response" type="hw:Abc2Response"/>
 	<xs:complexType name="Abc2Response">
 		<xs:sequence>
-			<xs:element name="Abc2Result" nillable="true">
+			<xs:element name="Abc2Result" nillable="false">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="jjjjj" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
@@ -103,7 +103,7 @@
 	<xs:element name="Abc3" type="hw:Abc3"/>
 	<xs:complexType name="Abc3">
 		<xs:sequence>
-			<xs:element name="i1" nillable="true">
+			<xs:element name="i1" nillable="false">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="int" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
@@ -139,15 +139,15 @@
 	<xs:element name="DivideComplex" type="hw:DivideComplex"/>
 	<xs:complexType name="DivideComplex">
 		<xs:sequence>
-			<xs:element name="left" type="hw:Complex" nillable="true"/>
-			<xs:element name="right" type="hw:Complex" nillable="true"/>
+			<xs:element name="left" type="hw:Complex" nillable="false"/>
+			<xs:element name="right" type="hw:Complex" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="DivideComplexResponse" type="hw:DivideComplexResponse"/>
 	<xs:complexType name="DivideComplexResponse">
 		<xs:sequence>
-			<xs:element name="DivideComplexResult" type="hw:Complex" nillable="true"/>
+			<xs:element name="DivideComplexResult" type="hw:Complex" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 

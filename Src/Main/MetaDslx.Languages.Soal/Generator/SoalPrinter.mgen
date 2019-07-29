@@ -143,8 +143,6 @@ template GenerateType(Namespace currentNs, SoalType t)
 [((PrimitiveType)t).Name]\
 [else if (t is NullableType)]
 [GenerateType(currentNs, ((NullableType)t).InnerType)]?\
-[else if (t is NonNullableType)]
-[GenerateType(currentNs, ((NonNullableType)t).InnerType)]!\
 [else if (t is ArrayType)]
 [GenerateType(currentNs, ((ArrayType)t).InnerType)]["[]"]\
 [else if (t is Declaration)]

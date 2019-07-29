@@ -14,13 +14,13 @@
 	<xs:element name="NameValues" type="hw:NameValues"/>
 	<xs:complexType name="NameValues">
 		<xs:sequence>
-			<xs:element name="Names" nillable="true">
+			<xs:element name="Names" nillable="false">
 				<xs:complexType>
 					<xs:all>
 						<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:all>
-									<xs:element name="Name" type="xs:string" nillable="true"/>
+									<xs:element name="Name" type="xs:string" nillable="false"/>
 								</xs:all>
 							</xs:complexType>
 						</xs:element>
@@ -33,8 +33,8 @@
 	<xs:element name="Values" type="hw:Values"/>
 	<xs:complexType name="Values">
 		<xs:sequence>
-			<xs:element name="A" type="hw:IntValues" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="B" type="hw:NameValues" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="A" type="hw:IntValues" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="B" type="hw:NameValues" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

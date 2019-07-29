@@ -54,7 +54,7 @@
 	}
 
 	[Type]
-	abstract class SoalType : NamedElement
+	abstract class SoalType : Declaration
 	{
 	}
 
@@ -84,18 +84,12 @@
 		SoalType InnerType;
 	}
 
-	class NonNullableType : SoalType
+	class PrimitiveType : SoalType
 	{
-		SoalType InnerType;
-	}
-
-	class PrimitiveType : SoalType, Declaration
-	{
-		bool Nullable;
 	}
 
 	[Scope]
-	class Enum : SoalType, Declaration
+	class Enum : SoalType
 	{
 		[BaseScope]
 		Enum BaseType;
@@ -114,7 +108,7 @@
 	}
 
 	[Scope]
-	class Struct : SoalType, Declaration
+	class Struct : SoalType
 	{
 		[BaseScope]
 		Struct BaseType;
@@ -122,7 +116,7 @@
 	}
 
 	[Scope]
-	class Interface : SoalType, Declaration
+	class Interface : SoalType
 	{
 		containment list<Operation> Operations;
 	}

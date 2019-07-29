@@ -347,7 +347,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     }
                     bool stringBased = baseRef.Namespace == xsd && baseRef.LocalName == "string";
                     IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
-                    if (stringBased && enums.Any())
+                    if (/*stringBased && */enums.Any())
                     {
                         EnumBuilder enm = this.Factory.Enum();
                         //name = this.GetUniqueName(name, element);
@@ -847,17 +847,19 @@ namespace MetaDslx.Languages.Soal.Importer
                         maxOccurs = 1;
                     }
                 }
+                if (nillable)
+                {
+                    NullableTypeBuilder nullable = this.Factory.NullableType();
+                    nullable.InnerType = result;
+                    result = nullable;
+                }
                 if (maxOccurs < 0 || maxOccurs > 1)
                 {
                     ArrayTypeBuilder array = this.Factory.ArrayType();
                     array.InnerType = result;
                     result = array;
                 }
-                PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
-                type.Name = this.GetUniqueName(name, true);
-                type.Namespace = this.Namespace;
-                this.Importer.XsdElements.Register(this, tns + name, elem, type);
-                this.Importer.RegisterReplacementType(type, result);
+                this.Importer.XsdElements.Register(this, tns + name, elem, result);
             }
             return result;
         }
@@ -916,11 +918,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 if (result != null)
                 {
-                    PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
-                    type.Name = this.GetUniqueName(name, true);
-                    type.Namespace = this.Namespace;
-                    this.Importer.XsdAttributes.Register(this, tns + name, elem, type);
-                    this.Importer.RegisterReplacementType(type, result);
+                    this.Importer.XsdAttributes.Register(this, tns + name, elem, result);
                 }
                 else
                 {
@@ -1237,29 +1235,11 @@ namespace MetaDslx.Languages.Soal.Importer
                     maxOccurs = 1;
                 }
             }
-            if (type is PrimitiveTypeBuilder)
+            if (nillable)
             {
-                if (nillable && type.MId != SoalInstance.Object.MId && type.MId != SoalInstance.String.MId)
-                {
-                    NullableTypeBuilder nullable = this.Factory.NullableType();
-                    nullable.InnerType = type;
-                    type = nullable;
-                }
-                else if (!nillable && (type.MId == SoalInstance.Object.MId || type.MId == SoalInstance.String.MId))
-                {
-                    NonNullableTypeBuilder nonNull = this.Factory.NonNullableType();
-                    nonNull.InnerType = type;
-                    type = nonNull;
-                }
-            }
-            else
-            {
-                if (!nillable)
-                {
-                    NonNullableTypeBuilder nonNull = this.Factory.NonNullableType();
-                    nonNull.InnerType = type;
-                    type = nonNull;
-                }
+                NullableTypeBuilder nullable = this.Factory.NullableType();
+                nullable.InnerType = type;
+                type = nullable;
             }
             PropertyBuilder prop = this.Factory.Property();
             string newName = this.GetNewPropertyName(st, name);
@@ -1284,32 +1264,29 @@ namespace MetaDslx.Languages.Soal.Importer
                     AnnotationBuilder elemAnnot = prop.AddAnnotation(SoalAnnotations.Element);
                     elemAnnot.SetPropertyValue(SoalAnnotationProperties.Name, name);
                 }
-                if (rt != null && rt is ArrayTypeBuilder)
+                if (sap)
                 {
-                    if (sap)
+                    AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
+                    arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
+                    arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, sapName);
+                    arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Sap, true);
+                    this.Importer.RegisterReplacementType(st, sapArray);
+                    prop.Type = sapArray;
+                }
+                else if(rt != null && rt is ArrayTypeBuilder)
+                {
+                    if (type.IsArrayType())
                     {
-                        ((ArrayTypeBuilder)rt).InnerType = sapArray.InnerType;
-                        this.Importer.RegisterReplacementType(type, rt);
-                        AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
-                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
-                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, sapName);
-                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Sap, true);
+                        type = originalType;
+                        this.Importer.Reference(type);
                     }
-                    else
+                    ((ArrayTypeBuilder)rt).InnerType = type;
+                    SoalTypeBuilder coreType = type.GetCoreType();
+                    AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
+                    arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
+                    if (coreType is NamedElementBuilder && ((NamedElementBuilder)coreType).Name != prop.Name)
                     {
-                        if (type.IsArrayType())
-                        {
-                            type = originalType;
-                            this.Importer.Reference(type);
-                        }
-                        ((ArrayTypeBuilder)rt).InnerType = type;
-                        SoalTypeBuilder coreType = type.GetCoreType();
-                        AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
-                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
-                        if (coreType is NamedElementBuilder && ((NamedElementBuilder)coreType).Name != prop.Name)
-                        {
-                            arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
-                        }
+                        arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
                     }
                     prop.Type = rt;
                 }
@@ -1320,6 +1297,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         ArrayTypeBuilder array = this.Factory.ArrayType();
                         array.InnerType = type;
                         type = array;
+                        originalType = type;
                     }
                     prop.Type = type;
                 }

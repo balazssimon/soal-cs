@@ -12,31 +12,163 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:element name="PrimitiveNonNulls" type="hw:PrimitiveNonNulls"/>
-	<xs:complexType name="PrimitiveNonNulls">
+	<xs:element name="StringNulls" type="hw:StringNulls"/>
+	<xs:complexType name="StringNulls">
 		<xs:sequence>
-			<xs:element name="NonNullString" type="xs:string" nillable="false"/>
-			<xs:element name="IntNonNullArray" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="NonNullStringNonNullArray" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="String" type="xs:string" nillable="false"/>
+			<xs:element name="NullString" type="xs:string" nillable="true"/>
+			<xs:element name="StringArray" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="StringNullArray" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NullStringArray" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NullStringNullArray" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WrappedStringArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="string" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedStringNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="string" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullStringArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="string" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullStringNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="string" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="LongNulls" type="hw:LongNulls"/>
 	<xs:complexType name="LongNulls">
 		<xs:sequence>
+			<xs:element name="Long" type="xs:long" nillable="false"/>
 			<xs:element name="NullLong" type="xs:long" nillable="true"/>
+			<xs:element name="LongArray" type="xs:long" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="NullLongArray" type="xs:long" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="NullLongNonNullArray" type="xs:long" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="LongNullArray" type="xs:long" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NullLongNullArray" type="xs:long" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WrappedLongArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="long" type="xs:long" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullLongArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="long" type="xs:long" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedLongNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="long" type="xs:long" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullLongNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="long" type="xs:long" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:element name="ComplexNonNulls" type="hw:ComplexNonNulls"/>
-	<xs:complexType name="ComplexNonNulls">
+	<xs:element name="ByteNulls" type="hw:ByteNulls"/>
+	<xs:complexType name="ByteNulls">
 		<xs:sequence>
-			<xs:element name="NonNullComplex" type="hw:Complex" nillable="false"/>
-			<xs:element name="ComplexNonNullArray" type="hw:Complex" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="NonNullComplexNonNullArray" type="hw:Complex" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Byte" type="xs:byte" nillable="false"/>
+			<xs:element name="NullByte" type="xs:byte" nillable="true"/>
+			<xs:element name="ByteArray" type="xs:base64Binary" nillable="false"/>
+			<xs:element name="NullByteArray" type="xs:byte" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ByteNullArray" type="xs:base64Binary" nillable="true"/>
+			<xs:element name="NullByteNullArray" type="xs:byte" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WrappedByteArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="byte" type="xs:byte" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullByteArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="byte" type="xs:byte" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedByteNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="byte" type="xs:byte" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullByteNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="byte" type="xs:byte" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="ComplexNulls" type="hw:ComplexNulls"/>
+	<xs:complexType name="ComplexNulls">
+		<xs:sequence>
+			<xs:element name="Complex" type="hw:Complex" nillable="false"/>
+			<xs:element name="NullComplex" type="hw:Complex" nillable="true"/>
+			<xs:element name="ComplexArray" type="hw:Complex" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ComplexNullArray" type="hw:Complex" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NullComplexArray" type="hw:Complex" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NullComplexNullArray" type="hw:Complex" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WrappedComplexArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Complex" type="hw:Complex" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedComplexNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Complex" type="hw:Complex" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullComplexArray" nillable="false">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Complex" type="hw:Complex" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="WrappedNullComplexNullArray" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Complex" type="hw:Complex" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
-

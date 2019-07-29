@@ -1,5 +1,10 @@
 namespace Xsd14.Hello = hw:"http://www.hello.org/test"
 {
+	struct IntValues
+	{
+		int[] Items;
+	}
+
 	struct NameValues
 	{
 		[Element(wrapped=true, items="Name")]
@@ -8,8 +13,7 @@ namespace Xsd14.Hello = hw:"http://www.hello.org/test"
 
 	struct Values
 	{
-		[Element(wrapped=true, items="Items")]
-		int[][] A;
+		IntValues[] A;
 		NameValues[] B;
 	}
 

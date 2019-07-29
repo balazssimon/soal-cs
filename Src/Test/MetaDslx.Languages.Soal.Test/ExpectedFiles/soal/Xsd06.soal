@@ -2,7 +2,7 @@ namespace Xsd06.Hello = hw:"http://www.hello.org/test"
 {
 	struct Complex
 	{
-		Xsd06.Calc.Complex cc;
+		Xsd06.Calc.Complex? cc;
 		double Re;
 		double Im;
 		Time Time;
@@ -14,7 +14,7 @@ namespace Xsd06.Calc = cc:"http://www.calc.org/test"
 {
 	struct Complex
 	{
-		Xsd06.Hello.Complex hc;
+		Xsd06.Hello.Complex? hc;
 		double Re;
 		double Im;
 		Time Time;

@@ -19,108 +19,101 @@ namespace Soal
     {
         static void Main(string[] args)
         {
-            try
+            string fileName = null;
+            string outputDirectory = null;
+            bool separateXsdWsdl = false;
+            bool singleFileWsdl = false;
+            for (int i = 0; i < args.Length; i++)
             {
-                string fileName = null;
-                string outputDirectory = null;
-                bool separateXsdWsdl = false;
-                bool singleFileWsdl = false;
-                for (int i = 0; i < args.Length; i++)
+                if (args[i].StartsWith("-"))
                 {
-                    if (args[i].StartsWith("-"))
+                    if (args[i] == "-separateXsdWsdl")
                     {
-                        if (args[i] == "-separateXsdWsdl")
+                        separateXsdWsdl = true;
+                    }
+                    else if (args[i] == "-singleFileWsdl")
+                    {
+                        singleFileWsdl = true;
+                    }
+                    else if (i + 1 < args.Length)
+                    {
+                        if (args[i] == "-o")
                         {
-                            separateXsdWsdl = true;
+                            outputDirectory = args[++i];
                         }
-                        else if (args[i] == "-singleFileWsdl")
+                        else 
                         {
-                            singleFileWsdl = true;
-                        }
-                        else if (i + 1 < args.Length)
-                        {
-                            if (args[i] == "-o")
-                            {
-                                outputDirectory = args[++i];
-                            }
-                            else 
-                            {
-                                Console.WriteLine("Unknown option: '"+args[i]+"'");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unknown option: '" + args[i] + "'");
+                            Console.WriteLine("Unknown option: '"+args[i]+"'");
                         }
                     }
                     else
                     {
-                        fileName = args[i];
+                        Console.WriteLine("Unknown option: '" + args[i] + "'");
                     }
                 }
-                if (fileName == null)
+                else
                 {
-                    Console.WriteLine("Usage:");
-                    Console.WriteLine("  Soal.exe [options] [input.soal]");
-                    Console.WriteLine("Options:");
-                    Console.WriteLine("  -o [dir]: output directory");
-                    Console.WriteLine("  -separateXsdWsdl: separate XSD and WSDL files into different directories");
-                    Console.WriteLine("  -singleFileWsdl: include XSD code into the WSDL");
-                    return;
-                }
-                if (outputDirectory == null)
-                {
-                    outputDirectory = Directory.GetCurrentDirectory();
-                }
-                if (!File.Exists(fileName))
-                {
-                    Console.WriteLine("Could not find file: "+fileName);
-                    return;
-                }
-                if (singleFileWsdl && separateXsdWsdl)
-                {
-                    Console.WriteLine("Warning: conflicting options '-separateXsdWsdl' and '-singleFileWsdl'. '-singleFileWsdl' will be used.");
-                }
-                string source;
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    source = reader.ReadToEnd();
-                }
-                SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(source);
-                ModelReference soalReference = ModelReference.CreateFromModel(SoalInstance.Model);
-                BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-                SoalCompilationOptions options = new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.NetModule, topLevelBinderFlags: binderFlags);
-                SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree).WithOptions(options);
-                compilation.ForceComplete();
-                ImmutableModel model = compilation.Model;
-                DiagnosticBag generatorDiagnostics = new DiagnosticBag();
-                if (!compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
-                {
-                    SoalGenerator generator = new SoalGenerator(model, outputDirectory, generatorDiagnostics, fileName);
-                    generator.SeparateXsdWsdl = separateXsdWsdl;
-                    generator.SingleFileWsdl = singleFileWsdl;
-                    generator.Generate();
-                    SoalPrinter printer = new SoalPrinter(model.Symbols);
-                    using (StreamWriter writer = new StreamWriter(fileName+"0"))
-                    {
-                        writer.WriteLine(printer.Generate());
-                    }
-                }
-                DiagnosticFormatter formatter = new DiagnosticFormatter();
-                foreach (var diagnostic in compilation.GetDiagnostics())
-                {
-                    string msg = formatter.Format(diagnostic);
-                    Console.WriteLine(msg);
-                }
-                foreach (var diagnostic in generatorDiagnostics.AsEnumerable())
-                {
-                    string msg = formatter.Format(diagnostic);
-                    Console.WriteLine(msg);
+                    fileName = args[i];
                 }
             }
-            catch (System.Exception ex)
+            if (fileName == null)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Usage:");
+                Console.WriteLine("  Soal.exe [options] [input.soal]");
+                Console.WriteLine("Options:");
+                Console.WriteLine("  -o [dir]: output directory");
+                Console.WriteLine("  -separateXsdWsdl: separate XSD and WSDL files into different directories");
+                Console.WriteLine("  -singleFileWsdl: include XSD code into the WSDL");
+                return;
+            }
+            if (outputDirectory == null)
+            {
+                outputDirectory = Directory.GetCurrentDirectory();
+            }
+            if (!File.Exists(fileName))
+            {
+                Console.WriteLine("Could not find file: "+fileName);
+                return;
+            }
+            if (singleFileWsdl && separateXsdWsdl)
+            {
+                Console.WriteLine("Warning: conflicting options '-separateXsdWsdl' and '-singleFileWsdl'. '-singleFileWsdl' will be used.");
+            }
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(source);
+            ModelReference soalReference = ModelReference.CreateFromModel(SoalInstance.Model);
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            SoalCompilationOptions options = new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.NetModule, topLevelBinderFlags: binderFlags, concurrentBuild: false);
+            SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree).WithOptions(options);
+            compilation.ForceComplete();
+            ImmutableModel model = compilation.Model;
+            DiagnosticBag generatorDiagnostics = new DiagnosticBag();
+            if (!compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
+            {
+                SoalGenerator generator = new SoalGenerator(model, compilation.BuildModelObjectToSymbolMap(), outputDirectory, generatorDiagnostics, fileName);
+                generator.SeparateXsdWsdl = separateXsdWsdl;
+                generator.SingleFileWsdl = singleFileWsdl;
+                generator.Generate();
+                SoalPrinter printer = new SoalPrinter(model.Symbols);
+                using (StreamWriter writer = new StreamWriter(fileName+"0"))
+                {
+                    writer.WriteLine(printer.Generate());
+                }
+            }
+            DiagnosticFormatter formatter = new DiagnosticFormatter();
+            foreach (var diagnostic in compilation.GetDiagnostics())
+            {
+                string msg = formatter.Format(diagnostic);
+                Console.WriteLine(msg);
+            }
+            foreach (var diagnostic in generatorDiagnostics.AsEnumerable())
+            {
+                string msg = formatter.Format(diagnostic);
+                Console.WriteLine(msg);
             }
         }
         /*

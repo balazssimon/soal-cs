@@ -17,7 +17,7 @@
 	<xs:complexType name="MathFault">
 		<xs:sequence>
 			<xs:element name="ErrorCode" type="xs:int" nillable="false"/>
-			<xs:element name="ErrorMessage" type="xs:string" nillable="true"/>
+			<xs:element name="ErrorMessage" type="xs:string" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -28,30 +28,30 @@
 			<xs:element name="Im" type="xs:double" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="SayHelloName" type="xs:string" nillable="true"/>
-	<xs:element name="SayHelloResponse" type="xs:string" nillable="true"/>
-	<xs:element name="SayHello2Cplx1" type="hw:Complex" nillable="true"/>
-	<xs:element name="SayHello2Cplx2" type="hw:Complex" nillable="true"/>
-	<xs:element name="SayHello2Response" type="xs:string" nillable="true"/>
+	<xs:element name="SayHelloName" type="xs:string" nillable="false"/>
+	<xs:element name="SayHelloResponse" type="xs:string" nillable="false"/>
+	<xs:element name="SayHello2Cplx1" type="hw:Complex" nillable="false"/>
+	<xs:element name="SayHello2Cplx2" type="hw:Complex" nillable="false"/>
+	<xs:element name="SayHello2Response" type="xs:string" nillable="false"/>
 	<xs:element name="AbcI1" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
-	<xs:element name="AbcI2" nillable="true">
+	<xs:element name="AbcI2" nillable="false">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="iiiii" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="AbcResponse" type="xs:base64Binary" nillable="true"/>
-	<xs:element name="Abc2I1" type="xs:base64Binary" nillable="true"/>
-	<xs:element name="Abc2I2" type="xs:base64Binary" nillable="true"/>
-	<xs:element name="Abc2Response" nillable="true">
+	<xs:element name="AbcResponse" type="xs:base64Binary" nillable="false"/>
+	<xs:element name="Abc2I1" type="xs:base64Binary" nillable="false"/>
+	<xs:element name="Abc2I2" type="xs:base64Binary" nillable="false"/>
+	<xs:element name="Abc2Response" nillable="false">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="jjjjj" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="Abc3I1" nillable="true">
+	<xs:element name="Abc3I1" nillable="false">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="int" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
@@ -63,9 +63,9 @@
 	<xs:element name="DivideLeft" type="xs:double" nillable="false"/>
 	<xs:element name="DivideRight" type="xs:double" nillable="false"/>
 	<xs:element name="DivideResponse" type="xs:double" nillable="false"/>
-	<xs:element name="DivideComplexLeft" type="hw:Complex" nillable="true"/>
-	<xs:element name="DivideComplexRight" type="hw:Complex" nillable="true"/>
-	<xs:element name="DivideComplexResponse" type="hw:Complex" nillable="true"/>
+	<xs:element name="DivideComplexLeft" type="hw:Complex" nillable="false"/>
+	<xs:element name="DivideComplexRight" type="hw:Complex" nillable="false"/>
+	<xs:element name="DivideComplexResponse" type="hw:Complex" nillable="false"/>
 	<xs:element name="DivideOLeft" type="xs:double" nillable="false"/>
 	<xs:element name="DivideORight" type="xs:double" nillable="false"/>
 </xs:schema>

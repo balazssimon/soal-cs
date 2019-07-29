@@ -1,6 +1,5 @@
 namespace Xsd15.Hello = hw:"http://www.hello.org/test"
 {
-	[Type(wrapped=true, items="Items")]
 	struct IntValues
 	{
 		int[] Items;

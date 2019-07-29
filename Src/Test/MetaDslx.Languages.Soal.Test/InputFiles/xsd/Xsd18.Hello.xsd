@@ -15,7 +15,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="ErrorMessage" nillable="true">
+			<xs:element name="ErrorMessage" nillable="false">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
 						<xs:pattern value="[A-Z]"/>
@@ -25,4 +25,3 @@
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
-

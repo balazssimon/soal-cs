@@ -1,4 +1,4 @@
-﻿namespace Xsd16.Hello = hw:"http://www.hello.org/test"
+namespace Xsd16.Hello = hw:"http://www.hello.org/test"
 {
 	struct IntValues
 	{
@@ -16,5 +16,6 @@
 		IntValues[] A;
 		NameValues[] B;
 	}
-	
+
 }
+

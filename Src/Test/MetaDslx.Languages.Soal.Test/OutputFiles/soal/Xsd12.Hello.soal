@@ -7,5 +7,11 @@ namespace Xsd12.Hello = hw:"http://www.hello.org/test"
 		Blueish
 	}
 
+	enum TrueColors : Colors
+	{
+		Yellow,
+		Purple
+	}
+
 }
 

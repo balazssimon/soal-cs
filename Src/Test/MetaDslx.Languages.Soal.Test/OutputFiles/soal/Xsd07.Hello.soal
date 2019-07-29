@@ -1,0 +1,9 @@
+namespace Xsd07.Hello = hw:"http://www.hello.org/test"
+{
+	struct IntList
+	{
+		int[] items;
+	}
+
+}
+

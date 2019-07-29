@@ -7,7 +7,7 @@
 	<xs:element name="IntList" type="hw:IntList"/>
 	<xs:complexType name="IntList">
 		<xs:sequence>
-			<xs:element name="items" nillable="true">
+			<xs:element name="items">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="values" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded"/>

@@ -227,6 +227,19 @@ namespace MetaDslx.Languages.Soal
                     importer.referenceCounter.TryGetValue(type, out count);
                     if (count <= 0)
                     {
+                        if (decl is SoalTypeBuilder typeDecl && importer.rootTypes.Contains(typeDecl))
+                        {
+                            var sap = decl.GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap);
+                            if (sap == null || !(bool)sap)
+                            {
+                                var typeAnnot = decl.Annotations.FirstOrDefault(a => a.Name == SoalAnnotations.Type);
+                                if (typeAnnot != null)
+                                {
+                                    decl.Annotations.Remove(typeAnnot);
+                                }
+                            }
+                            continue;
+                        }
                         decl.Namespace = null;
                         importer.Model.RemoveSymbol(decl);
                     }
@@ -238,6 +251,7 @@ namespace MetaDslx.Languages.Soal
         {
             if (type == null) return;
             this.rootTypes.Add(type);
+            this.replacementTypes.Remove(type);
         }
 
         internal void Reference(SoalTypeBuilder type)

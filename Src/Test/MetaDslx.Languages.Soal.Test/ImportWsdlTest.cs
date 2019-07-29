@@ -19,6 +19,8 @@ namespace MetaDslx.Soal.Test
             string outputFileName = string.Format(@"..\..\OutputFiles\soal\Wsdl{0:00}.Hello.soal", index);
             string outputLogFileName = string.Format(@"..\..\OutputFiles\soal\Wsdl{0:00}.Hello.log", index);
             string outputDirectory = string.Format(@"..\..\OutputFiles\soal", index);
+            Directory.CreateDirectory(outputDirectory);
+
             DiagnosticBag diagnostics = new DiagnosticBag();
             ImmutableModel model = SoalImporter.Import(inputFileName, diagnostics);
             using (StreamWriter writer = new StreamWriter(outputLogFileName))

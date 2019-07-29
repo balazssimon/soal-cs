@@ -129,11 +129,11 @@ template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement
 <xs:attribute name="[name]" type="[t.GetCoreType().GetNamespace(ns).Prefix]:[t.GetCoreType().GetXsdName()]"[GetAttributeRequired(ae)]/>
 [else]
 	[if (t.IsArrayType())]
-		[ArrayType array = t is NonNullableType ? (ArrayType)((NonNullableType)t).InnerType : (ArrayType)t]
-		[if (array.GetCoreType().MId == SoalInstance.Byte.MId)]
+		[ArrayType array = t is NullableType ? (ArrayType)((NullableType)t).InnerType : (ArrayType)t]
+		[object wrapped = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped)]
+		[if ((wrapped == null || !(bool)wrapped) && array.InnerType.MId == SoalInstance.Byte.MId)]
 <xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]/>
 		[else]
-			[object wrapped = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped)]
 			[if (wrapped != null && (bool)wrapped)]
 				[string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string]
 <xs:element name="[name]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]>
@@ -205,8 +205,8 @@ end template
 template GenerateParamType(Namespace ns, string name, SoalType t, AnnotatedElement ae)
 [Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
 [if (t.IsArrayType())]
-	[ArrayType array = t is NonNullableType ? (ArrayType)((NonNullableType)t).InnerType : (ArrayType)t]
-	[if (array.GetCoreType().MId != SoalInstance.Byte.MId)]
+	[ArrayType array = t is NullableType ? (ArrayType)((NullableType)t).InnerType : (ArrayType)t]
+	[if (array.InnerType.MId != SoalInstance.Byte.MId)]
 		[string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string]
 <xs:complexType name="[name]">
 		[object sap = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Sap)]

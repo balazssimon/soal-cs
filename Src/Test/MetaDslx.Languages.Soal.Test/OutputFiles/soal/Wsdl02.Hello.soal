@@ -10,7 +10,7 @@ namespace Wsdl02.Hello = hw:"http://www.hello.org/HelloNs"
 	struct MathFault
 	{
 		int ErrorCode;
-		string ErrorMessage;
+		string? ErrorMessage;
 	}
 
 	struct Complex
@@ -19,15 +19,29 @@ namespace Wsdl02.Hello = hw:"http://www.hello.org/HelloNs"
 		double Im;
 	}
 
+	struct AbcI2
+	{
+		int[] iiiii;
+	}
+
+	struct Abc2Response
+	{
+		int[] jjjjj;
+	}
+
+	struct Abc3I1
+	{
+		int[] int;
+	}
+
 	[NoWrap]
 	interface IHello
 	{
 		string SayHello(string name);
 		string SayHello2(Complex cplx1, Complex cplx2);
-		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
-		[return: Element(wrapped=true, items="jjjjj")]
-		int[] Abc2(byte[] i1, byte[] i2);
-		int[] Abc3([Element(wrapped=true)] int[] i1, int[] i2);
+		byte[] Abc(int[] i1, AbcI2 i2);
+		Abc2Response Abc2(byte[] i1, byte[] i2);
+		int[] Abc3(Abc3I1 i1, int[] i2);
 		double Divide(double left, double right) throws MathFault;
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right);

@@ -19,6 +19,91 @@ namespace Wsdl01.Hello = hw:"http://www.hello.org/HelloNs"
 		double Im;
 	}
 
+	struct SayHello
+	{
+		string name;
+	}
+
+	struct SayHelloResponse
+	{
+		string SayHelloResult;
+	}
+
+	struct SayHello2
+	{
+		Complex cplx1;
+		Complex cplx2;
+	}
+
+	struct SayHello2Response
+	{
+		string SayHello2Result;
+	}
+
+	struct Abc
+	{
+		int[] i1;
+		[Element(wrapped=true, items="iiiii")]
+		int[] i2;
+	}
+
+	struct AbcResponse
+	{
+		byte[] AbcResult;
+	}
+
+	struct Abc2
+	{
+		byte[] i1;
+		byte[] i2;
+	}
+
+	struct Abc2Response
+	{
+		[Element(wrapped=true, items="jjjjj")]
+		int[] Abc2Result;
+	}
+
+	struct Abc3
+	{
+		[Element(wrapped=true)]
+		int[] i1;
+		int[] i2;
+	}
+
+	struct Abc3Response
+	{
+		int[] Abc3Result;
+	}
+
+	struct Divide
+	{
+		double left;
+		double right;
+	}
+
+	struct DivideResponse
+	{
+		double DivideResult;
+	}
+
+	struct DivideComplex
+	{
+		Complex left;
+		Complex right;
+	}
+
+	struct DivideComplexResponse
+	{
+		Complex DivideComplexResult;
+	}
+
+	struct DivideO
+	{
+		double left;
+		double right;
+	}
+
 	interface IHello
 	{
 		string SayHello(string name);
