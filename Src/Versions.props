@@ -9,7 +9,7 @@
   -->
   <PropertyGroup>
 	<OfficialBuild>true</OfficialBuild>
-    <VersionPrefix>0.1.1</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
