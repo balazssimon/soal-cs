@@ -251,7 +251,12 @@ namespace MetaDslx.Languages.Soal
         {
             if (type == null) return;
             this.rootTypes.Add(type);
-            this.replacementTypes.Remove(type);
+        }
+
+        internal void RemoveRootType(SoalTypeBuilder type)
+        {
+            if (type == null) return;
+            this.rootTypes.Remove(type);
         }
 
         internal void Reference(SoalTypeBuilder type)
@@ -439,6 +444,12 @@ namespace MetaDslx.Languages.Soal
             {
                 this.originalTypes.Add(obj, type);
             }
+        }
+
+        internal SoalTypeBuilder GetOriginalType(IMetaSymbol obj)
+        {
+            if (this.originalTypes.TryGetValue(obj, out SoalTypeBuilder result)) return result;
+            else return null;
         }
 
         internal void RegisterReplacementType(SoalTypeBuilder from, SoalTypeBuilder to)

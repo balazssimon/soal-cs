@@ -1,5 +1,12 @@
-﻿namespace Wsdl01.Hello = hw:"http://www.hello.org/HelloNs"
+namespace Wsdl01.Hello = hw:"http://www.hello.org/HelloNs"
 {
+	enum SeatStatus
+	{
+		Free,
+		Locked,
+		Reserved
+	}
+
 	struct MathFault
 	{
 		int ErrorCode;
@@ -10,13 +17,6 @@
 	{
 		double Re;
 		double Im;
-	}
-
-	enum SeatStatus
-	{
-		Free,
-		Locked,
-		Reserved
 	}
 
 	interface IHello
@@ -31,7 +31,7 @@
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right);
 	}
-	
+
 	binding HttpSoap11
 	{
 		transport HTTP;
@@ -44,5 +44,6 @@
 		binding HttpSoap11;
 		address "http://www.tempuri.org";
 	}
+
 }
 

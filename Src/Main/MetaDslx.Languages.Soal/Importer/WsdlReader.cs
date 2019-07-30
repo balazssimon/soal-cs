@@ -377,6 +377,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (part != null)
                                                     {
                                                         st = part.OriginalType as StructBuilder;
+                                                        this.Importer.RemoveRootType(part.Type);
+                                                        this.Importer.RemoveRootType(part.OriginalType);
                                                     }
                                                 }
                                                 if (st != null)
@@ -409,6 +411,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (part != null)
                                                     {
                                                         st = part.OriginalType as StructBuilder;
+                                                        this.Importer.RemoveRootType(part.Type);
+                                                        this.Importer.RemoveRootType(part.OriginalType);
                                                     }
                                                 }
                                                 if (st != null && st.Properties.Count > 0)
@@ -425,14 +429,12 @@ namespace MetaDslx.Languages.Soal.Importer
                                                         this.Importer.AddWarning("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetLinePositionSpan(opElem));
                                                     }
                                                     op.Result.Type = prop.Type;
-                                                    this.Importer.Reference(op.Result.Type);
                                                     SoalImporter.CopyAnnotation(SoalAnnotations.Element, prop, op.Result);
                                                     this.Importer.RemoveType(st);
                                                 }
                                                 else if (st != null)
                                                 {
                                                     op.Result.Type = SoalInstance.Void.ToMutable();
-                                                    this.Importer.RemoveType(st);
                                                 }
                                                 else
                                                 {
@@ -455,6 +457,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (part != null)
                                                     {
                                                         st = part.OriginalType as StructBuilder;
+                                                        this.Importer.RemoveRootType(part.Type);
+                                                        this.Importer.RemoveRootType(part.OriginalType);
                                                     }
                                                 }
                                                 if (st != null)
@@ -485,6 +489,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                             SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
                                                         }
                                                     }
+                                                    this.Importer.RemoveRootType(part.Type);
+                                                    this.Importer.RemoveRootType(part.OriginalType);
                                                 }
                                             }
                                             if (outputMsg != null)
@@ -504,6 +510,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                             SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                         }
                                                     }
+                                                    this.Importer.RemoveRootType(part.Type);
+                                                    this.Importer.RemoveRootType(part.OriginalType);
                                                 }
                                                 else
                                                 {
@@ -527,6 +535,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (part != null)
                                                     {
                                                         st = part.Type as StructBuilder;
+                                                        this.Importer.RemoveRootType(part.Type);
+                                                        this.Importer.RemoveRootType(part.OriginalType);
                                                     }
                                                     else
                                                     {
@@ -574,6 +584,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                         SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
                                                     }
                                                 }
+                                                this.Importer.RemoveRootType(part.Type);
+                                                this.Importer.RemoveRootType(part.OriginalType);
                                             }
                                         }
                                         if (outputMsg != null)
@@ -597,6 +609,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                                         SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                     }
                                                 }
+                                                this.Importer.RemoveRootType(part.Type);
+                                                this.Importer.RemoveRootType(part.OriginalType);
                                             }
                                             else
                                             {
@@ -621,6 +635,8 @@ namespace MetaDslx.Languages.Soal.Importer
                                             if (part != null)
                                             {
                                                 st = part.Type as StructBuilder;
+                                                this.Importer.RemoveRootType(part.Type);
+                                                this.Importer.RemoveRootType(part.OriginalType);
                                             }
                                             if (st != null)
                                             {

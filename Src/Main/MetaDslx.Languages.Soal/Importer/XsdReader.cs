@@ -859,7 +859,11 @@ namespace MetaDslx.Languages.Soal.Importer
                     array.InnerType = result;
                     result = array;
                 }
-                this.Importer.XsdElements.Register(this, tns + name, elem, result);
+                PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
+                type.Name = this.GetUniqueName(name, true);
+                type.Namespace = this.Namespace;
+                this.Importer.XsdElements.Register(this, tns + name, elem, type);
+                this.Importer.RegisterReplacementType(type, result);
             }
             return result;
         }
@@ -918,7 +922,11 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 if (result != null)
                 {
-                    this.Importer.XsdAttributes.Register(this, tns + name, elem, result);
+                    PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
+                    type.Name = this.GetUniqueName(name, true);
+                    type.Namespace = this.Namespace;
+                    this.Importer.XsdElements.Register(this, tns + name, elem, type);
+                    this.Importer.RegisterReplacementType(type, result);
                 }
                 else
                 {
@@ -1162,19 +1170,17 @@ namespace MetaDslx.Languages.Soal.Importer
                                 childSt = type as StructBuilder;
                                 if (name == "item" && childSt != null && childSt.HasAnnotation(SoalAnnotations.All) && childSt.Properties.Count == 1)
                                 {
-                                    SoalTypeBuilder innerType = childSt.Properties[0].Type;
+                                    var itemProp = childSt.Properties[0];
+                                    SoalTypeBuilder innerType = itemProp.Type;
                                     if (innerType.IsArrayType())
                                     {
+                                        innerType = this.Importer.GetOriginalType(itemProp);
                                     }
-                                    else
-                                    {
-                                        sap = true;
-                                        sapName = childSt.Properties[0].Name;
-                                        sapArray = this.Factory.ArrayType();
-                                        sapArray.InnerType = innerType;
-                                        //this.Importer.RegisterReplacementType(type, sapArray);
-                                        this.Importer.RemoveType(type);
-                                    }
+                                    sap = true;
+                                    sapName = childSt.Properties[0].Name;
+                                    sapArray = this.Factory.ArrayType();
+                                    sapArray.InnerType = innerType;
+                                    this.Importer.RemoveType(type);
                                 }
                             }
                         }
@@ -1278,13 +1284,12 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (type.IsArrayType())
                     {
                         type = originalType;
-                        this.Importer.Reference(type);
                     }
                     ((ArrayTypeBuilder)rt).InnerType = type;
                     SoalTypeBuilder coreType = type.GetCoreType();
                     AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
                     arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
-                    if (coreType is NamedElementBuilder && ((NamedElementBuilder)coreType).Name != prop.Name)
+                    if (coreType.Name != prop.Name)
                     {
                         arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, prop.Name);
                     }
@@ -1294,6 +1299,10 @@ namespace MetaDslx.Languages.Soal.Importer
                 {
                     if (maxOccurs < 0 || maxOccurs > 1)
                     {
+                        if (type.IsArrayType())
+                        {
+                            type = originalType;
+                        }
                         ArrayTypeBuilder array = this.Factory.ArrayType();
                         array.InnerType = type;
                         type = array;

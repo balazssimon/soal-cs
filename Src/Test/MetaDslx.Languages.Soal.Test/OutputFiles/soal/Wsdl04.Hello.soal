@@ -19,51 +19,15 @@ namespace Wsdl04.Hello = hw:"http://www.hello.org/HelloNs"
 		double Im;
 	}
 
-	[Type(wrapped=true)]
-	struct AbcI1
-	{
-		int[] int;
-	}
-
-	[Type(wrapped=true, items="iiiii")]
-	struct AbcI2
-	{
-		int[] iiiii;
-	}
-
-	[Type(wrapped=true, items="jjjjj")]
-	struct Abc2Response
-	{
-		int[] jjjjj;
-	}
-
-	[Type(wrapped=true)]
-	struct Abc3I1
-	{
-		int[] int;
-	}
-
-	[Type(wrapped=true)]
-	struct Abc3I2
-	{
-		int[] int;
-	}
-
-	[Type(wrapped=true)]
-	struct Abc3Response
-	{
-		int[] int;
-	}
-
 	[Rpc]
 	interface IHello
 	{
 		string SayHello(string name);
 		string SayHello2(Complex cplx1, Complex cplx2);
-		byte[] Abc(AbcI1 i1, [Element(wrapped=true, items="iiiii")] AbcI2 i2);
+		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
 		[return: Element(wrapped=true, items="jjjjj")]
-		Abc2Response Abc2(byte[] i1, byte[] i2);
-		Abc3Response Abc3(Abc3I1 i1, Abc3I2 i2);
+		int[] Abc2(byte[] i1, byte[] i2);
+		int[] Abc3(int[] i1, int[] i2);
 		double Divide(double left, double right) throws MathFault;
 		Complex DivideComplex(Complex left, Complex right) throws MathFault;
 		oneway DivideO(double left, double right);
