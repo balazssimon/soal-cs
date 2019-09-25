@@ -26,6 +26,6 @@
   -->
   <PropertyGroup>
     <!-- Versions used by several individual references below -->
-    <MetaDslxVersion>0.10.91</MetaDslxVersion>
+    <MetaDslxVersion>0.10.99</MetaDslxVersion>
   </PropertyGroup>
 </Project>
