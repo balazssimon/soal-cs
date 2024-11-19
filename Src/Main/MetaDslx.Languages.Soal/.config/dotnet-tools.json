@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "metadslx.buildtools": {
+      "version": "0.202.0",
+      "commands": [
+        "metadslx"
+      ],
+      "rollForward": false
+    }
+  }
+}

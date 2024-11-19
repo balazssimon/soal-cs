@@ -1,8 +1,8 @@
-﻿using MetaDslx.Languages.Soal.Importer;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
+using MetaDslx.Languages.Soal.Importer;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,61 +106,60 @@ namespace MetaDslx.Languages.Soal
     public class SoalImporter
     {
         private int namespaceCounter;
-        private ArrayTypeBuilder byteArray;
+        private ArrayType byteArray;
         private Dictionary<string, HashSet<Importer.XmlReader>> readers = new Dictionary<string, HashSet<Importer.XmlReader>>();
-        private Dictionary<string, NamespaceBuilder> namespaces = new Dictionary<string, NamespaceBuilder>();
-        private Dictionary<SoalTypeBuilder, SoalTypeBuilder> replacementTypes = new Dictionary<SoalTypeBuilder, SoalTypeBuilder>();
-        private Dictionary<IMetaSymbol, SoalTypeBuilder> originalTypes = new Dictionary<IMetaSymbol, SoalTypeBuilder>();
-        private HashSet<SoalTypeBuilder> rootTypes = new HashSet<SoalTypeBuilder>();
-        private HashSet<SoalTypeBuilder> typesToRemove = new HashSet<SoalTypeBuilder>();
+        private Dictionary<string, Namespace> namespaces = new Dictionary<string, Namespace>();
+        private Dictionary<SoalType, SoalType> replacementTypes = new Dictionary<SoalType, SoalType>();
+        private Dictionary<IModelObject, SoalType> originalTypes = new Dictionary<IModelObject, SoalType>();
+        private HashSet<SoalType> rootTypes = new HashSet<SoalType>();
+        private HashSet<SoalType> typesToRemove = new HashSet<SoalType>();
         private Dictionary<XName, WsdlMessage> messagesByName = new Dictionary<XName, WsdlMessage>();
-        private Dictionary<SoalTypeBuilder, int> referenceCounter = new Dictionary<SoalTypeBuilder, int>();
+        private Dictionary<SoalType, int> referenceCounter = new Dictionary<SoalType, int>();
 
         internal DiagnosticBag Diagnostics { get; private set; }
-        internal MutableModel SoalModel { get; private set; }
-        internal MutableModel Model { get; private set; }
-        internal SoalFactory Factory { get; private set; }
-        internal ObjectStorage<SoalTypeBuilder, XElement> XsdTypes { get; private set; }
-        internal ObjectStorage<SoalTypeBuilder, XElement> XsdElements { get; private set; }
-        internal ObjectStorage<SoalTypeBuilder, XElement> XsdAttributes { get; private set; }
-        internal ObjectStorage<SoalTypeBuilder, XElement> WsdlTypes { get; private set; }
-        internal ObjectStorage<SoalTypeBuilder, XElement> WsdlElements { get; private set; }
+        internal Model SoalModel { get; private set; }
+        internal Model Model { get; private set; }
+        internal SoalModelFactory Factory { get; private set; }
+        internal ObjectStorage<SoalType, XElement> XsdTypes { get; private set; }
+        internal ObjectStorage<SoalType, XElement> XsdElements { get; private set; }
+        internal ObjectStorage<SoalType, XElement> XsdAttributes { get; private set; }
+        internal ObjectStorage<SoalType, XElement> WsdlTypes { get; private set; }
+        internal ObjectStorage<SoalType, XElement> WsdlElements { get; private set; }
         internal ObjectStorage<WsdlMessage, XElement> WsdlMessages { get; private set; }
-        internal ObjectStorage<InterfaceBuilder, XElement> WsdlPortTypes { get; private set; }
-        internal ObjectStorage<BindingBuilder, XElement> WsdlBindings { get; private set; }
-        internal ObjectStorage<EndpointBuilder, XElement> WsdlServices { get; private set; }
-        internal ObjectStorage<BindingBuilder, XElement> WsdlPolicies { get; private set; }
+        internal ObjectStorage<Interface, XElement> WsdlPortTypes { get; private set; }
+        internal ObjectStorage<Binding, XElement> WsdlBindings { get; private set; }
+        internal ObjectStorage<Endpoint, XElement> WsdlServices { get; private set; }
+        internal ObjectStorage<Binding, XElement> WsdlPolicies { get; private set; }
 
         private SoalImporter(DiagnosticBag diagnostics)
         {
             this.Diagnostics = diagnostics;
             this.namespaceCounter = 0;
-            MutableModelGroup group = new MutableModelGroup();
-            group.AddReference(SoalInstance.Model);
-            this.Model = group.CreateModel("ImportedModel", new ModelVersion());
-            this.Factory = new Symbols.SoalFactory(this.Model);
+            var group = new ModelGroup();
+            group.AddReference(Symbols.Soal.MInstance.MModel);
+            this.Model = group.CreateModel(name: "ImportedModel");
+            this.Factory = new SoalModelFactory(this.Model);
             this.byteArray = this.Factory.ArrayType();
-            this.byteArray.InnerType = SoalInstance.Byte.ToMutable();
-            this.XsdTypes = new ObjectStorage<SoalTypeBuilder, XElement>("type", this);
-            this.XsdElements = new ObjectStorage<SoalTypeBuilder, XElement>("element", this);
-            this.XsdAttributes = new ObjectStorage<SoalTypeBuilder, XElement>("attribute", this);
-            this.WsdlTypes = new ObjectStorage<SoalTypeBuilder, XElement>("type", this);
-            this.WsdlElements = new ObjectStorage<SoalTypeBuilder, XElement>("element", this);
+            this.byteArray.InnerType = Symbols.Soal.Byte;
+            this.XsdTypes = new ObjectStorage<SoalType, XElement>("type", this);
+            this.XsdElements = new ObjectStorage<SoalType, XElement>("element", this);
+            this.XsdAttributes = new ObjectStorage<SoalType, XElement>("attribute", this);
+            this.WsdlTypes = new ObjectStorage<SoalType, XElement>("type", this);
+            this.WsdlElements = new ObjectStorage<SoalType, XElement>("element", this);
             this.WsdlMessages = new ObjectStorage<WsdlMessage, XElement>("message", this);
-            this.WsdlPortTypes = new ObjectStorage<InterfaceBuilder, XElement>("portType", this);
-            this.WsdlBindings = new ObjectStorage<BindingBuilder, XElement>("binding", this);
-            this.WsdlServices = new ObjectStorage<EndpointBuilder, XElement>("service", this);
-            this.WsdlPolicies = new ObjectStorage<BindingBuilder, XElement>("policy", this);
+            this.WsdlPortTypes = new ObjectStorage<Interface, XElement>("portType", this);
+            this.WsdlBindings = new ObjectStorage<Binding, XElement>("binding", this);
+            this.WsdlServices = new ObjectStorage<Endpoint, XElement>("service", this);
+            this.WsdlPolicies = new ObjectStorage<Binding, XElement>("policy", this);
         }
 
-        public static ImmutableModel Import(string uri, DiagnosticBag diagnostics = null)
+        public static Model Import(string uri, DiagnosticBag diagnostics = null)
         {
             SoalImporter importer = new SoalImporter(diagnostics);
             importer.ImportFile(uri);
-            if (importer.Diagnostics.HasAnyErrors()) return importer.Model.ToImmutable();
+            if (importer.Diagnostics.HasAnyErrors()) return importer.Model;
             LoadImportedFiles(importer);
-            if (importer.Diagnostics.HasAnyErrors()) return importer.Model.ToImmutable();
-            importer.Model.EvaluateLazyValues();
+            if (importer.Diagnostics.HasAnyErrors()) return importer.Model;
             RemoveTypes(importer);
             foreach (var fileUri in importer.readers.Keys)
             {
@@ -173,7 +172,7 @@ namespace MetaDslx.Languages.Soal
                     importer.AddError("Could not import file.", fileUri, default);
                 }
             }
-            return importer.Model.ToImmutable();
+            return importer.Model;
         }
 
         private static void LoadImportedFiles(SoalImporter importer)
@@ -203,31 +202,31 @@ namespace MetaDslx.Languages.Soal
 
         internal void AddError(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(SoalImporterErrorCode.Error, Location.Create(fileUri, default, location), message);
+            this.Diagnostics.Add(Diagnostic.Create(SoalImporterErrorCode.ERR_SoalImport, Location.Create(fileUri, default, location), message));
         }
 
         internal void AddWarning(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(SoalImporterErrorCode.Warning, Location.Create(fileUri, default, location), message);
+            this.Diagnostics.Add(Diagnostic.Create(SoalImporterErrorCode.WRN_SoalImport, Location.Create(fileUri, default, location), message));
         }
 
         internal void AddInfo(string message, string fileUri, LinePositionSpan location)
         {
-            this.Diagnostics.Add(SoalImporterErrorCode.Info, Location.Create(fileUri, default, location), message);
+            this.Diagnostics.Add(Diagnostic.Create(SoalImporterErrorCode.INF_SoalImport, Location.Create(fileUri, default, location), message));
         }
 
         private static void RemoveTypes(SoalImporter importer)
         {
             foreach (var type in importer.typesToRemove)
             {
-                DeclarationBuilder decl = type as DeclarationBuilder;
+                Declaration decl = type as Declaration;
                 if (decl != null)
                 {
                     int count = 0;
                     importer.referenceCounter.TryGetValue(type, out count);
                     if (count <= 0)
                     {
-                        if (decl is SoalTypeBuilder typeDecl && importer.rootTypes.Contains(typeDecl))
+                        if (decl is SoalType typeDecl && importer.rootTypes.Contains(typeDecl))
                         {
                             var sap = decl.GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap);
                             if (sap == null || !(bool)sap)
@@ -241,25 +240,25 @@ namespace MetaDslx.Languages.Soal
                             continue;
                         }
                         decl.Namespace = null;
-                        importer.Model.RemoveSymbol(decl);
+                        importer.Model.DeleteObject(decl);
                     }
                 }
             }
         }
 
-        internal void AddRootType(SoalTypeBuilder type)
+        internal void AddRootType(SoalType type)
         {
             if (type == null) return;
             this.rootTypes.Add(type);
         }
 
-        internal void RemoveRootType(SoalTypeBuilder type)
+        internal void RemoveRootType(SoalType type)
         {
             if (type == null) return;
             this.rootTypes.Remove(type);
         }
 
-        internal void Reference(SoalTypeBuilder type)
+        internal void Reference(SoalType type)
         {
             if (type == null) return;
             int count = 0;
@@ -363,13 +362,13 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal NamespaceBuilder CreateNamespace(Importer.XmlReader reader, string uri, string prefix, string qualifiedName)
+        internal Namespace CreateNamespace(Importer.XmlReader reader, string uri, string prefix, string qualifiedName)
         {
             if (qualifiedName == null)
             {
                 qualifiedName = "Ns" + (++this.namespaceCounter);
             }
-            NamespaceBuilder result = this.GetNamespace(uri);
+            Namespace result = this.GetNamespace(uri);
             if (result != null)
             {
                 if (result.Uri != uri)
@@ -380,18 +379,18 @@ namespace MetaDslx.Languages.Soal
             }
             string[] names = qualifiedName.Split('.');
             int i = 0;
-            NamespaceBuilder currentNs = null;
+            Namespace currentNs = null;
             while (i < names.Length)
             {
                 var parentNs = currentNs;
                 if (i == 0)
                 {
-                    NamespaceBuilder rootNs = this.Model.Symbols.OfType<NamespaceBuilder>().FirstOrDefault(ns => ns.Name == names[0] && ns.Namespace == null);
+                    Namespace rootNs = this.Model.Objects.OfType<Namespace>().FirstOrDefault(ns => ns.Name == names[0] && ns.Namespace == null);
                     currentNs = rootNs;
                 }
                 else
                 {
-                    currentNs = currentNs.Declarations.OfType<NamespaceBuilder>().FirstOrDefault(ns => ns.Name == names[i]);
+                    currentNs = currentNs.Declarations.OfType<Namespace>().FirstOrDefault(ns => ns.Name == names[i]);
                 }
                 if (currentNs != null)
                 {
@@ -410,7 +409,7 @@ namespace MetaDslx.Languages.Soal
                 {
                     while(i < names.Length)
                     {
-                        NamespaceBuilder ns = this.Factory.Namespace();
+                        Namespace ns = this.Factory.Namespace();
                         ns.Name = names[i];
                         ns.Namespace = parentNs;
                         ++i;
@@ -429,14 +428,14 @@ namespace MetaDslx.Languages.Soal
             return result;
         }
 
-        internal NamespaceBuilder GetNamespace(string uri)
+        internal Namespace GetNamespace(string uri)
         {
-            NamespaceBuilder result = null;
+            Namespace result = null;
             this.namespaces.TryGetValue(uri, out result);
             return result;
         }
 
-        internal void RegisterOriginalType(IMetaSymbol obj, SoalTypeBuilder type)
+        internal void RegisterOriginalType(IModelObject obj, SoalType type)
         {
             if (obj == null) return;
             if (type == null) return;
@@ -446,13 +445,13 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal SoalTypeBuilder GetOriginalType(IMetaSymbol obj)
+        internal SoalType GetOriginalType(IModelObject obj)
         {
-            if (this.originalTypes.TryGetValue(obj, out SoalTypeBuilder result)) return result;
+            if (this.originalTypes.TryGetValue(obj, out SoalType result)) return result;
             else return null;
         }
 
-        internal void RegisterReplacementType(SoalTypeBuilder from, SoalTypeBuilder to)
+        internal void RegisterReplacementType(SoalType from, SoalType to)
         {
             if (from == null) return;
             if (to == null) return;
@@ -463,112 +462,112 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal void RemoveType(SoalTypeBuilder type)
+        internal void RemoveType(SoalType type)
         {
             this.typesToRemove.Add(type);
         }
 
-        internal void RemoveNamespace(NamespaceBuilder ns)
+        internal void RemoveNamespace(Namespace ns)
         {
-            this.Model.RemoveSymbol(ns);
+            this.Model.DeleteObject(ns);
         }
 
-        internal SoalTypeBuilder GetReplacementType(SoalTypeBuilder original)
+        internal SoalType GetReplacementType(SoalType original)
         {
-            SoalTypeBuilder result = null;
+            SoalType result = null;
             this.replacementTypes.TryGetValue(original, out result);
             return result;
         }
 
-        internal SoalTypeBuilder ResolveXsdPrimitiveType(XName name)
+        internal SoalType ResolveXsdPrimitiveType(XName name)
         {
             if (name.NamespaceName == XsdReader.XsdNamespace)
             {
                 SoalType result = null;
-                SoalTypeBuilder resultAsBuilder = null;
+                SoalType resultAs = null;
                 switch (name.LocalName)
                 {
-                    case "any": result = SoalInstance.Object; break;
-                    case "anySimpleType": result = SoalInstance.Object; break;
-                    case "string": result = SoalInstance.String; break;
-                    case "anyURI": result = SoalInstance.String; break;
-                    case "QName": result = SoalInstance.String; break;
-                    case "NOTATION": result = SoalInstance.String; break;
-                    case "normalizedString": result = SoalInstance.String; break;
-                    case "token": result = SoalInstance.String; break;
-                    case "language": result = SoalInstance.String; break;
-                    case "Name": result = SoalInstance.String; break;
-                    case "NCName": result = SoalInstance.String; break;
-                    case "NMTOKEN": result = SoalInstance.String; break;
-                    case "NMTOKENS": result = SoalInstance.String; break;
-                    case "ID": result = SoalInstance.String; break;
-                    case "IDREF": result = SoalInstance.String; break;
-                    case "IDREFS": result = SoalInstance.String; break;
-                    case "ENTITY": result = SoalInstance.String; break;
-                    case "ENTITIES": result = SoalInstance.String; break;
-                    case "integer": result = SoalInstance.Int; break;
-                    case "nonPositiveInteger": result = SoalInstance.Int; break;
-                    case "negativeInteger": result = SoalInstance.Int; break;
-                    case "int": result = SoalInstance.Int; break;
-                    case "short": result = SoalInstance.Int; break;
-                    case "nonNegativeInteger": result = SoalInstance.Int; break;
-                    case "positiveInteger": result = SoalInstance.Int; break;
-                    case "unsignedInt": result = SoalInstance.Int; break;
-                    case "unsignedShort": result = SoalInstance.Int; break;
-                    case "long": result = SoalInstance.Long; break;
-                    case "unsignedLong": result = SoalInstance.Int; break;
-                    case "float": result = SoalInstance.Float; break;
-                    case "double": result = SoalInstance.Double; break;
-                    case "decimal": result = SoalInstance.Double; break;
-                    case "byte": result = SoalInstance.Byte; break;
-                    case "unsignedByte": result = SoalInstance.Byte; break;
-                    case "base64Binary": resultAsBuilder = this.byteArray; break;
-                    case "hexBinary": resultAsBuilder = this.byteArray; break;
-                    case "bool": result = SoalInstance.Bool; break;
-                    case "boolean": result = SoalInstance.Bool; break;
-                    case "time": result = SoalInstance.Time; break;
-                    case "date": result = SoalInstance.Date; break;
-                    case "dateTime": result = SoalInstance.DateTime; break;
-                    case "duration": result = SoalInstance.TimeSpan; break;
-                    case "gDay": result = SoalInstance.Date; break;
-                    case "gMonth": result = SoalInstance.Date; break;
-                    case "gMonthDay": result = SoalInstance.Date; break;
-                    case "gYear": result = SoalInstance.Date; break;
-                    case "gYearMonth": result = SoalInstance.Date; break;
+                    case "any": result = Symbols.Soal.Object; break;
+                    case "anySimpleType": result = Symbols.Soal.Object; break;
+                    case "string": result = Symbols.Soal.String; break;
+                    case "anyURI": result = Symbols.Soal.String; break;
+                    case "QName": result = Symbols.Soal.String; break;
+                    case "NOTATION": result = Symbols.Soal.String; break;
+                    case "normalizedString": result = Symbols.Soal.String; break;
+                    case "token": result = Symbols.Soal.String; break;
+                    case "language": result = Symbols.Soal.String; break;
+                    case "Name": result = Symbols.Soal.String; break;
+                    case "NCName": result = Symbols.Soal.String; break;
+                    case "NMTOKEN": result = Symbols.Soal.String; break;
+                    case "NMTOKENS": result = Symbols.Soal.String; break;
+                    case "ID": result = Symbols.Soal.String; break;
+                    case "IDREF": result = Symbols.Soal.String; break;
+                    case "IDREFS": result = Symbols.Soal.String; break;
+                    case "ENTITY": result = Symbols.Soal.String; break;
+                    case "ENTITIES": result = Symbols.Soal.String; break;
+                    case "integer": result = Symbols.Soal.Int; break;
+                    case "nonPositiveInteger": result = Symbols.Soal.Int; break;
+                    case "negativeInteger": result = Symbols.Soal.Int; break;
+                    case "int": result = Symbols.Soal.Int; break;
+                    case "short": result = Symbols.Soal.Int; break;
+                    case "nonNegativeInteger": result = Symbols.Soal.Int; break;
+                    case "positiveInteger": result = Symbols.Soal.Int; break;
+                    case "unsignedInt": result = Symbols.Soal.Int; break;
+                    case "unsignedShort": result = Symbols.Soal.Int; break;
+                    case "long": result = Symbols.Soal.Long; break;
+                    case "unsignedLong": result = Symbols.Soal.Int; break;
+                    case "float": result = Symbols.Soal.Float; break;
+                    case "double": result = Symbols.Soal.Double; break;
+                    case "decimal": result = Symbols.Soal.Double; break;
+                    case "byte": result = Symbols.Soal.Byte; break;
+                    case "unsignedByte": result = Symbols.Soal.Byte; break;
+                    case "base64Binary": resultAs = this.byteArray; break;
+                    case "hexBinary": resultAs = this.byteArray; break;
+                    case "bool": result = Symbols.Soal.Bool; break;
+                    case "boolean": result = Symbols.Soal.Bool; break;
+                    case "time": result = Symbols.Soal.Time; break;
+                    case "date": result = Symbols.Soal.Date; break;
+                    case "dateTime": result = Symbols.Soal.DateTime; break;
+                    case "duration": result = Symbols.Soal.TimeSpan; break;
+                    case "gDay": result = Symbols.Soal.Date; break;
+                    case "gMonth": result = Symbols.Soal.Date; break;
+                    case "gMonthDay": result = Symbols.Soal.Date; break;
+                    case "gYear": result = Symbols.Soal.Date; break;
+                    case "gYearMonth": result = Symbols.Soal.Date; break;
                     default:
                         break;
                 }
-                if (resultAsBuilder == null && result != null)
+                if (resultAs == null && result != null)
                 {
-                    resultAsBuilder = result.ToMutable();
+                    resultAs = result;
                 }
-                return resultAsBuilder;
+                return resultAs;
             }
             return null;
         }
 
-        internal SoalTypeBuilder ResolveXsdType(XName name)
+        internal SoalType ResolveXsdType(XName name)
         {
-            SoalTypeBuilder result = null;
+            SoalType result = null;
             if (name.NamespaceName == XsdReader.XsdNamespace)
             {
                 result = this.ResolveXsdPrimitiveType(name);
                 if (result != null) return result;
             }
-            NamespaceBuilder ns = this.GetNamespace(name.NamespaceName);
+            Namespace ns = this.GetNamespace(name.NamespaceName);
             if (ns != null)
             {
-                SoalTypeBuilder type = ns.Declarations.FirstOrDefault(d => d.Name == name.LocalName) as SoalTypeBuilder;
+                SoalType type = ns.Declarations.FirstOrDefault(d => d.Name == name.LocalName) as SoalType;
                 return this.ResolveXsdReplacementType(type);
             }
             return null;
         }
 
-        internal SoalTypeBuilder ResolveXsdReplacementType(SoalTypeBuilder type)
+        internal SoalType ResolveXsdReplacementType(SoalType type)
         {
             while (true)
             {
-                SoalTypeBuilder replacementType = null;
+                SoalType replacementType = null;
                 if (type != null && this.replacementTypes.TryGetValue(type, out replacementType))
                 {
                     type = replacementType;
@@ -617,7 +616,7 @@ namespace MetaDslx.Languages.Soal
 
         private void CheckXsdTypes()
         {
-            var types = this.Model.Symbols.OfType<StructBuilder>().ToList();
+            var types = this.Model.Objects.OfType<Struct>().ToList();
             foreach (var type in types)
             {
                 foreach (var prop in type.Properties)
@@ -634,21 +633,21 @@ namespace MetaDslx.Languages.Soal
                     }
                     else
                     {
-                        SoalTypeBuilder originalType = null;
-                        if (this.originalTypes.TryGetValue((IMetaSymbol)prop, out originalType))
+                        SoalType originalType = null;
+                        if (this.originalTypes.TryGetValue((IModelObject)prop, out originalType))
                         {
-                            if (originalType is AnnotatedElementBuilder && ((AnnotatedElementBuilder)originalType).HasAnnotation(SoalAnnotations.Restriction))
+                            if (originalType is AnnotatedElement && ((AnnotatedElement)originalType).HasAnnotation(SoalAnnotations.Restriction))
                             {
-                                SoalImporter.CopyAnnotation(SoalAnnotations.Restriction, ((AnnotatedElementBuilder)originalType), prop);
+                                SoalImporter.CopyAnnotation(SoalAnnotations.Restriction, ((AnnotatedElement)originalType), prop);
                             }
-                            if (originalType is StructBuilder)
+                            if (originalType is Struct)
                             {
-                                object wrapped = ((StructBuilder)originalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                object wrapped = ((Struct)originalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
                                 if ((bool)wrapped)
                                 {
-                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElementBuilder)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, prop);
-                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElementBuilder)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, prop);
-                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, prop);
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, prop);
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, prop);
+                                    SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)originalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, prop);
                                 }
                             }
                         }
@@ -658,14 +657,14 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal static AnnotationBuilder CloneAnnotation(AnnotationBuilder annot)
+        internal static Annotation CloneAnnotation(Annotation annot)
         {
-            SoalFactory f = new Symbols.SoalFactory(annot.MModel);
-            AnnotationBuilder toAnnot = f.Annotation();
+            var f = new SoalModelFactory(annot.MModel);
+            Annotation toAnnot = f.Annotation();
             toAnnot.Name = annot.Name;
             foreach (var annotProp in annot.Properties)
             {
-                AnnotationPropertyBuilder toAnnotProp = f.AnnotationProperty();
+                AnnotationProperty toAnnotProp = f.AnnotationProperty();
                 toAnnotProp.Name = annotProp.Name;
                 toAnnotProp.Value = annotProp.Value;
                 toAnnot.Properties.Add(toAnnotProp);
@@ -673,13 +672,13 @@ namespace MetaDslx.Languages.Soal
             return toAnnot;
         }
 
-        internal static void CopyAnnotationProperty(string annotationName, string propertyName, AnnotatedElementBuilder from, AnnotatedElementBuilder to)
+        internal static void CopyAnnotationProperty(string annotationName, string propertyName, AnnotatedElement from, AnnotatedElement to)
         {
             foreach (var annot in from.Annotations)
             {
                 if (annot.Name == annotationName)
                 {
-                    AnnotationPropertyBuilder annotProp = annot.Properties.FirstOrDefault(prop => prop.Name == propertyName);
+                    AnnotationProperty annotProp = annot.Properties.FirstOrDefault(prop => prop.Name == propertyName);
                     if (annotProp != null)
                     {
                         to.SetAnnotationPropertyValue(annotationName, propertyName, annotProp.Value);
@@ -688,13 +687,13 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal static void CopyAnnotationProperty(string annotationName, string propertyName, AnnotatedElementBuilder from, string targetAnnotationName, string targetPropertyName, AnnotatedElementBuilder to)
+        internal static void CopyAnnotationProperty(string annotationName, string propertyName, AnnotatedElement from, string targetAnnotationName, string targetPropertyName, AnnotatedElement to)
         {
             foreach (var annot in from.Annotations)
             {
                 if (annot.Name == annotationName)
                 {
-                    AnnotationPropertyBuilder annotProp = annot.Properties.FirstOrDefault(prop => prop.Name == propertyName);
+                    AnnotationProperty annotProp = annot.Properties.FirstOrDefault(prop => prop.Name == propertyName);
                     if (annotProp != null)
                     {
                         to.SetAnnotationPropertyValue(targetAnnotationName, targetPropertyName, annotProp.Value);
@@ -703,21 +702,21 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal static void CopyAnnotation(string name, AnnotatedElementBuilder from, AnnotatedElementBuilder to)
+        internal static void CopyAnnotation(string name, AnnotatedElement from, AnnotatedElement to)
         {
             if (from == null) return;
             if (to == null) return;
-            SoalFactory f = new Symbols.SoalFactory(to.MModel);
+            var f = new SoalModelFactory(to.MModel);
             foreach (var annot in from.Annotations)
             {
                 if (annot.Name == name)
                 {
-                    AnnotationBuilder toAnnot = f.Annotation();
+                    Annotation toAnnot = f.Annotation();
                     toAnnot.Name = annot.Name;
                     to.Annotations.Add(toAnnot);
                     foreach (var annotProp in annot.Properties)
                     {
-                        AnnotationPropertyBuilder toAnnotProp = f.AnnotationProperty();
+                        AnnotationProperty toAnnotProp = f.AnnotationProperty();
                         toAnnotProp.Name = annotProp.Name;
                         toAnnotProp.Value = annotProp.Value;
                         toAnnot.Properties.Add(toAnnotProp);
@@ -726,19 +725,19 @@ namespace MetaDslx.Languages.Soal
             }
         }
 
-        internal static void CopyAnnotations(AnnotatedElementBuilder from, AnnotatedElementBuilder to)
+        internal static void CopyAnnotations(AnnotatedElement from, AnnotatedElement to)
         {
             if (from == null) return;
             if (to == null) return;
-            SoalFactory f = new Symbols.SoalFactory(to.MModel);
+            var f = new SoalModelFactory(to.MModel);
             foreach (var annot in from.Annotations)
             {
-                AnnotationBuilder toAnnot = f.Annotation();
+                Annotation toAnnot = f.Annotation();
                 toAnnot.Name = annot.Name;
                 to.Annotations.Add(toAnnot);
                 foreach (var annotProp in annot.Properties)
                 {
-                    AnnotationPropertyBuilder toAnnotProp = f.AnnotationProperty();
+                    AnnotationProperty toAnnotProp = f.AnnotationProperty();
                     toAnnotProp.Name = annotProp.Name;
                     toAnnotProp.Value = annotProp.Value;
                     toAnnot.Properties.Add(toAnnotProp);

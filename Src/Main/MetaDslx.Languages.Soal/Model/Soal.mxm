@@ -1,0 +1,281 @@
+namespace MetaDslx.Languages.Soal.Symbols;
+
+using MetaDslx.CodeAnalysis.Symbols;
+
+metamodel Soal = "http://MetaDslx.Languages.Soal/1.0";
+
+const PrimitiveType Object;
+const PrimitiveType String;
+const PrimitiveType Int;
+const PrimitiveType Long;
+const PrimitiveType Float;
+const PrimitiveType Double;
+const PrimitiveType Byte;
+const PrimitiveType Bool;
+const PrimitiveType Void;
+const PrimitiveType Date;
+const PrimitiveType Time;
+const PrimitiveType DateTime;
+const PrimitiveType TimeSpan;
+
+abstract class AnnotatedElement $Symbol
+{
+	contains Annotation[] Annotations; 
+}
+
+class Annotation : NamedElement
+{
+	contains AnnotationProperty[] Properties;
+}
+
+class AnnotationProperty : NamedElement
+{
+	object Value;
+}
+
+abstract class DocumentedElement $Symbol
+{
+	string Documentation;
+	string[] GetDocumentationLines();
+}
+
+abstract class NamedElement $Declaration : DocumentedElement
+{
+	string $Name;
+}
+
+abstract class TypedElement $Symbol
+{
+	SoalType Type;
+}
+
+abstract class SoalType $Type : Declaration
+{
+}
+
+abstract class Declaration $Declaration : NamedElement, AnnotatedElement
+{
+	Namespace? Namespace opposite Namespace.Declarations;
+	derived string FullName;
+}
+
+class $Namespace : Declaration
+{
+	string? Uri;
+	string? Prefix;
+	contains Declaration[] Declarations $Members opposite Declaration.Namespace;
+}
+
+class ArrayType : SoalType
+{
+	SoalType InnerType;
+}
+
+class NullableType : SoalType
+{
+	SoalType InnerType;
+}
+
+class PrimitiveType : SoalType
+{
+}
+
+class Enum $Type : SoalType
+{
+	Enum BaseType $BaseTypes;
+	contains EnumLiteral[] EnumLiterals opposite EnumLiteral.Enum;
+}
+
+class EnumLiteral $Declaration : NamedElement, TypedElement, AnnotatedElement
+{
+	Enum Enum redefines TypedElement.Type opposite Enum.EnumLiterals;
+}
+
+class Property $Declaration : NamedElement, TypedElement, AnnotatedElement
+{
+}
+
+class Struct $Type : SoalType
+{
+	Struct BaseType $BaseTypes;
+	contains Property[] Properties;
+}
+
+class Interface : SoalType
+{
+	contains Operation[] Operations;
+}
+
+class Database : Interface
+{
+	Struct[] Entities;
+}
+
+class Operation $Declaration : NamedElement, AnnotatedElement
+{
+	string? Action;
+	contains InputParameter[] Parameters;
+	contains OutputParameter Result;
+	Struct[] Exceptions;
+}
+
+class InputParameter $Symbol : NamedElement, TypedElement, AnnotatedElement
+{
+}
+
+class OutputParameter $Symbol : TypedElement, AnnotatedElement
+{
+	bool IsOneway;
+}
+
+class Component $Type : SoalType
+{
+	Component BaseComponent $BaseTypes;
+	bool IsAbstract;
+	contains Port[] Ports opposite Port.Component;
+	contains Service[] Services subsets Ports;
+	contains Reference[] References subsets Ports;
+	contains Property[] Properties;
+	contains Implementation Implementation;
+	contains ProgrammingLanguage Language;
+}
+
+class Composite : Component
+{
+	Component[] Components;
+	contains Wire[] Wires;
+}
+
+class Assembly : Composite
+{
+}
+
+class Wire
+{
+	Port Source;
+	Port Target;
+}
+
+class Port : NamedElement
+{
+	Component Component opposite Component.Ports;
+	Interface Interface;
+	Binding Binding;
+}
+
+class Service : Port
+{
+}
+
+class Reference : Port
+{
+}
+
+class Implementation : NamedElement
+{
+}
+	
+class ProgrammingLanguage : NamedElement
+{
+}
+	
+class Deployment : Declaration
+{
+	contains Environment[] Environments;
+	contains Wire[] Wires;
+}
+
+class Environment : NamedElement
+{
+	contains Runtime Runtime;
+	Interface[] Databases;
+	Assembly[] Assemblies;
+}
+
+class Runtime : NamedElement
+{
+}
+
+class Binding : Declaration
+{
+	contains TransportBindingElement Transport;
+	contains EncodingBindingElement[] Encodings;
+	contains ProtocolBindingElement[] Protocols;
+}
+
+class Endpoint : Declaration
+{
+	Interface Interface;
+	Binding Binding;
+	string Address;
+}
+
+abstract class BindingElement : NamedElement
+{
+}
+
+abstract class TransportBindingElement : BindingElement
+{
+}
+
+abstract class EncodingBindingElement : BindingElement
+{
+}
+
+abstract class ProtocolBindingElement : BindingElement
+{
+}
+
+
+class HttpTransportBindingElement : TransportBindingElement
+{
+	bool Ssl;
+	bool ClientAuthentication;
+}
+
+class RestTransportBindingElement : TransportBindingElement
+{
+}
+
+class WebSocketTransportBindingElement : TransportBindingElement
+{
+}
+
+	
+enum SoapVersion
+{
+	Soap11,
+	Soap12
+}
+	
+enum SoapEncodingStyle
+{
+	DocumentWrapped,
+	DocumentLiteral,
+	RpcLiteral,
+	RpcEncoded
+}
+
+class SoapEncodingBindingElement : EncodingBindingElement
+{
+	SoapEncodingStyle Style;
+	SoapVersion Version;
+	bool Mtom;
+}
+
+class XmlEncodingBindingElement : EncodingBindingElement
+{
+}
+
+class JsonEncodingBindingElement : EncodingBindingElement
+{
+}
+
+	
+abstract class WsProtocolBindingElement : ProtocolBindingElement
+{
+}
+
+class WsAddressingBindingElement : WsProtocolBindingElement
+{
+}

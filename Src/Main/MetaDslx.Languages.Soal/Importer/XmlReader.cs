@@ -1,7 +1,7 @@
-﻿using MetaDslx.Languages.Soal.Symbols;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +17,9 @@ namespace MetaDslx.Languages.Soal.Importer
         public string Uri { get; private set; }
         public XElement Root { get; private set; }
         public SoalImporter Importer { get; private set; }
-        public NamespaceBuilder Namespace { get; protected set; }
-        public SoalFactory Factory => this.Importer.Factory;
-        public MutableModel Model => this.Importer.Model;
+        public Namespace Namespace { get; protected set; }
+        public SoalModelFactory Factory => this.Importer.Factory;
+        public Model Model => this.Importer.Model;
         public DiagnosticBag Diagnostics => this.Importer.Diagnostics;
 
         public XmlReader(SoalImporter importer, XElement root, string uri)

@@ -138,11 +138,11 @@ namespace MetaDslx.Languages.Soal.Importer
                     }
                     else if (elem.Name.LocalName == "simpleType")
                     {
-                        SoalTypeBuilder type = this.Importer.XsdTypes.Get(elem);
+                        SoalType type = this.Importer.XsdTypes.Get(elem);
                         if (type != null)
                         {
                             this.ImportPhase2SimpleType(type, elem);
-                            PrimitiveTypeBuilder pt = type as PrimitiveTypeBuilder;
+                            PrimitiveType pt = type as PrimitiveType;
                             if (pt != null)
                             {
                                 this.Importer.WsdlTypes.Register(this, this.tns + pt.Name, elem, pt, false);
@@ -151,7 +151,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     }
                     else if (elem.Name.LocalName == "complexType")
                     {
-                        StructBuilder type = this.Importer.XsdTypes.Get(elem) as StructBuilder;
+                        Struct type = this.Importer.XsdTypes.Get(elem) as Struct;
                         if (type != null)
                         {
                             this.ImportPhase2ComplexType(type, elem);
@@ -171,7 +171,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 {
                     if (elem.Name.LocalName == "element")
                     {
-                        SoalTypeBuilder type = this.ImportPhase3Element(elem);
+                        SoalType type = this.ImportPhase3Element(elem);
                         if (type != null)
                         {
                             XAttribute nameAttr = elem.Attribute("name");
@@ -209,8 +209,8 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 else if (elem.Name.LocalName == "complexType")
                 {
-                    SoalTypeBuilder mo = this.Importer.XsdTypes.Get(elem);
-                    StructBuilder st = mo as StructBuilder;
+                    SoalType mo = this.Importer.XsdTypes.Get(elem);
+                    Struct st = mo as Struct;
                     if (st != null)
                     {
                         this.ImportPhase4ComplexType(st, elem);
@@ -219,8 +219,8 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 else if (elem.Name.LocalName == "element")
                 {
-                    SoalTypeBuilder mo = this.Importer.XsdElements.Get(elem);
-                    StructBuilder st = mo as StructBuilder;
+                    SoalType mo = this.Importer.XsdElements.Get(elem);
+                    Struct st = mo as Struct;
                     /*if (st == null)
                     {
                         st = this.Importer.GetReplacementType(mo) as Struct;
@@ -248,7 +248,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return name;
         }
         
-        private string GetNewEnumLiteralName(EnumBuilder enm, string literal)
+        private string GetNewEnumLiteralName(Symbols.Enum enm, string literal)
         {
             if (literal == null) return literal;
             if (enm == null) return literal;
@@ -256,7 +256,7 @@ namespace MetaDslx.Languages.Soal.Importer
             {
                 literal = "_" + literal;
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var ch in literal)
             {
                 if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
@@ -284,7 +284,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return newValue;
         }
 
-        private string GetNewPropertyName(StructBuilder st, string name)
+        private string GetNewPropertyName(Struct st, string name)
         {
             if (name == null) return name;
             if (st == null) return name;
@@ -292,7 +292,7 @@ namespace MetaDslx.Languages.Soal.Importer
             {
                 name = "_" + name;
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var ch in name)
             {
                 if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
@@ -320,7 +320,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return newValue;
         }
 
-        private SoalTypeBuilder ImportPhase1SimpleType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
+        private SoalType ImportPhase1SimpleType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
         {
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
@@ -349,7 +349,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
                     if (/*stringBased && */enums.Any())
                     {
-                        EnumBuilder enm = this.Factory.Enum();
+                        var enm = this.Factory.Enum();
                         //name = this.GetUniqueName(name, element);
                         if (!register || (kind == XsdTypeKind.Type && this.Importer.XsdTypes.Register(this, tns + name, elem, enm) != null) ||
                             (kind == XsdTypeKind.Element && this.Importer.XsdElements.Register(this, tns + name, parentElem, enm) != null) ||
@@ -372,7 +372,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         }
                         else
                         {
-                            this.Model.RemoveSymbol(enm);
+                            this.Model.DeleteObject(enm);
                         }
                     }
                 }
@@ -385,7 +385,7 @@ namespace MetaDslx.Languages.Soal.Importer
             {
                 this.Importer.AddWarning("The importer of this element is not implemented.", this.Uri, this.GetLinePositionSpan(elem));
             }
-            PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
+            PrimitiveType type = this.Factory.PrimitiveType();
             type.Name = name;
             type.Namespace = this.Namespace;
             if (register)
@@ -405,7 +405,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return type;
         }
 
-        private SoalTypeBuilder ImportPhase1ComplexType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
+        private SoalType ImportPhase1ComplexType(XElement elem, string name, XsdTypeKind kind, XElement parentElem, bool register)
         {
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
@@ -418,7 +418,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 this.Importer.AddError("The complexType has no name.", this.Uri, this.GetLinePositionSpan(elem));
                 return null;
             }
-            StructBuilder st = this.Factory.Struct();
+            Struct st = this.Factory.Struct();
             //name = this.GetUniqueName(name, element);
             if (!register || (kind == XsdTypeKind.Type && this.Importer.XsdTypes.Register(this, tns + name, elem, st) != null) ||
                 (kind == XsdTypeKind.Element && this.Importer.XsdElements.Register(this, tns + name, parentElem, st) != null) ||
@@ -481,7 +481,7 @@ namespace MetaDslx.Languages.Soal.Importer
                             }
                             if (maxOccurs < 0 || maxOccurs > 1)
                             {
-                                ArrayTypeBuilder array = this.Factory.ArrayType();
+                                ArrayType array = this.Factory.ArrayType();
                                 this.Importer.RegisterReplacementType(st, array);
                             }
                         }
@@ -504,12 +504,12 @@ namespace MetaDslx.Languages.Soal.Importer
             }
             else
             {
-                this.Model.RemoveSymbol(st);
+                this.Model.DeleteObject(st);
             }
             return null;
         }
 
-        private SoalTypeBuilder ImportPhase2SimpleType(SoalTypeBuilder type, XElement elem)
+        private SoalType ImportPhase2SimpleType(SoalType type, XElement elem)
         {
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
@@ -524,19 +524,19 @@ namespace MetaDslx.Languages.Soal.Importer
                     {
                         return null;
                     }
-                    SoalTypeBuilder baseType = this.Importer.ResolveXsdType(baseRef);
+                    SoalType baseType = this.Importer.ResolveXsdType(baseRef);
                     if (baseType == null)
                     {
                         this.Importer.AddError("Could not resolve type '" + baseAttr.Value + "'.", this.Uri, this.GetLinePositionSpan(baseAttr));
                         return null;
                     }
-                    EnumBuilder enm = type as EnumBuilder;
+                    var enm = type as Symbols.Enum;
                     if (enm != null)
                     {
                         string name = enm.Name;
-                        if (baseType is EnumBuilder)
+                        if (baseType is Symbols.Enum)
                         {
-                            enm.BaseType = (EnumBuilder)baseType;
+                            enm.BaseType = (Symbols.Enum)baseType;
                         }
                         IEnumerable<XElement> enums = restriction.Elements(xsd + "enumeration");
                         foreach (var enumValue in enums)
@@ -545,7 +545,7 @@ namespace MetaDslx.Languages.Soal.Importer
                             if (valueAttr != null)
                             {
                                 string value = valueAttr.Value;
-                                EnumLiteralBuilder enmLit = this.Factory.EnumLiteral();
+                                EnumLiteral enmLit = this.Factory.EnumLiteral();
                                 string newValue = this.GetNewEnumLiteralName(enm, value);
                                 enmLit.Name = newValue;
                                 enm.EnumLiterals.Add(enmLit);
@@ -564,7 +564,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     }
                     else
                     {
-                        SoalImporter.CopyAnnotations(baseType as AnnotatedElementBuilder, type as AnnotatedElementBuilder);
+                        SoalImporter.CopyAnnotations(baseType as AnnotatedElement, type as AnnotatedElement);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Pattern);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.Length);
                         this.ProcessXsdRestriction(type, restriction, SoalAnnotationProperties.MinLength);
@@ -590,7 +590,7 @@ namespace MetaDslx.Languages.Soal.Importer
             }
         }
 
-        private void ProcessXsdRestriction(SoalTypeBuilder type, XElement elem, string restrictionName)
+        private void ProcessXsdRestriction(SoalType type, XElement elem, string restrictionName)
         {
             XElement restrElem = elem.Element(xsd + restrictionName);
             if (restrElem != null)
@@ -598,7 +598,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 XAttribute valueAttr = restrElem.Attribute("value");
                 if (valueAttr != null)
                 {
-                    AnnotatedElementBuilder ae = type as AnnotatedElementBuilder;
+                    AnnotatedElement ae = type as AnnotatedElement;
                     if (ae != null)
                     {
                         long longValue = 0;
@@ -619,7 +619,7 @@ namespace MetaDslx.Languages.Soal.Importer
             }
         }
 
-        private SoalTypeBuilder ImportPhase2ComplexType(StructBuilder st, XElement elem)
+        private SoalType ImportPhase2ComplexType(Struct st, XElement elem)
         {
             if (st == null)
             {
@@ -638,14 +638,14 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(restrictionElem, baseRef.Value);
-                        SoalTypeBuilder type = this.Importer.XsdTypes.Get(baseRefName);
+                        SoalType type = this.Importer.XsdTypes.Get(baseRefName);
                         if (type == null)
                         {
                             type = this.Importer.ResolveXsdPrimitiveType(baseRefName);
                         }
                         if (type != null)
                         {
-                            st.BaseType = type as StructBuilder;
+                            st.BaseType = type as Struct;
                             if (st.BaseType == null)
                             {
                                 this.Importer.RegisterReplacementType(st, type);
@@ -670,14 +670,14 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalTypeBuilder type = this.Importer.XsdTypes.Get(baseRefName);
+                        SoalType type = this.Importer.XsdTypes.Get(baseRefName);
                         if (type == null)
                         {
                             type = this.Importer.ResolveXsdPrimitiveType(baseRefName);
                         }
                         if (type != null)
                         {
-                            st.BaseType = type as StructBuilder;
+                            st.BaseType = type as Struct;
                             if (st.BaseType == null)
                             {
                                 this.Importer.RegisterReplacementType(st, type);
@@ -711,7 +711,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(restrictionElem, baseRef.Value);
-                        SoalTypeBuilder type = this.Importer.ResolveXsdType(baseRefName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             this.Importer.RegisterReplacementType(st, type);
@@ -735,7 +735,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalTypeBuilder type = this.Importer.ResolveXsdType(baseRefName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             this.Importer.RegisterReplacementType(st, type);
@@ -762,9 +762,9 @@ namespace MetaDslx.Languages.Soal.Importer
             return st;
         }
 
-        private SoalTypeBuilder ImportPhase3Element(XElement elem)
+        private SoalType ImportPhase3Element(XElement elem)
         {
-            SoalTypeBuilder result = null;
+            SoalType result = null;
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
             string name = null;
@@ -789,7 +789,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 else if (complexType != null)
                 {
                     result = this.ImportPhase1ComplexType(complexType, name, XsdTypeKind.Element, elem, true);
-                    StructBuilder cst = result as StructBuilder;
+                    Struct cst = result as Struct;
                     if (cst != null)
                     {
                         this.ImportPhase2ComplexType(cst, complexType);
@@ -809,7 +809,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     this.Importer.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetLinePositionSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.XsdTypes.Get(typeRef) as SoalTypeBuilder;
+                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
                 if (result == null)
                 {
                     result = this.Importer.ResolveXsdPrimitiveType(typeRef);
@@ -849,17 +849,17 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 if (nillable)
                 {
-                    NullableTypeBuilder nullable = this.Factory.NullableType();
+                    NullableType nullable = this.Factory.NullableType();
                     nullable.InnerType = result;
                     result = nullable;
                 }
                 if (maxOccurs < 0 || maxOccurs > 1)
                 {
-                    ArrayTypeBuilder array = this.Factory.ArrayType();
+                    ArrayType array = this.Factory.ArrayType();
                     array.InnerType = result;
                     result = array;
                 }
-                PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
+                PrimitiveType type = this.Factory.PrimitiveType();
                 type.Name = this.GetUniqueName(name, true);
                 type.Namespace = this.Namespace;
                 this.Importer.XsdElements.Register(this, tns + name, elem, type);
@@ -868,9 +868,9 @@ namespace MetaDslx.Languages.Soal.Importer
             return result;
         }
 
-        private SoalTypeBuilder ImportPhase3Attribute(XElement elem)
+        private SoalType ImportPhase3Attribute(XElement elem)
         {
-            SoalTypeBuilder result = null;
+            SoalType result = null;
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
             string name = null;
@@ -895,7 +895,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 else if (complexType != null)
                 {
                     result = this.ImportPhase1ComplexType(complexType, name, XsdTypeKind.Attribute, elem, true);
-                    StructBuilder cst = result as StructBuilder;
+                    Struct cst = result as Struct;
                     if (cst != null)
                     {
                         this.ImportPhase2ComplexType(cst, complexType);
@@ -915,14 +915,14 @@ namespace MetaDslx.Languages.Soal.Importer
                     this.Importer.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetLinePositionSpan(typeAttr));
                     return null;
                 }
-                result = this.Importer.XsdTypes.Get(typeRef) as SoalTypeBuilder;
+                result = this.Importer.XsdTypes.Get(typeRef) as SoalType;
                 if (result == null)
                 {
                     result = this.Importer.ResolveXsdPrimitiveType(typeRef);
                 }
                 if (result != null)
                 {
-                    PrimitiveTypeBuilder type = this.Factory.PrimitiveType();
+                    PrimitiveType type = this.Factory.PrimitiveType();
                     type.Name = this.GetUniqueName(name, true);
                     type.Namespace = this.Namespace;
                     this.Importer.XsdElements.Register(this, tns + name, elem, type);
@@ -937,9 +937,9 @@ namespace MetaDslx.Languages.Soal.Importer
             return result;
         }
 
-        private SoalTypeBuilder ImportPhase4Element(StructBuilder st, XElement elem)
+        private SoalType ImportPhase4Element(Struct st, XElement elem)
         {
-            SoalTypeBuilder result = st;
+            SoalType result = st;
             XAttribute nameAttr = elem.Attribute("name");
             XAttribute typeAttr = elem.Attribute("type");
             string name = null;
@@ -970,7 +970,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return result;
         }
 
-        private SoalTypeBuilder ImportPhase4ComplexType(StructBuilder st, XElement elem)
+        private SoalType ImportPhase4ComplexType(Struct st, XElement elem)
         {
             if (st == null)
             {
@@ -994,7 +994,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     if (baseRef != null)
                     {
                         XName baseRefName = this.GetXName(extensionElem, baseRef.Value);
-                        SoalTypeBuilder type = this.Importer.ResolveXsdType(baseRefName);
+                        SoalType type = this.Importer.ResolveXsdType(baseRefName);
                         if (type != null)
                         {
                             elem = extensionElem;
@@ -1049,7 +1049,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 complexElem = allElem;
                 st.AddAnnotation(SoalAnnotations.All);
             }
-            SoalTypeBuilder rt = this.Importer.ResolveXsdReplacementType(st);
+            SoalType rt = this.Importer.ResolveXsdReplacementType(st);
             if (complexElem != null)
             {
                 foreach (var child in complexElem.Elements())
@@ -1076,7 +1076,7 @@ namespace MetaDslx.Languages.Soal.Importer
             return st;
         }
 
-        private PropertyBuilder ImportPhase4ElementProperty(StructBuilder st, SoalTypeBuilder rt, XElement elem, bool attribute)
+        private Property ImportPhase4ElementProperty(Struct st, SoalType rt, XElement elem, bool attribute)
         {
             XAttribute refAttr = elem.Attribute("ref");
             XAttribute nameAttr = elem.Attribute("name");
@@ -1088,10 +1088,10 @@ namespace MetaDslx.Languages.Soal.Importer
                 required = true;
             }
             bool sap = false;
-            ArrayTypeBuilder sapArray = null;
+            ArrayType sapArray = null;
             string sapName = null;
             string name = null;
-            SoalTypeBuilder type = null;
+            SoalType type = null;
             if (refAttr != null)
             {
                 XName refName = this.GetXName(elem, refAttr.Value);
@@ -1159,19 +1159,19 @@ namespace MetaDslx.Languages.Soal.Importer
                     else if (complexType != null)
                     {
                         type = this.ImportPhase1ComplexType(complexType, typeName, attribute ? XsdTypeKind.Attribute : XsdTypeKind.Element, elem, false);
-                        StructBuilder childSt = type as StructBuilder;
+                        Struct childSt = type as Struct;
                         if (childSt != null)
                         {
                             type = this.ImportPhase2ComplexType(childSt, complexType);
-                            childSt = type as StructBuilder;
+                            childSt = type as Struct;
                             if (childSt != null)
                             {
                                 type = this.ImportPhase4ComplexType(childSt, complexType);
-                                childSt = type as StructBuilder;
+                                childSt = type as Struct;
                                 if (name == "item" && childSt != null && childSt.HasAnnotation(SoalAnnotations.All) && childSt.Properties.Count == 1)
                                 {
                                     var itemProp = childSt.Properties[0];
-                                    SoalTypeBuilder innerType = itemProp.Type;
+                                    SoalType innerType = itemProp.Type;
                                     if (innerType.IsArrayType())
                                     {
                                         innerType = this.Importer.GetOriginalType(itemProp);
@@ -1199,10 +1199,10 @@ namespace MetaDslx.Languages.Soal.Importer
                         this.Importer.AddError("Invalid type reference: '" + typeAttr.Value + "'", this.Uri, this.GetLinePositionSpan(typeAttr));
                         return null;
                     }
-                    type = this.Importer.XsdTypes.Get(typeRef) as SoalTypeBuilder;
+                    type = this.Importer.XsdTypes.Get(typeRef) as SoalType;
                     if (type == null)
                     {
-                        type = this.Importer.ResolveXsdPrimitiveType(typeRef) as SoalTypeBuilder;
+                        type = this.Importer.ResolveXsdPrimitiveType(typeRef) as SoalType;
                     }
                     if (type == null)
                     {
@@ -1211,7 +1211,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     }
                 }
             }
-            SoalTypeBuilder originalType = type;
+            SoalType originalType = type;
             type = this.Importer.ResolveXsdReplacementType(type);
             XAttribute nillableAttr = elem.Attribute("nillable");
             XAttribute minOccursAttr = elem.Attribute("minOccurs");
@@ -1243,17 +1243,17 @@ namespace MetaDslx.Languages.Soal.Importer
             }
             if (nillable)
             {
-                NullableTypeBuilder nullable = this.Factory.NullableType();
+                NullableType nullable = this.Factory.NullableType();
                 nullable.InnerType = type;
                 type = nullable;
             }
-            PropertyBuilder prop = this.Factory.Property();
+            Property prop = this.Factory.Property();
             string newName = this.GetNewPropertyName(st, name);
             prop.Name = newName;
             if (attribute)
             {
                 prop.Type = type;
-                AnnotationBuilder attrAnnot = prop.AddAnnotation(SoalAnnotations.Attribute);
+                Annotation attrAnnot = prop.AddAnnotation(SoalAnnotations.Attribute);
                 if (required)
                 {
                     attrAnnot.SetPropertyValue(SoalAnnotationProperties.Required, true);
@@ -1267,27 +1267,27 @@ namespace MetaDslx.Languages.Soal.Importer
             {
                 if (newName != name)
                 {
-                    AnnotationBuilder elemAnnot = prop.AddAnnotation(SoalAnnotations.Element);
+                    Annotation elemAnnot = prop.AddAnnotation(SoalAnnotations.Element);
                     elemAnnot.SetPropertyValue(SoalAnnotationProperties.Name, name);
                 }
                 if (sap)
                 {
-                    AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
+                    Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
                     arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
                     arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Items, sapName);
                     arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Sap, true);
                     this.Importer.RegisterReplacementType(st, sapArray);
                     prop.Type = sapArray;
                 }
-                else if(rt != null && rt is ArrayTypeBuilder)
+                else if(rt != null && rt is ArrayType)
                 {
                     if (type.IsArrayType())
                     {
                         type = originalType;
                     }
-                    ((ArrayTypeBuilder)rt).InnerType = type;
-                    SoalTypeBuilder coreType = type.GetCoreType();
-                    AnnotationBuilder arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
+                    ((ArrayType)rt).InnerType = type;
+                    SoalType coreType = type.GetCoreType();
+                    Annotation arrayAnnot = st.AddAnnotation(SoalAnnotations.Type);
                     arrayAnnot.SetPropertyValue(SoalAnnotationProperties.Wrapped, true);
                     if (coreType.Name != prop.Name)
                     {
@@ -1303,7 +1303,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         {
                             type = originalType;
                         }
-                        ArrayTypeBuilder array = this.Factory.ArrayType();
+                        ArrayType array = this.Factory.ArrayType();
                         array.InnerType = type;
                         type = array;
                         originalType = type;

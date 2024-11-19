@@ -1,7 +1,8 @@
-﻿using MetaDslx.Languages.Soal;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Soal;
 using MetaDslx.Languages.Soal.Generator;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,18 +62,18 @@ namespace SoalImport
                     Console.WriteLine("Could not find file: " + inputFileName);
                     return;
                 }
-                DiagnosticBag importDiagnostics = new DiagnosticBag();
-                ImmutableModel model = SoalImporter.Import(inputFileName, importDiagnostics);
+                var importDiagnostics = new DiagnosticBag();
+                var model = SoalImporter.Import(inputFileName, importDiagnostics);
                 foreach (var msg in importDiagnostics.AsEnumerable())
                 {
                     Console.WriteLine(msg);
                 }
                 //if (!ModelCompilerContext.Current.Diagnostics.HasErrors())
                 {
-                    SoalPrinter printer = new SoalPrinter(model.Symbols);
+                    SoalPrinter printer = new SoalPrinter();
                     using (StreamWriter writer = new StreamWriter(outputFileName))
                     {
-                        writer.WriteLine(printer.Generate());
+                        writer.WriteLine(printer.Generate(model.Objects.OfType<Namespace>()));
                     }
                 }
             }

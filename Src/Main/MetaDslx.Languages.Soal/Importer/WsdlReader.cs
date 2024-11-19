@@ -12,8 +12,8 @@ namespace MetaDslx.Languages.Soal.Importer
     internal class WsdlMessagePart
     {
         public string Name { get; set; }
-        public SoalTypeBuilder Type { get; set; }
-        public SoalTypeBuilder OriginalType { get; set; }
+        public SoalType Type { get; set; }
+        public SoalType OriginalType { get; set; }
     }
 
     internal class WsdlMessage
@@ -163,7 +163,7 @@ namespace MetaDslx.Languages.Soal.Importer
                             {
                                 foreach (var partElem in elem.Elements(wsdl+"part"))
                                 {
-                                    SoalTypeBuilder partType = null;
+                                    SoalType partType = null;
                                     XAttribute partNameAttr = partElem.Attribute("name");
                                     XAttribute partXsdTypeAttr = partElem.Attribute("type");
                                     XAttribute partXsdElemAttr = partElem.Attribute("element");
@@ -232,7 +232,7 @@ namespace MetaDslx.Languages.Soal.Importer
                 {
                     if (elem.Name.LocalName == "Policy")
                     {
-                        BindingBuilder policy = this.Factory.Binding();
+                        Binding policy = this.Factory.Binding();
                         this.ImportPolicy(elem, policy);
                     }
                 }
@@ -251,7 +251,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         if (nameAttr != null)
                         {
                             string name = nameAttr.Value;
-                            InterfaceBuilder intf = this.Factory.Interface();
+                            Interface intf = this.Factory.Interface();
                             intf.Name = name;
                             intf.Namespace = this.Namespace;
                             this.Importer.WsdlPortTypes.Register(this, this.tns + name, elem, intf);
@@ -309,11 +309,11 @@ namespace MetaDslx.Languages.Soal.Importer
                                             if (outputMsg.Rpc) opRpc = true;
                                             if (outputMsg.Wrapped && outputMsg.ElementName == opName+"Response") opWrapped = true;
                                             else opNotWrapped = true;
-                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is StructBuilder && ((StructBuilder)outputMsg.Parts[0].Type).Properties.Count > 1)
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count > 1)
                                             {
                                                 opNotWrapped = true;
                                             }
-                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is StructBuilder && ((StructBuilder)outputMsg.Parts[0].Type).Properties.Count == 1 && ((StructBuilder)outputMsg.Parts[0].Type).Properties[0].Name != opName+"Result")
+                                            if (outputMsg.Parts.Count == 1 && outputMsg.Parts[0].Type is Struct && ((Struct)outputMsg.Parts[0].Type).Properties.Count == 1 && ((Struct)outputMsg.Parts[0].Type).Properties[0].Name != opName+"Result")
                                             {
                                                 opNotWrapped = true;
                                             }
@@ -355,7 +355,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                         //this.Importer.AddError("The operation has both document and RPC style messages. Use either of the styles but not both.", this.Uri, this.GetTextSpan(opElem));
                                         //continue;
                                     }
-                                    OperationBuilder op = this.Factory.Operation();
+                                    Operation op = this.Factory.Operation();
                                     op.Name = opName;
                                     op.Result = Factory.OutputParameter();
                                     intf.Operations.Add(op);
@@ -366,7 +366,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                         {
                                             ++wrapped;
                                             WsdlMessagePart part;
-                                            StructBuilder st;
+                                            Struct st;
                                             if (inputMsg != null)
                                             {
                                                 part = null;
@@ -376,7 +376,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     part = inputMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.OriginalType as StructBuilder;
+                                                        st = part.OriginalType as Struct;
                                                         this.Importer.RemoveRootType(part.Type);
                                                         this.Importer.RemoveRootType(part.OriginalType);
                                                     }
@@ -385,7 +385,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 {
                                                     foreach (var prop in st.Properties)
                                                     {
-                                                        InputParameterBuilder param = this.Factory.InputParameter();
+                                                        InputParameter param = this.Factory.InputParameter();
                                                         param.Name = prop.Name;
                                                         param.Type = prop.Type;
                                                         this.Importer.Reference(param.Type);
@@ -397,7 +397,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 else
                                                 {
                                                     this.Importer.AddError("The input message part should be of 'complexType'.", this.Uri, this.GetLinePositionSpan(opElem));
-                                                    op.Result.Type = SoalInstance.Void.ToMutable();
+                                                    op.Result.Type = Symbols.Soal.Void;
                                                     continue;
                                                 }
                                             }
@@ -410,7 +410,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     part = outputMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.OriginalType as StructBuilder;
+                                                        st = part.OriginalType as Struct;
                                                         this.Importer.RemoveRootType(part.Type);
                                                         this.Importer.RemoveRootType(part.OriginalType);
                                                     }
@@ -420,10 +420,10 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     if (st.Properties.Count > 1)
                                                     {
                                                         this.Importer.AddError("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetLinePositionSpan(opElem));
-                                                        op.Result.Type = SoalInstance.Void.ToMutable();
+                                                        op.Result.Type = Symbols.Soal.Void;
                                                         continue;
                                                     }
-                                                    PropertyBuilder prop = st.Properties[0];
+                                                    Property prop = st.Properties[0];
                                                     if (prop.Name != op.Name + "Result")
                                                     {
                                                         this.Importer.AddWarning("The output message should have a single '" + op.Name + "Result' element under the '" + op.Name + "Response' element.", this.Uri, this.GetLinePositionSpan(opElem));
@@ -434,12 +434,12 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 }
                                                 else if (st != null)
                                                 {
-                                                    op.Result.Type = SoalInstance.Void.ToMutable();
+                                                    op.Result.Type = Symbols.Soal.Void;
                                                 }
                                                 else
                                                 {
                                                     this.Importer.AddError("The output message part should be of 'complexType'.", this.Uri, this.GetLinePositionSpan(opElem));
-                                                    op.Result.Type = SoalInstance.Void.ToMutable();
+                                                    op.Result.Type = Symbols.Soal.Void;
                                                     continue;
                                                 }
                                             }
@@ -456,7 +456,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     part = faultMsg.Parts[0];
                                                     if (part != null)
                                                     {
-                                                        st = part.OriginalType as StructBuilder;
+                                                        st = part.OriginalType as Struct;
                                                         this.Importer.RemoveRootType(part.Type);
                                                         this.Importer.RemoveRootType(part.OriginalType);
                                                     }
@@ -474,19 +474,19 @@ namespace MetaDslx.Languages.Soal.Importer
                                             {
                                                 foreach (var part in inputMsg.Parts)
                                                 {
-                                                    InputParameterBuilder param = this.Factory.InputParameter();
+                                                    InputParameter param = this.Factory.InputParameter();
                                                     param.Name = part.Name;
                                                     param.Type = part.Type;
                                                     this.Importer.Reference(param.Type);
                                                     op.Parameters.Add(param);
-                                                    if (part.OriginalType is StructBuilder)
+                                                    if (part.OriginalType is Struct)
                                                     {
-                                                        object origWrapped = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                        object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
                                                         if ((bool)origWrapped)
                                                         {
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
                                                         }
                                                     }
                                                     this.Importer.RemoveRootType(part.Type);
@@ -500,14 +500,14 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     WsdlMessagePart part = outputMsg.Parts[0];
                                                     op.Result.Type = part.Type;
                                                     this.Importer.Reference(op.Result.Type);
-                                                    if (part.OriginalType is StructBuilder)
+                                                    if (part.OriginalType is Struct)
                                                     {
-                                                        object origWrapped = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                        object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
                                                         if ((bool)origWrapped)
                                                         {
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
-                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
+                                                            SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                         }
                                                     }
                                                     this.Importer.RemoveRootType(part.Type);
@@ -519,7 +519,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                     {
                                                         this.Importer.AddError("The output message should have a single part.", this.Uri, this.GetLinePositionSpan(opElem));
                                                     }
-                                                    op.Result.Type = SoalInstance.Void.ToMutable();
+                                                    op.Result.Type = Symbols.Soal.Void;
                                                 }
                                             }
                                             else
@@ -531,10 +531,10 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 if (faultMsg.Parts.Count == 1)
                                                 {
                                                     WsdlMessagePart part = faultMsg.Parts[0];
-                                                    StructBuilder st = null;
+                                                    Struct st = null;
                                                     if (part != null)
                                                     {
-                                                        st = part.Type as StructBuilder;
+                                                        st = part.Type as Struct;
                                                         this.Importer.RemoveRootType(part.Type);
                                                         this.Importer.RemoveRootType(part.OriginalType);
                                                     }
@@ -565,23 +565,23 @@ namespace MetaDslx.Languages.Soal.Importer
                                         {
                                             foreach (var part in inputMsg.Parts)
                                             {
-                                                InputParameterBuilder param = this.Factory.InputParameter();
+                                                InputParameter param = this.Factory.InputParameter();
                                                 param.Name = part.Name;
                                                 param.Type = part.Type;
                                                 this.Importer.Reference(param.Type);
                                                 op.Parameters.Add(param);
-                                                if (part.OriginalType is StructBuilder)
+                                                if (part.OriginalType is Struct)
                                                 {
-                                                    object origWrapped = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
-                                                    string origItems = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
-                                                    SoalTypeBuilder coreType = part.Type.GetCoreType();
-                                                    string coreTypeName = coreType is NamedElementBuilder ? ((NamedElementBuilder)coreType).Name : null;
-                                                    object origSap = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
+                                                    object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                    string origItems = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
+                                                    SoalType coreType = part.Type.GetCoreType();
+                                                    string coreTypeName = coreType is NamedElement ? ((NamedElement)coreType).Name : null;
+                                                    object origSap = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
                                                     if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
                                                     {
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, param);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, param);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, param);
                                                     }
                                                 }
                                                 this.Importer.RemoveRootType(part.Type);
@@ -595,18 +595,18 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 WsdlMessagePart part = outputMsg.Parts[0];
                                                 op.Result.Type = part.Type;
                                                 this.Importer.Reference(op.Result.Type);
-                                                if (part.OriginalType is StructBuilder)
+                                                if (part.OriginalType is Struct)
                                                 {
-                                                    object origWrapped = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
-                                                    string origItems = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
-                                                    SoalTypeBuilder coreType = part.Type.GetCoreType();
-                                                    string coreTypeName = coreType is NamedElementBuilder ? ((NamedElementBuilder)coreType).Name : null;
-                                                    object origSap = ((StructBuilder)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
+                                                    object origWrapped = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped) ?? false;
+                                                    string origItems = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Items) as string;
+                                                    SoalType coreType = part.Type.GetCoreType();
+                                                    string coreTypeName = coreType is NamedElement ? ((NamedElement)coreType).Name : null;
+                                                    object origSap = ((Struct)part.OriginalType).GetAnnotationPropertyValue(SoalAnnotations.Type, SoalAnnotationProperties.Sap) ?? false;
                                                     if ((bool)origWrapped && ((bool)origSap || (origItems != null && coreTypeName != origItems)))
                                                     {
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
-                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElementBuilder)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Wrapped, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Wrapped, op.Result);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Items, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Items, op.Result);
+                                                        SoalImporter.CopyAnnotationProperty(SoalAnnotations.Type, SoalAnnotationProperties.Sap, ((AnnotatedElement)part.OriginalType), SoalAnnotations.Element, SoalAnnotationProperties.Sap, op.Result);
                                                     }
                                                 }
                                                 this.Importer.RemoveRootType(part.Type);
@@ -618,7 +618,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                                 {
                                                     this.Importer.AddError("The output message should have a single part.", this.Uri, this.GetLinePositionSpan(opElem));
                                                 }
-                                                op.Result.Type = SoalInstance.Void.ToMutable();
+                                                op.Result.Type = Symbols.Soal.Void;
                                             }
                                         }
                                         else
@@ -631,10 +631,10 @@ namespace MetaDslx.Languages.Soal.Importer
                                         if (faultMsg.Parts.Count == 1)
                                         {
                                             WsdlMessagePart part = faultMsg.Parts[0];
-                                            StructBuilder st = null;
+                                            Struct st = null;
                                             if (part != null)
                                             {
-                                                st = part.Type as StructBuilder;
+                                                st = part.Type as Struct;
                                                 this.Importer.RemoveRootType(part.Type);
                                                 this.Importer.RemoveRootType(part.OriginalType);
                                             }
@@ -672,14 +672,14 @@ namespace MetaDslx.Languages.Soal.Importer
                                         this.Importer.AddWarning("The portType has both wrapped and unwrapped document style operations. Use either of the styles on all operations but not both.", this.Uri, this.GetLinePositionSpan(elem));
                                         wrapped = 0;
                                     }
-                                    AnnotationBuilder annot = this.Factory.Annotation();
+                                    Annotation annot = this.Factory.Annotation();
                                     annot.Name = SoalAnnotations.NoWrap;
                                     intf.Annotations.Add(annot);
                                 }
                             }
                             else
                             {
-                                AnnotationBuilder annot = this.Factory.Annotation();
+                                Annotation annot = this.Factory.Annotation();
                                 annot.Name = SoalAnnotations.Rpc;
                                 intf.Annotations.Add(annot);
                             }
@@ -715,13 +715,13 @@ namespace MetaDslx.Languages.Soal.Importer
                             continue;
                         }
                         string name = nameAttr.Value;
-                        InterfaceBuilder intf = this.Importer.WsdlPortTypes.Get(this.GetXName(elem, typeAttr.Value)) as InterfaceBuilder;
+                        Interface intf = this.Importer.WsdlPortTypes.Get(this.GetXName(elem, typeAttr.Value)) as Interface;
                         if (intf == null)
                         {
                             this.Importer.AddError("Could not resolve portType.", this.Uri, this.GetLinePositionSpan(typeAttr));
                             continue;
                         }
-                        BindingBuilder binding = this.Factory.Binding();
+                        Binding binding = this.Factory.Binding();
                         binding.Name = name;
                         binding.Namespace = this.Namespace;
                         if (binding.Name.StartsWith(intf.Name+"_") && binding.Name.Length > intf.Name.Length+1)
@@ -819,7 +819,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         bool soap12 = soap12BindingElem != null;
                         bool opLiteral = false;
                         bool opEncoded = false;
-                        List<OperationBuilder> unboundOps = new List<OperationBuilder>(intf.Operations);
+                        List<Operation> unboundOps = new List<Operation>(intf.Operations);
                         foreach (var opElem in elem.Elements(wsdl+"operation"))
                         {
                             XAttribute opNameAttr = opElem.Attribute("name");
@@ -995,7 +995,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         }
                         if (soap11 || soap12)
                         {
-                            SoapEncodingBindingElementBuilder sebe = this.Factory.SoapEncodingBindingElement();
+                            SoapEncodingBindingElement sebe = this.Factory.SoapEncodingBindingElement();
                             binding.Encodings.Add(sebe);
                             sebe.Version = soap12 ? SoapVersion.Soap12 : SoapVersion.Soap11;
                             if (rpc && opEncoded) sebe.Style = SoapEncodingStyle.RpcEncoded;
@@ -1028,7 +1028,7 @@ namespace MetaDslx.Languages.Soal.Importer
                         }
                         List<XElement> policyElems = elem.Elements(this.wsp + "Policy").ToList();
                         List<XElement> policyReferenceElems = elem.Elements(this.wsp + "PolicyReference").ToList();
-                        BindingBuilder serviceBinding = null;
+                        Binding serviceBinding = null;
                         if (policyElems.Count > 0 || policyReferenceElems.Count > 0)
                         {
                             serviceBinding = this.Factory.Binding();
@@ -1051,7 +1051,7 @@ namespace MetaDslx.Languages.Soal.Importer
                             XAttribute bindingAttr = portElem.Attribute("binding");
                             if (bindingAttr != null)
                             {
-                                BindingBuilder binding = this.Importer.WsdlBindings.Get(this.GetXName(portElem, bindingAttr.Value));
+                                Binding binding = this.Importer.WsdlBindings.Get(this.GetXName(portElem, bindingAttr.Value));
                                 XElement bindingElem = this.Importer.WsdlBindings.GetX(this.GetXName(portElem, bindingAttr.Value));
                                 if (binding == null || bindingElem == null)
                                 {
@@ -1060,7 +1060,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                 }
                                 List<XElement> portPolicyElems = portElem.Elements(this.wsp + "Policy").ToList();
                                 List<XElement> portPolicyReferenceElems = portElem.Elements(this.wsp + "PolicyReference").ToList();
-                                BindingBuilder portBinding = null;
+                                Binding portBinding = null;
                                 if (portPolicyElems.Count > 0 || portPolicyReferenceElems.Count > 0)
                                 {
                                     portBinding = this.Factory.Binding();
@@ -1068,7 +1068,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                 }
                                 if (portBinding != null || serviceBinding != null)
                                 {
-                                    BindingBuilder finalBinding = this.CloneBinding(binding);
+                                    Binding finalBinding = this.CloneBinding(binding);
                                     this.ApplyPolicy(finalBinding, portBinding);
                                     this.ApplyPolicy(finalBinding, serviceBinding);
                                     finalBinding.Name = portName + "_Binding";
@@ -1089,7 +1089,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                         address = locationAttr.Value;
                                     }
                                 }
-                                InterfaceBuilder intf = null;
+                                Interface intf = null;
                                 XAttribute bindingTypeAttr = bindingElem.Attribute("type");
                                 if (bindingTypeAttr != null)
                                 {
@@ -1097,7 +1097,7 @@ namespace MetaDslx.Languages.Soal.Importer
                                 }
                                 if (intf != null)
                                 {
-                                    EndpointBuilder endp = this.Factory.Endpoint();
+                                    Endpoint endp = this.Factory.Endpoint();
                                     endp.Name = portName;
                                     endp.Interface = intf;
                                     endp.Binding = binding;
@@ -1121,7 +1121,7 @@ namespace MetaDslx.Languages.Soal.Importer
             }
         }
 
-        private void ImportAllPolicies(XElement elem, BindingBuilder binding)
+        private void ImportAllPolicies(XElement elem, Binding binding)
         {
             List<XElement> policyElems = elem.Elements(this.wsp + "Policy").ToList();
             List<XElement> policyReferenceElems = elem.Elements(this.wsp + "PolicyReference").ToList();
@@ -1135,7 +1135,7 @@ namespace MetaDslx.Languages.Soal.Importer
             }
         }
 
-        private void ImportPolicy(XElement elem, BindingBuilder policy)
+        private void ImportPolicy(XElement elem, Binding policy)
         {
             XAttribute id = elem.Attribute(wsu + "Id");
             if (id != null)
@@ -1176,7 +1176,7 @@ namespace MetaDslx.Languages.Soal.Importer
             }
         }
 
-        private void ImportPolicyReference(XElement elem, BindingBuilder binding)
+        private void ImportPolicyReference(XElement elem, Binding binding)
         {
             XAttribute uriAttr = elem.Attribute("URI");
             if (uriAttr != null)
@@ -1196,7 +1196,7 @@ namespace MetaDslx.Languages.Soal.Importer
                     {
                         uri = refDoc;
                     }
-                    BindingBuilder policy = this.Importer.WsdlPolicies.Get(uri + refId);
+                    Binding policy = this.Importer.WsdlPolicies.Get(uri + refId);
                     if (policy == null)
                     {
                         this.Importer.AddError("Could not resolve policy reference: '" + refName + "'.", this.Uri, this.GetLinePositionSpan(elem));
@@ -1253,20 +1253,20 @@ namespace MetaDslx.Languages.Soal.Importer
             return result;
         }
 
-        private void ImportAddressingPolicy(XElement elem, XNamespace wsa, BindingBuilder policy)
+        private void ImportAddressingPolicy(XElement elem, XNamespace wsa, Binding policy)
         {
-            WsAddressingBindingElementBuilder wabe = this.Factory.WsAddressingBindingElement();
+            WsAddressingBindingElement wabe = this.Factory.WsAddressingBindingElement();
             policy.Protocols.Add(wabe);
         }
 
-        private void ImportMtomPolicy(XElement elem, XNamespace wsoma, BindingBuilder policy)
+        private void ImportMtomPolicy(XElement elem, XNamespace wsoma, Binding policy)
         {
-            SoapEncodingBindingElementBuilder sebe = null; 
+            SoapEncodingBindingElement sebe = null; 
             foreach (var enc in policy.Encodings)
             {
-                if (enc is SoapEncodingBindingElementBuilder)
+                if (enc is SoapEncodingBindingElement)
                 {
-                    sebe = (SoapEncodingBindingElementBuilder)enc;
+                    sebe = (SoapEncodingBindingElement)enc;
                     break;
                 }
             }
@@ -1278,7 +1278,7 @@ namespace MetaDslx.Languages.Soal.Importer
             policy.Encodings.Add(sebe);
         }
 
-        private void ImportTransportBindingPolicy(XElement elem, XNamespace sp, BindingBuilder policy)
+        private void ImportTransportBindingPolicy(XElement elem, XNamespace sp, Binding policy)
         {
             bool https = false;
             bool clientCert = false;
@@ -1308,19 +1308,19 @@ namespace MetaDslx.Languages.Soal.Importer
             }
             if (https)
             {
-                HttpTransportBindingElementBuilder htbe = this.Factory.HttpTransportBindingElement();
+                HttpTransportBindingElement htbe = this.Factory.HttpTransportBindingElement();
                 policy.Transport = htbe;
                 htbe.Ssl = true;
                 htbe.ClientAuthentication = clientCert;
             }
         }
 
-        private void ApplyPolicy(BindingBuilder binding, BindingBuilder policy)
+        private void ApplyPolicy(Binding binding, Binding policy)
         {
             if (binding == null) return;
             if (policy == null) return;
-            HttpTransportBindingElementBuilder bhtbe = binding.Transport as HttpTransportBindingElementBuilder;
-            HttpTransportBindingElementBuilder phtbe = policy.Transport as HttpTransportBindingElementBuilder;
+            HttpTransportBindingElement bhtbe = binding.Transport as HttpTransportBindingElement;
+            HttpTransportBindingElement phtbe = policy.Transport as HttpTransportBindingElement;
             if (bhtbe != null && phtbe != null)
             {
                 if (phtbe.Ssl)
@@ -1332,14 +1332,14 @@ namespace MetaDslx.Languages.Soal.Importer
             binding.Protocols.Clear();
             foreach (var benc in binding.Encodings)
             {
-                if (benc is SoapEncodingBindingElementBuilder)
+                if (benc is SoapEncodingBindingElement)
                 {
-                    SoapEncodingBindingElementBuilder bsebe = (SoapEncodingBindingElementBuilder)benc;
+                    SoapEncodingBindingElement bsebe = (SoapEncodingBindingElement)benc;
                     foreach (var penc in policy.Encodings)
                     {
-                        if (penc is SoapEncodingBindingElementBuilder)
+                        if (penc is SoapEncodingBindingElement)
                         {
-                            SoapEncodingBindingElementBuilder psebe = (SoapEncodingBindingElementBuilder)penc;
+                            SoapEncodingBindingElement psebe = (SoapEncodingBindingElement)penc;
                             if (psebe.Mtom)
                             {
                                 bsebe.Mtom = true;
@@ -1350,28 +1350,28 @@ namespace MetaDslx.Languages.Soal.Importer
             }
             foreach (var protocol in policy.Protocols)
             {
-                if (protocol is WsAddressingBindingElementBuilder)
+                if (protocol is WsAddressingBindingElement)
                 {
-                    WsAddressingBindingElementBuilder wabe = this.Factory.WsAddressingBindingElement();
+                    WsAddressingBindingElement wabe = this.Factory.WsAddressingBindingElement();
                     binding.Protocols.Add(wabe);
                 }
             }
         }
 
-        private BindingBuilder CloneBinding(BindingBuilder binding)
+        private Binding CloneBinding(Binding binding)
         {
             if (binding == null) return null;
-            BindingBuilder result = this.Factory.Binding();
-            if (binding.Transport is HttpTransportBindingElementBuilder)
+            Binding result = this.Factory.Binding();
+            if (binding.Transport is HttpTransportBindingElement)
             {
                 result.Transport = this.Factory.HttpTransportBindingElement();
             }
             foreach (var enc in binding.Encodings)
             {
-                if (enc is SoapEncodingBindingElementBuilder)
+                if (enc is SoapEncodingBindingElement)
                 {
-                    SoapEncodingBindingElementBuilder benc = ((SoapEncodingBindingElementBuilder)enc);
-                    SoapEncodingBindingElementBuilder renc = this.Factory.SoapEncodingBindingElement();
+                    SoapEncodingBindingElement benc = ((SoapEncodingBindingElement)enc);
+                    SoapEncodingBindingElement renc = this.Factory.SoapEncodingBindingElement();
                     result.Encodings.Add(renc);
                     renc.Version = benc.Version;
                     renc.Style = benc.Style;
