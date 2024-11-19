@@ -18,7 +18,7 @@
 		<AdditionalFiles Include="**\*.mxs" />
 		<AdditionalFiles Include="**\*.mxg" />
 	</ItemGroup>
-	
+
     <Target Name="MetaDslx" BeforeTargets="BeforeBuild" Inputs="**\*.mxm;**\*.mxl;**\*.mxs;**\*.mxg" Outputs="**\*.cs">
 	    <Exec Command="dotnet metadslx" />
     </Target>	

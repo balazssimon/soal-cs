@@ -70,7 +70,7 @@ namespace MetaDslx.Languages.Soal.Symbols
         }
     }
 
-    internal static class SoalExtensions
+    public static class SoalExtensions
     {
 
         public static string FullName(this Declaration declaration)

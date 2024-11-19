@@ -1,0 +1,57 @@
+namespace MetaDslx.Languages.Soal.Generator;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Modeling;
+
+generator PlantUmlGenerator;
+
+template Generate(string name, IEnumerable<IModelObject> objects)
+	@startuml [name]
+
+	skin rose
+	hide circle
+	skinparam classAttributeIconSize 0
+
+	title [name]
+
+	[foreach (var enm in objects.OfType<Symbols.Enum>())]
+		enum "<<enumeration>> \n [enm.Name]" {
+			[foreach (var el in enm.EnumLiterals)]
+				[el.Name]
+			[end foreach]
+		}
+	[end foreach]
+
+	[foreach (var st in objects.OfType<Struct>())]
+		class [st.Name] {
+			[foreach (var p in st.Properties)]
+				[var ct = p.Type.GetCoreType()]
+				[if (!(ct is Struct) && !(ct is Symbols.Enum))]
+					[p.Name]: [p.Type.GetCoreType().Name]
+				[end if]
+			[end foreach]
+		}
+	[end foreach]
+
+	[foreach (var st in objects.OfType<Struct>().Where(t => t.BaseType != null))]
+		[st.BaseType.Name] <|-down- [st.Name]
+	[end foreach]
+
+	[foreach (var st in objects.OfType<Struct>())]
+		[foreach (var p in st.Properties)]
+			[var ct = p.Type.GetCoreType()]
+			[if (ct is Struct)]
+				[st.Name] *-down-> "[p.Name][if (p.Type.IsArrayType())] \n 0..*[end if]" [ct.Name]
+			[end if]
+			[if (ct is Symbols.Enum)]
+				[st.Name] *-down-> "[p.Name][if (p.Type.IsArrayType())] \n 0..*[end if]" "<<enumeration>> \n [ct.Name]"
+			[end if]
+		[end foreach]
+	[end foreach]
+
+	@enduml
+end template

@@ -49,15 +49,15 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first1 = true;
+            var __first13 = true;
             #line (12,3)-(12,33) 13 "SoalPrinter.mxg"
             foreach (var ns in namespaces)
             #line hidden
             
             {
-                if (__first1)
+                if (__first13)
                 {
-                    __first1 = false;
+                    __first13 = false;
                 }
                 __cb.Push("");
                 #line (13,3)-(13,24) 28 "SoalPrinter.mxg"
@@ -66,7 +66,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first1) __cb.AppendLine();
+            if (!__first13) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -75,25 +75,25 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first2 = true;
+            var __first14 = true;
             #line (18,3)-(18,65) 13 "SoalPrinter.mxg"
             if (ns.Declarations.Where(d => !(d is Namespace)).Count() > 0)
             #line hidden
             
             {
-                if (__first2)
+                if (__first14)
                 {
-                    __first2 = false;
+                    __first14 = false;
                 }
-                var __first3 = true;
+                var __first15 = true;
                 #line (19,4)-(19,26) 17 "SoalPrinter.mxg"
                 if (ns.Prefix != null)
                 #line hidden
                 
                 {
-                    if (__first3)
+                    if (__first15)
                     {
-                        __first3 = false;
+                        __first15 = false;
                     }
                     __cb.Push("");
                     #line (20,3)-(20,12) 33 "SoalPrinter.mxg"
@@ -134,9 +134,9 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line hidden
                 
                 {
-                    if (__first3)
+                    if (__first15)
                     {
-                        __first3 = false;
+                        __first15 = false;
                     }
                     __cb.Push("");
                     #line (22,3)-(22,12) 33 "SoalPrinter.mxg"
@@ -169,22 +169,22 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.AppendLine();
                     __cb.Pop();
                 }
-                if (!__first3) __cb.AppendLine();
+                if (!__first15) __cb.AppendLine();
                 __cb.Push("");
                 #line (24,3)-(24,4) 29 "SoalPrinter.mxg"
                 __cb.Write("{");
                 #line hidden
                 __cb.AppendLine();
                 __cb.Pop();
-                var __first4 = true;
+                var __first16 = true;
                 #line (25,5)-(25,64) 17 "SoalPrinter.mxg"
                 foreach (var enm in ns.Declarations.OfType<Symbols.Enum>())
                 #line hidden
                 
                 {
-                    if (__first4)
+                    if (__first16)
                     {
-                        __first4 = false;
+                        __first16 = false;
                     }
                     __cb.Push("\t");
                     #line (26,6)-(26,27) 32 "SoalPrinter.mxg"
@@ -195,16 +195,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.WriteLine();
                     __cb.Pop();
                 }
-                if (!__first4) __cb.AppendLine();
-                var __first5 = true;
+                if (!__first16) __cb.AppendLine();
+                var __first17 = true;
                 #line (29,5)-(29,65) 17 "SoalPrinter.mxg"
                 foreach (var st in ns.Declarations.OfType<Symbols.Struct>())
                 #line hidden
                 
                 {
-                    if (__first5)
+                    if (__first17)
                     {
-                        __first5 = false;
+                        __first17 = false;
                     }
                     __cb.Push("\t");
                     #line (30,6)-(30,28) 32 "SoalPrinter.mxg"
@@ -215,16 +215,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.WriteLine();
                     __cb.Pop();
                 }
-                if (!__first5) __cb.AppendLine();
-                var __first6 = true;
+                if (!__first17) __cb.AppendLine();
+                var __first18 = true;
                 #line (33,5)-(33,70) 17 "SoalPrinter.mxg"
                 foreach (var intf in ns.Declarations.OfType<Symbols.Interface>())
                 #line hidden
                 
                 {
-                    if (__first6)
+                    if (__first18)
                     {
-                        __first6 = false;
+                        __first18 = false;
                     }
                     __cb.Push("\t");
                     #line (34,6)-(34,33) 32 "SoalPrinter.mxg"
@@ -235,16 +235,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.WriteLine();
                     __cb.Pop();
                 }
-                if (!__first6) __cb.AppendLine();
-                var __first7 = true;
+                if (!__first18) __cb.AppendLine();
+                var __first19 = true;
                 #line (37,5)-(37,67) 17 "SoalPrinter.mxg"
                 foreach (var bnd in ns.Declarations.OfType<Symbols.Binding>())
                 #line hidden
                 
                 {
-                    if (__first7)
+                    if (__first19)
                     {
-                        __first7 = false;
+                        __first19 = false;
                     }
                     __cb.Push("\t");
                     #line (38,6)-(38,30) 32 "SoalPrinter.mxg"
@@ -255,16 +255,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.WriteLine();
                     __cb.Pop();
                 }
-                if (!__first7) __cb.AppendLine();
-                var __first8 = true;
+                if (!__first19) __cb.AppendLine();
+                var __first20 = true;
                 #line (41,5)-(41,69) 17 "SoalPrinter.mxg"
                 foreach (var endp in ns.Declarations.OfType<Symbols.Endpoint>())
                 #line hidden
                 
                 {
-                    if (__first8)
+                    if (__first20)
                     {
-                        __first8 = false;
+                        __first20 = false;
                     }
                     __cb.Push("\t");
                     #line (42,6)-(42,32) 32 "SoalPrinter.mxg"
@@ -275,7 +275,7 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.WriteLine();
                     __cb.Pop();
                 }
-                if (!__first8) __cb.AppendLine();
+                if (!__first20) __cb.AppendLine();
                 __cb.Push("");
                 #line (45,3)-(45,4) 29 "SoalPrinter.mxg"
                 __cb.Write("}");
@@ -285,7 +285,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.WriteLine();
                 __cb.Pop();
             }
-            if (!__first2) __cb.AppendLine();
+            if (!__first14) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -294,15 +294,15 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first9 = true;
+            var __first21 = true;
             #line (51,3)-(51,40) 13 "SoalPrinter.mxg"
             foreach (var annot in ae.Annotations)
             #line hidden
             
             {
-                if (__first9)
+                if (__first21)
                 {
-                    __first9 = false;
+                    __first21 = false;
                 }
                 __cb.Push("");
                 #line (52,4)-(52,7) 28 "SoalPrinter.mxg"
@@ -314,15 +314,15 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line (52,37)-(52,47) 28 "SoalPrinter.mxg"
                 __cb.Write(annot.Name);
                 #line hidden
-                var __first10 = true;
+                var __first22 = true;
                 #line (52,49)-(52,79) 17 "SoalPrinter.mxg"
                 if(annot.Properties.Count > 0)
                 #line hidden
                 
                 {
-                    if (__first10)
+                    if (__first22)
                     {
-                        __first10 = false;
+                        __first22 = false;
                     }
                     #line (52,80)-(52,81) 33 "SoalPrinter.mxg"
                     __cb.Write("(");
@@ -340,7 +340,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first9) __cb.AppendLine();
+            if (!__first21) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -350,15 +350,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first11 = true;
+            var __first23 = true;
             #line (58,3)-(58,40) 13 "SoalPrinter.mxg"
             foreach (var annot in ae.Annotations)
             #line hidden
             
             {
-                if (__first11)
+                if (__first23)
                 {
-                    __first11 = false;
+                    __first23 = false;
                 }
                 __cb.Push("");
                 #line (59,4)-(59,7) 28 "SoalPrinter.mxg"
@@ -370,15 +370,15 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line (59,37)-(59,47) 28 "SoalPrinter.mxg"
                 __cb.Write(annot.Name);
                 #line hidden
-                var __first12 = true;
+                var __first24 = true;
                 #line (59,49)-(59,79) 17 "SoalPrinter.mxg"
                 if(annot.Properties.Count > 0)
                 #line hidden
                 
                 {
-                    if (__first12)
+                    if (__first24)
                     {
-                        __first12 = false;
+                        __first24 = false;
                     }
                     #line (59,80)-(59,81) 33 "SoalPrinter.mxg"
                     __cb.Write("(");
@@ -396,7 +396,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first11) __cb.AppendLine();
+            if (!__first23) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -406,15 +406,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first13 = true;
+            var __first25 = true;
             #line (65,3)-(65,42) 13 "SoalPrinter.mxg"
             foreach (var prop in annot.Properties) 
             #line hidden
             
             {
-                if (__first13)
+                if (__first25)
                 {
-                    __first13 = false;
+                    __first25 = false;
                 }
                 else
                 {
@@ -439,7 +439,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first13) __cb.AppendLine();
+            if (!__first25) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -475,15 +475,15 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             __cb.AppendLine();
             __cb.Pop();
-            var __first14 = true;
+            var __first26 = true;
             #line (74,4)-(74,42) 13 "SoalPrinter.mxg"
             foreach (var lit in enm.EnumLiterals) 
             #line hidden
             
             {
-                if (__first14)
+                if (__first26)
                 {
-                    __first14 = false;
+                    __first26 = false;
                 }
                 else
                 {
@@ -502,7 +502,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.Write(GenerateEnumLiteral(currentNs, lit));
                 #line hidden
             }
-            if (!__first14) __cb.AppendLine();
+            if (!__first26) __cb.AppendLine();
             __cb.Push("");
             #line (75,2)-(75,3) 25 "SoalPrinter.mxg"
             __cb.Write("}");
@@ -564,15 +564,15 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             __cb.AppendLine();
             __cb.Pop();
-            var __first15 = true;
+            var __first27 = true;
             #line (87,4)-(87,39) 13 "SoalPrinter.mxg"
             foreach (var prop in st.Properties)
             #line hidden
             
             {
-                if (__first15)
+                if (__first27)
                 {
-                    __first15 = false;
+                    __first27 = false;
                 }
                 __cb.Push("\t");
                 #line (88,5)-(88,38) 28 "SoalPrinter.mxg"
@@ -581,7 +581,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first15) __cb.AppendLine();
+            if (!__first27) __cb.AppendLine();
             __cb.Push("");
             #line (90,2)-(90,3) 25 "SoalPrinter.mxg"
             __cb.Write("}");
@@ -626,25 +626,25 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first16 = true;
+            var __first28 = true;
             #line (100,3)-(100,20) 13 "SoalPrinter.mxg"
             if (decl != null)
             #line hidden
             
             {
-                if (__first16)
+                if (__first28)
                 {
-                    __first16 = false;
+                    __first28 = false;
                 }
-                var __first17 = true;
+                var __first29 = true;
                 #line (101,4)-(101,36) 17 "SoalPrinter.mxg"
                 if (decl.Namespace != currentNs)
                 #line hidden
                 
                 {
-                    if (__first17)
+                    if (__first29)
                     {
-                        __first17 = false;
+                        __first29 = false;
                     }
                     __cb.Push("");
                     #line (102,5)-(102,18) 32 "SoalPrinter.mxg"
@@ -658,9 +658,9 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line hidden
                 
                 {
-                    if (__first17)
+                    if (__first29)
                     {
-                        __first17 = false;
+                        __first29 = false;
                     }
                     __cb.Push("");
                     #line (104,5)-(104,14) 32 "SoalPrinter.mxg"
@@ -669,9 +669,9 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.AppendLine();
                     __cb.Pop();
                 }
-                if (!__first17) __cb.AppendLine();
+                if (!__first29) __cb.AppendLine();
             }
-            if (!__first16) __cb.AppendLine();
+            if (!__first28) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -681,15 +681,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first18 = true;
+            var __first30 = true;
             #line (111,3)-(111,26) 13 "SoalPrinter.mxg"
             if (t is PrimitiveType)
             #line hidden
             
             {
-                if (__first18)
+                if (__first30)
                 {
-                    __first18 = false;
+                    __first30 = false;
                 }
                 __cb.Push("");
                 #line (112,4)-(112,27) 28 "SoalPrinter.mxg"
@@ -703,9 +703,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first18)
+                if (__first30)
                 {
-                    __first18 = false;
+                    __first30 = false;
                 }
                 __cb.Push("");
                 #line (114,4)-(114,56) 28 "SoalPrinter.mxg"
@@ -722,9 +722,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first18)
+                if (__first30)
                 {
-                    __first18 = false;
+                    __first30 = false;
                 }
                 __cb.Push("");
                 #line (116,4)-(116,53) 28 "SoalPrinter.mxg"
@@ -741,9 +741,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first18)
+                if (__first30)
                 {
-                    __first18 = false;
+                    __first30 = false;
                 }
                 __cb.Push("");
                 #line (118,4)-(118,42) 28 "SoalPrinter.mxg"
@@ -757,9 +757,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first18)
+                if (__first30)
                 {
-                    __first18 = false;
+                    __first30 = false;
                 }
                 __cb.Push("");
                 #line (120,4)-(120,5) 28 "SoalPrinter.mxg"
@@ -768,7 +768,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first18) __cb.AppendLine();
+            if (!__first30) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -778,15 +778,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first19 = true;
+            var __first31 = true;
             #line (126,3)-(126,26) 13 "SoalPrinter.mxg"
             if (op.Result.IsOneway)
             #line hidden
             
             {
-                if (__first19)
+                if (__first31)
                 {
-                    __first19 = false;
+                    __first31 = false;
                 }
                 __cb.Push("");
                 #line (127,3)-(127,9) 29 "SoalPrinter.mxg"
@@ -800,9 +800,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first19)
+                if (__first31)
                 {
-                    __first19 = false;
+                    __first31 = false;
                 }
                 __cb.Push("");
                 #line (129,4)-(129,43) 28 "SoalPrinter.mxg"
@@ -811,7 +811,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first19) __cb.AppendLine();
+            if (!__first31) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -821,15 +821,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first20 = true;
+            var __first32 = true;
             #line (135,3)-(135,31) 13 "SoalPrinter.mxg"
             if (op.Exceptions.Count > 0)
             #line hidden
             
             {
-                if (__first20)
+                if (__first32)
                 {
-                    __first20 = false;
+                    __first32 = false;
                 }
                 __cb.Push("");
                 #line (136,3)-(136,9) 29 "SoalPrinter.mxg"
@@ -840,15 +840,15 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line hidden
                 __cb.AppendLine();
                 __cb.Pop();
-                var __first21 = true;
+                var __first33 = true;
                 #line (137,4)-(137,38) 17 "SoalPrinter.mxg"
                 foreach (var ex in op.Exceptions) 
                 #line hidden
                 
                 {
-                    if (__first21)
+                    if (__first33)
                     {
-                        __first21 = false;
+                        __first33 = false;
                     }
                     else
                     {
@@ -867,9 +867,9 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.AppendLine();
                     __cb.Pop();
                 }
-                if (!__first21) __cb.AppendLine();
+                if (!__first33) __cb.AppendLine();
             }
-            if (!__first20) __cb.AppendLine();
+            if (!__first32) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -879,15 +879,15 @@ namespace MetaDslx.Languages.Soal.Generator
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __cb.SingleLineMode = true;
-            var __first22 = true;
+            var __first34 = true;
             #line (145,3)-(145,36) 13 "SoalPrinter.mxg"
             foreach (var p in op.Parameters) 
             #line hidden
             
             {
-                if (__first22)
+                if (__first34)
                 {
-                    __first22 = false;
+                    __first34 = false;
                 }
                 else
                 {
@@ -915,7 +915,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first22) __cb.AppendLine();
+            if (!__first34) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -995,15 +995,15 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             __cb.AppendLine();
             __cb.Pop();
-            var __first23 = true;
+            var __first35 = true;
             #line (160,4)-(160,39) 13 "SoalPrinter.mxg"
             foreach (var op in intf.Operations)
             #line hidden
             
             {
-                if (__first23)
+                if (__first35)
                 {
-                    __first23 = false;
+                    __first35 = false;
                 }
                 __cb.Push("\t");
                 #line (161,5)-(161,37) 28 "SoalPrinter.mxg"
@@ -1012,7 +1012,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first23) __cb.AppendLine();
+            if (!__first35) __cb.AppendLine();
             __cb.Push("");
             #line (163,2)-(163,3) 25 "SoalPrinter.mxg"
             __cb.Write("}");
@@ -1027,25 +1027,25 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first24 = true;
+            var __first36 = true;
             #line (167,3)-(167,47) 13 "SoalPrinter.mxg"
             if (bnd is HttpTransportBindingElement htbe)
             #line hidden
             
             {
-                if (__first24)
+                if (__first36)
                 {
-                    __first24 = false;
+                    __first36 = false;
                 }
-                var __first25 = true;
+                var __first37 = true;
                 #line (168,4)-(168,17) 17 "SoalPrinter.mxg"
                 if (htbe.Ssl)
                 #line hidden
                 
                 {
-                    if (__first25)
+                    if (__first37)
                     {
-                        __first25 = false;
+                        __first37 = false;
                     }
                     __cb.Push("");
                     #line (169,4)-(169,13) 33 "SoalPrinter.mxg"
@@ -1116,9 +1116,9 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line hidden
                 
                 {
-                    if (__first25)
+                    if (__first37)
                     {
-                        __first25 = false;
+                        __first37 = false;
                     }
                     __cb.Push("");
                     #line (175,4)-(175,13) 33 "SoalPrinter.mxg"
@@ -1133,16 +1133,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.AppendLine();
                     __cb.Pop();
                 }
-                if (!__first25) __cb.AppendLine();
+                if (!__first37) __cb.AppendLine();
             }
             #line (177,3)-(177,52) 13 "SoalPrinter.mxg"
             else if (bnd is RestTransportBindingElement rtbe)
             #line hidden
             
             {
-                if (__first24)
+                if (__first36)
                 {
-                    __first24 = false;
+                    __first36 = false;
                 }
                 __cb.Push("");
                 #line (178,3)-(178,12) 29 "SoalPrinter.mxg"
@@ -1162,9 +1162,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first24)
+                if (__first36)
                 {
-                    __first24 = false;
+                    __first36 = false;
                 }
                 __cb.Push("");
                 #line (180,3)-(180,12) 29 "SoalPrinter.mxg"
@@ -1179,7 +1179,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first24) __cb.AppendLine();
+            if (!__first36) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -1188,25 +1188,25 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first26 = true;
+            var __first38 = true;
             #line (185,3)-(185,46) 13 "SoalPrinter.mxg"
             if (bnd is SoapEncodingBindingElement sebe)
             #line hidden
             
             {
-                if (__first26)
+                if (__first38)
                 {
-                    __first26 = false;
+                    __first38 = false;
                 }
-                var __first27 = true;
+                var __first39 = true;
                 #line (186,4)-(186,107) 17 "SoalPrinter.mxg"
                 if (sebe.Style != SoapEncodingStyle.DocumentWrapped || sebe.Version != SoapVersion.Soap11 || sebe.Mtom)
                 #line hidden
                 
                 {
-                    if (__first27)
+                    if (__first39)
                     {
-                        __first27 = false;
+                        __first39 = false;
                     }
                     __cb.Push("");
                     #line (187,4)-(187,12) 33 "SoalPrinter.mxg"
@@ -1226,15 +1226,15 @@ namespace MetaDslx.Languages.Soal.Generator
                     #line hidden
                     __cb.AppendLine();
                     __cb.Pop();
-                    var __first28 = true;
+                    var __first40 = true;
                     #line (189,6)-(189,58) 21 "SoalPrinter.mxg"
                     if (sebe.Style != SoapEncodingStyle.DocumentWrapped)
                     #line hidden
                     
                     {
-                        if (__first28)
+                        if (__first40)
                         {
-                            __first28 = false;
+                            __first40 = false;
                         }
                         __cb.Push("\t");
                         #line (190,5)-(190,10) 37 "SoalPrinter.mxg"
@@ -1258,16 +1258,16 @@ namespace MetaDslx.Languages.Soal.Generator
                         __cb.AppendLine();
                         __cb.Pop();
                     }
-                    if (!__first28) __cb.AppendLine();
-                    var __first29 = true;
+                    if (!__first40) __cb.AppendLine();
+                    var __first41 = true;
                     #line (192,6)-(192,45) 21 "SoalPrinter.mxg"
                     if (sebe.Version != SoapVersion.Soap11)
                     #line hidden
                     
                     {
-                        if (__first29)
+                        if (__first41)
                         {
-                            __first29 = false;
+                            __first41 = false;
                         }
                         __cb.Push("\t");
                         #line (193,5)-(193,12) 37 "SoalPrinter.mxg"
@@ -1291,16 +1291,16 @@ namespace MetaDslx.Languages.Soal.Generator
                         __cb.AppendLine();
                         __cb.Pop();
                     }
-                    if (!__first29) __cb.AppendLine();
-                    var __first30 = true;
+                    if (!__first41) __cb.AppendLine();
+                    var __first42 = true;
                     #line (195,6)-(195,20) 21 "SoalPrinter.mxg"
                     if (sebe.Mtom)
                     #line hidden
                     
                     {
-                        if (__first30)
+                        if (__first42)
                         {
-                            __first30 = false;
+                            __first42 = false;
                         }
                         __cb.Push("\t");
                         #line (196,5)-(196,9) 37 "SoalPrinter.mxg"
@@ -1321,7 +1321,7 @@ namespace MetaDslx.Languages.Soal.Generator
                         __cb.AppendLine();
                         __cb.Pop();
                     }
-                    if (!__first30) __cb.AppendLine();
+                    if (!__first42) __cb.AppendLine();
                     __cb.Push("");
                     #line (198,4)-(198,5) 33 "SoalPrinter.mxg"
                     __cb.Write("}");
@@ -1334,9 +1334,9 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line hidden
                 
                 {
-                    if (__first27)
+                    if (__first39)
                     {
-                        __first27 = false;
+                        __first39 = false;
                     }
                     __cb.Push("");
                     #line (200,4)-(200,12) 33 "SoalPrinter.mxg"
@@ -1351,16 +1351,16 @@ namespace MetaDslx.Languages.Soal.Generator
                     __cb.AppendLine();
                     __cb.Pop();
                 }
-                if (!__first27) __cb.AppendLine();
+                if (!__first39) __cb.AppendLine();
             }
             #line (202,3)-(202,50) 13 "SoalPrinter.mxg"
             else if (bnd is XmlEncodingBindingElement xebe)
             #line hidden
             
             {
-                if (__first26)
+                if (__first38)
                 {
-                    __first26 = false;
+                    __first38 = false;
                 }
                 __cb.Push("");
                 #line (203,3)-(203,11) 29 "SoalPrinter.mxg"
@@ -1380,9 +1380,9 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             
             {
-                if (__first26)
+                if (__first38)
                 {
-                    __first26 = false;
+                    __first38 = false;
                 }
                 __cb.Push("");
                 #line (205,3)-(205,11) 29 "SoalPrinter.mxg"
@@ -1397,7 +1397,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first26) __cb.AppendLine();
+            if (!__first38) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -1406,15 +1406,15 @@ namespace MetaDslx.Languages.Soal.Generator
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            var __first31 = true;
+            var __first43 = true;
             #line (210,3)-(210,41) 13 "SoalPrinter.mxg"
             if (bnd is WsAddressingBindingElement)
             #line hidden
             
             {
-                if (__first31)
+                if (__first43)
                 {
-                    __first31 = false;
+                    __first43 = false;
                 }
                 __cb.Push("");
                 #line (211,3)-(211,11) 29 "SoalPrinter.mxg"
@@ -1429,7 +1429,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first31) __cb.AppendLine();
+            if (!__first43) __cb.AppendLine();
             return __cb.ToStringAndFree();
         }
         
@@ -1462,15 +1462,15 @@ namespace MetaDslx.Languages.Soal.Generator
             #line hidden
             __cb.AppendLine();
             __cb.Pop();
-            var __first32 = true;
+            var __first44 = true;
             #line (219,4)-(219,38) 13 "SoalPrinter.mxg"
             foreach (var enc in bnd.Encodings)
             #line hidden
             
             {
-                if (__first32)
+                if (__first44)
                 {
-                    __first32 = false;
+                    __first44 = false;
                 }
                 __cb.Push("\t");
                 #line (220,5)-(220,44) 28 "SoalPrinter.mxg"
@@ -1479,16 +1479,16 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first32) __cb.AppendLine();
-            var __first33 = true;
+            if (!__first44) __cb.AppendLine();
+            var __first45 = true;
             #line (222,4)-(222,39) 13 "SoalPrinter.mxg"
             foreach (var prot in bnd.Protocols)
             #line hidden
             
             {
-                if (__first33)
+                if (__first45)
                 {
-                    __first33 = false;
+                    __first45 = false;
                 }
                 __cb.Push("\t");
                 #line (223,5)-(223,45) 28 "SoalPrinter.mxg"
@@ -1497,7 +1497,7 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first33) __cb.AppendLine();
+            if (!__first45) __cb.AppendLine();
             __cb.Push("");
             #line (225,2)-(225,3) 25 "SoalPrinter.mxg"
             __cb.Write("}");
