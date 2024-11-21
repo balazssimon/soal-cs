@@ -437,14 +437,22 @@ namespace MetaDslx.Languages.Soal.Importer
                 }
                 st.Name = name;
                 st.Namespace = this.Namespace;
-                XElement sequenceElem = elem.Element(xsd + "sequence");
-                XElement choiceElem = elem.Element(xsd + "choice");
-                XElement allElem = elem.Element(xsd + "all");
-                XElement complexElem = null;
-                if (sequenceElem != null)
+                XElement complexElem = elem;
+                while (true)
                 {
-                    complexElem = sequenceElem;
-                    List<XElement> children = sequenceElem.Elements(xsd + "element").ToList();
+                    XElement sequenceElem = complexElem.Element(xsd + "sequence");
+                    XElement choiceElem = complexElem.Element(xsd + "choice");
+                    XElement allElem = complexElem.Element(xsd + "all");
+                    XElement elemElem = complexElem.Element(xsd + "element");
+                    if (elemElem != null) break;
+                    else if (sequenceElem != null) complexElem = sequenceElem;
+                    else if (choiceElem != null) complexElem = choiceElem;
+                    else if (allElem != null) complexElem = allElem;
+                    else break;
+                }
+                if (complexElem.Name == xsd + "sequence")
+                {
+                    List<XElement> children = complexElem.Elements(xsd + "element").ToList();
                     if (children.Count == 1)
                     {
                         XElement child = children[0];
@@ -487,13 +495,11 @@ namespace MetaDslx.Languages.Soal.Importer
                         }
                     }
                 }
-                else if (choiceElem != null)
+                else if (complexElem.Name == xsd + "choice")
                 {
-                    complexElem = choiceElem;
                 }
-                else if (allElem != null)
+                else if (complexElem.Name == xsd + "all")
                 {
-                    complexElem = allElem;
                 }
                 else
                 {
@@ -1031,22 +1037,28 @@ namespace MetaDslx.Languages.Soal.Importer
                     return null;
                 }
             }
-            XElement sequenceElem = elem.Element(xsd + "sequence");
-            XElement choiceElem = elem.Element(xsd + "choice");
-            XElement allElem = elem.Element(xsd + "all");
-            XElement complexElem = null;
-            if (sequenceElem != null)
+            XElement complexElem = elem;
+            while (true)
             {
-                complexElem = sequenceElem;
+                XElement sequenceElem = complexElem.Element(xsd + "sequence");
+                XElement choiceElem = complexElem.Element(xsd + "choice");
+                XElement allElem = complexElem.Element(xsd + "all");
+                XElement elemElem = complexElem.Element(xsd + "element");
+                if (elemElem != null) break;
+                else if (sequenceElem != null) complexElem = sequenceElem;
+                else if (choiceElem != null) complexElem = choiceElem;
+                else if (allElem != null) complexElem = allElem;
+                else break;
             }
-            else if (choiceElem != null)
+            if (complexElem.Name == xsd + "sequence")
             {
-                complexElem = choiceElem;
+            }
+            else if (complexElem.Name == xsd + "choice")
+            {
                 st.AddAnnotation(SoalAnnotations.Choice);
             }
-            else if (allElem != null)
+            else if (complexElem.Name == xsd + "all")
             {
-                complexElem = allElem;
                 st.AddAnnotation(SoalAnnotations.All);
             }
             SoalType rt = this.Importer.ResolveXsdReplacementType(st);

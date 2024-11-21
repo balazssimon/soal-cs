@@ -9,17 +9,17 @@ using MetaDslx.Modeling;
 
 generator PlantUmlGenerator;
 
-template Generate(string name, IEnumerable<IModelObject> objects)
+template Generate(string name, string title, IEnumerable<IModelObject> objects)
 	@startuml [name]
 
 	skin rose
 	hide circle
 	skinparam classAttributeIconSize 0
 
-	title [name]
+	title [title]
 
 	[foreach (var enm in objects.OfType<Symbols.Enum>())]
-		enum "<<enumeration>> \n [enm.Name]" {
+		enum [enm.Name] as "<<enumeration>> \n [enm.Name]" {
 			[foreach (var el in enm.EnumLiterals)]
 				[el.Name]
 			[end foreach]
@@ -27,11 +27,11 @@ template Generate(string name, IEnumerable<IModelObject> objects)
 	[end foreach]
 
 	[foreach (var st in objects.OfType<Struct>())]
-		class [st.Name] {
+		class [st.Name][if (st.HasAnnotation(SoalAnnotations.Choice))] as "<<choice>> \n [st.Name]"[end if][if (st.HasAnnotation(SoalAnnotations.All))] as "<<all>> \n [st.Name]"[end if] {
 			[foreach (var p in st.Properties)]
 				[var ct = p.Type.GetCoreType()]
 				[if (!(ct is Struct) && !(ct is Symbols.Enum))]
-					[p.Name]: [p.Type.GetCoreType().Name]
+					[p.Name]: [p.Type.GetCoreType().Name][if (p.Type.IsArrayType())]["[]"][end if]
 				[end if]
 			[end foreach]
 		}
@@ -44,11 +44,8 @@ template Generate(string name, IEnumerable<IModelObject> objects)
 	[foreach (var st in objects.OfType<Struct>())]
 		[foreach (var p in st.Properties)]
 			[var ct = p.Type.GetCoreType()]
-			[if (ct is Struct)]
+			[if (ct is Struct || ct is Symbols.Enum)]
 				[st.Name] *-down-> "[p.Name][if (p.Type.IsArrayType())] \n 0..*[end if]" [ct.Name]
-			[end if]
-			[if (ct is Symbols.Enum)]
-				[st.Name] *-down-> "[p.Name][if (p.Type.IsArrayType())] \n 0..*[end if]" "<<enumeration>> \n [ct.Name]"
 			[end if]
 		[end foreach]
 	[end foreach]

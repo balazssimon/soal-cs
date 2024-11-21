@@ -51,8 +51,8 @@ namespace MetaDslx.Languages.Soal.Generator
     public partial class PlantUmlGenerator
     #line hidden
     {
-        #line (12,9)-(12,66) 22 "PlantUmlGenerator.mxg"
-        public string Generate(string name, IEnumerable<IModelObject> objects)
+        #line (12,9)-(12,80) 22 "PlantUmlGenerator.mxg"
+        public string Generate(string name, string title, IEnumerable<IModelObject> objects)
         #line hidden
         {
             var __cb = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
@@ -121,8 +121,8 @@ namespace MetaDslx.Languages.Soal.Generator
             #line (19,7)-(19,8) 25 "PlantUmlGenerator.mxg"
             __cb.Write(" ");
             #line hidden
-            #line (19,9)-(19,13) 24 "PlantUmlGenerator.mxg"
-            __cb.Write(name);
+            #line (19,9)-(19,14) 24 "PlantUmlGenerator.mxg"
+            __cb.Write(title);
             #line hidden
             __cb.AppendLine();
             __cb.Pop();
@@ -145,28 +145,40 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line (22,7)-(22,8) 29 "PlantUmlGenerator.mxg"
                 __cb.Write(" ");
                 #line hidden
-                #line (22,8)-(22,24) 29 "PlantUmlGenerator.mxg"
-                __cb.Write("\"<<enumeration>>");
-                #line hidden
-                #line (22,24)-(22,25) 29 "PlantUmlGenerator.mxg"
-                __cb.Write(" ");
-                #line hidden
-                #line (22,25)-(22,27) 29 "PlantUmlGenerator.mxg"
-                __cb.Write("\\n");
-                #line hidden
-                #line (22,27)-(22,28) 29 "PlantUmlGenerator.mxg"
-                __cb.Write(" ");
-                #line hidden
-                #line (22,29)-(22,37) 28 "PlantUmlGenerator.mxg"
+                #line (22,9)-(22,17) 28 "PlantUmlGenerator.mxg"
                 __cb.Write(enm.Name);
                 #line hidden
-                #line (22,38)-(22,39) 29 "PlantUmlGenerator.mxg"
-                __cb.Write("\"");
-                #line hidden
-                #line (22,39)-(22,40) 29 "PlantUmlGenerator.mxg"
+                #line (22,18)-(22,19) 29 "PlantUmlGenerator.mxg"
                 __cb.Write(" ");
                 #line hidden
-                #line (22,40)-(22,41) 29 "PlantUmlGenerator.mxg"
+                #line (22,19)-(22,21) 29 "PlantUmlGenerator.mxg"
+                __cb.Write("as");
+                #line hidden
+                #line (22,21)-(22,22) 29 "PlantUmlGenerator.mxg"
+                __cb.Write(" ");
+                #line hidden
+                #line (22,22)-(22,38) 29 "PlantUmlGenerator.mxg"
+                __cb.Write("\"<<enumeration>>");
+                #line hidden
+                #line (22,38)-(22,39) 29 "PlantUmlGenerator.mxg"
+                __cb.Write(" ");
+                #line hidden
+                #line (22,39)-(22,41) 29 "PlantUmlGenerator.mxg"
+                __cb.Write("\\n");
+                #line hidden
+                #line (22,41)-(22,42) 29 "PlantUmlGenerator.mxg"
+                __cb.Write(" ");
+                #line hidden
+                #line (22,43)-(22,51) 28 "PlantUmlGenerator.mxg"
+                __cb.Write(enm.Name);
+                #line hidden
+                #line (22,52)-(22,53) 29 "PlantUmlGenerator.mxg"
+                __cb.Write("\"");
+                #line hidden
+                #line (22,53)-(22,54) 29 "PlantUmlGenerator.mxg"
+                __cb.Write(" ");
+                #line hidden
+                #line (22,54)-(22,55) 29 "PlantUmlGenerator.mxg"
                 __cb.Write("{");
                 #line hidden
                 __cb.AppendLine();
@@ -219,17 +231,9 @@ namespace MetaDslx.Languages.Soal.Generator
                 #line (30,10)-(30,17) 28 "PlantUmlGenerator.mxg"
                 __cb.Write(st.Name);
                 #line hidden
-                #line (30,18)-(30,19) 29 "PlantUmlGenerator.mxg"
-                __cb.Write(" ");
-                #line hidden
-                #line (30,19)-(30,20) 29 "PlantUmlGenerator.mxg"
-                __cb.Write("{");
-                #line hidden
-                __cb.AppendLine();
-                __cb.Pop();
                 var __first4 = true;
-                #line (31,5)-(31,37) 17 "PlantUmlGenerator.mxg"
-                foreach (var p in st.Properties)
+                #line (30,19)-(30,64) 17 "PlantUmlGenerator.mxg"
+                if (st.HasAnnotation(SoalAnnotations.Choice))
                 #line hidden
                 
                 {
@@ -237,21 +241,104 @@ namespace MetaDslx.Languages.Soal.Generator
                     {
                         __first4 = false;
                     }
+                    #line (30,65)-(30,66) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,66)-(30,68) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("as");
+                    #line hidden
+                    #line (30,68)-(30,69) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,69)-(30,80) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\"<<choice>>");
+                    #line hidden
+                    #line (30,80)-(30,81) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,81)-(30,83) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\\n");
+                    #line hidden
+                    #line (30,83)-(30,84) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,85)-(30,92) 32 "PlantUmlGenerator.mxg"
+                    __cb.Write(st.Name);
+                    #line hidden
+                    #line (30,93)-(30,94) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\"");
+                    #line hidden
+                }
+                var __first5 = true;
+                #line (30,103)-(30,145) 17 "PlantUmlGenerator.mxg"
+                if (st.HasAnnotation(SoalAnnotations.All))
+                #line hidden
+                
+                {
+                    if (__first5)
+                    {
+                        __first5 = false;
+                    }
+                    #line (30,146)-(30,147) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,147)-(30,149) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("as");
+                    #line hidden
+                    #line (30,149)-(30,150) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,150)-(30,158) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\"<<all>>");
+                    #line hidden
+                    #line (30,158)-(30,159) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,159)-(30,161) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\\n");
+                    #line hidden
+                    #line (30,161)-(30,162) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write(" ");
+                    #line hidden
+                    #line (30,163)-(30,170) 32 "PlantUmlGenerator.mxg"
+                    __cb.Write(st.Name);
+                    #line hidden
+                    #line (30,171)-(30,172) 33 "PlantUmlGenerator.mxg"
+                    __cb.Write("\"");
+                    #line hidden
+                }
+                #line (30,180)-(30,181) 29 "PlantUmlGenerator.mxg"
+                __cb.Write(" ");
+                #line hidden
+                #line (30,181)-(30,182) 29 "PlantUmlGenerator.mxg"
+                __cb.Write("{");
+                #line hidden
+                __cb.AppendLine();
+                __cb.Pop();
+                var __first6 = true;
+                #line (31,5)-(31,37) 17 "PlantUmlGenerator.mxg"
+                foreach (var p in st.Properties)
+                #line hidden
+                
+                {
+                    if (__first6)
+                    {
+                        __first6 = false;
+                    }
                     #line (32,6)-(32,35) 21 "PlantUmlGenerator.mxg"
                     var ct = p.Type.GetCoreType();
                     #line hidden
                     
-                    var __first5 = true;
+                    var __first7 = true;
                     #line (33,6)-(33,51) 21 "PlantUmlGenerator.mxg"
                     if (!(ct is Struct) && !(ct is Symbols.Enum))
                     #line hidden
                     
                     {
-                        if (__first5)
+                        if (__first7)
                         {
-                            __first5 = false;
+                            __first7 = false;
                         }
-                        __cb.Push("\t");
                         #line (34,7)-(34,13) 36 "PlantUmlGenerator.mxg"
                         __cb.Write(p.Name);
                         #line hidden
@@ -264,12 +351,25 @@ namespace MetaDslx.Languages.Soal.Generator
                         #line (34,17)-(34,42) 36 "PlantUmlGenerator.mxg"
                         __cb.Write(p.Type.GetCoreType().Name);
                         #line hidden
-                        __cb.AppendLine();
-                        __cb.Pop();
+                        var __first8 = true;
+                        #line (34,44)-(34,69) 25 "PlantUmlGenerator.mxg"
+                        if (p.Type.IsArrayType())
+                        #line hidden
+                        
+                        {
+                            if (__first8)
+                            {
+                                __first8 = false;
+                            }
+                            #line (34,71)-(34,75) 40 "PlantUmlGenerator.mxg"
+                            __cb.Write("[]");
+                            #line hidden
+                        }
+                        if (!__first8) __cb.AppendLine();
                     }
-                    if (!__first5) __cb.AppendLine();
+                    if (!__first7) __cb.AppendLine();
                 }
-                if (!__first4) __cb.AppendLine();
+                if (!__first6) __cb.AppendLine();
                 __cb.Push("");
                 #line (37,3)-(37,4) 29 "PlantUmlGenerator.mxg"
                 __cb.Write("}");
@@ -280,15 +380,15 @@ namespace MetaDslx.Languages.Soal.Generator
             if (!__first3) __cb.AppendLine();
             __cb.WriteLine();
             __cb.Pop();
-            var __first6 = true;
+            var __first9 = true;
             #line (40,3)-(40,78) 13 "PlantUmlGenerator.mxg"
             foreach (var st in objects.OfType<Struct>().Where(t => t.BaseType != null))
             #line hidden
             
             {
-                if (__first6)
+                if (__first9)
                 {
-                    __first6 = false;
+                    __first9 = false;
                 }
                 __cb.Push("");
                 #line (41,4)-(41,20) 28 "PlantUmlGenerator.mxg"
@@ -309,42 +409,42 @@ namespace MetaDslx.Languages.Soal.Generator
                 __cb.AppendLine();
                 __cb.Pop();
             }
-            if (!__first6) __cb.AppendLine();
+            if (!__first9) __cb.AppendLine();
             __cb.WriteLine();
             __cb.Pop();
-            var __first7 = true;
+            var __first10 = true;
             #line (44,3)-(44,47) 13 "PlantUmlGenerator.mxg"
             foreach (var st in objects.OfType<Struct>())
             #line hidden
             
             {
-                if (__first7)
+                if (__first10)
                 {
-                    __first7 = false;
+                    __first10 = false;
                 }
-                var __first8 = true;
+                var __first11 = true;
                 #line (45,4)-(45,36) 17 "PlantUmlGenerator.mxg"
                 foreach (var p in st.Properties)
                 #line hidden
                 
                 {
-                    if (__first8)
+                    if (__first11)
                     {
-                        __first8 = false;
+                        __first11 = false;
                     }
                     #line (46,5)-(46,34) 21 "PlantUmlGenerator.mxg"
                     var ct = p.Type.GetCoreType();
                     #line hidden
                     
-                    var __first9 = true;
-                    #line (47,5)-(47,22) 21 "PlantUmlGenerator.mxg"
-                    if (ct is Struct)
+                    var __first12 = true;
+                    #line (47,5)-(47,44) 21 "PlantUmlGenerator.mxg"
+                    if (ct is Struct || ct is Symbols.Enum)
                     #line hidden
                     
                     {
-                        if (__first9)
+                        if (__first12)
                         {
-                            __first9 = false;
+                            __first12 = false;
                         }
                         __cb.Push("");
                         #line (48,6)-(48,13) 36 "PlantUmlGenerator.mxg"
@@ -365,15 +465,15 @@ namespace MetaDslx.Languages.Soal.Generator
                         #line (48,26)-(48,32) 36 "PlantUmlGenerator.mxg"
                         __cb.Write(p.Name);
                         #line hidden
-                        var __first10 = true;
+                        var __first13 = true;
                         #line (48,34)-(48,59) 25 "PlantUmlGenerator.mxg"
                         if (p.Type.IsArrayType())
                         #line hidden
                         
                         {
-                            if (__first10)
+                            if (__first13)
                             {
-                                __first10 = false;
+                                __first13 = false;
                             }
                             #line (48,60)-(48,61) 41 "PlantUmlGenerator.mxg"
                             __cb.Write(" ");
@@ -400,95 +500,15 @@ namespace MetaDslx.Languages.Soal.Generator
                         __cb.AppendLine();
                         __cb.Pop();
                     }
-                    if (!__first9) __cb.AppendLine();
-                    var __first11 = true;
-                    #line (50,5)-(50,28) 21 "PlantUmlGenerator.mxg"
-                    if (ct is Symbols.Enum)
-                    #line hidden
-                    
-                    {
-                        if (__first11)
-                        {
-                            __first11 = false;
-                        }
-                        __cb.Push("");
-                        #line (51,6)-(51,13) 36 "PlantUmlGenerator.mxg"
-                        __cb.Write(st.Name);
-                        #line hidden
-                        #line (51,14)-(51,15) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write(" ");
-                        #line hidden
-                        #line (51,15)-(51,23) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("*-down->");
-                        #line hidden
-                        #line (51,23)-(51,24) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write(" ");
-                        #line hidden
-                        #line (51,24)-(51,25) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("\"");
-                        #line hidden
-                        #line (51,26)-(51,32) 36 "PlantUmlGenerator.mxg"
-                        __cb.Write(p.Name);
-                        #line hidden
-                        var __first12 = true;
-                        #line (51,34)-(51,59) 25 "PlantUmlGenerator.mxg"
-                        if (p.Type.IsArrayType())
-                        #line hidden
-                        
-                        {
-                            if (__first12)
-                            {
-                                __first12 = false;
-                            }
-                            #line (51,60)-(51,61) 41 "PlantUmlGenerator.mxg"
-                            __cb.Write(" ");
-                            #line hidden
-                            #line (51,61)-(51,63) 41 "PlantUmlGenerator.mxg"
-                            __cb.Write("\\n");
-                            #line hidden
-                            #line (51,63)-(51,64) 41 "PlantUmlGenerator.mxg"
-                            __cb.Write(" ");
-                            #line hidden
-                            #line (51,64)-(51,68) 41 "PlantUmlGenerator.mxg"
-                            __cb.Write("0..*");
-                            #line hidden
-                        }
-                        #line (51,76)-(51,77) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("\"");
-                        #line hidden
-                        #line (51,77)-(51,78) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write(" ");
-                        #line hidden
-                        #line (51,78)-(51,94) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("\"<<enumeration>>");
-                        #line hidden
-                        #line (51,94)-(51,95) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write(" ");
-                        #line hidden
-                        #line (51,95)-(51,97) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("\\n");
-                        #line hidden
-                        #line (51,97)-(51,98) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write(" ");
-                        #line hidden
-                        #line (51,99)-(51,106) 36 "PlantUmlGenerator.mxg"
-                        __cb.Write(ct.Name);
-                        #line hidden
-                        #line (51,107)-(51,108) 37 "PlantUmlGenerator.mxg"
-                        __cb.Write("\"");
-                        #line hidden
-                        __cb.AppendLine();
-                        __cb.Pop();
-                    }
-                    if (!__first11) __cb.AppendLine();
+                    if (!__first12) __cb.AppendLine();
                 }
-                if (!__first8) __cb.AppendLine();
+                if (!__first11) __cb.AppendLine();
             }
-            if (!__first7) __cb.AppendLine();
+            if (!__first10) __cb.AppendLine();
             __cb.WriteLine();
             __cb.Pop();
             __cb.Push("");
-            #line (56,2)-(56,9) 25 "PlantUmlGenerator.mxg"
+            #line (53,2)-(53,9) 25 "PlantUmlGenerator.mxg"
             __cb.Write("@enduml");
             #line hidden
             __cb.AppendLine();
