@@ -47,6 +47,12 @@ template GenerateNamespace(Namespace ns)
 	[end if]
 end template
 
+template GenerateDocumentation(DocumentedElement de)
+	[foreach (var line in de.GetDocumentationLines())]
+		/// [line]
+	[end foreach]
+end template
+
 template GenerateAnnotations(AnnotatedElement ae, bool isReturn)
 	[foreach (var annot in ae.Annotations)]
 		["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
@@ -68,19 +74,25 @@ template GenerateAnnotationProperties(Annotation annot)
 end template
 
 template GenerateEnum(Namespace currentNs, Symbols.Enum enm)
+	[GenerateDocumentation(enm)]
 	[GenerateAnnotations(enm, false)]
 	enum [enm.Name][GetAncestor(currentNs, enm)]
 	{
-		[foreach (var lit in enm.EnumLiterals) separator ",\r\n"]    [GenerateEnumLiteral(currentNs, lit)][end foreach]
+		[for (int i = 0; i < enm.EnumLiterals.Count; ++i)]
+			[var lit = enm.EnumLiterals[i]]
+			[GenerateEnumLiteral(currentNs, lit, i+1 < enm.EnumLiterals.Count ? "," : "")]
+		[end for]
 	}
 end template
 
-template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit)
+template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit, string delim)
+	[GenerateDocumentation(lit)]
 	[GenerateAnnotations(lit, false)]
-	[lit.Name]
+	[lit.Name][delim]
 end template
 
 template GenerateStruct(Namespace currentNs, Struct st)
+	[GenerateDocumentation(st)]
 	[GenerateAnnotations(st, false)]
 	struct [st.Name][GetAncestor(currentNs, st)]
 	{
@@ -91,6 +103,7 @@ template GenerateStruct(Namespace currentNs, Struct st)
 end template
 
 template GenerateProperty(Namespace currentNs, Property prop)
+	[GenerateDocumentation(prop)]
 	[GenerateAnnotations(prop, false)]
 	[GenerateType(currentNs, prop.Type)] [prop.Name];
 end template
@@ -148,12 +161,14 @@ template GenerateParameters(Namespace currentNs, Operation op)
 end template
 
 template GenerateOperation(Namespace currentNs, Operation op)
+	[GenerateDocumentation(op)]
 	[GenerateAnnotations(op, false)]
 	[GenerateAnnotations(op.Result, true)]
 	[GenerateReturnType(currentNs, op)] [op.Name]([GenerateParameters(currentNs, op)])[GenerateThrows(currentNs, op)];
 end template
 
 template GenerateInterface(Namespace currentNs, Interface intf)
+	[GenerateDocumentation(intf)]
 	[GenerateAnnotations(intf, false)]
 	interface [intf.Name]
 	{

@@ -66,7 +66,15 @@ namespace MetaDslx.Languages.Soal.Symbols
 
         public override IList<string> DocumentedElement_GetDocumentationLines(DocumentedElement _this)
         {
-            return new List<string>();
+            var result = new List<string>();
+            if (string.IsNullOrWhiteSpace(_this.Documentation)) return result;
+            var lines = _this.Documentation.Split('\n');
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                result.Add(line.Trim());
+            }
+            return result;
         }
     }
 
